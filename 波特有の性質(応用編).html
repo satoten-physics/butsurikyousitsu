@@ -1,0 +1,1650 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高校物理 - 波特有の性質（応用編）</title>
+    <script>
+      window.MathJax = {
+      tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']]
+     }
+     };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        header {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .back-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        h1 {
+            color: #333;
+        }
+        .container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .tab-btn {
+            flex: 1;
+            min-width: 150px;
+            padding: 12px 20px;
+            border: none;
+            background: #f0f0f0;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        .tab-btn.active {
+            background: #667eea;
+            color: white;
+        }
+        .tab-btn:hover {
+            background: #8899f0;
+            color: white;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            margin-top: 30px;
+        }
+        h2:first-child {
+            margin-top: 0;
+        }
+        h3 {
+            color: #555;
+            margin: 20px 0 10px 0;
+            padding-left: 10px;
+            border-left: 4px solid #667eea;
+        }
+        p {
+            line-height: 1.8;
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+        .pdf-placeholder {
+            background: #f9f9f9;
+            padding: 40px;
+            text-align: center;
+            border-radius: 5px;
+            color: #666;
+        }
+        
+        /* 解説用スタイル */
+        .concept-box {
+            background: linear-gradient(135deg, #e8f4fd 0%, #f0e6ff 100%);
+            border-left: 5px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+        .concept-box h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        .point-box {
+            background: #fff3e0;
+            border: 2px solid #ff9800;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        .point-box h4 {
+            color: #e65100;
+            margin-bottom: 10px;
+        }
+        .figure-container {
+            background: #fafafa;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .figure-container canvas {
+            max-width: 100%;
+            border: 1px solid #eee;
+            background: white;
+        }
+        .figure-caption {
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: #666;
+        }
+        
+        /* ホイヘンス原理ステップツール */
+        .huygens-tool {
+            background: #f5f5f5;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .huygens-steps {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        .step-btn {
+            padding: 10px 20px;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        .step-btn.active {
+            background: #667eea;
+            color: white;
+        }
+        .step-btn:hover {
+            background: #8899f0;
+            color: white;
+        }
+        .step-description {
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+            min-height: 80px;
+        }
+        
+        /* シミュレーション用スタイル */
+        #sim-container {
+            background: #f5f5f5;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        #physicsCanvas, #slitCanvas {
+            display: block;
+            width: 100%;
+            background: white;
+            border-radius: 5px;
+            border: 2px solid #ddd;
+        }
+        .sim-controls {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .control-group {
+            margin-bottom: 20px;
+        }
+        .control-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        .control-group input[type="range"] {
+            width: 100%;
+            margin: 10px 0;
+        }
+        .value-display {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            min-width: 100px;
+            text-align: center;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .sim-button {
+            flex: 1;
+            min-width: 120px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .sim-button.start {
+            background: #4CAF50;
+            color: white;
+        }
+        .sim-button.start:hover {
+            background: #45a049;
+        }
+        .sim-button.reset {
+            background: #f44336;
+            color: white;
+        }
+        .sim-button.reset:hover {
+            background: #da190b;
+        }
+        .sim-section {
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 2px dashed #ddd;
+        }
+        .sim-section:last-child {
+            border-bottom: none;
+        }
+        .sim-section h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            padding-left: 10px;
+            border-left: 4px solid #667eea;
+        }
+        .toggle-group {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        .toggle-btn {
+            padding: 10px 25px;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        .toggle-btn.active {
+            background: #667eea;
+            color: white;
+        }
+        
+        /* 問題用スタイル */
+        .problem {
+            background: #f9f9f9;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .problem h4 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+        .problem p {
+            margin-bottom: 10px;
+        }
+        details {
+            margin-top: 15px;
+        }
+        summary {
+            background: #667eea;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        summary:hover {
+            background: #5568d8;
+        }
+        .answer {
+            background: #e8f5e9;
+            padding: 20px;
+            border-radius: 0 0 10px 10px;
+            margin-top: 5px;
+        }
+        
+        .application-hint {
+            background: linear-gradient(135deg, #e3f2fd 0%, #fce4ec 100%);
+            border: 2px solid #9c27b0;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 10px;
+        }
+        .application-hint h4 {
+            color: #7b1fa2;
+            margin-bottom: 15px;
+        }
+        .application-hint ul {
+            margin-left: 20px;
+        }
+        .application-hint li {
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            header, .container {
+                padding: 15px;
+            }
+            .tab-btn {
+                min-width: 100px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="back-link">← 目次に戻る</a>
+        <h1>波特有の性質（応用編）〜波面とホイヘンスの原理〜</h1>
+    </header>
+    <div class="container">
+        
+        <div class="tabs">
+            <button class="tab-btn active" onclick="openTab('lecture')">解説編</button>
+            <button class="tab-btn" onclick="openTab('problem')">問題編</button>
+            <button class="tab-btn" onclick="openTab('simulation')">シミュレーション</button>
+        </div>
+        
+        <!-- ========== 解説タブ ========== -->
+        <div id="lecture" class="tab-content active">
+            
+            <h2>1. 波面とは何か</h2>
+            
+            <p>
+                水面に石を落とすと、落下点を中心に円形の波紋が広がっていく様子が見られます。
+                このとき、波の「山」や「谷」はどのように広がっているでしょうか？
+            </p>
+            
+            <div class="figure-container">
+                <canvas id="wavefrontFig1" width="500" height="250"></canvas>
+                <p class="figure-caption">図1：水面波の広がり（上から見た様子）</p>
+            </div>
+            
+            <p>
+                よく観察すると、波の山は同心円状に広がり、谷も同様に同心円状に広がっています。
+                つまり、<strong>同じタイミングで同じ振動状態にある点</strong>（同位相の点）を結ぶと、きれいな円になるのです。
+            </p>
+            
+            <div class="concept-box">
+                <h4>📐 波面の定義</h4>
+                <p>
+                    <strong>波面（wave front）</strong>とは、<strong>同位相の点を連ねてできる線または面</strong>のことです。
+                </p>
+                <p>
+                    例えば、すべての「山」を結んだ線、すべての「谷」を結んだ線が波面になります。
+                    波面は、波がどこまで到達したかを示す「波の先端」を表します。
+                </p>
+            </div>
+            
+            <h3>波面と波の進行方向の関係</h3>
+            
+            <div class="figure-container">
+                <canvas id="wavefrontFig2" width="500" height="200"></canvas>
+                <p class="figure-caption">図2：波面と進行方向は常に垂直</p>
+            </div>
+            
+            <div class="point-box">
+                <h4>⚡ 重要ポイント</h4>
+                <p>
+                    <strong>波の進行方向と波面は常に垂直</strong>である。
+                </p>
+                <p>
+                    これは平面波でも球面波でも成り立つ普遍的な性質です。
+                    波面を追いかけていくと、波がどの方向に進んでいるかがわかります。
+                </p>
+            </div>
+            
+            <h3>平面波と球面波</h3>
+            
+            <p>波面の形状によって、波は次の2種類に分類されます：</p>
+            
+            <div class="figure-container">
+                <canvas id="wavefrontFig3" width="600" height="250"></canvas>
+                <p class="figure-caption">図3：平面波と球面波の比較</p>
+            </div>
+            
+            <div class="concept-box">
+                <h4>🌊 平面波と球面波</h4>
+                <p><strong>① 平面波</strong>：波面が直線（2次元）または平面（3次元）である波</p>
+                <ul style="margin-left: 20px; margin-top: 5px;">
+                    <li>遠くからやってくる光や音は、ほぼ平面波とみなせる</li>
+                    <li>波の進行方向は一定（平行）</li>
+                </ul>
+                <p style="margin-top: 10px;"><strong>② 球面波</strong>：波面が円（2次元）または球面（3次元）である波</p>
+                <ul style="margin-left: 20px; margin-top: 5px;">
+                    <li>点波源から発生した波</li>
+                    <li>波は波源から放射状に広がる</li>
+                </ul>
+            </div>
+            
+            <hr style="margin: 40px 0; border: none; border-top: 2px solid #eee;">
+            
+            <h2>2. ホイヘンスの原理</h2>
+            
+            <p>
+                17世紀、オランダの物理学者<strong>クリスティアーン・ホイヘンス</strong>は、
+                波がどのように伝わるかを説明する画期的な原理を提唱しました。
+                水面を進む平面波が防波堤を通過した先で球面波になる現象を観察し、この原理を導きました。
+            </p>
+            
+            <div class="concept-box">
+                <h4>🔬 ホイヘンスの原理（Huygens' Principle）</h4>
+                <p style="font-size: 1.05em;">
+                    波面上のすべての点は、それぞれが新たな<strong>点波源</strong>となり、
+                    <strong>素元波</strong>（球面波）を発生させる。
+                    次の瞬間の波面は、これらの素元波の<strong>包絡線（共通接線）</strong>として形成される。
+                </p>
+            </div>
+            
+            <p>
+                この原理を、ステップごとに図解で確認していきましょう。
+            </p>
+            
+            <div class="huygens-tool">
+                <h4 style="margin-bottom: 15px;">📖 ホイヘンスの原理 ステップ解説</h4>
+                <div class="huygens-steps">
+                    <button class="step-btn active" onclick="showHuygensStep(1)">Step 1</button>
+                    <button class="step-btn" onclick="showHuygensStep(2)">Step 2</button>
+                    <button class="step-btn" onclick="showHuygensStep(3)">Step 3</button>
+                    <button class="step-btn" onclick="showHuygensStep(4)">Step 4</button>
+                </div>
+                <div class="figure-container" style="margin: 0;">
+                    <canvas id="huygensStepCanvas" width="550" height="300"></canvas>
+                </div>
+                <div class="step-description" id="stepDescription">
+                    <strong>Step 1：</strong>現在の波面を考えます。この波面上のすべての点に注目しましょう。
+                </div>
+            </div>
+            
+            <h3>ホイヘンスの原理の数学的表現</h3>
+            
+            <p>
+                波が速さ $v$ で伝わるとき、時間 $\Delta t$ の間に波面は距離 $v \Delta t$ だけ進みます。
+                ホイヘンスの原理に従えば：
+            </p>
+            
+            <ul style="margin-left: 20px; margin-bottom: 15px;">
+                <li>各点から発生する素元波の半径は $r = v \Delta t$</li>
+                <li>すべての素元波の共通接線（包絡線）が新しい波面となる</li>
+            </ul>
+            
+            <p>
+                この原理の美しい点は、<strong>平面波の直進</strong>だけでなく、
+                <strong>球面波の広がり</strong>も同じ原理で説明できることです。
+            </p>
+            
+            <div class="application-hint">
+                <h4>🚀 ホイヘンスの原理の応用</h4>
+                <p>ホイヘンスの原理は、以下の重要な波動現象を統一的に説明できる強力なツールです：</p>
+                <ul>
+                    <li><strong>反射の法則</strong>：入射角 = 反射角となることを導出できる</li>
+                    <li><strong>屈折の法則（スネルの法則）</strong>：媒質の境界で波が曲がる理由を説明できる</li>
+                    <li><strong>回折</strong>：波が障害物の背後に回り込む現象を説明できる</li>
+                    <li><strong>干渉</strong>：複数の波が重ね合わさる現象の基礎となる</li>
+                </ul>
+                <p style="margin-top: 10px; color: #7b1fa2;">
+                    → これらの現象は、今後の授業で詳しく学びます。ホイヘンスの原理がその基礎になることを覚えておきましょう！
+                </p>
+            </div>
+            
+            <hr style="margin: 40px 0; border: none; border-top: 2px solid #eee;">
+            
+            <h2>3. 授業資料</h2>
+            <iframe src="https://drive.google.com/file/d/1rd3AUHNkj-NLM0IEztEdsiVOdPwxD6EA/preview" width="100%" height="500"></iframe>
+        </div>
+        
+        <!-- ========== 問題タブ ========== -->
+        <div id="problem" class="tab-content">
+            <h2>確認問題</h2>
+            
+            <div class="problem">
+                <h4>問題1：波面の基本</h4>
+                <p>
+                    次の文章の空欄を埋めなさい。
+                </p>
+                <p>
+                    (1) 波面とは、（　ア　）の点を連ねてできる線または面のことである。
+                </p>
+                <p>
+                    (2) 波の進行方向と波面は常に（　イ　）である。
+                </p>
+                <p>
+                    (3) 波面が直線または平面である波を（　ウ　）といい、波面が円または球面である波を（　エ　）という。
+                </p>
+                
+                <details>
+                    <summary>解答・解説を見る</summary>
+                    <div class="answer">
+                        <p><strong>解答</strong></p>
+                        <p>ア：同位相　　イ：垂直　　ウ：平面波　　エ：球面波</p>
+                        <p style="margin-top: 15px;"><strong>解説</strong></p>
+                        <p>
+                            波面は「同じタイミングで同じ振動状態にある点」を結んだものです。
+                            波は波面に対して垂直な方向に進むため、波の進行方向と波面は常に垂直になります。
+                            遠方から来る光や音は平面波とみなせ、点光源から発せられた光は球面波となります。
+                        </p>
+                    </div>
+                </details>
+            </div>
+            
+            <div class="problem">
+                <h4>問題2：ホイヘンスの原理</h4>
+                <p>
+                    ホイヘンスの原理について、次の問いに答えなさい。
+                </p>
+                <p>
+                    (1) ホイヘンスの原理において、波面上の各点から発生する球面波を何というか。
+                </p>
+                <p>
+                    (2) 次の瞬間の波面は、(1)の何として形成されるか。
+                </p>
+                <p>
+                    (3) 波の速さが $v = 340$ m/s のとき、$\Delta t = 0.01$ s 後の素元波の半径は何 m か。
+                </p>
+                
+                <details>
+                    <summary>解答・解説を見る</summary>
+                    <div class="answer">
+                        <p><strong>解答</strong></p>
+                        <p>(1) 素元波</p>
+                        <p>(2) 包絡線（共通接線）</p>
+                        <p>(3) $r = v \Delta t = 340 \times 0.01 = 3.4$ m</p>
+                        <p style="margin-top: 15px;"><strong>解説</strong></p>
+                        <p>
+                            ホイヘンスの原理では、現在の波面上のすべての点が新たな波源となり、
+                            素元波と呼ばれる球面波を発生させます。
+                            これらの素元波すべてに接する線（包絡線）が、次の瞬間の波面を形成します。
+                            素元波の半径は、波の速さと経過時間の積で求められます。
+                        </p>
+                    </div>
+                </details>
+            </div>
+            
+            <div class="problem">
+                <h4>問題3：応用問題</h4>
+                <p>
+                    平面波が障害物の隙間（スリット）を通過するとき、スリットの幅が波長と同程度またはそれより小さい場合、
+                    通過後の波はどのような形状になるか。また、その理由をホイヘンスの原理を用いて説明しなさい。
+                </p>
+                
+                <details>
+                    <summary>解答・解説を見る</summary>
+                    <div class="answer">
+                        <p><strong>解答</strong></p>
+                        <p>
+                            <strong>波の形状：</strong>球面波（円形波）に近い形状になる。
+                        </p>
+                        <p style="margin-top: 10px;">
+                            <strong>理由：</strong>
+                            ホイヘンスの原理によれば、波面上の各点が新たな点波源となり素元波を発生させる。
+                            平面波がスリットを通過するとき、スリット部分のみで素元波が発生する。
+                            スリット幅が狭い場合、素元波を発生させる点が限られるため、
+                            あたかも1つの点波源から発生したかのような球面波に近い形状となる。
+                            これが「回折」と呼ばれる現象である。
+                        </p>
+                        <p style="margin-top: 15px;"><strong>補足</strong></p>
+                        <p>
+                            スリット幅が波長より十分大きい場合は、多数の素元波の包絡線が直線に近くなり、
+                            平面波に近い形で通過します。波長とスリット幅の関係が回折の程度を決める重要な要素です。
+                        </p>
+                    </div>
+                </details>
+            </div>
+        </div>
+        
+        <!-- ========== シミュレーションタブ ========== -->
+        <div id="simulation" class="tab-content">
+            <h2>実験シミュレーション</h2>
+            
+            <!-- シミュレーションA -->
+            <div class="sim-section">
+                <h3>シミュレーションA：ホイヘンスの原理の可視化</h3>
+                <p>波面上の各点から素元波が発生し、新しい波面が形成される様子を観察しましょう。</p>
+                
+                <div id="sim-container">
+                    <canvas id="physicsCanvas"></canvas>
+                </div>
+                
+                <div class="sim-controls">
+                    <div class="control-group">
+                        <label>波の進行速度: <span class="value-display" id="speedDisplay">50 px/s</span></label>
+                        <input type="range" id="speedSlider" min="20" max="100" value="50" step="5">
+                    </div>
+                    
+                    <div class="control-group">
+                        <label>素元波の数: <span class="value-display" id="pointsDisplay">7 個</span></label>
+                        <input type="range" id="pointsSlider" min="3" max="15" value="7" step="1">
+                    </div>
+                    
+                    <div class="control-group">
+                        <label>時間間隔 Δt: <span class="value-display" id="dtDisplay">1.0 s</span></label>
+                        <input type="range" id="dtSlider" min="0.5" max="2.0" value="1.0" step="0.1">
+                    </div>
+                    
+                    <div class="button-group">
+                        <button class="sim-button start" id="startBtn">スタート</button>
+                        <button class="sim-button reset" id="resetBtn">リセット</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- シミュレーションB -->
+            <div class="sim-section">
+                <h3>シミュレーションB：スリット回折</h3>
+                <p>平面波がスリット（隙間）を通過したとき、回折によって波が広がる様子を観察しましょう。</p>
+                
+                <div id="sim-container">
+                    <canvas id="slitCanvas"></canvas>
+                </div>
+                
+                <div class="sim-controls">
+                    <div class="control-group">
+                        <label>スリット数:</label>
+                        <div class="toggle-group">
+                            <button class="toggle-btn active" id="singleSlitBtn" onclick="setSlitMode(1)">単スリット</button>
+                            <button class="toggle-btn" id="doubleSlitBtn" onclick="setSlitMode(2)">ダブルスリット</button>
+                        </div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label>波長: <span class="value-display" id="wavelengthDisplay">30 px</span></label>
+                        <input type="range" id="wavelengthSlider" min="15" max="60" value="30" step="5">
+                    </div>
+                    
+                    <div class="control-group" id="slitDistanceGroup" style="display: none;">
+                        <label>スリット間隔: <span class="value-display" id="slitDistanceDisplay">80 px</span></label>
+                        <input type="range" id="slitDistanceSlider" min="40" max="150" value="80" step="10">
+                    </div>
+                    
+                    <div class="button-group">
+                        <button class="sim-button start" id="startBtn2">スタート</button>
+                        <button class="sim-button reset" id="resetBtn2">リセット</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+    // ========================================
+    // タブ切り替え機能
+    // ========================================
+    function openTab(tabName) {
+        var contents = document.getElementsByClassName("tab-content");
+        for (var i = 0; i < contents.length; i++) {
+            contents[i].style.display = "none";
+            contents[i].classList.remove("active");
+        }
+        var buttons = document.getElementsByClassName("tab-btn");
+        for (var i = 0; i < buttons.length; i++) {
+            buttons[i].classList.remove("active");
+        }
+        document.getElementById(tabName).style.display = "block";
+        document.getElementById(tabName).classList.add("active");
+        if (event && event.currentTarget) {
+            event.currentTarget.classList.add("active");
+        }
+        
+        // シミュレーションタブを開いたときにCanvasを初期化
+        if (tabName === 'simulation') {
+            setTimeout(() => {
+                initHuygensSimulation();
+                initSlitSimulation();
+            }, 100);
+        }
+    }
+    
+    // ========================================
+    // 解説用図の描画
+    // ========================================
+    
+    // 図1: 水面波の広がり
+    function drawWavefrontFig1() {
+        const canvas = document.getElementById('wavefrontFig1');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const W = canvas.width, H = canvas.height;
+        
+        ctx.fillStyle = '#e3f2fd';
+        ctx.fillRect(0, 0, W, H);
+        
+        const cx = W * 0.5, cy = H * 0.5;
+        
+        // 同心円（波面）を描く - 山は実線、谷は破線、濃さは統一
+        ctx.strokeStyle = '#1976d2';
+        ctx.lineWidth = 3;
+        
+        for (let i = 1; i <= 4; i++) {
+            ctx.beginPath();
+            if (i % 2 === 1) {
+                // 山：実線
+                ctx.setLineDash([]);
+            } else {
+                // 谷：破線
+                ctx.setLineDash([8, 6]);
+            }
+            ctx.arc(cx, cy, i * 40, 0, Math.PI * 2);
+            ctx.stroke();
+        }
+        ctx.setLineDash([]);
+        
+        // 中心点（波源）
+        ctx.beginPath();
+        ctx.arc(cx, cy, 8, 0, Math.PI * 2);
+        ctx.fillStyle = '#d32f2f';
+        ctx.fill();
+        
+        // ラベル
+        ctx.fillStyle = '#333';
+        ctx.font = '14px sans-serif';
+        ctx.fillText('波源', cx + 15, cy - 10);
+        ctx.fillText('山', cx + 45, cy - 35);
+        ctx.fillText('谷', cx + 85, cy - 70);
+        ctx.fillText('山', cx + 125, cy - 105);
+        ctx.fillText('谷', cx + 165, cy - 140);
+        
+        // 凡例
+        ctx.fillStyle = '#1976d2';
+        ctx.font = '13px sans-serif';
+        // 実線の凡例
+        ctx.beginPath();
+        ctx.moveTo(30, H - 35);
+        ctx.lineTo(70, H - 35);
+        ctx.stroke();
+        ctx.fillStyle = '#333';
+        ctx.fillText('山（実線）', 75, H - 30);
+        
+        // 破線の凡例
+        ctx.setLineDash([8, 6]);
+        ctx.beginPath();
+        ctx.moveTo(30, H - 15);
+        ctx.lineTo(70, H - 15);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.fillText('谷（破線）', 75, H - 10);
+        
+        // 「波面」のラベル
+        ctx.fillStyle = '#1976d2';
+        ctx.fillText('← 波面（同位相の点を結んだ線）', cx + 80, cy + 50);
+    }
+    
+    // 図2: 波面と進行方向
+    function drawWavefrontFig2() {
+        const canvas = document.getElementById('wavefrontFig2');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const W = canvas.width, H = canvas.height;
+        
+        ctx.fillStyle = '#fff';
+        ctx.fillRect(0, 0, W, H);
+        
+        // === 左側：平面波 ===
+        const planeWaveX = [70, 130, 190];
+        const planeAreaRight = 230;
+        
+        // 波面ラベル
+        ctx.fillStyle = '#1976d2';
+        ctx.font = 'bold 14px sans-serif';
+        ctx.fillText('波面', planeWaveX[1] - 15, 20);
+        
+        // 波面（縦線）- 青色
+        ctx.strokeStyle = '#1976d2';
+        ctx.lineWidth = 3;
+        for (let i = 0; i < 3; i++) {
+            const x = planeWaveX[i];
+            ctx.beginPath();
+            ctx.moveTo(x, 30);
+            ctx.lineTo(x, H - 30);
+            ctx.stroke();
+        }
+        
+        // 進行方向の矢印 - 赤色
+        ctx.strokeStyle = '#d32f2f';
+        ctx.fillStyle = '#d32f2f';
+        ctx.lineWidth = 2;
+        
+        const arrowYs = [55, 100, 145];
+        for (let j = 0; j < 3; j++) {
+            const y = arrowYs[j];
+            const startX = planeWaveX[0];
+            const endX = planeWaveX[2] + 20;
+            
+            ctx.beginPath();
+            ctx.moveTo(startX, y);
+            ctx.lineTo(endX, y);
+            ctx.stroke();
+            // 矢じり
+            ctx.beginPath();
+            ctx.moveTo(endX, y);
+            ctx.lineTo(endX - 10, y - 6);
+            ctx.lineTo(endX - 10, y + 6);
+            ctx.closePath();
+            ctx.fill();
+        }
+        
+        // 垂直マーク（真ん中の波面と中央の矢印の交点）
+        // 時計回りに90°回転：矢印に沿って右に、波面に沿って上に
+        const cornerX = planeWaveX[1];
+        const cornerY = arrowYs[1];
+        const markSize = 12;
+        
+        ctx.strokeStyle = '#4caf50';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        // 矢印に沿って右に
+        ctx.moveTo(cornerX, cornerY);
+        ctx.lineTo(cornerX + markSize, cornerY);
+        // 波面に沿って上に
+        ctx.lineTo(cornerX + markSize, cornerY - markSize);
+        ctx.stroke();
+        
+        // 進行方向ラベル
+        ctx.fillStyle = '#d32f2f';
+        ctx.font = '13px sans-serif';
+        ctx.fillText('進行方向', planeWaveX[2] + 25, 60);
+        
+        // 垂直の注釈
+        ctx.fillStyle = '#4caf50';
+        ctx.font = 'bold 13px sans-serif';
+        ctx.fillText('常に垂直！', planeWaveX[1] - 50, cornerY + 40);
+        
+        // 「平面波」ラベル
+        ctx.fillStyle = '#333';
+        ctx.font = '13px sans-serif';
+        ctx.fillText('平面波', planeWaveX[1] - 20, H - 8);
+        
+        // === 右側：球面波 ===
+        const cx = 370, cy = H / 2;
+        
+        // 波面（同心円）- 青色
+        ctx.strokeStyle = '#1976d2';
+        ctx.lineWidth = 3;
+        for (let i = 1; i <= 3; i++) {
+            ctx.beginPath();
+            ctx.arc(cx, cy, i * 30, 0, Math.PI * 2);
+            ctx.stroke();
+        }
+        
+        // 中心点 - 赤色
+        ctx.beginPath();
+        ctx.arc(cx, cy, 5, 0, Math.PI * 2);
+        ctx.fillStyle = '#d32f2f';
+        ctx.fill();
+        
+        // 放射状の矢印（進行方向）- 赤色
+        ctx.strokeStyle = '#d32f2f';
+        ctx.fillStyle = '#d32f2f';
+        ctx.lineWidth = 2;
+        
+        const angles = [0, Math.PI/2, Math.PI, -Math.PI/2, Math.PI/4, -Math.PI/4, 3*Math.PI/4, -3*Math.PI/4];
+        for (let k = 0; k < angles.length; k++) {
+            const angle = angles[k];
+            const r1 = 35, r2 = 80;
+            const x1 = cx + r1 * Math.cos(angle);
+            const y1 = cy + r1 * Math.sin(angle);
+            const x2 = cx + r2 * Math.cos(angle);
+            const y2 = cy + r2 * Math.sin(angle);
+            
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
+            
+            // 矢じり
+            const arrowLen = 8;
+            const ax = x2 - arrowLen * Math.cos(angle);
+            const ay = y2 - arrowLen * Math.sin(angle);
+            ctx.beginPath();
+            ctx.moveTo(x2, y2);
+            ctx.lineTo(ax - 4 * Math.sin(angle), ay + 4 * Math.cos(angle));
+            ctx.lineTo(ax + 4 * Math.sin(angle), ay - 4 * Math.cos(angle));
+            ctx.closePath();
+            ctx.fill();
+        }
+        
+        // 直角マーク（角度0の矢印、2番目の円との交点）
+        // 時計回りに90°回転：矢印に沿って右に、円の接線方向（上）に
+        const markR = 60; // 2番目の円との交点
+        const markX = cx + markR;
+        const markY = cy;
+        const markSize2 = 10;
+        
+        ctx.strokeStyle = '#4caf50';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        // 矢印に沿って右に
+        ctx.moveTo(markX, markY);
+        ctx.lineTo(markX + markSize2, markY);
+        // 円の接線方向（上）に
+        ctx.lineTo(markX + markSize2, markY - markSize2);
+        ctx.stroke();
+        
+        // 「球面波」ラベル
+        ctx.fillStyle = '#333';
+        ctx.font = '13px sans-serif';
+        ctx.fillText('球面波', cx - 20, H - 8);
+        
+        // 進行方向ラベル（見切れないように位置調整）
+        ctx.fillStyle = '#d32f2f';
+        ctx.font = '13px sans-serif';
+        ctx.fillText('進行方向', cx + 85, cy - 45);
+    }
+    
+    // 図3: 平面波と球面波の比較
+    function drawWavefrontFig3() {
+        const canvas = document.getElementById('wavefrontFig3');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const W = canvas.width, H = canvas.height;
+        
+        ctx.fillStyle = '#fafafa';
+        ctx.fillRect(0, 0, W, H);
+        
+        // 左側：平面波
+        ctx.fillStyle = '#e3f2fd';
+        ctx.fillRect(20, 20, W/2 - 40, H - 40);
+        
+        ctx.strokeStyle = '#1976d2';
+        ctx.lineWidth = 3;
+        for (let i = 0; i < 5; i++) {
+            const x = 60 + i * 45;
+            ctx.beginPath();
+            ctx.moveTo(x, 50);
+            ctx.lineTo(x, H - 50);
+            ctx.stroke();
+        }
+        
+        ctx.fillStyle = '#333';
+        ctx.font = 'bold 16px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('平面波', W/4, H - 15);
+        ctx.font = '12px sans-serif';
+        ctx.fillText('波面が直線（平面）', W/4, 40);
+        
+        // 右側：球面波
+        ctx.fillStyle = '#fce4ec';
+        ctx.fillRect(W/2 + 20, 20, W/2 - 40, H - 40);
+        
+        const cx = W * 0.75, cy = H/2;
+        ctx.strokeStyle = '#e91e63';
+        ctx.lineWidth = 3;
+        for (let i = 1; i <= 4; i++) {
+            ctx.beginPath();
+            ctx.arc(cx, cy, i * 35, 0, Math.PI * 2);
+            ctx.stroke();
+        }
+        
+        ctx.beginPath();
+        ctx.arc(cx, cy, 6, 0, Math.PI * 2);
+        ctx.fillStyle = '#c2185b';
+        ctx.fill();
+        
+        ctx.fillStyle = '#333';
+        ctx.font = 'bold 16px sans-serif';
+        ctx.fillText('球面波', W * 0.75, H - 15);
+        ctx.font = '12px sans-serif';
+        ctx.fillText('波面が円（球面）', W * 0.75, 40);
+        ctx.fillText('点波源', cx + 15, cy - 15);
+        
+        ctx.textAlign = 'left';
+    }
+    
+    // ========================================
+    // ホイヘンス原理ステップ解説
+    // ========================================
+    let currentStep = 1;
+    
+    function showHuygensStep(step) {
+        currentStep = step;
+        
+        // ボタンのアクティブ状態を更新
+        const btns = document.querySelectorAll('.step-btn');
+        btns.forEach((btn, i) => {
+            btn.classList.toggle('active', i === step - 1);
+        });
+        
+        // 説明文を更新
+        const descriptions = [
+            '<strong>Step 1：</strong>現在の波面を考えます。この波面上のすべての点に注目しましょう。波面は同位相の点を結んだ線です。',
+            '<strong>Step 2：</strong>波面上の各点が「点波源」となり、それぞれから<span style="color:#e91e63;">素元波（球面波）</span>が発生します。素元波の半径は $r = v \\Delta t$ です。',
+            '<strong>Step 3：</strong>すべての素元波の<span style="color:#4caf50;">共通接線（包絡線）</span>を引きます。これが次の瞬間の波面になります。',
+            '<strong>Step 4：</strong>こうして新しい波面が形成されました。このプロセスが連続的に繰り返されることで、波が伝わっていきます。'
+        ];
+        document.getElementById('stepDescription').innerHTML = descriptions[step - 1];
+        
+        // MathJaxで数式を再レンダリング
+        if (window.MathJax) {
+            MathJax.typesetPromise([document.getElementById('stepDescription')]);
+        }
+        
+        drawHuygensStep();
+    }
+    
+    function drawHuygensStep() {
+        const canvas = document.getElementById('huygensStepCanvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const W = canvas.width, H = canvas.height;
+        
+        ctx.fillStyle = '#fff';
+        ctx.fillRect(0, 0, W, H);
+        
+        const wavefrontX = 120;
+        const newWavefrontX = 380;
+        const numPoints = 7;
+        const spacing = (H - 80) / (numPoints - 1);
+        const radius = newWavefrontX - wavefrontX;
+        
+        // Step 1以上: 現在の波面
+        if (currentStep >= 1) {
+            ctx.strokeStyle = '#1976d2';
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            ctx.moveTo(wavefrontX, 40);
+            ctx.lineTo(wavefrontX, H - 40);
+            ctx.stroke();
+            
+            // ラベル
+            ctx.fillStyle = '#1976d2';
+            ctx.font = 'bold 14px sans-serif';
+            ctx.fillText('現在の波面', wavefrontX - 45, 25);
+            
+            // 進行方向矢印
+            ctx.strokeStyle = '#999';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(50, H/2);
+            ctx.lineTo(90, H/2);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(90, H/2);
+            ctx.lineTo(80, H/2 - 6);
+            ctx.lineTo(80, H/2 + 6);
+            ctx.closePath();
+            ctx.fillStyle = '#999';
+            ctx.fill();
+            ctx.fillText('v', 60, H/2 - 10);
+        }
+        
+        // Step 2以上: 点波源と素元波
+        if (currentStep >= 2) {
+            // 波面上の点
+            for (let i = 0; i < numPoints; i++) {
+                const y = 40 + i * spacing;
+                
+                // 点波源
+                ctx.beginPath();
+                ctx.arc(wavefrontX, y, 5, 0, Math.PI * 2);
+                ctx.fillStyle = '#d32f2f';
+                ctx.fill();
+                
+                // 素元波（半円）
+                ctx.beginPath();
+                ctx.arc(wavefrontX, y, radius, -Math.PI/2, Math.PI/2);
+                ctx.strokeStyle = 'rgba(233, 30, 99, 0.5)';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+            }
+            
+            ctx.fillStyle = '#e91e63';
+            ctx.font = '12px sans-serif';
+            ctx.fillText('素元波', wavefrontX + 80, 70);
+            ctx.fillText('r = vΔt', wavefrontX + radius/2 - 20, H/2 - 10);
+        }
+        
+        // Step 3以上: 包絡線
+        if (currentStep >= 3) {
+            ctx.strokeStyle = '#4caf50';
+            ctx.lineWidth = 3;
+            ctx.setLineDash([8, 4]);
+            ctx.beginPath();
+            ctx.moveTo(newWavefrontX, 40);
+            ctx.lineTo(newWavefrontX, H - 40);
+            ctx.stroke();
+            ctx.setLineDash([]);
+            
+            ctx.fillStyle = '#4caf50';
+            ctx.font = 'bold 14px sans-serif';
+            ctx.fillText('包絡線', newWavefrontX + 10, H/2);
+        }
+        
+        // Step 4: 新しい波面を強調
+        if (currentStep >= 4) {
+            ctx.strokeStyle = '#4caf50';
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            ctx.moveTo(newWavefrontX, 40);
+            ctx.lineTo(newWavefrontX, H - 40);
+            ctx.stroke();
+            
+            ctx.fillStyle = '#4caf50';
+            ctx.font = 'bold 14px sans-serif';
+            ctx.fillText('新しい波面', newWavefrontX - 35, 25);
+            
+            // 距離の表示
+            ctx.strokeStyle = '#666';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(wavefrontX, H - 25);
+            ctx.lineTo(newWavefrontX, H - 25);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(wavefrontX, H - 30);
+            ctx.lineTo(wavefrontX, H - 20);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(newWavefrontX, H - 30);
+            ctx.lineTo(newWavefrontX, H - 20);
+            ctx.stroke();
+            
+            ctx.fillStyle = '#666';
+            ctx.font = '12px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('vΔt', (wavefrontX + newWavefrontX)/2, H - 10);
+            ctx.textAlign = 'left';
+        }
+    }
+    
+    // ========================================
+    // シミュレーションA: ホイヘンスの原理
+    // ========================================
+    let simA = {
+        canvas: null,
+        ctx: null,
+        animationId: null,
+        isRunning: false,
+        time: 0,
+        speed: 50,
+        numPoints: 7,
+        dt: 1.0,
+        wavefronts: []
+    };
+    
+    function initHuygensSimulation() {
+        simA.canvas = document.getElementById('physicsCanvas');
+        if (!simA.canvas) return;
+        
+        simA.canvas.width = simA.canvas.parentElement.clientWidth - 40;
+        simA.canvas.height = 350;
+        simA.ctx = simA.canvas.getContext('2d');
+        
+        resetSimA();
+        drawSimA();
+        
+        // スライダーイベント
+        document.getElementById('speedSlider').addEventListener('input', function() {
+            simA.speed = parseFloat(this.value);
+            document.getElementById('speedDisplay').textContent = simA.speed + ' px/s';
+        });
+        
+        document.getElementById('pointsSlider').addEventListener('input', function() {
+            simA.numPoints = parseInt(this.value);
+            document.getElementById('pointsDisplay').textContent = simA.numPoints + ' 個';
+            if (!simA.isRunning) {
+                resetSimA();
+                drawSimA();
+            }
+        });
+        
+        document.getElementById('dtSlider').addEventListener('input', function() {
+            simA.dt = parseFloat(this.value);
+            document.getElementById('dtDisplay').textContent = simA.dt.toFixed(1) + ' s';
+        });
+        
+        // ボタンイベント
+        document.getElementById('startBtn').addEventListener('click', toggleSimA);
+        document.getElementById('resetBtn').addEventListener('click', function() {
+            stopSimA();
+            resetSimA();
+            drawSimA();
+        });
+    }
+    
+    function resetSimA() {
+        simA.time = 0;
+        simA.wavefronts = [{x: 50, t: 0}];
+        simA.isRunning = false;
+        document.getElementById('startBtn').textContent = 'スタート';
+    }
+    
+    function toggleSimA() {
+        if (simA.isRunning) {
+            stopSimA();
+        } else {
+            startSimA();
+        }
+    }
+    
+    function startSimA() {
+        simA.isRunning = true;
+        document.getElementById('startBtn').textContent = '一時停止';
+        simA.lastTime = performance.now();
+        animateSimA();
+    }
+    
+    function stopSimA() {
+        simA.isRunning = false;
+        document.getElementById('startBtn').textContent = 'スタート';
+        if (simA.animationId) {
+            cancelAnimationFrame(simA.animationId);
+        }
+    }
+    
+    function animateSimA() {
+        if (!simA.isRunning) return;
+        
+        const now = performance.now();
+        const elapsed = (now - simA.lastTime) / 1000;
+        simA.lastTime = now;
+        
+        simA.time += elapsed;
+        
+        // 新しい波面を追加
+        const lastWavefront = simA.wavefronts[simA.wavefronts.length - 1];
+        if (simA.time - lastWavefront.t >= simA.dt && lastWavefront.x < simA.canvas.width - 100) {
+            simA.wavefronts.push({
+                x: lastWavefront.x + simA.speed * simA.dt,
+                t: simA.time,
+                originX: lastWavefront.x + simA.speed * simA.dt // 元の位置を記録
+            });
+        }
+        
+        // 現在位置が画面外に出た波面は削除
+        simA.wavefronts = simA.wavefronts.filter(wf => {
+            const currentX = wf.x + simA.speed * (simA.time - wf.t);
+            return currentX < simA.canvas.width + 50;
+        });
+        
+        drawSimA();
+        
+        simA.animationId = requestAnimationFrame(animateSimA);
+    }
+    
+    function drawSimA() {
+        const ctx = simA.ctx;
+        const W = simA.canvas.width, H = simA.canvas.height;
+        
+        // 背景
+        ctx.fillStyle = '#f5f5f5';
+        ctx.fillRect(0, 0, W, H);
+        
+        const spacing = (H - 60) / (simA.numPoints - 1);
+        
+        // 各波面を描画
+        simA.wavefronts.forEach((wf, index) => {
+            const age = simA.time - wf.t;
+            const currentX = wf.x + simA.speed * age;
+            
+            if (currentX < 0 || currentX > W + 50) return;
+            
+            // 元の位置に薄い波面を描画（過去の位置）
+            if (age > 0.1 && wf.x > 0 && wf.x < W) {
+                ctx.strokeStyle = 'rgba(25, 118, 210, 0.2)';
+                ctx.lineWidth = 2;
+                ctx.setLineDash([5, 5]);
+                ctx.beginPath();
+                ctx.moveTo(wf.x, 30);
+                ctx.lineTo(wf.x, H - 30);
+                ctx.stroke();
+                ctx.setLineDash([]);
+            }
+            
+            // 素元波を描画（最新の波面のみ）
+            if (index === simA.wavefronts.length - 1 && age > 0 && age < simA.dt) {
+                const radius = simA.speed * age;
+                
+                for (let i = 0; i < simA.numPoints; i++) {
+                    const y = 30 + i * spacing;
+                    
+                    // 点波源
+                    ctx.beginPath();
+                    ctx.arc(wf.x, y, 4, 0, Math.PI * 2);
+                    ctx.fillStyle = '#d32f2f';
+                    ctx.fill();
+                    
+                    // 素元波
+                    ctx.beginPath();
+                    ctx.arc(wf.x, y, radius, -Math.PI/2, Math.PI/2);
+                    ctx.strokeStyle = 'rgba(233, 30, 99, 0.4)';
+                    ctx.lineWidth = 1.5;
+                    ctx.stroke();
+                }
+            }
+            
+            // 現在の波面を描画（実線で濃く）
+            ctx.strokeStyle = 'rgba(25, 118, 210, 0.9)';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(currentX, 30);
+            ctx.lineTo(currentX, H - 30);
+            ctx.stroke();
+        });
+        
+        // 情報表示
+        ctx.fillStyle = '#333';
+        ctx.font = '14px sans-serif';
+        ctx.fillText('時間: ' + simA.time.toFixed(2) + ' s', 10, 20);
+        ctx.fillText('波面数: ' + simA.wavefronts.length, W - 100, 20);
+        
+        // 凡例
+        ctx.strokeStyle = '#1976d2';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(W - 95, H - 55);
+        ctx.lineTo(W - 65, H - 55);
+        ctx.stroke();
+        ctx.fillStyle = '#333';
+        ctx.fillText('現在の波面', W - 60, H - 50);
+        
+        ctx.strokeStyle = 'rgba(25, 118, 210, 0.2)';
+        ctx.lineWidth = 2;
+        ctx.setLineDash([5, 5]);
+        ctx.beginPath();
+        ctx.moveTo(W - 95, H - 35);
+        ctx.lineTo(W - 65, H - 35);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.fillText('元の位置', W - 60, H - 30);
+        
+        ctx.fillStyle = '#e91e63';
+        ctx.fillText('○ 素元波', W - 95, H - 10);
+    }
+    
+    // ========================================
+    // シミュレーションB: スリット回折
+    // ========================================
+    let simB = {
+        canvas: null,
+        ctx: null,
+        animationId: null,
+        isRunning: false,
+        time: 0,
+        slitMode: 1,
+        slitWidth: 20,
+        wavelength: 30,
+        slitDistance: 80,
+        waves: []
+    };
+    
+    function initSlitSimulation() {
+        simB.canvas = document.getElementById('slitCanvas');
+        if (!simB.canvas) return;
+        
+        simB.canvas.width = simB.canvas.parentElement.clientWidth - 40;
+        simB.canvas.height = 400;
+        simB.ctx = simB.canvas.getContext('2d');
+        
+        resetSimB();
+        drawSimB();
+        
+        // スライダーイベント
+        document.getElementById('wavelengthSlider').addEventListener('input', function() {
+            simB.wavelength = parseFloat(this.value);
+            document.getElementById('wavelengthDisplay').textContent = simB.wavelength + ' px';
+        });
+        
+        document.getElementById('slitDistanceSlider').addEventListener('input', function() {
+            simB.slitDistance = parseFloat(this.value);
+            document.getElementById('slitDistanceDisplay').textContent = simB.slitDistance + ' px';
+        });
+        
+        // ボタンイベント
+        document.getElementById('startBtn2').addEventListener('click', toggleSimB);
+        document.getElementById('resetBtn2').addEventListener('click', function() {
+            stopSimB();
+            resetSimB();
+            drawSimB();
+        });
+    }
+    
+    function setSlitMode(mode) {
+        simB.slitMode = mode;
+        document.getElementById('singleSlitBtn').classList.toggle('active', mode === 1);
+        document.getElementById('doubleSlitBtn').classList.toggle('active', mode === 2);
+        document.getElementById('slitDistanceGroup').style.display = mode === 2 ? 'block' : 'none';
+        
+        if (!simB.isRunning) {
+            resetSimB();
+            drawSimB();
+        }
+    }
+    
+    function resetSimB() {
+        simB.time = 0;
+        simB.waves = [];
+        simB.isRunning = false;
+        document.getElementById('startBtn2').textContent = 'スタート';
+    }
+    
+    function toggleSimB() {
+        if (simB.isRunning) {
+            stopSimB();
+        } else {
+            startSimB();
+        }
+    }
+    
+    function startSimB() {
+        simB.isRunning = true;
+        document.getElementById('startBtn2').textContent = '一時停止';
+        simB.lastTime = performance.now();
+        animateSimB();
+    }
+    
+    function stopSimB() {
+        simB.isRunning = false;
+        document.getElementById('startBtn2').textContent = 'スタート';
+        if (simB.animationId) {
+            cancelAnimationFrame(simB.animationId);
+        }
+    }
+    
+    function animateSimB() {
+        if (!simB.isRunning) return;
+        
+        const now = performance.now();
+        const elapsed = (now - simB.lastTime) / 1000;
+        simB.lastTime = now;
+        
+        simB.time += elapsed * 60; // 速度調整
+        
+        drawSimB();
+        
+        simB.animationId = requestAnimationFrame(animateSimB);
+    }
+    
+    function drawSimB() {
+        const ctx = simB.ctx;
+        const W = simB.canvas.width, H = simB.canvas.height;
+        const barrierX = W * 0.35;
+        const cy = H / 2;
+        
+        // 背景
+        ctx.fillStyle = '#1a237e';
+        ctx.fillRect(0, 0, W, H);
+        
+        // 入射平面波（左側）- 左から右へ進む
+        const waveSpeed = 2;
+        const numWaves = Math.ceil(barrierX / simB.wavelength) + 2;
+        
+        for (let i = 0; i < numWaves; i++) {
+            // 波が右に進むように修正（+ simB.time * waveSpeed）
+            let x = (i * simB.wavelength + simB.time * waveSpeed) % (simB.wavelength * numWaves);
+            if (x < 0) x += simB.wavelength * numWaves;
+            
+            // 左端から始まって右へ進む
+            const adjustedX = x % (barrierX + simB.wavelength);
+            
+            if (adjustedX < barrierX - 5 && adjustedX > 0) {
+                const phase = (adjustedX / simB.wavelength) * Math.PI * 2;
+                const intensity = 0.3 + 0.7 * Math.abs(Math.sin(phase));
+                ctx.strokeStyle = `rgba(100, 181, 246, ${intensity})`;
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(adjustedX, 0);
+                ctx.lineTo(adjustedX, H);
+                ctx.stroke();
+            }
+        }
+        
+        // スリットの位置を計算
+        let slitCenters = [];
+        if (simB.slitMode === 1) {
+            slitCenters = [cy];
+        } else {
+            slitCenters = [cy - simB.slitDistance / 2, cy + simB.slitDistance / 2];
+        }
+        
+        // 回折波（スリット通過後）
+        const maxRadius = W - barrierX + 50;
+        
+        slitCenters.forEach(slitY => {
+            const numCircles = Math.ceil(maxRadius / simB.wavelength);
+            
+            for (let i = 0; i < numCircles; i++) {
+                let radius = (i * simB.wavelength + simB.time * waveSpeed) % (simB.wavelength * numCircles);
+                if (radius < 0) radius += simB.wavelength * numCircles;
+                
+                if (radius > 5 && radius < maxRadius) {
+                    const intensity = Math.max(0, 0.6 - radius / maxRadius * 0.5);
+                    ctx.strokeStyle = `rgba(100, 181, 246, ${intensity})`;
+                    ctx.lineWidth = 2;
+                    
+                    ctx.beginPath();
+                    ctx.arc(barrierX, slitY, radius, -Math.PI/2, Math.PI/2);
+                    ctx.stroke();
+                }
+            }
+        });
+        
+        // 障壁を描画
+        ctx.fillStyle = '#37474f';
+        
+        if (simB.slitMode === 1) {
+            // 単スリット
+            ctx.fillRect(barrierX - 8, 0, 16, cy - simB.slitWidth / 2);
+            ctx.fillRect(barrierX - 8, cy + simB.slitWidth / 2, 16, H - cy - simB.slitWidth / 2);
+        } else {
+            // ダブルスリット
+            const slit1Y = cy - simB.slitDistance / 2;
+            const slit2Y = cy + simB.slitDistance / 2;
+            
+            ctx.fillRect(barrierX - 8, 0, 16, slit1Y - simB.slitWidth / 2);
+            ctx.fillRect(barrierX - 8, slit1Y + simB.slitWidth / 2, 16, slit2Y - simB.slitWidth / 2 - slit1Y - simB.slitWidth / 2);
+            ctx.fillRect(barrierX - 8, slit2Y + simB.slitWidth / 2, 16, H - slit2Y - simB.slitWidth / 2);
+        }
+        
+        // 障壁の縁取り
+        ctx.strokeStyle = '#546e7a';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(barrierX - 8, 0, 16, H);
+        
+        // 進行方向の矢印を追加（左から右）
+        ctx.strokeStyle = '#ffeb3b';
+        ctx.fillStyle = '#ffeb3b';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(30, 30);
+        ctx.lineTo(100, 30);
+        ctx.stroke();
+        // 矢じり
+        ctx.beginPath();
+        ctx.moveTo(100, 30);
+        ctx.lineTo(90, 24);
+        ctx.lineTo(90, 36);
+        ctx.closePath();
+        ctx.fill();
+        
+        // ラベル
+        ctx.fillStyle = '#fff';
+        ctx.font = '14px sans-serif';
+        ctx.fillText('入射平面波 →', 20, 55);
+        ctx.fillText('回折波', W - 80, 25);
+        ctx.fillText('障壁', barrierX - 15, H - 10);
+        
+        // スリット幅の表示
+        ctx.strokeStyle = '#ffeb3b';
+        ctx.lineWidth = 1;
+        slitCenters.forEach(slitY => {
+            ctx.beginPath();
+            ctx.moveTo(barrierX + 25, slitY - simB.slitWidth / 2);
+            ctx.lineTo(barrierX + 25, slitY + simB.slitWidth / 2);
+            ctx.stroke();
+            
+            ctx.beginPath();
+            ctx.moveTo(barrierX + 20, slitY - simB.slitWidth / 2);
+            ctx.lineTo(barrierX + 30, slitY - simB.slitWidth / 2);
+            ctx.stroke();
+            
+            ctx.beginPath();
+            ctx.moveTo(barrierX + 20, slitY + simB.slitWidth / 2);
+            ctx.lineTo(barrierX + 30, slitY + simB.slitWidth / 2);
+            ctx.stroke();
+        });
+        
+        ctx.fillStyle = '#ffeb3b';
+        ctx.font = '12px sans-serif';
+        ctx.fillText('スリット幅: ' + simB.slitWidth + 'px', barrierX + 35, slitCenters[0] + 5);
+        ctx.fillText('波長: ' + simB.wavelength + 'px', 20, H - 10);
+    }
+    
+    // ========================================
+    // 初期化
+    // ========================================
+    window.addEventListener('load', function() {
+        // 解説用図を描画
+        drawWavefrontFig1();
+        drawWavefrontFig2();
+        drawWavefrontFig3();
+        drawHuygensStep();
+    });
+    
+    window.addEventListener('resize', function() {
+        // 解説用図を再描画
+        drawWavefrontFig1();
+        drawWavefrontFig2();
+        drawWavefrontFig3();
+        drawHuygensStep();
+        
+        // シミュレーションのリサイズ
+        if (simA.canvas) {
+            simA.canvas.width = simA.canvas.parentElement.clientWidth - 40;
+            if (!simA.isRunning) drawSimA();
+        }
+        if (simB.canvas) {
+            simB.canvas.width = simB.canvas.parentElement.clientWidth - 40;
+            if (!simB.isRunning) drawSimB();
+        }
+    });
+    </script>
+</body>
+</html>

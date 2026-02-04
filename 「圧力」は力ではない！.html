@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高校物理 - 「圧力」は力ではない！</title>
+    <script>
+      window.MathJax = {
+      tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']]
+     }
+     };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        header {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .back-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        h1 {
+            color: #333;
+        }
+        .container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .tab-btn {
+            flex: 1;
+            min-width: 150px;
+            padding: 12px 20px;
+            border: none;
+            background: #f0f0f0;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        .tab-btn.active {
+            background: #667eea;
+            color: white;
+        }
+        .tab-btn:hover {
+            background: #8899f0;
+            color: white;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        h3 {
+            color: #555;
+            margin: 25px 0 15px 0;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #667eea;
+        }
+        .pdf-placeholder {
+            background: #f9f9f9;
+            padding: 40px;
+            text-align: center;
+            border-radius: 5px;
+            color: #666;
+        }
+        .lecture-content {
+            line-height: 1.8;
+            color: #333;
+        }
+        .lecture-content p {
+            margin-bottom: 15px;
+        }
+        .point-box {
+            background: linear-gradient(135deg, #e8f4fd 0%, #f0e6ff 100%);
+            border-left: 5px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+        .point-box h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        .formula-box {
+            background: #fff9e6;
+            border: 2px solid #ffc107;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .warning-box {
+            background: #fff0f0;
+            border-left: 5px solid #f44336;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+        .warning-box strong {
+            color: #f44336;
+        }
+        .image-explanation {
+            background: #f5f5f5;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .image-explanation img {
+            max-width: 100%;
+            border-radius: 5px;
+        }
+        
+        /* 問題タブ用スタイル */
+        .problem-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #fafafa;
+            border-radius: 10px;
+        }
+        .problem-section h4 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        details {
+            background: #e8f4fd;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+        }
+        details summary {
+            cursor: pointer;
+            font-weight: bold;
+            color: #667eea;
+        }
+        details[open] summary {
+            margin-bottom: 10px;
+        }
+        
+        /* シミュレーション用スタイル */
+        #sim-container {
+            background: #f5f5f5;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        #physicsCanvas {
+            display: block;
+            width: 100%;
+            background: white;
+            border-radius: 5px;
+            border: 2px solid #ddd;
+        }
+        .sim-controls {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .control-group {
+            margin-bottom: 20px;
+        }
+        .control-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        .control-group input[type="range"] {
+            width: 100%;
+            margin: 10px 0;
+        }
+        .value-display {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            min-width: 100px;
+            text-align: center;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .sim-button {
+            flex: 1;
+            min-width: 120px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .sim-button.start {
+            background: #4CAF50;
+            color: white;
+        }
+        .sim-button.start:hover {
+            background: #45a049;
+        }
+        .sim-button.reset {
+            background: #f44336;
+            color: white;
+        }
+        .sim-button.reset:hover {
+            background: #da190b;
+        }
+        .graph-container {
+            margin-top: 20px;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #ddd;
+        }
+        .graph-container h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+            border-bottom: none;
+        }
+        #graphCanvas {
+            display: block;
+            width: 100%;
+            border: 1px solid #eee;
+        }
+        .sim-explanation {
+            background: #e8f4fd;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        .sim-explanation h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        .sim-section {
+            margin-bottom: 30px;
+        }
+        .sim-section h3 {
+            color: #667eea;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        #sim-container-1, #sim-container-2 {
+            background: #f5f5f5;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        #canvas1, #canvas2 {
+            display: block;
+            width: 100%;
+            background: white;
+            border-radius: 5px;
+            border: 2px solid #ddd;
+        }
+        .pressure-info {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .pressure-item {
+            background: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-align: center;
+            min-width: 150px;
+        }
+        .pressure-item .label {
+            font-size: 12px;
+            color: #666;
+        }
+        .pressure-item .value {
+            font-size: 18px;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            header, .container {
+                padding: 15px;
+            }
+            .tab-btn {
+                min-width: 100px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="back-link">← 目次に戻る</a>
+        <h1>「圧力」は力ではない！</h1>
+    </header>
+    <div class="container">
+        
+        <div class="tabs">
+            <button class="tab-btn active" onclick="openTab('lecture')">解説編</button>
+            <button class="tab-btn" onclick="openTab('problem')">問題編</button>
+            <button class="tab-btn" onclick="openTab('simulation')">シミュレーション</button>
+        </div>
+        
+        <!-- ========== 解説タブ ========== -->
+        <div id="lecture" class="tab-content active">
+            <h2>授業資料</h2>
+            <iframe src="https://drive.google.com/file/d/1rd3AUHNkj-NLM0IEztEdsiVOdPwxD6EA/preview" width="100%" height="500"></iframe>
+            
+            <div class="lecture-content">
+                <h3>1. 圧力とは何か？ ─ 「力」との違い</h3>
+                
+                <p>これまで、重力・張力・垂直抗力など、様々な「力」を学んできました。ここで注意してほしいことがあります。</p>
+                
+                <div class="warning-box">
+                    <strong>⚠️ 重要：「圧力」は力ではない！圧力は圧力である。</strong>
+                </div>
+                
+                <p>シャーペンを指に押し付けてみましょう。後ろの消しゴムの方よりも、芯が出る方が痛いはずです。同じ力であっても、指にかかる力が一点に凝縮されるから痛く感じるのです。</p>
+                
+                <p>つまり、<strong>面積に応じて加わる力が変わってくる</strong>のです。この「加わり具合」を表す量が<strong>圧力</strong>です。</p>
+                
+                <div class="formula-box">
+                    <h4>📐 圧力の定義</h4>
+                    <p>圧力：1 m²あたりに加わる力</p>
+                    $$P = \frac{F}{S}$$
+                    <p>$P$：圧力 [Pa]、$F$：力 [N]、$S$：面積 [m²]</p>
+                    <p style="color: #f44336; font-weight: bold;">※ P は S に反比例！</p>
+                </div>
+                
+                <h3>2. 水圧・大気圧はなぜ生じるのか？</h3>
+                
+                <p>水圧とは、文字通り「水中で生じる圧力」です。簡単に言うと、<strong>物体の上にのっている水の重さによる圧力</strong>です。</p>
+                
+                <div class="point-box">
+                    <h4>💡 水圧が生じるイメージ</h4>
+                    <p>プールの底にいることを想像してください。あなたの頭上には大量の水があり、その水の重さがあなたを押しています。</p>
+                    <p>深く潜れば潜るほど、頭上の水の量が増えるので、押される力（圧力）も大きくなります。</p>
+                </div>
+                
+                <p>大気圧も同じ考え方です。私たちの頭上には約100kmもの大気（空気）の層があり、その空気の重さが私たちを押しています。標高が低い場所ほど、頭上の空気の量が多いので、大気圧は高くなります。逆に、山の上では頭上の空気が少ないので、大気圧は低くなります。</p>
+                
+                <p>水面から深さ $h$ [m] のところにある円板にかかる水圧を考えてみましょう。</p>
+                
+                <div class="formula-box">
+                    <h4>📐 水圧の公式</h4>
+                    <p>水圧 $P$ [Pa] は</p>
+                    $$P = \frac{\text{円板の上にある水の重さ}}{\text{面積}} = \frac{\rho \times S \times h \times g}{S} = \rho h g$$
+                    <p>$\rho$：水の密度 [kg/m³]、$h$：深さ [m]、$g$：重力加速度 [m/s²]</p>
+                </div>
+                
+                <div class="point-box">
+                    <h4>🌟 Point：水圧</h4>
+                    <p><strong>水圧は「深さのみ」で決まる！</strong></p>
+                    $$P = \rho h g$$
+                    <p>※ 水圧は物体に対して「<span style="color: #f44336; font-weight: bold;">全方向</span>」からかかる！</p>
+                </div>
+                
+                <h3>3. 浮力 ─ これは「力」である！</h3>
+                
+                <p>浮力は圧力と違って、れっきとした「<strong>力</strong>」です。水に入った時に浮いてこようとする力のことです。</p>
+                
+                <p>浮力が生じる理由を物理的に考えていきましょう。浮力の原因は<strong>「水圧の差」</strong>で決まります！</p>
+                
+                <div class="point-box">
+                    <h4>💡 大事なポイント！</h4>
+                    <p>・側面から物体にかかる水圧は存在するけど、<strong>合力は打ち消し合って 0</strong> である。</p>
+                    <p>・水圧は深さによって決まるので、上下面の力関係は <strong style="color: #f44336;">上面 ＜ 下面</strong> である！</p>
+                </div>
+                
+                <p>つまり、浮力というものは、<strong>上面と下面のみが関わっている</strong>のです。式にしてみましょう。</p>
+                
+                <p>底面積 $S$ [m²]、高さ $l$ [m] の直方体を、上面が水面から深さ $h_1$、下面が深さ $h_2$ になるように沈めたとき：</p>
+                
+                <p>・上面にかかる「力」：$F_1 = \rho h_1 g \times S$</p>
+                <p>・下面にかかる「力」：$F_2 = \rho h_2 g \times S$</p>
+                
+                <p>この差が浮力であるので</p>
+                $$F = F_2 - F_1 = \rho(h_2 - h_1)Sg = \rho V g$$
+                
+                <div class="formula-box">
+                    <h4>📐 浮力の公式（アルキメデスの原理）</h4>
+                    $$F = \rho V g$$
+                    <p>「<span style="color: #667eea;">水の密度</span>」×「<span style="color: #667eea;">沈んでる物体の体積</span>」× $g$</p>
+                    <p style="margin-top: 10px;">これは「沈んでいる物体」の部分にもともとあった、<strong>水の体積による重さが浮力になっている</strong></p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ========== 問題タブ ========== -->
+        <div id="problem" class="tab-content">
+            <h2>確認問題</h2>
+            
+            <div class="problem-section">
+                <h4>【問題1】圧力の基本</h4>
+                <p>質量 60 kg の人が、面積 0.04 m² の板の上に立っています。板が地面に及ぼす圧力は何 Pa ですか？ただし、重力加速度を $g = 10$ m/s² とします。</p>
+                
+                <details>
+                    <summary>解答・解説を見る</summary>
+                    <p><strong>【解答】</strong> 15000 Pa（= 15 kPa）</p>
+                    <p><strong>【解説】</strong></p>
+                    <p>圧力の定義 $P = \frac{F}{S}$ を使います。</p>
+                    <p>人が板を押す力 $F$ は、人にはたらく重力と等しいので</p>
+                    <p>$$F = mg = 60 \times 10 = 600 \text{ [N]}$$</p>
+                    <p>よって、圧力は</p>
+                    <p>$$P = \frac{F}{S} = \frac{600}{0.04} = 15000 \text{ [Pa]}$$</p>
+                </details>
+            </div>
+            
+            <div class="problem-section">
+                <h4>【問題2】水圧の理解</h4>
+                <p>水の密度を $\rho = 1000$ kg/m³、重力加速度を $g = 10$ m/s² とします。</p>
+                <p>(1) 水面から深さ 5 m の位置での水圧を求めなさい。</p>
+                <p>(2) 「水圧は深さのみで決まる」とはどういう意味か、説明しなさい。</p>
+                
+                <details>
+                    <summary>解答・解説を見る</summary>
+                    <p><strong>【解答】</strong></p>
+                    <p>(1) 50000 Pa（= 50 kPa）</p>
+                    <p>(2) 下記参照</p>
+                    <p><strong>【解説】</strong></p>
+                    <p>(1) 水圧の公式 $P = \rho h g$ より</p>
+                    <p>$$P = 1000 \times 5 \times 10 = 50000 \text{ [Pa]}$$</p>
+                    <p>(2) 水圧は $P = \rho h g$ で表され、この式には「面積」や「物体の形」は含まれていません。つまり、同じ深さであれば、容器の形や大きさに関係なく、水圧は同じ値になります。また、同じ深さであれば、上下左右どの方向から測っても水圧は同じです（水圧は全方向からかかる）。</p>
+                </details>
+            </div>
+            
+            <div class="problem-section">
+                <h4>【問題3】浮力の導出</h4>
+                <p>図のように、高さ $l$、底面積 $S$ の円柱形の物体を、その上面の水面からの深さが $d$ となるように水中に沈めた。大気圧を $p_0$、水の密度を $\rho$、重力加速度の大きさを $g$ とする。</p>
+                <p>(1) 物体の上面が受ける圧力 $p_1$ と下面が受ける圧力 $p_2$ を求めよ。</p>
+                <p>(2) 物体の上面が受ける力と下面が受ける力の大きさの差を求めよ。</p>
+                
+                <details>
+                    <summary>解答・解説を見る</summary>
+                    <p><strong>【解答】</strong></p>
+                    <p>(1) $p_1 = p_0 + \rho d g$、$p_2 = p_0 + \rho (d + l) g$</p>
+                    <p>(2) $\rho S l g$（= $\rho V g$）</p>
+                    <p><strong>【解説】</strong></p>
+                    <p>(1) 上面は深さ $d$ にあるので、水圧は $\rho d g$。大気圧 $p_0$ も加わるので</p>
+                    <p>$$p_1 = p_0 + \rho d g$$</p>
+                    <p>下面は深さ $d + l$ にあるので</p>
+                    <p>$$p_2 = p_0 + \rho (d + l) g$$</p>
+                    <p>(2) 上下面が受ける力は、圧力の式 $F = P \times S$ より</p>
+                    <p>$$F_2 - F_1 = p_2 \times S - p_1 \times S$$</p>
+                    <p>$$= \{p_0 + \rho(d+l)g\} \times S - \{p_0 + \rho d g\} \times S$$</p>
+                    <p>$$= \rho l g \times S = \rho S l g$$</p>
+                    <p>これは $\rho V g$（$V = Sl$ は物体の体積）に等しく、浮力の公式と一致します。つまり、<strong>浮力は水圧の差によって生じる</strong>ことがわかります。</p>
+                </details>
+            </div>
+        </div>
+        
+        <!-- ========== シミュレーションタブ ========== -->
+        <div id="simulation" class="tab-content">
+            <h2>水圧のイメージを理解するシミュレーション</h2>
+            
+            <!-- シミュレーション1: 水分子の復元力 -->
+            <div class="sim-section">
+                <h3>シミュレーション① 水分子の復元力と水圧</h3>
+                <p>物体が水中に入ると、水分子が押しのけられます。押しのけられた水分子は元の位置に戻ろうとして物体を押し返します。この<strong>「復元力の集まり」</strong>が水圧として作用します。</p>
+                
+                <div id="sim-container-1">
+                    <canvas id="canvas1"></canvas>
+                </div>
+                
+                <div class="sim-controls">
+                    <div class="button-group">
+                        <button class="sim-button start" id="insertBtn">物体を入れる</button>
+                        <button class="sim-button reset" id="resetBtn1">リセット</button>
+                    </div>
+                </div>
+                
+                <div class="sim-explanation">
+                    <h4>🔬 ポイント</h4>
+                    <p>・水分子（青い丸）が規則正しく並んでいます。</p>
+                    <p>・物体が入ると、周りの水分子が押しのけられます。</p>
+                    <p>・押しのけられた水分子が元に戻ろうとする力（赤い矢印）が、水圧の正体です。</p>
+                    <p>・この力は<strong>全方向から</strong>物体にかかります。</p>
+                </div>
+            </div>
+            
+            <hr style="margin: 40px 0; border: none; border-top: 2px dashed #ddd;">
+            
+            <!-- シミュレーション2: 圧力の積み重ね -->
+            <div class="sim-section">
+                <h3>シミュレーション② なぜ深いほど水圧が高い？</h3>
+                <p>各分子に「1 N」の重力がかかると仮定します。分子が積み重なると、下の分子には上からの重さが加わります。これが<strong>深いほど水圧が高くなる理由</strong>です。</p>
+                
+                <div id="sim-container-2">
+                    <canvas id="canvas2"></canvas>
+                </div>
+                
+                <div class="sim-controls">
+                    <div class="control-group">
+                        <label>表示する段数: <span class="value-display" id="layerDisplay">3 段</span></label>
+                        <input type="range" id="layerSlider" min="1" max="5" value="3" step="1">
+                    </div>
+                    <div class="button-group">
+                        <button class="sim-button start" id="animateBtn">アニメーション開始</button>
+                        <button class="sim-button reset" id="resetBtn2">リセット</button>
+                    </div>
+                </div>
+                
+                <div class="sim-explanation">
+                    <h4>🔬 ポイント</h4>
+                    <p>・各分子（丸）には「1 N」の重力がかかっています。</p>
+                    <p>・<span style="color: #4CAF50;">1段目（緑）</span>：全方向に 1 N を及ぼす</p>
+                    <p>・<span style="color: #2196F3;">2段目（青）</span>：上から 1 N + 自分の 1 N → 合計 2 N</p>
+                    <p>・<span style="color: #f44336;">3段目（赤）</span>：上から 2 N + 自分の 1 N → 合計 3 N</p>
+                    <p>・このように<strong>下に行くほど圧力が積み重なって高くなります</strong>。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+    // --- タブ切り替え機能 ---
+    function openTab(tabName) {
+        var contents = document.getElementsByClassName("tab-content");
+        for (var i = 0; i < contents.length; i++) {
+            contents[i].style.display = "none";
+            contents[i].classList.remove("active");
+        }
+        var buttons = document.getElementsByClassName("tab-btn");
+        for (var i = 0; i < buttons.length; i++) {
+            buttons[i].classList.remove("active");
+        }
+        document.getElementById(tabName).style.display = "block";
+        document.getElementById(tabName).classList.add("active");
+        if (event) {
+            event.currentTarget.classList.add("active");
+        }
+        
+        // シミュレーションタブが開かれたらCanvasをリサイズ
+        if (tabName === 'simulation') {
+            resizeAllCanvas();
+            drawSim1();
+            drawSim2();
+        }
+    }
+
+    // ====================================================
+    // シミュレーション1: 水分子の復元力と水圧
+    // ====================================================
+    const canvas1 = document.getElementById('canvas1');
+    const ctx1 = canvas1.getContext('2d');
+    
+    // 水分子の配列
+    let molecules1 = [];
+    let objectInserted = false;
+    let animationId1 = null;
+    let insertProgress = 0;
+    
+    // 物体の位置とサイズ
+    const objectWidth = 80;
+    const objectHeight = 100;
+    let objectX, objectY;
+    let targetObjectY;
+    
+    // 分子の初期化
+    function initMolecules1() {
+        molecules1 = [];
+        const spacing = 30;
+        const rows = 10;
+        const cols = Math.floor((canvas1.width - 100) / spacing);
+        
+        for (let row = 0; row < rows; row++) {
+            for (let col = 0; col < cols; col++) {
+                molecules1.push({
+                    baseX: 50 + col * spacing + (row % 2) * (spacing / 2),
+                    baseY: 50 + row * spacing,
+                    x: 50 + col * spacing + (row % 2) * (spacing / 2),
+                    y: 50 + row * spacing,
+                    radius: 10,
+                    displaced: false,
+                    displaceX: 0,
+                    displaceY: 0
+                });
+            }
+        }
+        
+        objectX = canvas1.width / 2 - objectWidth / 2;
+        objectY = -objectHeight - 20;
+        targetObjectY = canvas1.height / 2 - objectHeight / 2;
+    }
+    
+    // 分子の変位を計算
+    function updateMoleculeDisplacement() {
+        const objCenterX = objectX + objectWidth / 2;
+        const objCenterY = objectY + objectHeight / 2;
+        const pushRadius = 60;
+        
+        molecules1.forEach(mol => {
+            if (!objectInserted || objectY < 0) {
+                mol.x = mol.baseX;
+                mol.y = mol.baseY;
+                mol.displaced = false;
+                return;
+            }
+            
+            // 物体との距離を計算
+            const dx = mol.baseX - objCenterX;
+            const dy = mol.baseY - objCenterY;
+            
+            // 物体内部または近くにある分子を押しのける
+            const inObjectX = mol.baseX > objectX - pushRadius && mol.baseX < objectX + objectWidth + pushRadius;
+            const inObjectY = mol.baseY > objectY - pushRadius && mol.baseY < objectY + objectHeight + pushRadius;
+            
+            if (inObjectX && inObjectY) {
+                // 押しのけ方向を計算
+                let pushX = 0, pushY = 0;
+                
+                if (mol.baseX < objCenterX) {
+                    pushX = objectX - pushRadius - mol.baseX;
+                } else {
+                    pushX = objectX + objectWidth + pushRadius - mol.baseX;
+                }
+                
+                if (mol.baseY < objCenterY) {
+                    pushY = objectY - pushRadius - mol.baseY;
+                } else {
+                    pushY = objectY + objectHeight + pushRadius - mol.baseY;
+                }
+                
+                // 近い方向に押しのける
+                if (Math.abs(pushX) < Math.abs(pushY)) {
+                    mol.x = mol.baseX + pushX * 0.8;
+                    mol.y = mol.baseY;
+                    mol.displaceX = -pushX * 0.8;
+                    mol.displaceY = 0;
+                } else {
+                    mol.x = mol.baseX;
+                    mol.y = mol.baseY + pushY * 0.8;
+                    mol.displaceX = 0;
+                    mol.displaceY = -pushY * 0.8;
+                }
+                mol.displaced = true;
+            } else {
+                mol.x = mol.baseX;
+                mol.y = mol.baseY;
+                mol.displaced = false;
+            }
+        });
+    }
+    
+    // シミュレーション1の描画
+    function drawSim1() {
+        const w = canvas1.width;
+        const h = canvas1.height;
+        
+        // 背景
+        ctx1.fillStyle = '#e3f2fd';
+        ctx1.fillRect(0, 0, w, h);
+        
+        // 水面
+        ctx1.fillStyle = '#1976D2';
+        ctx1.font = 'bold 14px sans-serif';
+        ctx1.fillText('水面', 10, 25);
+        ctx1.strokeStyle = '#1976D2';
+        ctx1.lineWidth = 2;
+        ctx1.beginPath();
+        ctx1.moveTo(0, 35);
+        ctx1.lineTo(w, 35);
+        ctx1.stroke();
+        
+        // 水分子を描画
+        molecules1.forEach(mol => {
+            // 分子本体
+            ctx1.beginPath();
+            ctx1.arc(mol.x, mol.y, mol.radius, 0, Math.PI * 2);
+            ctx1.fillStyle = mol.displaced ? '#64B5F6' : '#2196F3';
+            ctx1.fill();
+            ctx1.strokeStyle = '#1565C0';
+            ctx1.lineWidth = 1;
+            ctx1.stroke();
+            
+            // 押しのけられた分子は復元力の矢印を描画
+            if (mol.displaced && objectInserted) {
+                const arrowLen = Math.sqrt(mol.displaceX * mol.displaceX + mol.displaceY * mol.displaceY) * 0.5;
+                if (arrowLen > 5) {
+                    const angle = Math.atan2(mol.displaceY, mol.displaceX);
+                    const startX = mol.x + Math.cos(angle) * mol.radius;
+                    const startY = mol.y + Math.sin(angle) * mol.radius;
+                    const endX = startX + Math.cos(angle) * arrowLen;
+                    const endY = startY + Math.sin(angle) * arrowLen;
+                    
+                    ctx1.strokeStyle = '#f44336';
+                    ctx1.lineWidth = 2;
+                    ctx1.beginPath();
+                    ctx1.moveTo(startX, startY);
+                    ctx1.lineTo(endX, endY);
+                    ctx1.stroke();
+                    
+                    // 矢印の先端
+                    const headLen = 6;
+                    ctx1.beginPath();
+                    ctx1.moveTo(endX, endY);
+                    ctx1.lineTo(endX - headLen * Math.cos(angle - Math.PI/6), endY - headLen * Math.sin(angle - Math.PI/6));
+                    ctx1.lineTo(endX - headLen * Math.cos(angle + Math.PI/6), endY - headLen * Math.sin(angle + Math.PI/6));
+                    ctx1.closePath();
+                    ctx1.fillStyle = '#f44336';
+                    ctx1.fill();
+                }
+            }
+        });
+        
+        // 物体を描画
+        if (objectInserted || animationId1) {
+            ctx1.fillStyle = 'rgba(255, 193, 7, 0.9)';
+            ctx1.strokeStyle = '#F57C00';
+            ctx1.lineWidth = 3;
+            ctx1.fillRect(objectX, objectY, objectWidth, objectHeight);
+            ctx1.strokeRect(objectX, objectY, objectWidth, objectHeight);
+            
+            ctx1.fillStyle = '#333';
+            ctx1.font = 'bold 16px sans-serif';
+            ctx1.textAlign = 'center';
+            ctx1.fillText('物', objectX + objectWidth/2, objectY + objectHeight/2 - 5);
+            ctx1.fillText('体', objectX + objectWidth/2, objectY + objectHeight/2 + 15);
+            ctx1.textAlign = 'left';
+        }
+        
+        // 説明テキスト
+        if (objectInserted) {
+            ctx1.fillStyle = '#f44336';
+            ctx1.font = 'bold 14px sans-serif';
+            ctx1.fillText('← 赤い矢印 = 復元力（水圧の正体）', w - 250, h - 20);
+        } else {
+            ctx1.fillStyle = '#666';
+            ctx1.font = '14px sans-serif';
+            ctx1.fillText('「物体を入れる」ボタンを押してください', 10, h - 20);
+        }
+        
+        // ラベル
+        ctx1.fillStyle = '#1565C0';
+        ctx1.font = '12px sans-serif';
+        ctx1.fillText('○ = 水分子', 10, h - 40);
+    }
+    
+    // 物体挿入アニメーション
+    function animateInsert() {
+        if (objectY < targetObjectY) {
+            objectY += 3;
+            updateMoleculeDisplacement();
+            drawSim1();
+            animationId1 = requestAnimationFrame(animateInsert);
+        } else {
+            objectY = targetObjectY;
+            objectInserted = true;
+            updateMoleculeDisplacement();
+            drawSim1();
+            animationId1 = null;
+        }
+    }
+    
+    // ====================================================
+    // シミュレーション2: 圧力の積み重ね
+    // ====================================================
+    const canvas2 = document.getElementById('canvas2');
+    const ctx2 = canvas2.getContext('2d');
+    
+    let layers = 3;
+    let animating2 = false;
+    let animationId2 = null;
+    let animStep = 0;
+    let maxAnimStep = 100;
+    
+    // 色の配列（段ごと）
+    const layerColors = ['#4CAF50', '#2196F3', '#f44336', '#9C27B0', '#FF9800'];
+    const layerColorsLight = ['#C8E6C9', '#BBDEFB', '#FFCDD2', '#E1BEE7', '#FFE0B2'];
+    
+    // シミュレーション2の描画
+    function drawSim2() {
+        const w = canvas2.width;
+        const h = canvas2.height;
+        
+        ctx2.fillStyle = '#fff';
+        ctx2.fillRect(0, 0, w, h);
+        
+        const moleculeRadius = 25;
+        const spacing = moleculeRadius * 2 + 5;
+        const cols = 6;
+        const startX = w / 2 - (cols * spacing) / 2 + spacing / 2;
+        const startY = 60;
+        
+        // 凡例を描画
+        ctx2.fillStyle = '#333';
+        ctx2.font = 'bold 14px sans-serif';
+        ctx2.fillText('凡例：○ = 1 N の重力を及ぼす分子', 10, 25);
+        
+        // 各段を描画
+        for (let row = 0; row < layers; row++) {
+            const y = startY + row * spacing;
+            const pressure = row + 1; // その段での圧力（N）
+            const color = layerColors[row % layerColors.length];
+            const colorLight = layerColorsLight[row % layerColorsLight.length];
+            
+            for (let col = 0; col < cols; col++) {
+                const x = startX + col * spacing;
+                
+                // 分子を描画
+                ctx2.beginPath();
+                ctx2.arc(x, y, moleculeRadius, 0, Math.PI * 2);
+                ctx2.fillStyle = colorLight;
+                ctx2.fill();
+                ctx2.strokeStyle = color;
+                ctx2.lineWidth = 3;
+                ctx2.stroke();
+                
+                // 重力の矢印（下向き）
+                if (animating2 || !animating2) {
+                    const arrowStartY = y + moleculeRadius + 2;
+                    const arrowLen = 15;
+                    
+                    ctx2.strokeStyle = '#333';
+                    ctx2.lineWidth = 2;
+                    ctx2.beginPath();
+                    ctx2.moveTo(x, arrowStartY);
+                    ctx2.lineTo(x, arrowStartY + arrowLen);
+                    ctx2.stroke();
+                    
+                    // 矢印の先端
+                    ctx2.beginPath();
+                    ctx2.moveTo(x, arrowStartY + arrowLen);
+                    ctx2.lineTo(x - 4, arrowStartY + arrowLen - 6);
+                    ctx2.lineTo(x + 4, arrowStartY + arrowLen - 6);
+                    ctx2.closePath();
+                    ctx2.fillStyle = '#333';
+                    ctx2.fill();
+                }
+            }
+            
+            // 段のラベルと圧力表示
+            const labelX = startX + cols * spacing + 20;
+            ctx2.fillStyle = color;
+            ctx2.font = 'bold 16px sans-serif';
+            ctx2.fillText((row + 1) + '段目', labelX, y + 5);
+            
+            // 圧力の説明
+            ctx2.font = '14px sans-serif';
+            if (row === 0) {
+                ctx2.fillText('→ 全方向に 1 N を及ぼす', labelX + 60, y + 5);
+            } else {
+                ctx2.fillText('→ 上から ' + row + ' N + 自分 1 N', labelX + 60, y - 5);
+                ctx2.fillStyle = '#f44336';
+                ctx2.font = 'bold 14px sans-serif';
+                ctx2.fillText('= 合計 ' + (row + 1) + ' N で押す', labelX + 60, y + 15);
+            }
+        }
+        
+        // 横方向の圧力（壁への押し付け）を表示
+        const wallX = startX - 50;
+        ctx2.strokeStyle = '#666';
+        ctx2.lineWidth = 4;
+        ctx2.beginPath();
+        ctx2.moveTo(wallX, startY - 30);
+        ctx2.lineTo(wallX, startY + layers * spacing);
+        ctx2.stroke();
+        ctx2.fillStyle = '#666';
+        ctx2.font = '12px sans-serif';
+        ctx2.fillText('壁', wallX - 15, startY + layers * spacing / 2);
+        
+        // 各段から壁への圧力矢印
+        for (let row = 0; row < layers; row++) {
+            const y = startY + row * spacing;
+            const pressure = row + 1;
+            const arrowLen = 10 + pressure * 8;
+            const color = layerColors[row % layerColors.length];
+            
+            ctx2.strokeStyle = color;
+            ctx2.lineWidth = 2 + pressure;
+            ctx2.beginPath();
+            ctx2.moveTo(startX - moleculeRadius - 5, y);
+            ctx2.lineTo(wallX + 10, y);
+            ctx2.stroke();
+            
+            // 矢印の先端
+            ctx2.beginPath();
+            ctx2.moveTo(wallX + 10, y);
+            ctx2.lineTo(wallX + 18, y - 5);
+            ctx2.lineTo(wallX + 18, y + 5);
+            ctx2.closePath();
+            ctx2.fillStyle = color;
+            ctx2.fill();
+            
+            // 圧力値
+            ctx2.fillStyle = color;
+            ctx2.font = 'bold 12px sans-serif';
+            ctx2.fillText(pressure + ' N', wallX - 5, y - 15);
+        }
+        
+        // 結論
+        const conclusionY = startY + layers * spacing + 50;
+        ctx2.fillStyle = '#333';
+        ctx2.font = 'bold 16px sans-serif';
+        ctx2.fillText('★ 結論：下に行くほど、上からの重さが積み重なって圧力が高くなる！', 20, conclusionY);
+        
+        // 数式
+        ctx2.fillStyle = '#667eea';
+        ctx2.font = '14px sans-serif';
+        ctx2.fillText('これが P = ρhg （深さに比例）の理由です', 20, conclusionY + 25);
+    }
+    
+    // ====================================================
+    // キャンバスのリサイズ
+    // ====================================================
+    function resizeAllCanvas() {
+        if (canvas1.parentElement) {
+            canvas1.width = canvas1.parentElement.clientWidth - 40;
+            canvas1.height = 350;
+        }
+        if (canvas2.parentElement) {
+            canvas2.width = canvas2.parentElement.clientWidth - 40;
+            canvas2.height = 400;
+        }
+        initMolecules1();
+    }
+    
+    // ====================================================
+    // イベントリスナー
+    // ====================================================
+    
+    // シミュレーション1のボタン
+    document.getElementById('insertBtn').addEventListener('click', function() {
+        if (animationId1) return;
+        if (objectInserted) {
+            // リセットしてから再挿入
+            objectInserted = false;
+            objectY = -objectHeight - 20;
+            initMolecules1();
+        }
+        animateInsert();
+    });
+    
+    document.getElementById('resetBtn1').addEventListener('click', function() {
+        if (animationId1) {
+            cancelAnimationFrame(animationId1);
+            animationId1 = null;
+        }
+        objectInserted = false;
+        objectY = -objectHeight - 20;
+        initMolecules1();
+        drawSim1();
+    });
+    
+    // シミュレーション2のスライダーとボタン
+    document.getElementById('layerSlider').addEventListener('input', function() {
+        layers = parseInt(this.value);
+        document.getElementById('layerDisplay').textContent = layers + ' 段';
+        drawSim2();
+    });
+    
+    document.getElementById('animateBtn').addEventListener('click', function() {
+        // 段を1から順に表示するアニメーション
+        layers = 0;
+        document.getElementById('layerSlider').value = 1;
+        
+        let currentLayer = 1;
+        const maxLayers = 5;
+        
+        function showNextLayer() {
+            if (currentLayer <= maxLayers) {
+                layers = currentLayer;
+                document.getElementById('layerSlider').value = currentLayer;
+                document.getElementById('layerDisplay').textContent = currentLayer + ' 段';
+                drawSim2();
+                currentLayer++;
+                setTimeout(showNextLayer, 1000);
+            }
+        }
+        
+        showNextLayer();
+    });
+    
+    document.getElementById('resetBtn2').addEventListener('click', function() {
+        layers = 3;
+        document.getElementById('layerSlider').value = 3;
+        document.getElementById('layerDisplay').textContent = '3 段';
+        drawSim2();
+    });
+    
+    // ウィンドウリサイズ対応
+    window.addEventListener('resize', function() {
+        resizeAllCanvas();
+        drawSim1();
+        drawSim2();
+    });
+    
+    // 初期化
+    resizeAllCanvas();
+    drawSim1();
+    drawSim2();
+    
+    // MathJaxの再レンダリング（タブ切り替え時用）
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            setTimeout(() => {
+                if (window.MathJax) {
+                    MathJax.typesetPromise();
+                }
+            }, 100);
+        });
+    });
+    </script>
+</body>
+</html>

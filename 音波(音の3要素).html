@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高校物理 - 音波（音の3要素）</title>
+    <script>
+      window.MathJax = {
+      tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']]
+     }
+     };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        header {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .back-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        h1 {
+            color: #333;
+        }
+        .container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .tab-btn {
+            flex: 1;
+            min-width: 150px;
+            padding: 12px 20px;
+            border: none;
+            background: #f0f0f0;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        .tab-btn.active {
+            background: #667eea;
+            color: white;
+        }
+        .tab-btn:hover {
+            background: #8899f0;
+            color: white;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        h3 {
+            color: #667eea;
+            margin: 25px 0 15px 0;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #667eea;
+        }
+        h4 {
+            color: #333;
+            margin: 20px 0 10px 0;
+        }
+        p {
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+        .important-box {
+            background: linear-gradient(135deg, #667eea20 0%, #764ba220 100%);
+            border-left: 4px solid #667eea;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+        .important-box p {
+            margin-bottom: 0;
+        }
+        .note-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+        .review-link {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            margin: 10px 0;
+            transition: background 0.3s;
+        }
+        .review-link:hover {
+            background: #5a6fd6;
+        }
+        .formula-box {
+            background: #f8f9fa;
+            border: 2px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .db-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .db-table th, .db-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: center;
+        }
+        .db-table th {
+            background: #667eea;
+            color: white;
+        }
+        .db-table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+        
+        /* 音色ツール用スタイル */
+        .timbre-tool {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .timbre-tool h4 {
+            margin-top: 0;
+        }
+        .harmonic-controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+        .harmonic-slider {
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .harmonic-slider label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+        .harmonic-slider input {
+            width: 100%;
+        }
+        #timbreCanvas {
+            width: 100%;
+            background: white;
+            border-radius: 5px;
+            border: 2px solid #ddd;
+            margin-top: 15px;
+        }
+        .preset-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+        .preset-btn {
+            padding: 8px 16px;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        .preset-btn:hover, .preset-btn.active {
+            background: #667eea;
+            color: white;
+        }
+        
+        /* 問題用スタイル */
+        .problem-section {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .problem-section h4 {
+            color: #667eea;
+            margin-top: 0;
+        }
+        details {
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+            border: 1px solid #ddd;
+        }
+        summary {
+            cursor: pointer;
+            font-weight: bold;
+            color: #667eea;
+        }
+        details[open] summary {
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        /* シミュレーション用スタイル */
+        #sim-container {
+            background: #f5f5f5;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        #physicsCanvas {
+            display: block;
+            width: 100%;
+            background: white;
+            border-radius: 5px;
+            border: 2px solid #ddd;
+        }
+        .sim-controls {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .control-group {
+            margin-bottom: 20px;
+        }
+        .control-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        .control-group input[type="range"] {
+            width: 100%;
+            margin: 10px 0;
+        }
+        .control-group select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-size: 16px;
+        }
+        .value-display {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            min-width: 100px;
+            text-align: center;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .sim-button {
+            flex: 1;
+            min-width: 120px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .sim-button.start {
+            background: #4CAF50;
+            color: white;
+        }
+        .sim-button.start:hover {
+            background: #45a049;
+        }
+        .sim-button.stop {
+            background: #ff9800;
+            color: white;
+        }
+        .sim-button.stop:hover {
+            background: #f57c00;
+        }
+        .sim-button.reset {
+            background: #f44336;
+            color: white;
+        }
+        .sim-button.reset:hover {
+            background: #da190b;
+        }
+        .graph-container {
+            margin-top: 20px;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #ddd;
+        }
+        .graph-container h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+            border: none;
+        }
+        #graphCanvas {
+            display: block;
+            width: 100%;
+            border: 1px solid #eee;
+        }
+        .info-display {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin: 15px 0;
+        }
+        .info-item {
+            background: #e8eaf6;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .info-item .label {
+            font-size: 12px;
+            color: #666;
+        }
+        .info-item .value {
+            font-size: 18px;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            header, .container {
+                padding: 15px;
+            }
+            .tab-btn {
+                min-width: 100px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="back-link">← 目次に戻る</a>
+        <h1>音波（音の3要素）</h1>
+    </header>
+    <div class="container">
+        
+        <div class="tabs">
+            <button class="tab-btn active" onclick="openTab('lecture')">解説編</button>
+            <button class="tab-btn" onclick="openTab('problem')">問題編</button>
+            <button class="tab-btn" onclick="openTab('simulation')">シミュレーション</button>
+        </div>
+        
+        <!-- 解説タブ -->
+        <div id="lecture" class="tab-content active">
+            <h2>音の3要素</h2>
+            
+            <div class="important-box">
+                <p><strong>🔊 音は「縦波」である</strong><br>
+                音は空気などの媒質中を伝わる<strong>縦波（疎密波）</strong>です。空気分子が振動の進行方向と同じ方向に振動し、密な部分と疎な部分が交互に伝わっていきます。</p>
+            </div>
+            
+            <p>波の基本的な性質については、以下のページで復習しましょう。</p>
+            <a href="波(波動)という概念.html" class="review-link">📚 波（波動）の基礎を復習する</a>
+            
+            <p style="margin-top: 20px;">音を特徴づける要素は3つあります。これらを<strong>音の3要素</strong>といいます。</p>
+            
+            <div class="formula-box">
+                <p style="font-size: 1.2em; margin: 0;">
+                    <strong>① 音の高さ</strong>（周波数）　
+                    <strong>② 音の強さ</strong>（振幅）　
+                    <strong>③ 音色</strong>（波形）
+                </p>
+            </div>
+            
+            <h3>① 音の高さ（周波数）</h3>
+            
+            <p>音の高さは<strong>周波数 $f$ [Hz]</strong>（ヘルツ）によって決まります。</p>
+            
+            <ul style="margin: 15px 0 15px 30px; line-height: 2;">
+                <li>周波数が<strong>大きい</strong> → <strong>高い音</strong>に聞こえる</li>
+                <li>周波数が<strong>小さい</strong> → <strong>低い音</strong>に聞こえる</li>
+            </ul>
+            
+            <div class="note-box">
+                <p><strong>💡 なぜ周波数が高いと「高い音」に感じるのか？</strong><br>
+                これは物理的な必然ではなく、<strong>人間の脳の認知</strong>によるものです。鼓膜に届いた振動を脳が処理する際、周波数が高い振動を「高い音」として認識するようにできています。「そういうものだ」と理解しておきましょう。</p>
+            </div>
+            
+            <h4>人間の可聴域</h4>
+            <p>人間が聞き取れる周波数の範囲は約 <strong>20 Hz 〜 20,000 Hz</strong> です。これを<strong>可聴域</strong>といいます。</p>
+            
+            <h4>1オクターブとは</h4>
+            <p>音楽で使われる「1オクターブ高い」とは、<strong>周波数が2倍</strong>になることを意味します。</p>
+            <p>例：ラの音（A4）= 440 Hz → 1オクターブ上のラ（A5）= 880 Hz</p>
+            
+            <h3>② 音の強さ（振幅）</h3>
+            
+            <p>音の強さは波の<strong>振幅</strong>に関係しています。</p>
+            
+            <div class="important-box">
+                <p><strong>⚠️ 重要な注意点</strong><br>
+                大きな声を出しても、<strong>音速は変わりません</strong>。音速は媒質の種類と温度のみに依存します。<br>
+                大きな声 = <strong>振幅が大きい</strong> = <strong>音を伝えるエネルギーが大きい</strong></p>
+            </div>
+            
+            <h4>デシベル（dB）</h4>
+            <p>音の強さの単位には<strong>デシベル [dB]</strong>が使われます。</p>
+            
+            <table class="db-table">
+                <tr>
+                    <th>デシベルの差 [dB]</th>
+                    <th>音の大きさの倍率</th>
+                    <th>具体例</th>
+                </tr>
+                <tr><td>0</td><td>1倍</td><td>人間の聴力の限界</td></tr>
+                <tr><td>20</td><td>10倍</td><td>葉が動く音</td></tr>
+                <tr><td>40</td><td>100倍</td><td>静かな図書館</td></tr>
+                <tr><td>60</td><td>1,000倍</td><td>一般的な会話</td></tr>
+                <tr><td>80</td><td>10,000倍</td><td>目覚まし時計</td></tr>
+                <tr><td>100</td><td>100,000倍</td><td>電車</td></tr>
+                <tr><td>120</td><td>1,000,000倍</td><td>飛行機</td></tr>
+            </table>
+            
+            <details style="margin: 20px 0;">
+                <summary>📐 補足：デシベルと対数スケール</summary>
+                <p style="margin-top: 15px;">デシベルは<strong>対数スケール</strong>で定義されます。音圧 $P$ と基準音圧 $P_0$ の関係は：</p>
+                <div class="formula-box">
+                    $$ \text{デシベル} = 20 \log_{10} \frac{P}{P_0} $$
+                </div>
+                <p>ここで $P_0 = 2.0 \times 10^{-5}$ Pa（人間が聞き取れる最小の音圧）です。</p>
+                <p>対数を使う理由は、音の強さの範囲が非常に広い（100万倍以上）ため、そのまま数値で表すと扱いにくくなるからです。対数スケールを使うことで、20 dB増えるごとに10倍という分かりやすい関係になります。</p>
+            </details>
+            
+            <h3>③ 音色（波形）</h3>
+            
+            <p>同じ高さ・同じ大きさの音でも、ピアノとバイオリンでは音の印象が異なります。この違いを生み出すのが<strong>音色</strong>です。</p>
+            
+            <div class="important-box">
+                <p><strong>音色 = 波形の違い</strong><br>
+                楽器によって含まれる倍音（基本周波数の整数倍の成分）の強さが異なるため、合成された波形が変わり、異なる音色として聞こえます。</p>
+            </div>
+            
+            <div class="timbre-tool">
+                <h4>🎵 音色体験ツール：倍音の合成</h4>
+                <p>各スライダーで倍音成分の強さを調整し、波形がどう変化するか観察しましょう。</p>
+                
+                <div class="preset-buttons">
+                    <button class="preset-btn" onclick="setTimbrePreset('sine')">純音（正弦波）</button>
+                    <button class="preset-btn" onclick="setTimbrePreset('clarinet')">クラリネット風</button>
+                    <button class="preset-btn" onclick="setTimbrePreset('trumpet')">トランペット風</button>
+                    <button class="preset-btn" onclick="setTimbrePreset('organ')">オルガン風</button>
+                </div>
+                
+                <div class="harmonic-controls">
+                    <div class="harmonic-slider">
+                        <label>基本波 (f): <span id="h1Val">100</span>%</label>
+                        <input type="range" id="h1Slider" min="0" max="100" value="100" oninput="updateTimbre()">
+                    </div>
+                    <div class="harmonic-slider">
+                        <label>第2倍音 (2f): <span id="h2Val">0</span>%</label>
+                        <input type="range" id="h2Slider" min="0" max="100" value="0" oninput="updateTimbre()">
+                    </div>
+                    <div class="harmonic-slider">
+                        <label>第3倍音 (3f): <span id="h3Val">0</span>%</label>
+                        <input type="range" id="h3Slider" min="0" max="100" value="0" oninput="updateTimbre()">
+                    </div>
+                    <div class="harmonic-slider">
+                        <label>第4倍音 (4f): <span id="h4Val">0</span>%</label>
+                        <input type="range" id="h4Slider" min="0" max="100" value="0" oninput="updateTimbre()">
+                    </div>
+                    <div class="harmonic-slider">
+                        <label>第5倍音 (5f): <span id="h5Val">0</span>%</label>
+                        <input type="range" id="h5Slider" min="0" max="100" value="0" oninput="updateTimbre()">
+                    </div>
+                </div>
+                
+                <canvas id="timbreCanvas" height="200"></canvas>
+            </div>
+            
+            <h3>授業資料（PDF）</h3>
+            <iframe src="https://drive.google.com/file/d/1rd3AUHNkj-NLM0IEztEdsiVOdPwxD6EA/preview" width="100%" height="500"></iframe>
+        </div>
+        
+        <!-- 問題タブ -->
+        <div id="problem" class="tab-content">
+            <h2>確認問題</h2>
+            
+            <div class="problem-section">
+                <h4>問題1：音の3要素</h4>
+                <p>音を特徴づける3つの要素と、それぞれに対応する物理量を答えなさい。</p>
+                
+                <details>
+                    <summary>解答・解説を見る</summary>
+                    <p><strong>解答：</strong></p>
+                    <ol style="margin-left: 20px; line-height: 2;">
+                        <li><strong>音の高さ</strong> ← 周波数 $f$ [Hz]</li>
+                        <li><strong>音の強さ</strong> ← 振幅（音圧）[dB]</li>
+                        <li><strong>音色</strong> ← 波形（倍音構成）</li>
+                    </ol>
+                    <p style="margin-top: 15px;"><strong>解説：</strong><br>
+                    音は縦波として媒質中を伝わります。周波数が高いほど高い音、振幅が大きいほど大きな音として認識されます。同じ周波数・振幅でも、含まれる倍音成分によって波形が異なり、それが音色の違いとなります。</p>
+                </details>
+            </div>
+            
+            <div class="problem-section">
+                <h4>問題2：デシベルの計算</h4>
+                <p>静かな図書館（40 dB）と一般的な会話（60 dB）では、音の大きさは何倍異なるか答えなさい。</p>
+                
+                <details>
+                    <summary>解答・解説を見る</summary>
+                    <p><strong>解答：10倍</strong></p>
+                    <p style="margin-top: 15px;"><strong>解説：</strong><br>
+                    デシベルの差は $60 - 40 = 20$ dB です。<br>
+                    デシベルは対数スケールなので、20 dB の差は音の大きさが <strong>10倍</strong> 異なることを意味します。</p>
+                    <p>一般に、デシベルが 20 dB 増えるごとに音の大きさは 10 倍になります。</p>
+                </details>
+            </div>
+            
+            <div class="problem-section">
+                <h4>問題3：オクターブと周波数</h4>
+                <p>ある音の周波数が 220 Hz である。この音より2オクターブ高い音の周波数を求めなさい。</p>
+                
+                <details>
+                    <summary>解答・解説を見る</summary>
+                    <p><strong>解答：880 Hz</strong></p>
+                    <p style="margin-top: 15px;"><strong>解説：</strong><br>
+                    1オクターブ上がると周波数は2倍になります。</p>
+                    <ul style="margin-left: 20px; line-height: 2;">
+                        <li>元の音：220 Hz</li>
+                        <li>1オクターブ上：$220 \times 2 = 440$ Hz</li>
+                        <li>2オクターブ上：$440 \times 2 = 880$ Hz</li>
+                    </ul>
+                    <p>または、2オクターブ上 = $2^2 = 4$ 倍なので、$220 \times 4 = 880$ Hz</p>
+                </details>
+            </div>
+        </div>
+        
+        <!-- シミュレーションタブ -->
+        <div id="simulation" class="tab-content">
+            <h2>音波シミュレーション</h2>
+            <p>周波数・振幅・波形を変えて、音と波形の関係を体験しましょう。</p>
+            
+            <div id="sim-container">
+                <canvas id="physicsCanvas"></canvas>
+            </div>
+            
+            <div class="info-display">
+                <div class="info-item">
+                    <div class="label">周波数</div>
+                    <div class="value" id="freqInfo">440 Hz</div>
+                </div>
+                <div class="info-item">
+                    <div class="label">周期</div>
+                    <div class="value" id="periodInfo">2.27 ms</div>
+                </div>
+                <div class="info-item">
+                    <div class="label">波長（空気中）</div>
+                    <div class="value" id="wavelengthInfo">0.77 m</div>
+                </div>
+            </div>
+            
+            <div class="sim-controls">
+                <div class="control-group">
+                    <label>周波数 (f): <span class="value-display" id="freqDisplay">440 Hz</span></label>
+                    <input type="range" id="freqSlider" min="100" max="1000" value="440" step="10">
+                </div>
+                
+                <div class="control-group">
+                    <label>振幅: <span class="value-display" id="ampDisplay">0.5</span></label>
+                    <input type="range" id="ampSlider" min="0.1" max="1" value="0.5" step="0.1">
+                </div>
+                
+                <div class="control-group">
+                    <label>波形:</label>
+                    <select id="waveformSelect">
+                        <option value="sine">正弦波（サイン波）</option>
+                        <option value="square">矩形波</option>
+                        <option value="sawtooth">のこぎり波</option>
+                        <option value="triangle">三角波</option>
+                    </select>
+                </div>
+                
+                <div class="button-group">
+                    <button class="sim-button start" id="startBtn">▶ 音を再生</button>
+                    <button class="sim-button stop" id="stopBtn" style="display:none;">⏹ 停止</button>
+                    <button class="sim-button reset" id="resetBtn">🔄 リセット</button>
+                </div>
+            </div>
+            
+            <div class="graph-container">
+                <h3>波形グラフ</h3>
+                <canvas id="graphCanvas"></canvas>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+    // --- タブ切り替え機能 ---
+    function openTab(tabName) {
+        var contents = document.getElementsByClassName("tab-content");
+        for (var i = 0; i < contents.length; i++) {
+            contents[i].style.display = "none";
+            contents[i].classList.remove("active");
+        }
+        var buttons = document.getElementsByClassName("tab-btn");
+        for (var i = 0; i < buttons.length; i++) {
+            buttons[i].classList.remove("active");
+        }
+        document.getElementById(tabName).style.display = "block";
+        if (event) {
+            event.currentTarget.classList.add("active");
+        }
+        
+        // シミュレーションタブを開いたときにCanvasを初期化
+        if (tabName === 'simulation') {
+            initSimulation();
+        }
+    }
+    
+    // ========================================
+    // 音色体験ツール（解説タブ内の静的ツール）
+    // ========================================
+    const timbreCanvas = document.getElementById('timbreCanvas');
+    const timbreCtx = timbreCanvas.getContext('2d');
+    
+    function updateTimbre() {
+        const h1 = parseInt(document.getElementById('h1Slider').value);
+        const h2 = parseInt(document.getElementById('h2Slider').value);
+        const h3 = parseInt(document.getElementById('h3Slider').value);
+        const h4 = parseInt(document.getElementById('h4Slider').value);
+        const h5 = parseInt(document.getElementById('h5Slider').value);
+        
+        document.getElementById('h1Val').textContent = h1;
+        document.getElementById('h2Val').textContent = h2;
+        document.getElementById('h3Val').textContent = h3;
+        document.getElementById('h4Val').textContent = h4;
+        document.getElementById('h5Val').textContent = h5;
+        
+        drawTimbreWave(h1, h2, h3, h4, h5);
+    }
+    
+    function drawTimbreWave(h1, h2, h3, h4, h5) {
+        const width = timbreCanvas.width = timbreCanvas.parentElement.clientWidth - 40;
+        const height = timbreCanvas.height;
+        
+        timbreCtx.fillStyle = '#fff';
+        timbreCtx.fillRect(0, 0, width, height);
+        
+        // グリッド描画
+        timbreCtx.strokeStyle = '#eee';
+        timbreCtx.lineWidth = 1;
+        for (let i = 0; i <= 10; i++) {
+            const x = (width / 10) * i;
+            timbreCtx.beginPath();
+            timbreCtx.moveTo(x, 0);
+            timbreCtx.lineTo(x, height);
+            timbreCtx.stroke();
+        }
+        timbreCtx.beginPath();
+        timbreCtx.moveTo(0, height / 2);
+        timbreCtx.lineTo(width, height / 2);
+        timbreCtx.stroke();
+        
+        // 合成波描画
+        timbreCtx.strokeStyle = '#667eea';
+        timbreCtx.lineWidth = 3;
+        timbreCtx.beginPath();
+        
+        const total = (h1 + h2 + h3 + h4 + h5) || 1;
+        const amp = height * 0.4;
+        
+        for (let x = 0; x < width; x++) {
+            const t = (x / width) * 4 * Math.PI;
+            let y = 0;
+            y += (h1 / total) * Math.sin(t);
+            y += (h2 / total) * Math.sin(2 * t);
+            y += (h3 / total) * Math.sin(3 * t);
+            y += (h4 / total) * Math.sin(4 * t);
+            y += (h5 / total) * Math.sin(5 * t);
+            
+            const screenY = height / 2 - y * amp;
+            if (x === 0) {
+                timbreCtx.moveTo(x, screenY);
+            } else {
+                timbreCtx.lineTo(x, screenY);
+            }
+        }
+        timbreCtx.stroke();
+        
+        // ラベル
+        timbreCtx.fillStyle = '#666';
+        timbreCtx.font = '12px sans-serif';
+        timbreCtx.fillText('合成波形', 10, 20);
+    }
+    
+    function setTimbrePreset(preset) {
+        // ボタンのアクティブ状態を更新
+        document.querySelectorAll('.preset-btn').forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+        
+        let values = [100, 0, 0, 0, 0];
+        switch (preset) {
+            case 'sine':
+                values = [100, 0, 0, 0, 0];
+                break;
+            case 'clarinet':
+                values = [100, 0, 75, 0, 50];
+                break;
+            case 'trumpet':
+                values = [100, 80, 60, 40, 20];
+                break;
+            case 'organ':
+                values = [100, 50, 33, 25, 20];
+                break;
+        }
+        
+        document.getElementById('h1Slider').value = values[0];
+        document.getElementById('h2Slider').value = values[1];
+        document.getElementById('h3Slider').value = values[2];
+        document.getElementById('h4Slider').value = values[3];
+        document.getElementById('h5Slider').value = values[4];
+        
+        updateTimbre();
+    }
+    
+    // 初期描画
+    updateTimbre();
+    
+    // ========================================
+    // シミュレーション（Web Audio API）
+    // ========================================
+    const physicsCanvas = document.getElementById('physicsCanvas');
+    const physicsCtx = physicsCanvas.getContext('2d');
+    const graphCanvas = document.getElementById('graphCanvas');
+    const graphCtx = graphCanvas.getContext('2d');
+    
+    let audioContext = null;
+    let oscillator = null;
+    let gainNode = null;
+    let isPlaying = false;
+    let animationId = null;
+    let phase = 0;
+    
+    const SOUND_SPEED = 340; // 音速 m/s
+    
+    function initSimulation() {
+        resizeCanvases();
+        drawWave();
+        updateInfo();
+    }
+    
+    function resizeCanvases() {
+        physicsCanvas.width = physicsCanvas.parentElement.clientWidth;
+        physicsCanvas.height = 250;
+        graphCanvas.width = graphCanvas.parentElement.clientWidth - 30;
+        graphCanvas.height = 200;
+    }
+    
+    function getWaveValue(t, waveform) {
+        switch (waveform) {
+            case 'sine':
+                return Math.sin(t);
+            case 'square':
+                return Math.sin(t) > 0 ? 1 : -1;
+            case 'sawtooth':
+                return 2 * ((t / (2 * Math.PI)) % 1) - 1;
+            case 'triangle':
+                const p = (t / (2 * Math.PI)) % 1;
+                return 4 * Math.abs(p - 0.5) - 1;
+            default:
+                return Math.sin(t);
+        }
+    }
+    
+    function drawWave() {
+        const freq = parseFloat(document.getElementById('freqSlider').value);
+        const amp = parseFloat(document.getElementById('ampSlider').value);
+        const waveform = document.getElementById('waveformSelect').value;
+        
+        // 物理Canvasの描画（縦波のイメージ）
+        const pWidth = physicsCanvas.width;
+        const pHeight = physicsCanvas.height;
+        
+        physicsCtx.fillStyle = '#f8f9fa';
+        physicsCtx.fillRect(0, 0, pWidth, pHeight);
+        
+        // タイトル
+        physicsCtx.fillStyle = '#333';
+        physicsCtx.font = 'bold 14px sans-serif';
+        physicsCtx.fillText('縦波としての音波（空気分子の疎密）', 10, 25);
+        
+        // 粒子描画
+        const numParticles = 60;
+        const baseSpacing = pWidth / (numParticles + 1);
+        const particleY = pHeight / 2 + 20;
+        
+        for (let i = 0; i < numParticles; i++) {
+            const baseX = baseSpacing * (i + 1);
+            const displacement = amp * 20 * getWaveValue(phase + (i / numParticles) * 4 * Math.PI, waveform);
+            const x = baseX + displacement;
+            
+            // 密度による色の変化
+            const nextDisp = amp * 20 * getWaveValue(phase + ((i + 1) / numParticles) * 4 * Math.PI, waveform);
+            const density = (displacement - nextDisp) / 40;
+            const colorVal = Math.floor(128 - density * 100);
+            
+            physicsCtx.beginPath();
+            physicsCtx.arc(x, particleY, 6, 0, 2 * Math.PI);
+            physicsCtx.fillStyle = `rgb(${colorVal}, ${colorVal}, ${Math.min(255, colorVal + 50)})`;
+            physicsCtx.fill();
+        }
+        
+        // 凡例
+        physicsCtx.font = '12px sans-serif';
+        physicsCtx.fillStyle = '#666';
+        physicsCtx.fillText('← 疎（分子がまばら）', 20, pHeight - 20);
+        physicsCtx.fillText('密（分子が密集）→', pWidth - 150, pHeight - 20);
+        
+        // グラフCanvas（横波として可視化）
+        const gWidth = graphCanvas.width;
+        const gHeight = graphCanvas.height;
+        
+        graphCtx.fillStyle = '#fff';
+        graphCtx.fillRect(0, 0, gWidth, gHeight);
+        
+        // グリッド
+        graphCtx.strokeStyle = '#eee';
+        graphCtx.lineWidth = 1;
+        for (let i = 0; i <= 10; i++) {
+            const x = (gWidth / 10) * i;
+            graphCtx.beginPath();
+            graphCtx.moveTo(x, 0);
+            graphCtx.lineTo(x, gHeight);
+            graphCtx.stroke();
+        }
+        graphCtx.strokeStyle = '#ccc';
+        graphCtx.beginPath();
+        graphCtx.moveTo(0, gHeight / 2);
+        graphCtx.lineTo(gWidth, gHeight / 2);
+        graphCtx.stroke();
+        
+        // 波形描画
+        graphCtx.strokeStyle = '#667eea';
+        graphCtx.lineWidth = 3;
+        graphCtx.beginPath();
+        
+        const waveAmp = (gHeight / 2 - 20) * amp;
+        
+        for (let x = 0; x < gWidth; x++) {
+            const t = phase + (x / gWidth) * 4 * Math.PI;
+            const y = gHeight / 2 - getWaveValue(t, waveform) * waveAmp;
+            
+            if (x === 0) {
+                graphCtx.moveTo(x, y);
+            } else {
+                graphCtx.lineTo(x, y);
+            }
+        }
+        graphCtx.stroke();
+        
+        // ラベル
+        graphCtx.fillStyle = '#333';
+        graphCtx.font = '12px sans-serif';
+        graphCtx.fillText('変位', 10, 15);
+        graphCtx.fillText('時間 →', gWidth - 60, gHeight - 10);
+    }
+    
+    function updateInfo() {
+        const freq = parseFloat(document.getElementById('freqSlider').value);
+        const period = 1000 / freq; // ms
+        const wavelength = SOUND_SPEED / freq; // m
+        
+        document.getElementById('freqInfo').textContent = freq + ' Hz';
+        document.getElementById('periodInfo').textContent = period.toFixed(2) + ' ms';
+        document.getElementById('wavelengthInfo').textContent = wavelength.toFixed(2) + ' m';
+    }
+    
+    function animate() {
+        phase += 0.1;
+        drawWave();
+        animationId = requestAnimationFrame(animate);
+    }
+    
+    function startSound() {
+        if (isPlaying) return;
+        
+        const freq = parseFloat(document.getElementById('freqSlider').value);
+        const amp = parseFloat(document.getElementById('ampSlider').value);
+        const waveform = document.getElementById('waveformSelect').value;
+        
+        // AudioContext作成
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        oscillator = audioContext.createOscillator();
+        gainNode = audioContext.createGain();
+        
+        oscillator.type = waveform;
+        oscillator.frequency.setValueAtTime(freq, audioContext.currentTime);
+        gainNode.gain.setValueAtTime(amp * 0.3, audioContext.currentTime);
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        oscillator.start();
+        
+        isPlaying = true;
+        document.getElementById('startBtn').style.display = 'none';
+        document.getElementById('stopBtn').style.display = 'block';
+        
+        animate();
+    }
+    
+    function stopSound() {
+        if (!isPlaying) return;
+        
+        if (oscillator) {
+            oscillator.stop();
+            oscillator.disconnect();
+        }
+        if (gainNode) {
+            gainNode.disconnect();
+        }
+        if (audioContext) {
+            audioContext.close();
+        }
+        
+        if (animationId) {
+            cancelAnimationFrame(animationId);
+        }
+        
+        oscillator = null;
+        gainNode = null;
+        audioContext = null;
+        isPlaying = false;
+        
+        document.getElementById('startBtn').style.display = 'block';
+        document.getElementById('stopBtn').style.display = 'none';
+    }
+    
+    function resetSimulation() {
+        stopSound();
+        
+        document.getElementById('freqSlider').value = 440;
+        document.getElementById('ampSlider').value = 0.5;
+        document.getElementById('waveformSelect').value = 'sine';
+        
+        document.getElementById('freqDisplay').textContent = '440 Hz';
+        document.getElementById('ampDisplay').textContent = '0.5';
+        
+        phase = 0;
+        updateInfo();
+        drawWave();
+    }
+    
+    // イベントリスナー
+    document.getElementById('freqSlider').addEventListener('input', function() {
+        const val = this.value;
+        document.getElementById('freqDisplay').textContent = val + ' Hz';
+        updateInfo();
+        
+        if (isPlaying && oscillator) {
+            oscillator.frequency.setValueAtTime(parseFloat(val), audioContext.currentTime);
+        }
+        if (!isPlaying) drawWave();
+    });
+    
+    document.getElementById('ampSlider').addEventListener('input', function() {
+        const val = this.value;
+        document.getElementById('ampDisplay').textContent = val;
+        
+        if (isPlaying && gainNode) {
+            gainNode.gain.setValueAtTime(parseFloat(val) * 0.3, audioContext.currentTime);
+        }
+        if (!isPlaying) drawWave();
+    });
+    
+    document.getElementById('waveformSelect').addEventListener('change', function() {
+        if (isPlaying && oscillator) {
+            oscillator.type = this.value;
+        }
+        if (!isPlaying) drawWave();
+    });
+    
+    document.getElementById('startBtn').addEventListener('click', startSound);
+    document.getElementById('stopBtn').addEventListener('click', stopSound);
+    document.getElementById('resetBtn').addEventListener('click', resetSimulation);
+    
+    // リサイズ対応
+    window.addEventListener('resize', function() {
+        resizeCanvases();
+        drawWave();
+        
+        // 音色ツールも再描画
+        updateTimbre();
+    });
+    
+    // 初期化
+    window.addEventListener('load', function() {
+        initSimulation();
+    });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高校物理 - 等加速度直線運動</title>
+    <script>
+      window.MathJax = {
+      tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']]
+     }
+     };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        header {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .back-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        h1 {
+            color: #333;
+        }
+        .container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .tab-btn {
+            flex: 1;
+            min-width: 150px;
+            padding: 12px 20px;
+            border: none;
+            background: #f0f0f0;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        .tab-btn.active {
+            background: #667eea;
+            color: white;
+        }
+        .tab-btn:hover {
+            background: #8899f0;
+            color: white;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        h3 {
+            color: #333;
+            margin: 20px 0 10px 0;
+        }
+        .pdf-placeholder {
+            background: #f9f9f9;
+            padding: 40px;
+            text-align: center;
+            border-radius: 5px;
+            color: #666;
+        }
+        
+        /* 解説用スタイル */
+        .lecture-content {
+            line-height: 1.8;
+            font-size: 16px;
+        }
+        .lecture-content p {
+            margin-bottom: 15px;
+        }
+        .key-point {
+            background: linear-gradient(135deg, #667eea20 0%, #764ba220 100%);
+            border-left: 4px solid #667eea;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+        .key-point-title {
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        .formula-box {
+            background: #f8f9fa;
+            border: 2px solid #667eea;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .formula-box h4 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        .example-box {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 10px;
+            padding: 15px 20px;
+            margin: 20px 0;
+        }
+        .example-box h4 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+        .axis-explain {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin: 15px 0;
+        }
+        .axis-card {
+            flex: 1;
+            min-width: 200px;
+            background: #e8f4fd;
+            border-radius: 10px;
+            padding: 15px;
+            border: 2px solid #2196F3;
+        }
+        .axis-card.y-axis {
+            background: #fce4ec;
+            border-color: #e91e63;
+        }
+        .axis-card h5 {
+            margin-bottom: 10px;
+            color: #1565c0;
+        }
+        .axis-card.y-axis h5 {
+            color: #c2185b;
+        }
+        
+        /* シミュレーション用スタイル */
+        #sim-container {
+            background: #f5f5f5;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        #physicsCanvas {
+            display: block;
+            width: 100%;
+            background: white;
+            border-radius: 5px;
+            border: 2px solid #ddd;
+        }
+        .sim-controls {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .control-group {
+            margin-bottom: 20px;
+        }
+        .control-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        .control-group input[type="range"] {
+            width: 100%;
+            margin: 10px 0;
+        }
+        .value-display {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            min-width: 100px;
+            text-align: center;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .sim-button {
+            flex: 1;
+            min-width: 120px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .sim-button.start {
+            background: #4CAF50;
+            color: white;
+        }
+        .sim-button.start:hover {
+            background: #45a049;
+        }
+        .sim-button.reset {
+            background: #f44336;
+            color: white;
+        }
+        .sim-button.reset:hover {
+            background: #da190b;
+        }
+        .sim-button.toggle {
+            background: #2196F3;
+            color: white;
+        }
+        .sim-button.toggle:hover {
+            background: #1976D2;
+        }
+        .sim-button.toggle.active {
+            background: #ff9800;
+        }
+        .graph-container {
+            margin-top: 20px;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #ddd;
+        }
+        .graph-container h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        #graphCanvas {
+            display: block;
+            width: 100%;
+            border: 1px solid #eee;
+        }
+        .info-panel {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .info-card {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            border: 2px solid #ddd;
+        }
+        .info-card h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        .info-card .value {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+        .info-card.x-info {
+            border-color: #2196F3;
+        }
+        .info-card.x-info h4 {
+            color: #2196F3;
+        }
+        .info-card.y-info {
+            border-color: #e91e63;
+        }
+        .info-card.y-info h4 {
+            color: #e91e63;
+        }
+        
+        /* 問題用スタイル */
+        .problem-section {
+            margin-bottom: 30px;
+        }
+        .problem-section h3 {
+            color: #667eea;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+        }
+        .problem-text {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            line-height: 1.8;
+        }
+        details {
+            background: #e8f5e9;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 10px;
+        }
+        details summary {
+            cursor: pointer;
+            font-weight: bold;
+            color: #2e7d32;
+        }
+        details[open] summary {
+            margin-bottom: 10px;
+        }
+        .answer-content {
+            padding-top: 10px;
+            border-top: 1px solid #a5d6a7;
+            line-height: 1.8;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            header, .container {
+                padding: 15px;
+            }
+            .tab-btn {
+                min-width: 100px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="back-link">← 目次に戻る</a>
+        <h1>等加速度直線運動</h1>
+    </header>
+    <div class="container">
+        
+        <div class="tabs">
+            <button class="tab-btn active" onclick="openTab('lecture')">解説編</button>
+            <button class="tab-btn" onclick="openTab('problem')">問題編</button>
+            <button class="tab-btn" onclick="openTab('simulation')">シミュレーション</button>
+        </div>
+        
+        <div id="lecture" class="tab-content active">
+            <h2>等速運動・等加速度運動の統一的な考え方</h2>
+            
+            <div class="lecture-content">
+                <div class="key-point">
+                    <div class="key-point-title">🎯 この単元の最重要ポイント</div>
+                    <p>自由落下、鉛直投げ上げ、水平投射、斜方投射...これらを<strong>一つ一つ別々に覚える必要は全くありません！</strong></p>
+                    <p>たった<strong>1つの考え方</strong>で、すべてのパターンを網羅できます。</p>
+                </div>
+                
+                <h3>📐 等加速度直線運動の3つの公式</h3>
+                <div class="formula-box">
+                    <h4>基本公式</h4>
+                    <p style="font-size: 1.2em; margin: 10px 0;">
+                        $v = v_0 + at$<br><br>
+                        $x = v_0 t + \dfrac{1}{2}at^2$<br><br>
+                        $v^2 - v_0^2 = 2ax$
+                    </p>
+                    <p style="margin-top: 15px; color: #666;">
+                        $a$：加速度 [m/s²]、$t$：時間 [s]、$x$：位置の変化(変位) [m]<br>
+                        $v_0$：初速度 [m/s]、$v$：加速後の速度 [m/s]
+                    </p>
+                </div>
+                
+                <div class="key-point">
+                    <div class="key-point-title">💡 重要な気づき：v-tグラフの面積 = 移動距離</div>
+                    <p>速度-時間グラフ（v-tグラフ）の面積は移動距離を表します。これは等速でも等加速度でも同じ！</p>
+                </div>
+                
+                <h3>🔑 統一的な考え方：「物理的な視点」とは？</h3>
+                
+                <p>複雑に見える運動も、<strong>「成分に分けて考える」</strong>ことで単純な運動の組み合わせになります。</p>
+                
+                <div class="key-point">
+                    <div class="key-point-title">✅ 必ずやること2つ</div>
+                    <p><strong>① 軸を定めて、どの方向を「正」とするか決める</strong></p>
+                    <p><strong>② 成分ごとに運動を言葉にする（言語化する）</strong></p>
+                </div>
+                
+                <h3>🎾 例：斜方投射で考えてみよう</h3>
+                
+                <div class="example-box">
+                    <h4>問題設定</h4>
+                    <p>地上から水平方向に対して角度θ、初速度 $v_0$ でボールを投げ上げた。</p>
+                </div>
+                
+                <p><strong>Step 1: 軸を定める</strong></p>
+                <p>・x軸：水平右向きを正<br>・y軸：鉛直上向きを正</p>
+                
+                <p><strong>Step 2: 成分ごとに言語化する</strong></p>
+                
+                <div class="axis-explain">
+                    <div class="axis-card">
+                        <h5>📘 x方向（水平方向）</h5>
+                        <p><strong>「等速直線運動」</strong></p>
+                        <p>・初速度：$v_{0x} = v_0 \cos\theta$</p>
+                        <p>・加速度：$a_x = 0$</p>
+                        <p>→ 水平方向には力がはたらかないので、等速で進み続ける</p>
+                    </div>
+                    <div class="axis-card y-axis">
+                        <h5>📕 y方向（鉛直方向）</h5>
+                        <p><strong>「等加速度直線運動」</strong></p>
+                        <p>・初速度：$v_{0y} = v_0 \sin\theta$</p>
+                        <p>・加速度：$a_y = -g$（重力加速度）</p>
+                        <p>→ 重力によって常に下向きに加速される</p>
+                    </div>
+                </div>
+                
+                <p><strong>Step 3: それぞれに公式を適用</strong></p>
+                
+                <div class="formula-box">
+                    <h4>斜方投射の公式（成分ごと）</h4>
+                    <p style="text-align: left; padding: 0 20px;">
+                        <strong style="color: #2196F3;">【x方向】</strong><br>
+                        $v_x = v_0 \cos\theta$（一定）<br>
+                        $x = (v_0 \cos\theta) \cdot t$<br><br>
+                        <strong style="color: #e91e63;">【y方向】</strong><br>
+                        $v_y = v_0 \sin\theta - gt$<br>
+                        $y = (v_0 \sin\theta) \cdot t - \dfrac{1}{2}gt^2$
+                    </p>
+                </div>
+                
+                <div class="key-point">
+                    <div class="key-point-title">🌟 まとめ：すべては「等加速度直線運動」に帰着する</div>
+                    <p>・<strong>自由落下</strong> → y方向の等加速度直線運動（$v_0 = 0$, $a = g$）</p>
+                    <p>・<strong>鉛直投げ下ろし</strong> → y方向の等加速度直線運動（$v_0 > 0$, $a = g$）</p>
+                    <p>・<strong>鉛直投げ上げ</strong> → y方向の等加速度直線運動（$v_0 > 0$, $a = -g$）</p>
+                    <p>・<strong>水平投射</strong> → x方向は等速、y方向は等加速度</p>
+                    <p>・<strong>斜方投射</strong> → x方向は等速、y方向は等加速度</p>
+                    <p style="margin-top: 15px; font-size: 1.1em;"><strong>考え方は全部同じ！軸を決めて、成分ごとに言語化するだけ！</strong></p>
+                </div>
+            </div>
+            
+            <h2 style="margin-top: 40px;">授業資料</h2>
+            <iframe src="https://drive.google.com/file/d/1rd3AUHNkj-NLM0IEztEdsiVOdPwxD6EA/preview" width="100%" height="500"></iframe>
+        </div>
+        
+        <div id="problem" class="tab-content">
+            <h2>確認問題</h2>
+            
+            <div class="problem-section">
+                <h3>問題1：考え方の確認</h3>
+                <div class="problem-text">
+                    <p>斜方投射について、以下の問いに答えよ。</p>
+                    <p>(1) 斜方投射において、x方向（水平方向）の運動は何運動と呼べるか。また、その理由を説明せよ。</p>
+                    <p>(2) 斜方投射において、y方向（鉛直方向）の運動は何運動と呼べるか。また、その理由を説明せよ。</p>
+                    <p>(3) 斜方投射の軌道が放物線になる理由を、(1)(2)の結果を用いて説明せよ。</p>
+                </div>
+                <details>
+                    <summary>解答・解説を見る</summary>
+                    <div class="answer-content">
+                        <p><strong>(1)</strong> 等速直線運動</p>
+                        <p>理由：水平方向には力がはたらかない（空気抵抗を無視した場合）ため、加速度が0となる。したがって、初速度 $v_0\cos\theta$ のまま一定の速度で進み続ける。</p>
+                        
+                        <p style="margin-top: 15px;"><strong>(2)</strong> 等加速度直線運動</p>
+                        <p>理由：鉛直方向には常に重力（大きさ $mg$）が下向きにはたらくため、加速度 $g$（下向き）の等加速度直線運動となる。</p>
+                        
+                        <p style="margin-top: 15px;"><strong>(3)</strong> x方向は時間に比例して位置が変化し（$x = v_0\cos\theta \cdot t$）、y方向は時間の2乗に比例する項を含む（$y = v_0\sin\theta \cdot t - \frac{1}{2}gt^2$）。</p>
+                        <p>$t$ を消去すると $y = x\tan\theta - \frac{g}{2v_0^2\cos^2\theta}x^2$ となり、これは $x$ の2次関数であるため、軌道は放物線となる。</p>
+                    </div>
+                </details>
+            </div>
+            
+            <div class="problem-section">
+                <h3>問題2：斜方投射の計算</h3>
+                <div class="problem-text">
+                    <p>地上から水平より30°上向きに、初速度 20 m/s で小球を投げ上げた。重力加速度の大きさを 9.8 m/s² とする。</p>
+                    <p>(1) 最高点に達するまでの時間 $t_1$ [s] を求めよ。</p>
+                    <p>(2) 最高点の高さ $h$ [m] と、投げた点から最高点までの水平距離 $x_1$ [m] を求めよ。</p>
+                    <p>(3) 再び地上にもどるまでの時間 $t_2$ [s] と、水平到達距離 $x_2$ [m] を求めよ。</p>
+                </div>
+                <details>
+                    <summary>解答・解説を見る</summary>
+                    <div class="answer-content">
+                        <p><strong>まず成分に分解する</strong></p>
+                        <p>・$v_{0x} = 20\cos30° = 20 \times \frac{\sqrt{3}}{2} = 10\sqrt{3}$ m/s</p>
+                        <p>・$v_{0y} = 20\sin30° = 20 \times \frac{1}{2} = 10$ m/s</p>
+                        
+                        <p style="margin-top: 15px;"><strong>(1)</strong> 最高点では $v_y = 0$ となる。</p>
+                        <p>$v_y = v_{0y} - gt_1 = 0$ より</p>
+                        <p>$t_1 = \frac{v_{0y}}{g} = \frac{10}{9.8} ≒ \textbf{1.02 s}$</p>
+                        
+                        <p style="margin-top: 15px;"><strong>(2)</strong></p>
+                        <p>高さ：$h = v_{0y}t_1 - \frac{1}{2}gt_1^2 = 10 \times 1.02 - \frac{1}{2} \times 9.8 \times 1.02^2 ≒ \textbf{5.1 m}$</p>
+                        <p>水平距離：$x_1 = v_{0x} \times t_1 = 10\sqrt{3} \times 1.02 ≒ \textbf{17.7 m}$</p>
+                        
+                        <p style="margin-top: 15px;"><strong>(3)</strong></p>
+                        <p>対称性より、$t_2 = 2t_1 ≒ \textbf{2.04 s}$</p>
+                        <p>水平到達距離：$x_2 = v_{0x} \times t_2 = 10\sqrt{3} \times 2.04 ≒ \textbf{35.3 m}$</p>
+                    </div>
+                </details>
+            </div>
+            
+            <div class="problem-section">
+                <h3>問題3：軸の取り方と符号</h3>
+                <div class="problem-text">
+                    <p>ビルの屋上から、小球を鉛直上方に 29.4 m/s の速さで投げ上げた。重力加速度の大きさを 9.8 m/s² とする。鉛直上向きを正とする。</p>
+                    <p>(1) 小球が最高点に達するまでの時間を求めよ。</p>
+                    <p>(2) 投げてから 7.0 秒後に小球が地上に落下した。ビルの高さを求めよ。</p>
+                </div>
+                <details>
+                    <summary>解答・解説を見る</summary>
+                    <div class="answer-content">
+                        <p><strong>軸の設定</strong>：鉛直上向きを正 → 加速度 $a = -9.8$ m/s²</p>
+                        
+                        <p style="margin-top: 15px;"><strong>(1)</strong> 最高点で $v = 0$</p>
+                        <p>$v = v_0 + at$ より $0 = 29.4 - 9.8t$</p>
+                        <p>$t = \frac{29.4}{9.8} = \textbf{3.0 s}$</p>
+                        
+                        <p style="margin-top: 15px;"><strong>(2)</strong> 投げた位置を原点とすると、地上の位置は $y = -H$（$H$はビルの高さ）</p>
+                        <p>$y = v_0 t + \frac{1}{2}at^2$ より</p>
+                        <p>$-H = 29.4 \times 7.0 - \frac{1}{2} \times 9.8 \times 7.0^2$</p>
+                        <p>$-H = 205.8 - 240.1 = -34.3$</p>
+                        <p>$H = \textbf{34.3 m}$</p>
+                        
+                        <p style="margin-top: 15px; background: #fff3cd; padding: 10px; border-radius: 5px;"><strong>💡 ポイント</strong>：符号を正しく使うことで、自動的に答えが出る！「上向き正」と決めたら、下向きの量は負になる。</p>
+                    </div>
+                </details>
+            </div>
+        </div>
+        
+        <div id="simulation" class="tab-content">
+            <h2>斜方投射シミュレーション</h2>
+            <p>ボールの動きを「成分ごと」に観察しましょう。x方向（青）は等速、y方向（ピンク）は等加速度であることを確認してください。</p>
+            
+            <div id="sim-container">
+                <canvas id="physicsCanvas"></canvas>
+            </div>
+            
+            <div class="sim-controls">
+                <div class="info-panel">
+                    <div class="info-card">
+                        <h4>⏱ 経過時間</h4>
+                        <div class="value" id="timeDisplay">0.00 s</div>
+                    </div>
+                    <div class="info-card x-info">
+                        <h4>📘 x方向 速度 (等速)</h4>
+                        <div class="value" id="vxDisplay">0.00 m/s</div>
+                    </div>
+                    <div class="info-card y-info">
+                        <h4>📕 y方向 速度</h4>
+                        <div class="value" id="vyDisplay">0.00 m/s</div>
+                    </div>
+                    <div class="info-card x-info">
+                        <h4>📘 x方向 加速度</h4>
+                        <div class="value">0 m/s²</div>
+                    </div>
+                    <div class="info-card y-info">
+                        <h4>📕 y方向 加速度</h4>
+                        <div class="value">-9.8 m/s²</div>
+                    </div>
+                </div>
+                
+                <div class="button-group" style="margin-top: 20px;">
+                    <button class="sim-button start" id="startBtn">▶ スタート</button>
+                    <button class="sim-button reset" id="resetBtn">↺ リセット</button>
+                    <button class="sim-button toggle" id="trailBtn">軌跡: ON</button>
+                </div>
+            </div>
+            
+            <div class="graph-container">
+                <h3>速度-時間グラフ (v-t)</h3>
+                <canvas id="graphCanvas"></canvas>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+    // --- タブ切り替え機能 ---
+    function openTab(tabName) {
+        var contents = document.getElementsByClassName("tab-content");
+        for (var i = 0; i < contents.length; i++) {
+            contents[i].style.display = "none";
+            contents[i].classList.remove("active");
+        }
+        var buttons = document.getElementsByClassName("tab-btn");
+        for (var i = 0; i < buttons.length; i++) {
+            buttons[i].classList.remove("active");
+        }
+        document.getElementById(tabName).style.display = "block";
+        document.getElementById(tabName).classList.add("active");
+        if (event) {
+            event.currentTarget.classList.add("active");
+        }
+        
+        // シミュレーションタブが開かれたらキャンバスを初期化
+        if (tabName === 'simulation') {
+            resizeCanvas();
+            resetSimulation();
+        }
+    }
+
+    // --- 斜方投射シミュレーション ---
+    const canvas = document.getElementById('physicsCanvas');
+    const ctx = canvas.getContext('2d');
+    const graphCanvas = document.getElementById('graphCanvas');
+    const graphCtx = graphCanvas.getContext('2d');
+    
+    // 物理パラメータ（固定値）
+    const g = 9.8;           // 重力加速度 [m/s²]
+    const v0 = 20;           // 初速度 [m/s]
+    const angle = 60;        // 投射角度 [度] - y方向を強調するため60度に
+    const angleRad = angle * Math.PI / 180;
+    const v0x = v0 * Math.cos(angleRad);  // x方向初速度
+    const v0y = v0 * Math.sin(angleRad);  // y方向初速度
+    
+    // シミュレーション状態
+    let isRunning = false;
+    let showTrail = true;
+    let time = 0;
+    let trail = [];  // 軌跡を保存
+    let animationId = null;
+    
+    // 描画スケール
+    let scale, originX, originY, mainAreaWidth, mainAreaHeight;
+    
+    // キャンバスのリサイズ
+    function resizeCanvas() {
+        const container = canvas.parentElement;
+        canvas.width = container.clientWidth;
+        canvas.height = 400;
+        
+        graphCanvas.width = container.clientWidth;
+        graphCanvas.height = 200;
+        
+        // スケール計算（メインエリア用）
+        mainAreaWidth = canvas.width * 0.7;
+        mainAreaHeight = canvas.height * 0.7;
+        
+        // 最大飛距離と最大高さを計算
+        const maxRange = (v0 * v0 * Math.sin(2 * angleRad)) / g;
+        const maxHeight = (v0y * v0y) / (2 * g);
+        
+        scale = Math.min(mainAreaWidth / (maxRange * 1.2), mainAreaHeight / (maxHeight * 1.5));
+        originX = 80;
+        originY = canvas.height * 0.65;
+        
+        draw();
+        drawGraph();
+    }
+    
+    // 物理座標からキャンバス座標への変換
+    function toCanvasX(x) { return originX + x * scale; }
+    function toCanvasY(y) { return originY - y * scale; }
+    
+    // メイン描画関数
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        // 背景
+        ctx.fillStyle = '#fafafa';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        // 地面
+        ctx.fillStyle = '#8BC34A';
+        ctx.fillRect(0, originY, canvas.width, canvas.height - originY);
+        
+        // 軸を描画
+        drawAxes();
+        
+        // 軌跡を描画
+        if (showTrail && trail.length > 1) {
+            for (let i = 1; i < trail.length; i++) {
+                const alpha = 0.1 + (i / trail.length) * 0.3;
+                ctx.beginPath();
+                ctx.arc(toCanvasX(trail[i].x), toCanvasY(trail[i].y), 8, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 152, 0, ${alpha})`;
+                ctx.fill();
+            }
+        }
+        
+        // 現在位置を計算
+        const x = v0x * time;
+        const y = v0y * time - 0.5 * g * time * time;
+        const vx = v0x;
+        const vy = v0y - g * time;
+        
+        // メインボール
+        if (y >= 0 || time === 0) {
+            // ボール
+            ctx.beginPath();
+            ctx.arc(toCanvasX(x), toCanvasY(y), 15, 0, Math.PI * 2);
+            ctx.fillStyle = '#FF5722';
+            ctx.fill();
+            ctx.strokeStyle = '#BF360C';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            
+            // 速度ベクトル
+            const vectorScale = 3;
+            
+            // x成分（青）
+            ctx.beginPath();
+            ctx.moveTo(toCanvasX(x), toCanvasY(y));
+            ctx.lineTo(toCanvasX(x) + vx * vectorScale, toCanvasY(y));
+            ctx.strokeStyle = '#2196F3';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+            drawArrow(toCanvasX(x) + vx * vectorScale, toCanvasY(y), 0, '#2196F3');
+            
+            // y成分（ピンク）
+            ctx.beginPath();
+            ctx.moveTo(toCanvasX(x), toCanvasY(y));
+            ctx.lineTo(toCanvasX(x), toCanvasY(y) - vy * vectorScale);
+            ctx.strokeStyle = '#E91E63';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+            drawArrow(toCanvasX(x), toCanvasY(y) - vy * vectorScale, vy >= 0 ? -90 : 90, '#E91E63');
+        }
+        
+        // x成分の投影（下部）
+        drawXProjection(x, vx);
+        
+        // y成分の投影（右側）
+        drawYProjection(y, vy);
+        
+        // 凡例
+        drawLegend();
+    }
+    
+    // 軸を描画
+    function drawAxes() {
+        ctx.strokeStyle = '#333';
+        ctx.lineWidth = 2;
+        
+        // x軸
+        ctx.beginPath();
+        ctx.moveTo(originX - 10, originY);
+        ctx.lineTo(canvas.width * 0.75, originY);
+        ctx.stroke();
+        
+        // y軸
+        ctx.beginPath();
+        ctx.moveTo(originX, originY + 10);
+        ctx.lineTo(originX, 30);
+        ctx.stroke();
+        
+        // ラベル
+        ctx.fillStyle = '#333';
+        ctx.font = '14px sans-serif';
+        ctx.fillText('x', canvas.width * 0.75 - 15, originY - 10);
+        ctx.fillText('y', originX + 10, 40);
+        ctx.fillText('O', originX - 20, originY + 20);
+    }
+    
+    // 矢印を描画
+    function drawArrow(x, y, angle, color) {
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(angle * Math.PI / 180);
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.lineTo(-10, -5);
+        ctx.lineTo(-10, 5);
+        ctx.closePath();
+        ctx.fillStyle = color;
+        ctx.fill();
+        ctx.restore();
+    }
+    
+    // x成分の投影
+    function drawXProjection(x, vx) {
+        const projY = canvas.height - 30;
+        
+        // ラベル
+        ctx.fillStyle = '#2196F3';
+        ctx.font = 'bold 12px sans-serif';
+        ctx.fillText('x方向の動き（等速直線運動）', originX, projY - 15);
+        
+        // 軸
+        ctx.strokeStyle = '#2196F3';
+        ctx.lineWidth = 1;
+        ctx.setLineDash([5, 5]);
+        ctx.beginPath();
+        ctx.moveTo(originX, projY);
+        ctx.lineTo(canvas.width * 0.75, projY);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        
+        // x方向の軌跡を描画
+        if (showTrail && trail.length > 1) {
+            for (let i = 1; i < trail.length; i++) {
+                const alpha = 0.1 + (i / trail.length) * 0.4;
+                ctx.beginPath();
+                ctx.arc(toCanvasX(trail[i].x), projY, 6, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(33, 150, 243, ${alpha})`;
+                ctx.fill();
+            }
+        }
+        
+        // ボール
+        ctx.beginPath();
+        ctx.arc(toCanvasX(x), projY, 10, 0, Math.PI * 2);
+        ctx.fillStyle = '#2196F3';
+        ctx.fill();
+    }
+    
+    // y成分の投影
+    function drawYProjection(y, vy) {
+        const projX = canvas.width - 60;
+        
+        // ラベル
+        ctx.save();
+        ctx.translate(projX + 40, originY);
+        ctx.rotate(-Math.PI / 2);
+        ctx.fillStyle = '#E91E63';
+        ctx.font = 'bold 12px sans-serif';
+        ctx.fillText('y方向の動き（等加速度直線運動）', 0, 0);
+        ctx.restore();
+        
+        // 軸
+        ctx.strokeStyle = '#E91E63';
+        ctx.lineWidth = 1;
+        ctx.setLineDash([5, 5]);
+        ctx.beginPath();
+        ctx.moveTo(projX, originY);
+        ctx.lineTo(projX, 30);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        
+        // y方向の軌跡を描画
+        if (showTrail && trail.length > 1) {
+            for (let i = 1; i < trail.length; i++) {
+                const trailY = Math.max(trail[i].y, 0);
+                const alpha = 0.1 + (i / trail.length) * 0.4;
+                ctx.beginPath();
+                ctx.arc(projX, toCanvasY(trailY), 6, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(233, 30, 99, ${alpha})`;
+                ctx.fill();
+            }
+        }
+        
+        // ボール
+        const displayY = Math.max(y, 0);
+        ctx.beginPath();
+        ctx.arc(projX, toCanvasY(displayY), 10, 0, Math.PI * 2);
+        ctx.fillStyle = '#E91E63';
+        ctx.fill();
+    }
+    
+    // 凡例
+    function drawLegend() {
+        const legendX = 10;
+        const legendY = 10;
+        
+        ctx.fillStyle = 'rgba(255,255,255,0.9)';
+        ctx.fillRect(legendX, legendY, 180, 70);
+        ctx.strokeStyle = '#ddd';
+        ctx.strokeRect(legendX, legendY, 180, 70);
+        
+        ctx.font = '12px sans-serif';
+        ctx.fillStyle = '#333';
+        ctx.fillText('初速度: ' + v0 + ' m/s', legendX + 10, legendY + 20);
+        ctx.fillText('投射角: ' + angle + '°', legendX + 10, legendY + 40);
+        ctx.fillText('重力加速度: ' + g + ' m/s²', legendX + 10, legendY + 60);
+    }
+    
+    // グラフ描画
+    function drawGraph() {
+        graphCtx.clearRect(0, 0, graphCanvas.width, graphCanvas.height);
+        
+        // 背景
+        graphCtx.fillStyle = '#fafafa';
+        graphCtx.fillRect(0, 0, graphCanvas.width, graphCanvas.height);
+        
+        const gOriginX = 60;
+        const gOriginY = graphCanvas.height / 2;
+        const gWidth = graphCanvas.width - 100;
+        const gHeight = graphCanvas.height - 60;
+        
+        // 最大時間（地面に戻るまで）
+        const maxTime = 2 * v0y / g;
+        const timeScale = gWidth / (maxTime * 1.1);
+        const vScale = gHeight / (v0y * 2.5);
+        
+        // グリッド
+        graphCtx.strokeStyle = '#eee';
+        graphCtx.lineWidth = 1;
+        for (let t = 0; t <= maxTime * 1.1; t += 0.5) {
+            graphCtx.beginPath();
+            graphCtx.moveTo(gOriginX + t * timeScale, 20);
+            graphCtx.lineTo(gOriginX + t * timeScale, graphCanvas.height - 20);
+            graphCtx.stroke();
+        }
+        
+        // 軸
+        graphCtx.strokeStyle = '#333';
+        graphCtx.lineWidth = 2;
+        graphCtx.beginPath();
+        graphCtx.moveTo(gOriginX, 20);
+        graphCtx.lineTo(gOriginX, graphCanvas.height - 20);
+        graphCtx.moveTo(gOriginX - 10, gOriginY);
+        graphCtx.lineTo(graphCanvas.width - 20, gOriginY);
+        graphCtx.stroke();
+        
+        // ラベル
+        graphCtx.fillStyle = '#333';
+        graphCtx.font = '12px sans-serif';
+        graphCtx.fillText('v [m/s]', 10, 30);
+        graphCtx.fillText('t [s]', graphCanvas.width - 40, gOriginY + 20);
+        graphCtx.fillText('0', gOriginX - 15, gOriginY + 5);
+        
+        // vx線（等速 - 水平線）
+        graphCtx.strokeStyle = '#2196F3';
+        graphCtx.lineWidth = 2;
+        graphCtx.beginPath();
+        graphCtx.moveTo(gOriginX, gOriginY - v0x * vScale);
+        graphCtx.lineTo(gOriginX + maxTime * timeScale, gOriginY - v0x * vScale);
+        graphCtx.stroke();
+        graphCtx.fillStyle = '#2196F3';
+        graphCtx.fillText('vx = ' + v0x.toFixed(1) + ' m/s (一定)', graphCanvas.width - 150, gOriginY - v0x * vScale - 5);
+        
+        // vy線（直線的に減少）
+        graphCtx.strokeStyle = '#E91E63';
+        graphCtx.lineWidth = 2;
+        graphCtx.beginPath();
+        graphCtx.moveTo(gOriginX, gOriginY - v0y * vScale);
+        for (let t = 0; t <= maxTime; t += 0.01) {
+            const vy = v0y - g * t;
+            graphCtx.lineTo(gOriginX + t * timeScale, gOriginY - vy * vScale);
+        }
+        graphCtx.stroke();
+        graphCtx.fillStyle = '#E91E63';
+        graphCtx.fillText('vy', graphCanvas.width - 150, gOriginY - v0y * vScale + 15);
+        
+        // 現在時刻のマーカー
+        if (time > 0) {
+            const currentVy = v0y - g * time;
+            
+            // vxマーカー
+            graphCtx.beginPath();
+            graphCtx.arc(gOriginX + time * timeScale, gOriginY - v0x * vScale, 6, 0, Math.PI * 2);
+            graphCtx.fillStyle = '#2196F3';
+            graphCtx.fill();
+            
+            // vyマーカー
+            graphCtx.beginPath();
+            graphCtx.arc(gOriginX + time * timeScale, gOriginY - currentVy * vScale, 6, 0, Math.PI * 2);
+            graphCtx.fillStyle = '#E91E63';
+            graphCtx.fill();
+            
+            // 時刻線
+            graphCtx.strokeStyle = '#FF9800';
+            graphCtx.lineWidth = 1;
+            graphCtx.setLineDash([5, 5]);
+            graphCtx.beginPath();
+            graphCtx.moveTo(gOriginX + time * timeScale, 20);
+            graphCtx.lineTo(gOriginX + time * timeScale, graphCanvas.height - 20);
+            graphCtx.stroke();
+            graphCtx.setLineDash([]);
+        }
+    }
+    
+    // 表示更新
+    function updateDisplay() {
+        const vy = v0y - g * time;
+        document.getElementById('timeDisplay').textContent = time.toFixed(2) + ' s';
+        document.getElementById('vxDisplay').textContent = v0x.toFixed(2) + ' m/s';
+        document.getElementById('vyDisplay').textContent = vy.toFixed(2) + ' m/s';
+    }
+    
+    // アニメーションループ
+    function animate() {
+        if (!isRunning) return;
+        
+        const dt = 0.02;  // 時間刻み
+        time += dt;
+        
+        // 位置を計算
+        const x = v0x * time;
+        const y = v0y * time - 0.5 * g * time * time;
+        
+        // 軌跡に追加
+        if (trail.length === 0 || time - trail[trail.length - 1].t > 0.1) {
+            trail.push({x: x, y: y, t: time});
+        }
+        
+        // 地面に到達したら停止
+        if (y < 0) {
+            isRunning = false;
+            document.getElementById('startBtn').textContent = '▶ スタート';
+            // 最終位置で描画
+            time = 2 * v0y / g;  // 着地時刻
+        }
+        
+        draw();
+        drawGraph();
+        updateDisplay();
+        
+        if (isRunning) {
+            animationId = requestAnimationFrame(animate);
+        }
+    }
+    
+    // シミュレーションをリセット
+    function resetSimulation() {
+        isRunning = false;
+        time = 0;
+        trail = [];
+        if (animationId) {
+            cancelAnimationFrame(animationId);
+        }
+        document.getElementById('startBtn').textContent = '▶ スタート';
+        draw();
+        drawGraph();
+        updateDisplay();
+    }
+    
+    // イベントリスナー
+    document.getElementById('startBtn').addEventListener('click', function() {
+        if (isRunning) {
+            isRunning = false;
+            this.textContent = '▶ スタート';
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+            }
+        } else {
+            // 終了していたらリセット
+            const y = v0y * time - 0.5 * g * time * time;
+            if (y < 0 && time > 0) {
+                resetSimulation();
+            }
+            isRunning = true;
+            this.textContent = '⏸ 一時停止';
+            animate();
+        }
+    });
+    
+    document.getElementById('resetBtn').addEventListener('click', resetSimulation);
+    
+    document.getElementById('trailBtn').addEventListener('click', function() {
+        showTrail = !showTrail;
+        this.textContent = '軌跡: ' + (showTrail ? 'ON' : 'OFF');
+        this.classList.toggle('active', !showTrail);
+        draw();
+    });
+    
+    window.addEventListener('resize', resizeCanvas);
+    
+    // 初期化
+    resizeCanvas();
+    </script>
+</body>
+</html>

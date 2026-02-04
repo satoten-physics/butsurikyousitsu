@@ -1,0 +1,1559 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高校物理 - 仕事とエネルギー</title>
+    <script>
+      window.MathJax = {
+      tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']]
+     }
+     };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        header {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .back-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        h1 {
+            color: #333;
+        }
+        .container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .tab-btn {
+            flex: 1;
+            min-width: 150px;
+            padding: 12px 20px;
+            border: none;
+            background: #f0f0f0;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        .tab-btn.active {
+            background: #667eea;
+            color: white;
+        }
+        .tab-btn:hover {
+            background: #8899f0;
+            color: white;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        h3 {
+            color: #555;
+            margin: 25px 0 15px 0;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #667eea;
+        }
+        h4 {
+            color: #667eea;
+            margin: 20px 0 10px 0;
+        }
+        .pdf-placeholder {
+            background: #f9f9f9;
+            padding: 40px;
+            text-align: center;
+            border-radius: 5px;
+            color: #666;
+        }
+        
+        /* 解説用スタイル */
+        .lecture-content {
+            line-height: 1.8;
+            color: #333;
+        }
+        .lecture-content p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+        .formula-box {
+            background: linear-gradient(135deg, #667eea20 0%, #764ba220 100%);
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+        .formula-box.important {
+            background: linear-gradient(135deg, #ff6b6b20 0%, #ffa50020 100%);
+            border-left: 4px solid #ff6b6b;
+        }
+        .point-box {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        .point-box::before {
+            content: "💡 ポイント";
+            font-weight: bold;
+            color: #856404;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .comparison-table th, .comparison-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: center;
+        }
+        .comparison-table th {
+            background: #667eea;
+            color: white;
+        }
+        .comparison-table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+        .diagram-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        .diagram-box {
+            background: #f9f9f9;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            flex: 1;
+            min-width: 280px;
+            max-width: 400px;
+        }
+        .diagram-box canvas {
+            display: block;
+            margin: 0 auto 10px auto;
+            background: white;
+            border-radius: 5px;
+        }
+        .diagram-box p {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+        .energy-equation {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 15px 0;
+            padding: 15px;
+            background: #f0f0f0;
+            border-radius: 10px;
+        }
+        .energy-box {
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            text-align: center;
+        }
+        .ke-box { background: #4CAF50; color: white; }
+        .pe-box { background: #2196F3; color: white; }
+        .work-box { background: #ff9800; color: white; }
+        .loss-box { background: #f44336; color: white; }
+        .equal-sign { font-size: 24px; font-weight: bold; }
+        
+        /* シミュレーション用スタイル */
+        #sim-container {
+            background: #f5f5f5;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        #physicsCanvas {
+            display: block;
+            width: 100%;
+            background: white;
+            border-radius: 5px;
+            border: 2px solid #ddd;
+        }
+        .sim-controls {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .control-group {
+            margin-bottom: 20px;
+        }
+        .control-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        .control-group input[type="range"] {
+            width: 100%;
+            margin: 10px 0;
+        }
+        .value-display {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            min-width: 100px;
+            text-align: center;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .sim-button {
+            flex: 1;
+            min-width: 120px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .sim-button.start {
+            background: #4CAF50;
+            color: white;
+        }
+        .sim-button.start:hover {
+            background: #45a049;
+        }
+        .sim-button.pause {
+            background: #ff9800;
+            color: white;
+        }
+        .sim-button.pause:hover {
+            background: #e68900;
+        }
+        .sim-button.reset {
+            background: #f44336;
+            color: white;
+        }
+        .sim-button.reset:hover {
+            background: #da190b;
+        }
+        .energy-display {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 20px;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            border: 2px solid #ddd;
+        }
+        .energy-item {
+            flex: 1;
+            min-width: 150px;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .energy-item.kinetic {
+            background: linear-gradient(135deg, #4CAF50, #8BC34A);
+            color: white;
+        }
+        .energy-item.work {
+            background: linear-gradient(135deg, #ff9800, #ffb74d);
+            color: white;
+        }
+        .energy-item.total {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+        .energy-item h4 {
+            color: white;
+            margin: 0 0 10px 0;
+            font-size: 14px;
+        }
+        .energy-item .value {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .energy-bar-container {
+            margin-top: 20px;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            border: 2px solid #ddd;
+        }
+        .energy-bar-container h4 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        .bar-wrapper {
+            margin: 10px 0;
+        }
+        .bar-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+        .bar-bg {
+            height: 30px;
+            background: #e0e0e0;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        .bar-fill {
+            height: 100%;
+            border-radius: 15px;
+            transition: width 0.1s;
+        }
+        .bar-fill.kinetic { background: linear-gradient(90deg, #4CAF50, #8BC34A); }
+        .bar-fill.work { background: linear-gradient(90deg, #ff9800, #ffb74d); }
+        
+        /* 問題用スタイル */
+        .problem-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 10px;
+        }
+        .problem-section h4 {
+            color: #333;
+        }
+        details {
+            margin-top: 15px;
+            padding: 15px;
+            background: white;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        summary {
+            cursor: pointer;
+            font-weight: bold;
+            color: #667eea;
+        }
+        summary:hover {
+            color: #764ba2;
+        }
+        details[open] summary {
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            header, .container {
+                padding: 15px;
+            }
+            .tab-btn {
+                min-width: 100px;
+                font-size: 14px;
+            }
+            .diagram-box {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="back-link">← 目次に戻る</a>
+        <h1>仕事とエネルギー</h1>
+    </header>
+    <div class="container">
+        
+        <div class="tabs">
+            <button class="tab-btn active" onclick="openTab('lecture')">解説編</button>
+            <button class="tab-btn" onclick="openTab('problem')">問題編</button>
+            <button class="tab-btn" onclick="openTab('simulation')">シミュレーション</button>
+        </div>
+        
+        <div id="lecture" class="tab-content active">
+            <h2>授業資料</h2>
+            <iframe src="https://drive.google.com/file/d/1rd3AUHNkj-NLM0IEztEdsiVOdPwxD6EA/preview" width="100%" height="500"></iframe>
+            
+            <div class="lecture-content">
+                <h3>1. 仕事の基本</h3>
+                <p>
+                    物理における「仕事」とは、<strong>力を加え続けて物体を移動させること</strong>を意味します。
+                    日常で使う「仕事」とは異なり、物理では明確に定義された量です。
+                </p>
+                
+                <div class="formula-box">
+                    <p style="text-align: center; font-size: 1.2em;">
+                        <strong>仕事の定義</strong><br><br>
+                        $$ W = F \cdot x $$
+                    </p>
+                    <p style="text-align: center;">
+                        仕事 [J] = 力の大きさ [N] × <strong>着目した力の方向に</strong>移動した距離 [m]
+                    </p>
+                </div>
+                
+                <div class="point-box">
+                    移動距離は「着目した力の方向にどれだけ進んだか」が重要です。
+                    力と移動の関係には3つのパターンがあります。
+                </div>
+                
+                <table class="comparison-table">
+                    <tr>
+                        <th>パターン</th>
+                        <th>力と移動の関係</th>
+                        <th>仕事の符号</th>
+                        <th>例</th>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>力と移動方向が<strong>同じ</strong></td>
+                        <td style="color: #4CAF50; font-weight: bold;">正の仕事</td>
+                        <td>物を押して進める</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>力と移動方向が<strong>反対</strong></td>
+                        <td style="color: #f44336; font-weight: bold;">負の仕事</td>
+                        <td>摩擦力が物体を減速</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>力と移動方向が<strong>垂直</strong></td>
+                        <td style="font-weight: bold;">仕事 = 0</td>
+                        <td>斜面上の垂直抗力</td>
+                    </tr>
+                </table>
+                
+                <h3>2. エネルギーとは</h3>
+                <p>
+                    「仕事」と「エネルギー」は本質的に<strong>同じもの</strong>です。
+                    $E$ [J] のエネルギーを持つ物体は、自分が $E$ [J] 分の仕事ができる、
+                    あるいは相手に $E$ [J] 分の仕事を与えられるということを意味します。
+                </p>
+                
+                <div class="formula-box">
+                    <p style="text-align: center;">
+                        <strong>運動エネルギー</strong>：$K = \dfrac{1}{2}mv^2$<br><br>
+                        <strong>重力による位置エネルギー</strong>：$U = mgh$<br><br>
+                        <strong>力学的エネルギー</strong>：$E = K + U = \dfrac{1}{2}mv^2 + mgh$
+                    </p>
+                </div>
+                
+                <h3>3. 力学的エネルギー保存の法則</h3>
+                <p>
+                    <strong>保存力</strong>（重力、弾性力など）のみが仕事をする場合、
+                    力学的エネルギーの総和は一定に保たれます。
+                </p>
+                
+                <div class="formula-box important">
+                    <p style="text-align: center; font-size: 1.1em;">
+                        <strong>力学的エネルギー保存の法則</strong><br><br>
+                        $$ \dfrac{1}{2}mv_1^2 + mgh_1 = \dfrac{1}{2}mv_2^2 + mgh_2 $$
+                    </p>
+                    <p style="text-align: center;">
+                        （保存力のみが仕事をするとき成立）
+                    </p>
+                </div>
+                
+                <h4>【具体例】斜面上の運動と自由落下の比較</h4>
+                <p>
+                    滑らかな（摩擦のない）斜面を滑り降りる物体と、同じ高さから自由落下する物体を比較してみましょう。
+                </p>
+                
+                <div class="diagram-container">
+                    <div class="diagram-box">
+                        <canvas id="freefallDiagram" width="250" height="200"></canvas>
+                        <p><strong>自由落下</strong></p>
+                        <p>働く力：重力 $mg$ のみ</p>
+                        <p>重力の仕事：$W = mgh$（正）</p>
+                    </div>
+                    <div class="diagram-box">
+                        <canvas id="slopeDiagram" width="250" height="200"></canvas>
+                        <p><strong>滑らかな斜面</strong></p>
+                        <p>働く力：重力 $mg$、垂直抗力 $N$</p>
+                        <p>重力の仕事：$W = mgh$（正）</p>
+                        <p style="color: #f44336;"><strong>垂直抗力の仕事：$W = 0$</strong></p>
+                    </div>
+                </div>
+                
+                <div class="point-box">
+                    <strong>なぜ垂直抗力の仕事は0なのか？</strong><br><br>
+                    垂直抗力 $N$ は常に斜面に対して<strong>垂直</strong>に働きます。
+                    物体は斜面に<strong>沿って</strong>移動するため、力と移動方向が常に90°をなします。
+                    したがって、垂直抗力が物体にする仕事は<strong>常に0</strong>です。<br><br>
+                    結果として、斜面でも自由落下でも、仕事をするのは重力だけなので、
+                    <strong>エネルギーの式は全く同じ</strong>になります！
+                </div>
+                
+                <div class="energy-equation">
+                    <div class="energy-box pe-box">位置エネルギー<br>$mgh$</div>
+                    <span class="equal-sign">→</span>
+                    <div class="energy-box ke-box">運動エネルギー<br>$\dfrac{1}{2}mv^2$</div>
+                </div>
+                
+                <h3>4. 力学的エネルギー保存則 vs エネルギー保存則</h3>
+                <p>
+                    ここが最も重要なポイントです。
+                    <strong>「力学的エネルギー保存の法則」</strong>と<strong>「エネルギー保存の法則」</strong>は似ているようで異なります。
+                </p>
+                
+                <table class="comparison-table">
+                    <tr>
+                        <th></th>
+                        <th>力学的エネルギー保存の法則</th>
+                        <th>エネルギー保存の法則</th>
+                    </tr>
+                    <tr>
+                        <td><strong>適用条件</strong></td>
+                        <td>保存力のみが仕事をするとき</td>
+                        <td>常に成立（宇宙の法則）</td>
+                    </tr>
+                    <tr>
+                        <td><strong>力学的エネルギー</strong></td>
+                        <td>一定（保存される）</td>
+                        <td>変化しうる</td>
+                    </tr>
+                    <tr>
+                        <td><strong>エネルギーの形態</strong></td>
+                        <td>運動・位置のみ考慮</td>
+                        <td>熱・音・光なども含む</td>
+                    </tr>
+                </table>
+                
+                <h4>【重要】保存力以外の仕事がある場合</h4>
+                <p>
+                    摩擦力などの<strong>非保存力</strong>が仕事をすると、力学的エネルギーの総和は変化します。
+                </p>
+                
+                <div class="formula-box important">
+                    <p style="text-align: center; font-size: 1.1em;">
+                        <strong>非保存力がある場合のエネルギー関係</strong><br><br>
+                        $$ \dfrac{1}{2}mv_1^2 + mgh_1 + W_{非保存力} = \dfrac{1}{2}mv_2^2 + mgh_2 $$
+                    </p>
+                    <p style="text-align: center;">
+                        または<br><br>
+                        $$ E_2 - E_1 = W_{非保存力} $$
+                    </p>
+                </div>
+                
+                <p>
+                    摩擦力の仕事は<strong>負</strong>（力と移動方向が反対）なので、
+                    力学的エネルギーの総和は<strong>減少</strong>します。
+                    この減少分は「失われた」わけではなく、<strong>熱エネルギー</strong>などに変換されています。
+                </p>
+                
+                <h4>【具体例】摩擦のある斜面を滑り降りる物体</h4>
+                
+                <div class="diagram-container">
+                    <div class="diagram-box" style="max-width: 500px;">
+                        <canvas id="frictionDiagram" width="350" height="220"></canvas>
+                        <p><strong>摩擦のある斜面</strong></p>
+                    </div>
+                </div>
+                
+                <p>
+                    高さ $h$ の位置Aから出発し、途中の位置Bを経て、地面Cに到達する物体を考えます。
+                    摩擦力を $f$、斜面の長さを $L$ とします。
+                </p>
+                
+                <div style="background: #f0f0f0; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                    <p><strong>位置A（出発点、高さ $h$、速さ 0）</strong></p>
+                    <div class="energy-equation">
+                        <div class="energy-box ke-box">$K_A = 0$</div>
+                        <span>+</span>
+                        <div class="energy-box pe-box">$U_A = mgh$</div>
+                        <span>=</span>
+                        <div class="energy-box" style="background: #9c27b0; color: white;">$E_A = mgh$</div>
+                    </div>
+                    
+                    <p style="margin-top: 20px;"><strong>位置B（途中、高さ $h/2$）</strong></p>
+                    <div class="energy-equation">
+                        <div class="energy-box ke-box">$K_B$</div>
+                        <span>+</span>
+                        <div class="energy-box pe-box">$U_B = \dfrac{mgh}{2}$</div>
+                        <span>=</span>
+                        <div class="energy-box" style="background: #9c27b0; color: white;">$E_B = mgh - \dfrac{fL}{2}$</div>
+                    </div>
+                    <p style="text-align: center; color: #f44336; font-weight: bold;">
+                        ↑ 摩擦の仕事 $-\dfrac{fL}{2}$ の分だけ総和が減少！
+                    </p>
+                    
+                    <p style="margin-top: 20px;"><strong>位置C（地面、高さ 0）</strong></p>
+                    <div class="energy-equation">
+                        <div class="energy-box ke-box">$K_C$</div>
+                        <span>+</span>
+                        <div class="energy-box pe-box">$U_C = 0$</div>
+                        <span>=</span>
+                        <div class="energy-box" style="background: #9c27b0; color: white;">$E_C = mgh - fL$</div>
+                    </div>
+                    <p style="text-align: center; color: #f44336; font-weight: bold;">
+                        ↑ さらに減少して $mgh - fL$ に！
+                    </p>
+                </div>
+                
+                <div class="point-box">
+                    <strong>エネルギーの「ロス」という考え方</strong><br><br>
+                    力学的エネルギーの総和が減少することを「エネルギーのロス」と表現することがあります。
+                    しかし、エネルギー保存の法則によれば、エネルギーは<strong>消滅しない</strong>ため、
+                    「ロス」したエネルギーは熱や音などの他の形態に変換されています。<br><br>
+                    
+                    $$ \underbrace{mgh}_{\text{最初の力学的E}} = \underbrace{K_C}_{\text{最後の運動E}} + \underbrace{fL}_{\text{熱エネルギーなど}} $$
+                    <br>
+                    エネルギーの<strong>総量</strong>は常に一定です！
+                </div>
+                
+                <h3>5. まとめ</h3>
+                <div class="formula-box">
+                    <ol style="padding-left: 20px; line-height: 2;">
+                        <li><strong>仕事</strong> $W = Fx$（力の方向への移動距離が重要）</li>
+                        <li><strong>力学的エネルギー</strong> $E = \dfrac{1}{2}mv^2 + mgh$</li>
+                        <li><strong>力学的エネルギー保存則</strong>：保存力のみのとき成立</li>
+                        <li><strong>非保存力がある場合</strong>：力学的エネルギーは変化する（減少が多い）</li>
+                        <li>減少分は<strong>熱などに変換</strong>される（エネルギー保存則は常に成立）</li>
+                        <li>垂直抗力は移動方向と垂直なので、<strong>仕事は常に0</strong></li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        
+        <div id="problem" class="tab-content">
+            <h2>確認問題</h2>
+            
+            <div class="problem-section">
+                <h4>問題1：仕事の計算</h4>
+                <p>
+                    質量 2.0 kg の物体を、水平な床の上で 25 N の力で水平方向に押し、4.0 m 移動させた。
+                    このとき、動摩擦力の大きさは 10 N であった。
+                </p>
+                <p>
+                    (1) 押す力がした仕事を求めよ。<br>
+                    (2) 摩擦力がした仕事を求めよ。<br>
+                    (3) 垂直抗力がした仕事を求めよ。<br>
+                    (4) 物体の運動エネルギーの増加量を求めよ。
+                </p>
+                <details>
+                    <summary>解答・解説を見る</summary>
+                    <p><strong>(1) 押す力がした仕事</strong></p>
+                    <p>
+                        押す力は移動方向と同じ向きなので、<br>
+                        $W_1 = 25 \times 4.0 = 100$ J（正の仕事）
+                    </p>
+                    
+                    <p><strong>(2) 摩擦力がした仕事</strong></p>
+                    <p>
+                        摩擦力は移動方向と逆向きなので、<br>
+                        $W_2 = -10 \times 4.0 = -40$ J（負の仕事）
+                    </p>
+                    
+                    <p><strong>(3) 垂直抗力がした仕事</strong></p>
+                    <p>
+                        垂直抗力は鉛直上向き、移動は水平方向なので、力と移動が<strong>垂直</strong>。<br>
+                        $W_3 = 0$ J
+                    </p>
+                    
+                    <p><strong>(4) 運動エネルギーの増加量</strong></p>
+                    <p>
+                        仕事と運動エネルギーの関係より、物体にされた仕事の合計が運動エネルギーの増加量になる。<br>
+                        $\Delta K = W_1 + W_2 + W_3 = 100 + (-40) + 0 = 60$ J
+                    </p>
+                </details>
+            </div>
+            
+            <div class="problem-section">
+                <h4>問題2：力学的エネルギー保存</h4>
+                <p>
+                    高さ 5.0 m の滑らかな斜面の上端から、質量 1.0 kg の物体を静かに離した。
+                    重力加速度を $g = 10$ m/s² とする。
+                </p>
+                <p>
+                    (1) 斜面の下端に達したときの物体の速さを求めよ。<br>
+                    (2) 同じ高さから自由落下させた場合、地面に達したときの速さはいくらか。<br>
+                    (3) (1)と(2)の結果が同じになる理由を、仕事の観点から説明せよ。
+                </p>
+                <details>
+                    <summary>解答・解説を見る</summary>
+                    <p><strong>(1) 斜面を滑り降りた場合</strong></p>
+                    <p>
+                        力学的エネルギー保存の法則より、<br>
+                        $mgh = \dfrac{1}{2}mv^2$<br>
+                        $v = \sqrt{2gh} = \sqrt{2 \times 10 \times 5.0} = 10$ m/s
+                    </p>
+                    
+                    <p><strong>(2) 自由落下の場合</strong></p>
+                    <p>
+                        同様に、$v = \sqrt{2gh} = 10$ m/s
+                    </p>
+                    
+                    <p><strong>(3) 結果が同じになる理由</strong></p>
+                    <p>
+                        斜面を滑り降りる場合、物体には重力と垂直抗力が働く。<br>
+                        しかし、<strong>垂直抗力は斜面に垂直</strong>であり、物体の移動は斜面に沿っている。<br>
+                        つまり、垂直抗力と移動方向は常に<strong>90°</strong>をなすため、垂直抗力がする仕事は<strong>0</strong>である。<br><br>
+                        したがって、斜面でも自由落下でも、<strong>仕事をするのは重力のみ</strong>であり、
+                        重力がする仕事は両方とも $mgh$ で同じ。<br>
+                        結果として、獲得する運動エネルギーも同じになる。
+                    </p>
+                </details>
+            </div>
+            
+            <div class="problem-section">
+                <h4>問題3：エネルギーの「ロス」</h4>
+                <p>
+                    質量 2.0 kg の物体が、高さ 10 m の粗い斜面（長さ 20 m）の上端から初速度 0 で滑り始めた。
+                    斜面下端での速さは 8.0 m/s であった。重力加速度を $g = 10$ m/s² とする。
+                </p>
+                <p>
+                    (1) 斜面上端での力学的エネルギーを求めよ。<br>
+                    (2) 斜面下端での力学的エネルギーを求めよ。<br>
+                    (3) 摩擦力がした仕事を求めよ。<br>
+                    (4) 摩擦力の大きさを求めよ。<br>
+                    (5) 「失われた」力学的エネルギーはどこへ行ったか説明せよ。
+                </p>
+                <details>
+                    <summary>解答・解説を見る</summary>
+                    <p><strong>(1) 上端での力学的エネルギー</strong></p>
+                    <p>
+                        基準を斜面下端にとると、<br>
+                        $E_1 = \dfrac{1}{2}mv_1^2 + mgh = 0 + 2.0 \times 10 \times 10 = 200$ J
+                    </p>
+                    
+                    <p><strong>(2) 下端での力学的エネルギー</strong></p>
+                    <p>
+                        $E_2 = \dfrac{1}{2}mv_2^2 + 0 = \dfrac{1}{2} \times 2.0 \times 8.0^2 = 64$ J
+                    </p>
+                    
+                    <p><strong>(3) 摩擦力がした仕事</strong></p>
+                    <p>
+                        エネルギーと仕事の関係より、<br>
+                        $E_2 - E_1 = W_{摩擦}$<br>
+                        $W_{摩擦} = 64 - 200 = -136$ J
+                    </p>
+                    
+                    <p><strong>(4) 摩擦力の大きさ</strong></p>
+                    <p>
+                        摩擦力を $f$ とすると、$W_{摩擦} = -f \times L$（負なのは移動と逆向きだから）<br>
+                        $-136 = -f \times 20$<br>
+                        $f = 6.8$ N
+                    </p>
+                    
+                    <p><strong>(5) 「失われた」エネルギーの行方</strong></p>
+                    <p>
+                        力学的エネルギーは $200 - 64 = 136$ J 減少したが、
+                        エネルギー保存の法則により、この分は<strong>消滅したわけではない</strong>。<br>
+                        摩擦によって、136 J のエネルギーは<strong>熱エネルギー</strong>に変換された。
+                        （斜面と物体がわずかに温まっている）<br><br>
+                        「エネルギーのロス」とは、力学的エネルギーから見た表現であり、
+                        エネルギー全体としては常に保存されている。
+                    </p>
+                </details>
+            </div>
+        </div>
+        
+        <div id="simulation" class="tab-content">
+            <h2>エネルギーシミュレーション</h2>
+            <p>物体に力を加えて押したとき、仕事とエネルギーの関係を確認しましょう。<strong>摩擦のある床</strong>での運動です。</p>
+            
+            <div id="sim-container">
+                <canvas id="physicsCanvas"></canvas>
+            </div>
+            
+            <div class="sim-controls">
+                <div class="control-group">
+                    <label>加える力 (F): <span class="value-display" id="forceDisplay">20 N</span></label>
+                    <input type="range" id="forceSlider" min="0" max="50" value="20" step="1">
+                </div>
+                
+                <div style="background: #e8e8e8; padding: 10px; border-radius: 5px; margin-bottom: 20px;">
+                    <p style="margin: 0; color: #666;"><strong>固定パラメータ:</strong> 質量 m = 2.0 kg、初速度 v₀ = 0 m/s、<span style="color: #f44336;">摩擦力 f = 4.0 N</span></p>
+                </div>
+                
+                <div class="button-group">
+                    <button class="sim-button start" id="startBtn">▶ スタート</button>
+                    <button class="sim-button reset" id="resetBtn">↺ リセット</button>
+                </div>
+            </div>
+            
+            <div class="energy-display" style="flex-wrap: wrap;">
+                <div class="energy-item work" style="min-width: 200px;">
+                    <h4>手が加えた仕事 W<sub>F</sub></h4>
+                    <div class="value" id="workFValue">0.0 J</div>
+                    <div style="font-size: 12px;">$F \times x$</div>
+                </div>
+                <div class="energy-item kinetic" style="min-width: 200px;">
+                    <h4>運動エネルギー K</h4>
+                    <div class="value" id="keValue">0.0 J</div>
+                    <div style="font-size: 12px;">$\frac{1}{2}mv^2$</div>
+                </div>
+                <div class="energy-item" style="min-width: 200px; background: linear-gradient(135deg, #f44336, #ff7043);">
+                    <h4>摩擦による熱 Q</h4>
+                    <div class="value" id="heatValue">0.0 J</div>
+                    <div style="font-size: 12px;">$f \times x$（エネルギーロス）</div>
+                </div>
+                <div class="energy-item total" style="min-width: 200px;">
+                    <h4>現在の速度 v</h4>
+                    <div class="value" id="velocityValue">0.0 m/s</div>
+                </div>
+            </div>
+            
+            <div class="energy-bar-container">
+                <h4>エネルギーバー（最大スケール: 500 J）</h4>
+                <div class="bar-wrapper">
+                    <div class="bar-label">
+                        <span style="color: #ff9800; font-weight: bold;">手が加えた仕事 W<sub>F</sub> = F × x</span>
+                        <span id="workFBarValue">0 J</span>
+                    </div>
+                    <div class="bar-bg">
+                        <div class="bar-fill work" id="workFBar" style="width: 0%;"></div>
+                    </div>
+                </div>
+                <div class="bar-wrapper">
+                    <div class="bar-label">
+                        <span style="color: #4CAF50; font-weight: bold;">運動エネルギー K</span>
+                        <span id="keBarValue">0 J</span>
+                    </div>
+                    <div class="bar-bg">
+                        <div class="bar-fill kinetic" id="keBar" style="width: 0%;"></div>
+                    </div>
+                </div>
+                <div class="bar-wrapper">
+                    <div class="bar-label">
+                        <span style="color: #f44336; font-weight: bold;">摩擦による熱 Q（ロス）</span>
+                        <span id="heatBarValue">0 J</span>
+                    </div>
+                    <div class="bar-bg">
+                        <div class="bar-fill" id="heatBar" style="width: 0%; background: linear-gradient(90deg, #f44336, #ff7043);"></div>
+                    </div>
+                </div>
+                <div class="bar-wrapper" style="margin-top: 15px; padding-top: 15px; border-top: 2px dashed #667eea;">
+                    <div class="bar-label">
+                        <span style="color: #9c27b0; font-weight: bold;">K + Q（運動E + 熱）</span>
+                        <span id="sumBarValue">0 J</span>
+                    </div>
+                    <div class="bar-bg">
+                        <div class="bar-fill" id="sumBar" style="width: 0%; background: linear-gradient(90deg, #9c27b0, #e040fb);"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="formula-box" style="margin-top: 20px;">
+                <p style="text-align: center; font-size: 1.1em;">
+                    <strong>エネルギー保存の確認</strong><br><br>
+                    $$ W_F = K + Q $$
+                    <br>
+                    手が加えた仕事 = 運動エネルギー + 摩擦による熱（エネルギーロス）
+                </p>
+            </div>
+            
+            <div class="point-box" style="margin-top: 20px;">
+                <strong>観察ポイント</strong><br>
+                ・オレンジのバー（手の仕事 $W_F$）と紫のバー（$K + Q$）が<strong>常に一致</strong>することを確認しましょう<br>
+                ・床が<strong>赤く光る</strong>のは摩擦熱を表しています<br>
+                ・床から出る<strong>ギザギザ線</strong>は熱（音）の発生を表現しています<br>
+                ・力 $F$ を小さくすると、摩擦力に打ち勝てず動きません（$F > f$ のとき動く）
+            </div>
+        </div>
+    </div>
+    
+    <script>
+    // --- タブ切り替え機能 ---
+    function openTab(tabName) {
+        var contents = document.getElementsByClassName("tab-content");
+        for (var i = 0; i < contents.length; i++) {
+            contents[i].style.display = "none";
+            contents[i].classList.remove("active");
+        }
+        var buttons = document.getElementsByClassName("tab-btn");
+        for (var i = 0; i < buttons.length; i++) {
+            buttons[i].classList.remove("active");
+        }
+        document.getElementById(tabName).style.display = "block";
+        document.getElementById(tabName).classList.add("active");
+        if (event) {
+            event.currentTarget.classList.add("active");
+        }
+        
+        // シミュレーションタブを開いたときにCanvasをリサイズ
+        if (tabName === 'simulation') {
+            resizeCanvas();
+        }
+    }
+
+    // --- 解説用の図を描画 ---
+    function drawDiagrams() {
+        // 自由落下の図
+        const ffCanvas = document.getElementById('freefallDiagram');
+        const ffCtx = ffCanvas.getContext('2d');
+        ffCtx.clearRect(0, 0, ffCanvas.width, ffCanvas.height);
+        
+        // 地面
+        ffCtx.fillStyle = '#8B4513';
+        ffCtx.fillRect(0, 170, ffCanvas.width, 30);
+        ffCtx.strokeStyle = '#333';
+        ffCtx.setLineDash([5, 5]);
+        ffCtx.beginPath();
+        ffCtx.moveTo(0, 170);
+        ffCtx.lineTo(ffCanvas.width, 170);
+        ffCtx.stroke();
+        ffCtx.setLineDash([]);
+        
+        // 物体（上）
+        ffCtx.fillStyle = '#667eea';
+        ffCtx.fillRect(110, 30, 30, 30);
+        
+        // 物体（下、半透明）
+        ffCtx.fillStyle = 'rgba(102, 126, 234, 0.3)';
+        ffCtx.fillRect(110, 140, 30, 30);
+        
+        // 重力ベクトル
+        ffCtx.strokeStyle = '#f44336';
+        ffCtx.lineWidth = 3;
+        ffCtx.beginPath();
+        ffCtx.moveTo(125, 60);
+        ffCtx.lineTo(125, 110);
+        ffCtx.stroke();
+        // 矢印
+        ffCtx.beginPath();
+        ffCtx.moveTo(125, 110);
+        ffCtx.lineTo(120, 100);
+        ffCtx.lineTo(130, 100);
+        ffCtx.closePath();
+        ffCtx.fillStyle = '#f44336';
+        ffCtx.fill();
+        
+        // ラベル
+        ffCtx.fillStyle = '#f44336';
+        ffCtx.font = 'bold 14px sans-serif';
+        ffCtx.fillText('mg', 135, 90);
+        
+        // 高さ h
+        ffCtx.strokeStyle = '#333';
+        ffCtx.lineWidth = 1;
+        ffCtx.beginPath();
+        ffCtx.moveTo(50, 45);
+        ffCtx.lineTo(50, 170);
+        ffCtx.stroke();
+        ffCtx.beginPath();
+        ffCtx.moveTo(45, 45);
+        ffCtx.lineTo(55, 45);
+        ffCtx.stroke();
+        ffCtx.beginPath();
+        ffCtx.moveTo(45, 170);
+        ffCtx.lineTo(55, 170);
+        ffCtx.stroke();
+        ffCtx.fillStyle = '#333';
+        ffCtx.fillText('h', 35, 110);
+        
+        // 斜面の図
+        const slCanvas = document.getElementById('slopeDiagram');
+        const slCtx = slCanvas.getContext('2d');
+        slCtx.clearRect(0, 0, slCanvas.width, slCanvas.height);
+        
+        // 地面
+        slCtx.fillStyle = '#8B4513';
+        slCtx.fillRect(0, 170, slCanvas.width, 30);
+        
+        // 斜面
+        slCtx.fillStyle = '#ddd';
+        slCtx.beginPath();
+        slCtx.moveTo(30, 170);
+        slCtx.lineTo(200, 170);
+        slCtx.lineTo(30, 40);
+        slCtx.closePath();
+        slCtx.fill();
+        slCtx.strokeStyle = '#333';
+        slCtx.lineWidth = 2;
+        slCtx.stroke();
+        
+        // 物体（斜面上）
+        const angle = Math.atan2(130, 170);
+        slCtx.save();
+        slCtx.translate(80, 90);
+        slCtx.rotate(-angle);
+        slCtx.fillStyle = '#667eea';
+        slCtx.fillRect(-15, -25, 30, 25);
+        slCtx.restore();
+        
+        // 重力ベクトル（物体から）
+        slCtx.strokeStyle = '#f44336';
+        slCtx.lineWidth = 3;
+        slCtx.beginPath();
+        slCtx.moveTo(80, 80);
+        slCtx.lineTo(80, 130);
+        slCtx.stroke();
+        slCtx.beginPath();
+        slCtx.moveTo(80, 130);
+        slCtx.lineTo(75, 120);
+        slCtx.lineTo(85, 120);
+        slCtx.closePath();
+        slCtx.fillStyle = '#f44336';
+        slCtx.fill();
+        slCtx.fillText('mg', 88, 115);
+        
+        // 垂直抗力ベクトル（斜面に垂直）
+        const nx = 40 * Math.sin(angle);
+        const ny = -40 * Math.cos(angle);
+        slCtx.strokeStyle = '#4CAF50';
+        slCtx.beginPath();
+        slCtx.moveTo(80, 80);
+        slCtx.lineTo(80 + nx, 80 + ny);
+        slCtx.stroke();
+        slCtx.beginPath();
+        const arrowAngle = Math.atan2(ny, nx);
+        slCtx.moveTo(80 + nx, 80 + ny);
+        slCtx.lineTo(80 + nx - 10*Math.cos(arrowAngle - 0.5), 80 + ny - 10*Math.sin(arrowAngle - 0.5));
+        slCtx.lineTo(80 + nx - 10*Math.cos(arrowAngle + 0.5), 80 + ny - 10*Math.sin(arrowAngle + 0.5));
+        slCtx.closePath();
+        slCtx.fillStyle = '#4CAF50';
+        slCtx.fill();
+        slCtx.fillStyle = '#4CAF50';
+        slCtx.fillText('N', 80 + nx + 5, 80 + ny);
+        
+        // 移動方向（斜面に沿って）
+        slCtx.strokeStyle = '#2196F3';
+        slCtx.setLineDash([5, 3]);
+        slCtx.beginPath();
+        slCtx.moveTo(80, 80);
+        slCtx.lineTo(140, 130);
+        slCtx.stroke();
+        slCtx.setLineDash([]);
+        slCtx.fillStyle = '#2196F3';
+        slCtx.fillText('移動方向', 145, 140);
+        
+        // 90度マーク
+        slCtx.strokeStyle = '#333';
+        slCtx.lineWidth = 1;
+        slCtx.beginPath();
+        slCtx.arc(80, 80, 15, -angle - Math.PI/2, -angle, false);
+        slCtx.stroke();
+        
+        // 高さ h
+        slCtx.strokeStyle = '#333';
+        slCtx.beginPath();
+        slCtx.moveTo(220, 40);
+        slCtx.lineTo(220, 170);
+        slCtx.stroke();
+        slCtx.beginPath();
+        slCtx.moveTo(215, 40);
+        slCtx.lineTo(225, 40);
+        slCtx.stroke();
+        slCtx.beginPath();
+        slCtx.moveTo(215, 170);
+        slCtx.lineTo(225, 170);
+        slCtx.stroke();
+        slCtx.fillStyle = '#333';
+        slCtx.fillText('h', 230, 110);
+        
+        // 摩擦ありの図
+        const frCanvas = document.getElementById('frictionDiagram');
+        const frCtx = frCanvas.getContext('2d');
+        frCtx.clearRect(0, 0, frCanvas.width, frCanvas.height);
+        
+        // 地面
+        frCtx.fillStyle = '#8B4513';
+        frCtx.fillRect(0, 190, frCanvas.width, 30);
+        
+        // 斜面（粗い）
+        frCtx.fillStyle = '#ccc';
+        frCtx.beginPath();
+        frCtx.moveTo(50, 190);
+        frCtx.lineTo(300, 190);
+        frCtx.lineTo(50, 30);
+        frCtx.closePath();
+        frCtx.fill();
+        frCtx.strokeStyle = '#333';
+        frCtx.lineWidth = 2;
+        frCtx.stroke();
+        
+        // 粗さを表現
+        frCtx.strokeStyle = '#999';
+        frCtx.lineWidth = 1;
+        for (let i = 0; i < 15; i++) {
+            const x1 = 60 + i * 16;
+            const y1 = 190 - (x1 - 50) * (160/250);
+            frCtx.beginPath();
+            frCtx.moveTo(x1, y1);
+            frCtx.lineTo(x1 + 5, y1 - 5);
+            frCtx.stroke();
+        }
+        
+        // 点A（上端）
+        frCtx.fillStyle = '#667eea';
+        frCtx.beginPath();
+        frCtx.arc(70, 50, 10, 0, Math.PI * 2);
+        frCtx.fill();
+        frCtx.fillStyle = '#333';
+        frCtx.font = 'bold 14px sans-serif';
+        frCtx.fillText('A', 55, 40);
+        
+        // 点B（途中）
+        frCtx.fillStyle = 'rgba(102, 126, 234, 0.6)';
+        frCtx.beginPath();
+        frCtx.arc(150, 110, 10, 0, Math.PI * 2);
+        frCtx.fill();
+        frCtx.fillStyle = '#333';
+        frCtx.fillText('B', 160, 105);
+        
+        // 点C（下端）
+        frCtx.fillStyle = 'rgba(102, 126, 234, 0.3)';
+        frCtx.beginPath();
+        frCtx.arc(280, 180, 10, 0, Math.PI * 2);
+        frCtx.fill();
+        frCtx.fillStyle = '#333';
+        frCtx.fillText('C', 290, 175);
+        
+        // 高さ表示
+        frCtx.strokeStyle = '#333';
+        frCtx.setLineDash([3, 3]);
+        frCtx.beginPath();
+        frCtx.moveTo(70, 50);
+        frCtx.lineTo(20, 50);
+        frCtx.lineTo(20, 190);
+        frCtx.stroke();
+        frCtx.setLineDash([]);
+        frCtx.fillText('h', 5, 120);
+        
+        // h/2
+        frCtx.setLineDash([3, 3]);
+        frCtx.beginPath();
+        frCtx.moveTo(150, 110);
+        frCtx.lineTo(35, 110);
+        frCtx.stroke();
+        frCtx.setLineDash([]);
+        frCtx.fillText('h/2', 5, 155);
+        
+        // 摩擦力の矢印（移動と逆向き）
+        const fAngle = Math.atan2(160, 250);
+        frCtx.strokeStyle = '#ff9800';
+        frCtx.lineWidth = 2;
+        frCtx.beginPath();
+        frCtx.moveTo(150, 110);
+        frCtx.lineTo(150 - 30*Math.cos(fAngle), 110 + 30*Math.sin(fAngle));
+        frCtx.stroke();
+        frCtx.fillStyle = '#ff9800';
+        frCtx.fillText('f (摩擦)', 100, 145);
+        
+        // 斜面の長さ L
+        frCtx.fillStyle = '#666';
+        frCtx.font = '12px sans-serif';
+        frCtx.fillText('斜面の長さ L', 140, 200);
+    }
+
+    // ページ読み込み時に図を描画
+    window.addEventListener('load', drawDiagrams);
+
+    // --- シミュレーション ---
+    const canvas = document.getElementById('physicsCanvas');
+    const ctx = canvas.getContext('2d');
+    
+    // パラメータ
+    const mass = 2.0; // kg（固定）
+    const friction = 4.0; // N（摩擦力、固定）
+    let force = 20; // N
+    let positionM = 0; // m（メートル単位）
+    let time = 0;
+    let isRunning = false;
+    let animationId = null;
+    let heatIntensity = 0; // 熱の強度（0〜1）
+    let heatWaves = []; // 熱波のアニメーション用
+    
+    // スケール設定
+    const pixelsPerMeter = 50; // 1m = 50px
+    const maxEnergy = 500; // J（エネルギーバーの最大値）
+    const startX = 50; // 開始位置（px）
+    
+    // DOM要素
+    const forceSlider = document.getElementById('forceSlider');
+    const forceDisplay = document.getElementById('forceDisplay');
+    const startBtn = document.getElementById('startBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const keValue = document.getElementById('keValue');
+    const workFValue = document.getElementById('workFValue');
+    const heatValue = document.getElementById('heatValue');
+    const velocityValue = document.getElementById('velocityValue');
+    const keBar = document.getElementById('keBar');
+    const workFBar = document.getElementById('workFBar');
+    const heatBar = document.getElementById('heatBar');
+    const sumBar = document.getElementById('sumBar');
+    const keBarValue = document.getElementById('keBarValue');
+    const workFBarValue = document.getElementById('workFBarValue');
+    const heatBarValue = document.getElementById('heatBarValue');
+    const sumBarValue = document.getElementById('sumBarValue');
+    
+    // スライダーイベント
+    forceSlider.addEventListener('input', function() {
+        force = parseFloat(this.value);
+        forceDisplay.textContent = force + ' N';
+    });
+    
+    // スタート/一時停止ボタン
+    startBtn.addEventListener('click', function() {
+        if (isRunning) {
+            // 一時停止
+            isRunning = false;
+            startBtn.textContent = '▶ スタート';
+            startBtn.classList.remove('pause');
+            startBtn.classList.add('start');
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+            }
+        } else {
+            // スタート
+            isRunning = true;
+            startBtn.textContent = '⏸ 一時停止';
+            startBtn.classList.remove('start');
+            startBtn.classList.add('pause');
+            lastTime = performance.now();
+            animate();
+        }
+    });
+    
+    // リセットボタン
+    resetBtn.addEventListener('click', function() {
+        isRunning = false;
+        startBtn.textContent = '▶ スタート';
+        startBtn.classList.remove('pause');
+        startBtn.classList.add('start');
+        if (animationId) {
+            cancelAnimationFrame(animationId);
+        }
+        positionM = 0;
+        time = 0;
+        heatIntensity = 0;
+        heatWaves = [];
+        updateDisplay();
+        draw();
+    });
+    
+    // Canvas リサイズ
+    function resizeCanvas() {
+        canvas.width = canvas.parentElement.clientWidth;
+        canvas.height = 250;
+        draw();
+    }
+    
+    window.addEventListener('resize', resizeCanvas);
+    
+    // 熱波を追加
+    function addHeatWave(x, y) {
+        heatWaves.push({
+            x: x,
+            y: y,
+            age: 0,
+            maxAge: 30,
+            amplitude: 5 + Math.random() * 5
+        });
+    }
+    
+    // エネルギー計算（エネルギー保存則に基づく正確な計算）
+    function calculateEnergy() {
+        const workF = force * positionM; // 手がした仕事 W_F = F × x
+        const heat = friction * positionM; // 摩擦による熱 Q = f × x
+        const ke = workF - heat; // 運動エネルギー K = W_F - Q（エネルギー保存則）
+        const velocity = ke > 0 ? Math.sqrt(2 * ke / mass) : 0; // v = √(2K/m)
+        
+        return { workF, heat, ke, velocity };
+    }
+    
+    // 描画
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        const energy = calculateEnergy();
+        
+        // 背景
+        ctx.fillStyle = '#f8f9fa';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        // 床の熱表現（赤く光る）
+        const heatColor = `rgba(255, ${100 - heatIntensity * 100}, ${100 - heatIntensity * 100}, ${0.3 + heatIntensity * 0.5})`;
+        const gradient = ctx.createLinearGradient(0, 170, 0, 220);
+        gradient.addColorStop(0, heatColor);
+        gradient.addColorStop(1, '#8B4513');
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 170, canvas.width, 80);
+        
+        // 床の摩擦を表現（ザラザラ）
+        ctx.strokeStyle = '#666';
+        ctx.lineWidth = 1;
+        for (let i = 0; i < canvas.width; i += 15) {
+            ctx.beginPath();
+            ctx.moveTo(i, 175);
+            ctx.lineTo(i + 7, 170);
+            ctx.stroke();
+        }
+        
+        // 床の線
+        ctx.strokeStyle = '#333';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(0, 170);
+        ctx.lineTo(canvas.width, 170);
+        ctx.stroke();
+        
+        // 熱波（ギザギザ線）の描画
+        ctx.strokeStyle = '#ff6b6b';
+        ctx.lineWidth = 2;
+        for (let i = heatWaves.length - 1; i >= 0; i--) {
+            const wave = heatWaves[i];
+            const alpha = 1 - wave.age / wave.maxAge;
+            ctx.strokeStyle = `rgba(255, 107, 107, ${alpha})`;
+            ctx.beginPath();
+            const waveY = wave.y - wave.age * 2;
+            ctx.moveTo(wave.x, waveY);
+            for (let j = 0; j < 4; j++) {
+                const dx = (j % 2 === 0) ? wave.amplitude : -wave.amplitude;
+                ctx.lineTo(wave.x + dx, waveY - (j + 1) * 5);
+            }
+            ctx.stroke();
+            
+            // 更新
+            wave.age++;
+            if (wave.age >= wave.maxAge) {
+                heatWaves.splice(i, 1);
+            }
+        }
+        
+        // 目盛り
+        ctx.fillStyle = '#666';
+        ctx.font = '12px sans-serif';
+        for (let i = 0; i <= 10; i++) {
+            const x = startX + i * pixelsPerMeter;
+            ctx.beginPath();
+            ctx.moveTo(x, 165);
+            ctx.lineTo(x, 175);
+            ctx.stroke();
+            ctx.fillText(i + 'm', x - 10, 190);
+        }
+        
+        // 物体の位置（ピクセル）
+        const boxX = startX + positionM * pixelsPerMeter;
+        const boxWidth = 50;
+        const boxHeight = 50;
+        const boxY = 170 - boxHeight;
+        
+        // 箱の影
+        ctx.fillStyle = 'rgba(0,0,0,0.15)';
+        ctx.fillRect(boxX + 5, boxY + 5, boxWidth, boxHeight);
+        
+        // 箱本体
+        const boxGradient = ctx.createLinearGradient(boxX, boxY, boxX, boxY + boxHeight);
+        boxGradient.addColorStop(0, '#667eea');
+        boxGradient.addColorStop(1, '#764ba2');
+        ctx.fillStyle = boxGradient;
+        ctx.fillRect(boxX, boxY, boxWidth, boxHeight);
+        
+        // 箱の枠
+        ctx.strokeStyle = '#333';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(boxX, boxY, boxWidth, boxHeight);
+        
+        // 質量表示
+        ctx.fillStyle = 'white';
+        ctx.font = 'bold 16px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('2kg', boxX + boxWidth/2, boxY + boxHeight/2 + 6);
+        ctx.textAlign = 'left';
+        
+        // 加える力のベクトル（F > 0 のとき）
+        if (force > 0) {
+            const arrowLength = Math.min(force * 2, 80);
+            
+            // 力の矢印
+            ctx.strokeStyle = '#2196F3';
+            ctx.lineWidth = 5;
+            ctx.beginPath();
+            ctx.moveTo(boxX - arrowLength, boxY + boxHeight/2);
+            ctx.lineTo(boxX - 5, boxY + boxHeight/2);
+            ctx.stroke();
+            
+            // 矢印の先端
+            ctx.beginPath();
+            ctx.moveTo(boxX, boxY + boxHeight/2);
+            ctx.lineTo(boxX - 12, boxY + boxHeight/2 - 10);
+            ctx.lineTo(boxX - 12, boxY + boxHeight/2 + 10);
+            ctx.closePath();
+            ctx.fillStyle = '#2196F3';
+            ctx.fill();
+            
+            // 力のラベル
+            ctx.fillStyle = '#2196F3';
+            ctx.font = 'bold 14px sans-serif';
+            ctx.fillText('F = ' + force + ' N', boxX - arrowLength - 10, boxY + boxHeight/2 - 15);
+        }
+        
+        // 摩擦力のベクトル（動いているとき）
+        if (energy.velocity > 0 || (force > friction && positionM > 0)) {
+            const frictionArrowLen = friction * 2;
+            
+            ctx.strokeStyle = '#f44336';
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            ctx.moveTo(boxX + boxWidth + 5, boxY + boxHeight - 10);
+            ctx.lineTo(boxX + boxWidth + 5 + frictionArrowLen, boxY + boxHeight - 10);
+            ctx.stroke();
+            
+            // 矢印の先端（逆向き）
+            ctx.beginPath();
+            ctx.moveTo(boxX + boxWidth + 5 + frictionArrowLen, boxY + boxHeight - 10);
+            ctx.lineTo(boxX + boxWidth + frictionArrowLen - 5, boxY + boxHeight - 18);
+            ctx.lineTo(boxX + boxWidth + frictionArrowLen - 5, boxY + boxHeight - 2);
+            ctx.closePath();
+            ctx.fillStyle = '#f44336';
+            ctx.fill();
+            
+            // ラベル
+            ctx.fillStyle = '#f44336';
+            ctx.font = 'bold 12px sans-serif';
+            ctx.fillText('f = ' + friction + ' N', boxX + boxWidth + 10, boxY + boxHeight - 20);
+        }
+        
+        // 情報表示
+        ctx.fillStyle = '#333';
+        ctx.font = '14px sans-serif';
+        ctx.textAlign = 'left';
+        ctx.fillText('移動距離 x = ' + positionM.toFixed(2) + ' m', 10, 25);
+        ctx.fillText('時間 t = ' + time.toFixed(2) + ' s', 10, 45);
+        
+        // 静止摩擦の警告
+        if (force <= friction && force > 0 && positionM === 0) {
+            ctx.fillStyle = '#f44336';
+            ctx.font = 'bold 14px sans-serif';
+            ctx.fillText('⚠ F ≤ f のため動きません！', 10, 70);
+        }
+    }
+    
+    // 表示更新
+    function updateDisplay() {
+        // エネルギー保存則に基づく正確な計算
+        const energy = calculateEnergy();
+        const sum = energy.ke + energy.heat; // これは必ず workF と等しくなる
+        
+        keValue.textContent = energy.ke.toFixed(1) + ' J';
+        workFValue.textContent = energy.workF.toFixed(1) + ' J';
+        heatValue.textContent = energy.heat.toFixed(1) + ' J';
+        velocityValue.textContent = energy.velocity.toFixed(2) + ' m/s';
+        
+        // エネルギーバー
+        const kePercent = Math.min(100, (energy.ke / maxEnergy) * 100);
+        const workFPercent = Math.min(100, (energy.workF / maxEnergy) * 100);
+        const heatPercent = Math.min(100, (energy.heat / maxEnergy) * 100);
+        const sumPercent = Math.min(100, (sum / maxEnergy) * 100);
+        
+        keBar.style.width = kePercent + '%';
+        workFBar.style.width = workFPercent + '%';
+        heatBar.style.width = heatPercent + '%';
+        sumBar.style.width = sumPercent + '%';
+        
+        keBarValue.textContent = energy.ke.toFixed(1) + ' J';
+        workFBarValue.textContent = energy.workF.toFixed(1) + ' J';
+        heatBarValue.textContent = energy.heat.toFixed(1) + ' J';
+        sumBarValue.textContent = sum.toFixed(1) + ' J';
+        
+        // 熱の強度を更新（視覚的フィードバック用）
+        heatIntensity = Math.min(1, energy.heat / 200);
+    }
+    
+    // アニメーション
+    let lastTime = 0;
+    let heatWaveTimer = 0;
+    
+    function animate(currentTime) {
+        if (!isRunning) return;
+        
+        const dt = (currentTime - lastTime) / 1000; // 秒に変換
+        lastTime = currentTime;
+        
+        if (dt > 0 && dt < 0.1) { // 異常な dt を除外
+            // 物理計算
+            // 加える力が摩擦力より大きいときのみ動く
+            if (force > friction) {
+                // 運動方程式: ma = F - f より a = (F-f)/m
+                const acceleration = (force - friction) / mass;
+                
+                // 等加速度運動: x = (1/2)at² より位置を更新
+                // 現在の速度を計算
+                const energy = calculateEnergy();
+                const currentVelocity = energy.velocity;
+                
+                // 位置更新: Δx = v*Δt + (1/2)*a*(Δt)²
+                positionM += currentVelocity * dt + 0.5 * acceleration * dt * dt;
+                time += dt;
+                
+                // 熱波を追加（動いているとき）
+                if (currentVelocity > 0) {
+                    heatWaveTimer += dt;
+                    if (heatWaveTimer > 0.1) {
+                        const boxX = startX + positionM * pixelsPerMeter;
+                        addHeatWave(boxX + 25 + Math.random() * 20 - 10, 175);
+                        heatWaveTimer = 0;
+                    }
+                }
+            }
+            
+            // 画面端で停止
+            const maxPositionM = (canvas.width - startX - 70) / pixelsPerMeter;
+            if (positionM > maxPositionM) {
+                positionM = maxPositionM;
+                isRunning = false;
+                startBtn.textContent = '▶ スタート';
+                startBtn.classList.remove('pause');
+                startBtn.classList.add('start');
+            }
+        }
+        
+        draw();
+        updateDisplay();
+        
+        if (isRunning) {
+            animationId = requestAnimationFrame(animate);
+        }
+    }
+    
+    // 初期化
+    resizeCanvas();
+    updateDisplay();
+    </script>
+</body>
+</html>

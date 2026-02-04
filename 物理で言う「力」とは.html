@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高校物理 - 物理で言う「力」とは</title>
+    <script>
+      window.MathJax = {
+      tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']]
+     }
+     };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        header {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .back-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        h1 {
+            color: #333;
+        }
+        .container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .tab-btn {
+            flex: 1;
+            min-width: 150px;
+            padding: 12px 20px;
+            border: none;
+            background: #f0f0f0;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        .tab-btn.active {
+            background: #667eea;
+            color: white;
+        }
+        .tab-btn:hover {
+            background: #8899f0;
+            color: white;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        .pdf-placeholder {
+            background: #f9f9f9;
+            padding: 40px;
+            text-align: center;
+            border-radius: 5px;
+            color: #666;
+        }
+        
+        /* 解説用スタイル */
+        .lecture-content {
+            line-height: 1.8;
+            color: #333;
+        }
+        .lecture-content h3 {
+            color: #667eea;
+            margin: 25px 0 15px 0;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #667eea;
+        }
+        .lecture-content p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+        .important-box {
+            background: linear-gradient(135deg, #667eea22 0%, #764ba222 100%);
+            border-left: 4px solid #667eea;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+        .important-box h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        .formula-box {
+            background: #f8f9fa;
+            border: 2px solid #667eea;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .force-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .force-table th, .force-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        .force-table th {
+            background: #667eea;
+            color: white;
+        }
+        .force-table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+        .vector-diagram {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .vector-diagram canvas {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        
+        /* シミュレーション用スタイル */
+        #sim-container {
+            background: #f5f5f5;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        #physicsCanvas {
+            display: block;
+            width: 100%;
+            background: white;
+            border-radius: 5px;
+            border: 2px solid #ddd;
+        }
+        .sim-controls {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .control-group {
+            margin-bottom: 20px;
+        }
+        .control-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        .control-group input[type="range"] {
+            width: 100%;
+            margin: 10px 0;
+        }
+        .value-display {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            min-width: 100px;
+            text-align: center;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .sim-button {
+            flex: 1;
+            min-width: 120px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .sim-button.start {
+            background: #4CAF50;
+            color: white;
+        }
+        .sim-button.start:hover {
+            background: #45a049;
+        }
+        .sim-button.reset {
+            background: #f44336;
+            color: white;
+        }
+        .sim-button.reset:hover {
+            background: #da190b;
+        }
+        .graph-container {
+            margin-top: 20px;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #ddd;
+        }
+        .graph-container h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        #graphCanvas {
+            display: block;
+            width: 100%;
+            border: 1px solid #eee;
+        }
+        .force-info {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f0f0f0;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        .force-info p {
+            margin: 5px 0;
+        }
+        .force-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .legend-color {
+            width: 20px;
+            height: 4px;
+            border-radius: 2px;
+        }
+        
+        /* 問題用スタイル */
+        .problem-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 10px;
+        }
+        .problem-section h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        .problem-section p {
+            margin-bottom: 10px;
+            line-height: 1.8;
+        }
+        details {
+            margin-top: 15px;
+            padding: 15px;
+            background: white;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        summary {
+            cursor: pointer;
+            font-weight: bold;
+            color: #667eea;
+        }
+        details[open] summary {
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            header, .container {
+                padding: 15px;
+            }
+            .tab-btn {
+                min-width: 100px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="back-link">← 目次に戻る</a>
+        <h1>物理で言う「力」とは</h1>
+    </header>
+    <div class="container">
+        
+        <div class="tabs">
+            <button class="tab-btn active" onclick="openTab('lecture')">解説編</button>
+            <button class="tab-btn" onclick="openTab('problem')">問題編</button>
+            <button class="tab-btn" onclick="openTab('simulation')">シミュレーション</button>
+        </div>
+        
+        <div id="lecture" class="tab-content active">
+            <h2>授業資料</h2>
+            <iframe src="https://drive.google.com/file/d/1rd3AUHNkj-NLM0IEztEdsiVOdPwxD6EA/preview" width="100%" height="500"></iframe>
+            
+            <div class="lecture-content">
+                <h3>1. 物理における「力」の定義</h3>
+                
+                <div class="important-box">
+                    <h4>Point：力の定義</h4>
+                    <p><strong>① 物体を変形させる原因となるもの</strong></p>
+                    <p><strong>② 物体の運動状態を変える原因となるもの</strong></p>
+                    <p style="margin-top:10px;">高校物理では主に②を使います。つまり、<strong>「速度」を変化させるための「力」</strong>、<strong>「向き」を変化させるための「力」</strong>です。</p>
+                </div>
+                
+                <p>日常生活で「力がある」というと、筋力や体力のことを指すことが多いですが、物理学では全く異なる意味を持ちます。物理における「力」とは、<strong>物体の運動状態（速度の大きさや向き）を変化させる原因</strong>のことです。</p>
+                
+                <p>例えば、静止しているサッカーボールを蹴ると動き出します。これは足からボールに「力」が加わったからです。また、飛んできたボールをキャッチすると止まります。これも手からボールに「力」が加わったからです。</p>
+
+                <h3>2. 力はベクトル量である</h3>
+                
+                <div class="important-box">
+                    <h4>Point：力の三要素</h4>
+                    <p>力は<strong>ベクトル量</strong>です。力を表すには以下の三要素が必要です：</p>
+                    <p>① <strong>作用点</strong>：どこから力が働くか</p>
+                    <p>② <strong>向き</strong>：どの方向に力が働くか</p>
+                    <p>③ <strong>大きさ</strong>：どれくらいの強さか（単位：N ニュートン）</p>
+                </div>
+                
+                <p>ベクトル量とは、大きさと向きの両方を持つ量のことです。力は矢印で表され、矢印の始点が作用点、矢印の向きが力の向き、矢印の長さが力の大きさを表します。</p>
+                
+                <div class="vector-diagram">
+                    <canvas id="vectorCanvas" width="500" height="200"></canvas>
+                    <p style="margin-top:10px; color:#666;">▲ 力の表し方：矢印の始点（作用点）から、力の向きに、大きさに比例した長さで描く</p>
+                </div>
+
+                <h3>3. 力の合成と分解</h3>
+                
+                <p>物体に複数の力が働くとき、それらをまとめて1つの力として扱うことができます。これを<strong>力の合成</strong>といい、合成された力を<strong>合力</strong>といいます。</p>
+                
+                <div class="formula-box">
+                    <p><strong>【力の合成】</strong></p>
+                    <p>同一直線上の力：$F = F_1 + F_2$（向きを考慮して符号をつける）</p>
+                    <p>角度をなす力：平行四辺形の法則を用いる</p>
+                </div>
+                
+                <p>逆に、1つの力を2つ以上の力に分けることを<strong>力の分解</strong>といいます。斜面上の物体に働く重力を、斜面に平行な成分と垂直な成分に分解するのが典型例です。</p>
+                
+                <div class="formula-box">
+                    <p><strong>【斜面上での重力の分解】</strong></p>
+                    <p>斜面に平行な成分：$mg\sin\theta$</p>
+                    <p>斜面に垂直な成分：$mg\cos\theta$</p>
+                </div>
+
+                <h3>4. 力の種類と具体例</h3>
+                
+                <table class="force-table">
+                    <tr>
+                        <th>力の種類</th>
+                        <th>説明</th>
+                        <th>向き</th>
+                        <th>大きさ</th>
+                    </tr>
+                    <tr>
+                        <td><strong>重力</strong></td>
+                        <td>地球上のすべての物体に働く力</td>
+                        <td>鉛直下向き</td>
+                        <td>$W = mg$ [N]</td>
+                    </tr>
+                    <tr>
+                        <td><strong>垂直抗力</strong></td>
+                        <td>接触面から物体へ、面と垂直な方向に働く力</td>
+                        <td>面に垂直（上向き）</td>
+                        <td>$N$ [N]</td>
+                    </tr>
+                    <tr>
+                        <td><strong>張力</strong></td>
+                        <td>糸やロープが物体を引く力</td>
+                        <td>糸に沿って引く向き</td>
+                        <td>$T$ [N]</td>
+                    </tr>
+                    <tr>
+                        <td><strong>弾性力</strong></td>
+                        <td>ばねが自然長に戻ろうとして物体に及ぼす力</td>
+                        <td>自然長に戻る向き</td>
+                        <td>$F = kx$ [N]</td>
+                    </tr>
+                    <tr>
+                        <td><strong>摩擦力</strong></td>
+                        <td>接触面に平行で、運動を妨げる向きに働く力</td>
+                        <td>運動と逆向き</td>
+                        <td>下記参照</td>
+                    </tr>
+                </table>
+                
+                <div class="important-box">
+                    <h4>注意：質量と重さの違い</h4>
+                    <p><strong>質量</strong>：物体の持つ固有の量。単位は kg。場所によって変わらない。</p>
+                    <p><strong>重さ（重力）</strong>：物体に働く重力の大きさ。単位は N。場所によって変わる。</p>
+                    <p>関係式：$W = mg$（$g$：重力加速度 ≈ 9.8 m/s²）</p>
+                </div>
+
+                <h3>5. 摩擦力について</h3>
+                
+                <p>摩擦力には大きく分けて<strong>静止摩擦力</strong>と<strong>動摩擦力</strong>の2種類があります。</p>
+                
+                <div class="important-box">
+                    <h4>静止摩擦力</h4>
+                    <p>静止している物体に働く摩擦力です。物体を動かそうとする力と同じ大きさで逆向きに働き、物体を静止させ続けます。</p>
+                    <p>静止摩擦力には<strong>最大値（最大静止摩擦力）</strong>があります：</p>
+                    <div class="formula-box" style="background:white;">
+                        $f_{\max} = \mu N$
+                    </div>
+                    <p>$\mu$：静止摩擦係数、$N$：垂直抗力</p>
+                </div>
+                
+                <div class="important-box">
+                    <h4>動摩擦力</h4>
+                    <p>運動している物体に働く摩擦力です。運動方向と逆向きに一定の大きさで働きます：</p>
+                    <div class="formula-box" style="background:white;">
+                        $f' = \mu' N$
+                    </div>
+                    <p>$\mu'$：動摩擦係数、$N$：垂直抗力</p>
+                    <p>※ 一般に $\mu' < \mu$（動摩擦係数は静止摩擦係数より小さい）</p>
+                </div>
+                
+                <p>摩擦係数は面の材質や状態（粗さ・滑らかさ）によって決まります。粗い面ほど摩擦係数が大きく、滑らかな面ほど小さくなります。シミュレーションタブで、摩擦係数と面の粗さの関係を確認してみましょう。</p>
+
+                <h3>6. 弾性力（フックの法則）</h3>
+                
+                <p>ばねに力を加えて伸ばしたり縮めたりすると、ばねは元の長さ（自然長）に戻ろうとする力を生じます。この力を<strong>弾性力</strong>（または復元力）といいます。</p>
+                
+                <div class="formula-box">
+                    <h4>フックの法則</h4>
+                    $$F = kx$$
+                    <p>$F$：弾性力 [N]、$k$：ばね定数 [N/m]、$x$：自然長からの伸び（または縮み）[m]</p>
+                </div>
+                
+                <p>ばね定数 $k$ は、ばねの硬さを表す値です。$k$ が大きいほど硬いばね（同じ力でも伸びにくい）、小さいほど柔らかいばね（同じ力でも伸びやすい）となります。</p>
+            </div>
+        </div>
+        
+        <div id="problem" class="tab-content">
+            <h2>確認問題</h2>
+            
+            <div class="problem-section">
+                <h3>問題1：力の定義と表し方</h3>
+                <p>次の文章の（　）に適切な語句を入れなさい。</p>
+                <p>(1) 物理で「力」とは、物体の（　ア　）を変える原因となるものである。</p>
+                <p>(2) 力は（　イ　）量であり、「作用点」「向き」「（　ウ　）」の三要素で表される。</p>
+                <p>(3) 力の単位は（　エ　）で表され、記号は N である。</p>
+                
+                <details>
+                    <summary>解答・解説を見る</summary>
+                    <p><strong>解答：</strong></p>
+                    <p>ア：運動状態　イ：ベクトル　ウ：大きさ　エ：ニュートン</p>
+                    <p><strong>解説：</strong></p>
+                    <p>物理における力は「物体の運動状態（速度の大きさや向き）を変える原因」と定義されます。力はベクトル量であるため、大きさだけでなく向きも持ちます。力を正確に表現するには、どこに（作用点）、どの方向に（向き）、どれくらいの強さで（大きさ）働くかの三要素が必要です。</p>
+                </details>
+            </div>
+            
+            <div class="problem-section">
+                <h3>問題2：力の分解</h3>
+                <p>質量 2.0 kg の物体が傾き 30° の斜面上に静止している。重力加速度を $g = 10$ m/s² として、以下の問いに答えなさい。</p>
+                <p>(1) 物体に働く重力の大きさを求めなさい。</p>
+                <p>(2) 重力を斜面に平行な成分と垂直な成分に分解し、それぞれの大きさを求めなさい。</p>
+                <p>(3) 物体が斜面から受ける垂直抗力の大きさを求めなさい。</p>
+                
+                <details>
+                    <summary>解答・解説を見る</summary>
+                    <p><strong>解答：</strong></p>
+                    <p>(1) $W = mg = 2.0 \times 10 = 20$ N</p>
+                    <p>(2) 斜面に平行な成分：$mg\sin30° = 20 \times 0.5 = 10$ N</p>
+                    <p>　　斜面に垂直な成分：$mg\cos30° = 20 \times \frac{\sqrt{3}}{2} \fallingdotseq 17$ N</p>
+                    <p>(3) 垂直抗力 $N = mg\cos30° \fallingdotseq 17$ N</p>
+                    <p><strong>解説：</strong></p>
+                    <p>斜面上の物体に働く重力は、斜面に沿った方向（物体を滑らせようとする成分）と斜面に垂直な方向（物体を斜面に押し付ける成分）に分解できます。斜面に垂直な方向では力がつり合っているため、垂直抗力は重力の斜面垂直成分と等しくなります。</p>
+                </details>
+            </div>
+            
+            <div class="problem-section">
+                <h3>問題3：摩擦力とつり合い</h3>
+                <p>水平な粗い床の上に質量 2.0 kg の物体が置かれている。この物体をばねで水平方向に引いたところ、ばねが 0.1 m 伸びた状態で物体は静止した。ばね定数を $k = 50$ N/m、重力加速度を $g = 10$ m/s² として、以下の問いに答えなさい。</p>
+                <p>(1) ばねが物体を引く力（弾性力）の大きさを求めなさい。</p>
+                <p>(2) このとき物体に働いている静止摩擦力の大きさを求めなさい。</p>
+                <p>(3) 静止摩擦係数が $\mu = 0.3$ のとき、最大静止摩擦力の大きさを求めなさい。また、このときばねは最大で何 m まで伸ばせるか。</p>
+                
+                <details>
+                    <summary>解答・解説を見る</summary>
+                    <p><strong>解答：</strong></p>
+                    <p>(1) $F = kx = 50 \times 0.1 = 5.0$ N</p>
+                    <p>(2) 物体が静止しているので、水平方向の力がつり合っています。$f = F = 5.0$ N</p>
+                    <p>(3) 垂直抗力 $N = mg = 2.0 \times 10 = 20$ N</p>
+                    <p>　　最大静止摩擦力 $f_{\max} = \mu N = 0.3 \times 20 = 6.0$ N</p>
+                    <p>　　ばねの最大伸び $x_{\max} = f_{\max} / k = 6.0 / 50 = 0.12$ m</p>
+                    <p><strong>解説：</strong></p>
+                    <p>水平面上で物体が静止しているとき、ばねの弾性力と静止摩擦力がつり合っています。静止摩擦力は最大値（最大静止摩擦力）までは弾性力と同じ大きさになります。弾性力が最大静止摩擦力を超えると、物体は動き出します。</p>
+                </details>
+            </div>
+        </div>
+        
+        <div id="simulation" class="tab-content">
+            <h2>水平面上の物体と力のつり合い</h2>
+            <p>水平面上の物体をばねで引っ張ったとき、弾性力と摩擦力がどのようにつり合うか観察しましょう。</p>
+            
+            <div id="sim-container">
+                <canvas id="physicsCanvas"></canvas>
+            </div>
+            
+            <div class="sim-controls">
+                <div class="control-group">
+                    <label>弾性力の大きさ (F): <span class="value-display" id="forceDisplay">5.0 N</span></label>
+                    <input type="range" id="forceSlider" min="0" max="15" value="5" step="0.5">
+                    <p id="springExtDisplay" style="color:#666; margin-top:5px;">ばねの伸び：0.10 m（ばね定数 k = 50 N/m）</p>
+                </div>
+                
+                <div class="control-group">
+                    <label>摩擦係数 (μ): <span class="value-display" id="muDisplay">0.3</span></label>
+                    <input type="range" id="muSlider" min="0" max="1" value="0.3" step="0.05">
+                    <p id="surfaceDescription" style="color:#666; margin-top:5px;">面の状態：やや滑らかな面</p>
+                </div>
+                
+                <div class="force-info">
+                    <p><strong>現在の力の状態：</strong></p>
+                    <p id="forceStatus">計算中...</p>
+                    <div class="force-legend">
+                        <div class="legend-item"><div class="legend-color" style="background:#e74c3c;"></div>重力 mg</div>
+                        <div class="legend-item"><div class="legend-color" style="background:#3498db;"></div>垂直抗力 N</div>
+                        <div class="legend-item"><div class="legend-color" style="background:#f39c12;"></div>摩擦力 f</div>
+                        <div class="legend-item"><div class="legend-color" style="background:#2ecc71;"></div>弾性力 F</div>
+                    </div>
+                </div>
+                
+                <div class="button-group" style="margin-top:20px;">
+                    <button class="sim-button reset" id="resetBtn">初期状態に戻す</button>
+                </div>
+            </div>
+            
+            <div class="graph-container">
+                <h3>各力の大きさ [N]</h3>
+                <canvas id="graphCanvas"></canvas>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+    // --- タブ切り替え機能 ---
+    function openTab(tabName) {
+        var contents = document.getElementsByClassName("tab-content");
+        for (var i = 0; i < contents.length; i++) {
+            contents[i].style.display = "none";
+            contents[i].classList.remove("active");
+        }
+        var buttons = document.getElementsByClassName("tab-btn");
+        for (var i = 0; i < buttons.length; i++) {
+            buttons[i].classList.remove("active");
+        }
+        document.getElementById(tabName).style.display = "block";
+        document.getElementById(tabName).classList.add("active");
+        if (event) {
+            event.currentTarget.classList.add("active");
+        }
+        
+        // シミュレーションタブが開かれたときにキャンバスを再描画
+        if (tabName === 'simulation') {
+            resizeCanvases();
+            drawSimulation();
+            drawForceGraph();
+        }
+        // 解説タブが開かれたときにベクトル図を描画
+        if (tabName === 'lecture') {
+            setTimeout(() => {
+                drawVectorDiagram();
+            }, 100);
+        }
+    }
+
+    // --- 解説用のベクトル図描画 ---
+    function drawVectorDiagram() {
+        const canvas = document.getElementById('vectorCanvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const W = canvas.width;
+        const H = canvas.height;
+        
+        ctx.clearRect(0, 0, W, H);
+        ctx.fillStyle = '#fafafa';
+        ctx.fillRect(0, 0, W, H);
+        
+        // 物体
+        ctx.fillStyle = '#667eea';
+        ctx.fillRect(100, 100, 60, 40);
+        
+        // 力の矢印
+        ctx.strokeStyle = '#e74c3c';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(130, 120);
+        ctx.lineTo(280, 120);
+        ctx.stroke();
+        // 矢じり
+        ctx.beginPath();
+        ctx.moveTo(280, 120);
+        ctx.lineTo(265, 110);
+        ctx.lineTo(265, 130);
+        ctx.closePath();
+        ctx.fillStyle = '#e74c3c';
+        ctx.fill();
+        
+        // ラベル
+        ctx.fillStyle = '#333';
+        ctx.font = '14px sans-serif';
+        ctx.fillText('作用点', 85, 165);
+        ctx.fillText('力の向き', 180, 105);
+        ctx.fillText('大きさ（矢印の長さ）', 290, 125);
+        
+        // 作用点の点
+        ctx.beginPath();
+        ctx.arc(130, 120, 5, 0, Math.PI * 2);
+        ctx.fillStyle = '#e74c3c';
+        ctx.fill();
+    }
+    
+    function drawArrow(ctx, fromX, fromY, toX, toY, color) {
+        const headLen = 10;
+        const angle = Math.atan2(toY - fromY, toX - fromX);
+        
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(fromX, fromY);
+        ctx.lineTo(toX, toY);
+        ctx.stroke();
+        
+        ctx.beginPath();
+        ctx.moveTo(toX, toY);
+        ctx.lineTo(toX - headLen * Math.cos(angle - Math.PI / 6), toY - headLen * Math.sin(angle - Math.PI / 6));
+        ctx.lineTo(toX - headLen * Math.cos(angle + Math.PI / 6), toY - headLen * Math.sin(angle + Math.PI / 6));
+        ctx.closePath();
+        ctx.fillStyle = color;
+        ctx.fill();
+    }
+
+    // --- シミュレーション ---
+    const physCanvas = document.getElementById('physicsCanvas');
+    const physCtx = physCanvas.getContext('2d');
+    const graphCanvas = document.getElementById('graphCanvas');
+    const graphCtx = graphCanvas.getContext('2d');
+    
+    // パラメータ
+    const mass = 2.0; // kg
+    const g = 10; // m/s²
+    const springK = 50; // N/m ばね定数（固定）
+    
+    // スライダー要素
+    const forceSlider = document.getElementById('forceSlider');
+    const muSlider = document.getElementById('muSlider');
+    const forceDisplay = document.getElementById('forceDisplay');
+    const muDisplay = document.getElementById('muDisplay');
+    const springExtDisplay = document.getElementById('springExtDisplay');
+    const surfaceDesc = document.getElementById('surfaceDescription');
+    const forceStatus = document.getElementById('forceStatus');
+    const resetBtn = document.getElementById('resetBtn');
+    
+    // キャンバスサイズ調整
+    function resizeCanvases() {
+        const container = document.getElementById('sim-container');
+        if (container) {
+            physCanvas.width = container.clientWidth - 40;
+            physCanvas.height = 300;
+        }
+        const graphContainer = document.querySelector('.graph-container');
+        if (graphContainer) {
+            graphCanvas.width = graphContainer.clientWidth - 30;
+            graphCanvas.height = 200;
+        }
+    }
+    
+    // 面の状態の説明
+    function getSurfaceDescription(mu) {
+        if (mu < 0.1) return "面の状態：非常に滑らかな面（氷の上など）";
+        if (mu < 0.3) return "面の状態：滑らかな面（磨かれた金属など）";
+        if (mu < 0.5) return "面の状態：やや滑らかな面（木材など）";
+        if (mu < 0.7) return "面の状態：やや粗い面（コンクリートなど）";
+        return "面の状態：粗い面（ゴムとアスファルトなど）";
+    }
+    
+    // 力の計算
+    function calculateForces(springForce, mu) {
+        const W = mass * g; // 重力
+        const N = W; // 垂直抗力（水平面なので重力と等しい）
+        const fMax = mu * N; // 最大静止摩擦力
+        
+        // 弾性力に対して摩擦力がつり合う
+        let f;
+        let isStable;
+        
+        if (springForce <= fMax) {
+            f = springForce; // 弾性力と同じ大きさの摩擦力
+            isStable = true;
+        } else {
+            f = fMax; // 最大静止摩擦力まで
+            isStable = false; // 物体は動き出す
+        }
+        
+        const springExt = springForce / springK; // ばねの伸び
+        
+        return {
+            W: W,
+            N: N,
+            f: f,
+            fMax: fMax,
+            F: springForce,
+            springExt: springExt,
+            isStable: isStable
+        };
+    }
+    
+    // シミュレーション描画
+    function drawSimulation() {
+        const springForce = parseFloat(forceSlider.value);
+        const mu = parseFloat(muSlider.value);
+        const forces = calculateForces(springForce, mu);
+        
+        const W = physCanvas.width;
+        const H = physCanvas.height;
+        
+        physCtx.clearRect(0, 0, W, H);
+        
+        // 背景
+        physCtx.fillStyle = '#f0f8ff';
+        physCtx.fillRect(0, 0, W, H);
+        
+        // 床の位置
+        const floorY = H - 60;
+        
+        // 床の描画（摩擦係数に応じてギザギザ）
+        physCtx.beginPath();
+        physCtx.moveTo(0, floorY);
+        
+        if (mu > 0.3) {
+            // 粗い面はギザギザに
+            const numBumps = Math.floor(mu * 50);
+            const bumpSize = mu * 5;
+            for (let i = 0; i <= numBumps; i++) {
+                const x = (i / numBumps) * W;
+                const offset = (i % 2 === 0) ? -bumpSize : bumpSize;
+                physCtx.lineTo(x, floorY + offset);
+            }
+        } else {
+            physCtx.lineTo(W, floorY);
+        }
+        
+        physCtx.strokeStyle = '#8B4513';
+        physCtx.lineWidth = 3;
+        physCtx.stroke();
+        
+        // 床の塗りつぶし
+        physCtx.beginPath();
+        physCtx.moveTo(0, floorY);
+        physCtx.lineTo(W, floorY);
+        physCtx.lineTo(W, H);
+        physCtx.lineTo(0, H);
+        physCtx.closePath();
+        const gradient = physCtx.createLinearGradient(0, floorY, 0, H);
+        gradient.addColorStop(0, `rgba(139, 69, 19, ${0.3 + mu * 0.5})`);
+        gradient.addColorStop(1, `rgba(101, 67, 33, ${0.4 + mu * 0.5})`);
+        physCtx.fillStyle = gradient;
+        physCtx.fill();
+        
+        // 粗さのテクスチャ（点々）
+        if (mu > 0.2) {
+            physCtx.fillStyle = `rgba(60, 40, 20, ${mu * 0.5})`;
+            for (let i = 0; i < mu * 100; i++) {
+                const x = Math.random() * W;
+                const y = floorY + Math.random() * (H - floorY);
+                const size = Math.random() * 3 + 1;
+                physCtx.beginPath();
+                physCtx.arc(x, y, size, 0, Math.PI * 2);
+                physCtx.fill();
+            }
+        }
+        
+        // 物体の位置
+        const objSize = 60;
+        const objX = W * 0.4;
+        const objY = floorY - objSize;
+        
+        // 物体の移動表現（静止していない場合）
+        let objOffset = 0;
+        if (!forces.isStable) {
+            objOffset = 10; // 少し右に動いている表現
+        }
+        
+        // 手の描画（右端）
+        const handX = W - 60;
+        const handY = objY + objSize / 2;
+        
+        // ばねの描画（物体から手へ）
+        const springStartX = objX + objOffset + objSize;
+        const springStartY = objY + objSize / 2;
+        const springEndX = handX - 30;
+        const springEndY = handY;
+        
+        // ばね（コイル状に描画）
+        physCtx.strokeStyle = '#2ecc71';
+        physCtx.lineWidth = 3;
+        physCtx.beginPath();
+        const numCoils = 12;
+        const coilHeight = 15;
+        const springLen = springEndX - springStartX;
+        
+        physCtx.moveTo(springStartX, springStartY);
+        for (let i = 0; i <= numCoils * 2; i++) {
+            const t = i / (numCoils * 2);
+            const x = springStartX + springLen * t;
+            const y = springStartY + coilHeight * (i % 2 === 0 ? -1 : 1);
+            physCtx.lineTo(x, y);
+        }
+        physCtx.lineTo(springEndX, springEndY);
+        physCtx.stroke();
+        
+        // 手の描画
+        physCtx.fillStyle = '#ffccaa';
+        physCtx.beginPath();
+        // 手のひら
+        physCtx.ellipse(handX, handY, 25, 20, 0, 0, Math.PI * 2);
+        physCtx.fill();
+        physCtx.strokeStyle = '#cc9977';
+        physCtx.lineWidth = 2;
+        physCtx.stroke();
+        
+        // 指
+        for (let i = 0; i < 4; i++) {
+            const fingerY = handY - 12 + i * 8;
+            physCtx.fillStyle = '#ffccaa';
+            physCtx.beginPath();
+            physCtx.ellipse(handX + 20, fingerY, 12, 5, 0, 0, Math.PI * 2);
+            physCtx.fill();
+            physCtx.stroke();
+        }
+        
+        // 親指
+        physCtx.beginPath();
+        physCtx.ellipse(handX - 5, handY + 18, 10, 6, -0.5, 0, Math.PI * 2);
+        physCtx.fill();
+        physCtx.stroke();
+        
+        // 物体の描画
+        const boxGradient = physCtx.createLinearGradient(objX + objOffset, objY, objX + objOffset + objSize, objY + objSize);
+        boxGradient.addColorStop(0, '#667eea');
+        boxGradient.addColorStop(1, '#764ba2');
+        physCtx.fillStyle = boxGradient;
+        physCtx.fillRect(objX + objOffset, objY, objSize, objSize);
+        physCtx.strokeStyle = '#333';
+        physCtx.lineWidth = 2;
+        physCtx.strokeRect(objX + objOffset, objY, objSize, objSize);
+        
+        // 質量表示
+        physCtx.fillStyle = 'white';
+        physCtx.font = 'bold 14px sans-serif';
+        physCtx.textAlign = 'center';
+        physCtx.fillText(`${mass}kg`, objX + objOffset + objSize / 2, objY + objSize / 2 + 5);
+        
+        // 力の矢印を描画
+        const forceScale = 5;
+        const arrowWidth = 3;
+        const objCenterX = objX + objOffset + objSize / 2;
+        const objCenterY = objY + objSize / 2;
+        
+        // 重力（下向き）
+        const gravLen = forces.W * forceScale;
+        drawForceArrow(physCtx, objCenterX, objCenterY, objCenterX, objCenterY + gravLen, '#e74c3c', arrowWidth);
+        physCtx.fillStyle = '#e74c3c';
+        physCtx.font = 'bold 12px sans-serif';
+        physCtx.textAlign = 'left';
+        physCtx.fillText(`mg=${forces.W.toFixed(0)}N`, objCenterX + 10, objCenterY + gravLen / 2);
+        
+        // 垂直抗力（上向き）
+        const normalLen = forces.N * forceScale;
+        drawForceArrow(physCtx, objCenterX - 15, objCenterY + objSize / 2, objCenterX - 15, objCenterY + objSize / 2 - normalLen, '#3498db', arrowWidth);
+        physCtx.fillStyle = '#3498db';
+        physCtx.textAlign = 'right';
+        physCtx.fillText(`N=${forces.N.toFixed(0)}N`, objCenterX - 20, objCenterY + objSize / 2 - normalLen / 2);
+        
+        // 弾性力（右向き、物体に作用）
+        if (forces.F > 0) {
+            const elasticLen = forces.F * forceScale;
+            drawForceArrow(physCtx, objCenterX + objSize / 2, objCenterY - 10, objCenterX + objSize / 2 + elasticLen, objCenterY - 10, '#2ecc71', arrowWidth);
+            physCtx.fillStyle = '#2ecc71';
+            physCtx.textAlign = 'center';
+            physCtx.fillText(`F=${forces.F.toFixed(1)}N`, objCenterX + objSize / 2 + elasticLen / 2, objCenterY - 25);
+        }
+        
+        // 摩擦力（左向き）
+        if (forces.f > 0.1) {
+            const fricLen = forces.f * forceScale;
+            drawForceArrow(physCtx, objCenterX - objSize / 2, objCenterY + 10, objCenterX - objSize / 2 - fricLen, objCenterY + 10, '#f39c12', arrowWidth);
+            physCtx.fillStyle = '#f39c12';
+            physCtx.textAlign = 'center';
+            physCtx.fillText(`f=${forces.f.toFixed(1)}N`, objCenterX - objSize / 2 - fricLen / 2, objCenterY + 30);
+        }
+        
+        // 状態表示
+        if (!forces.isStable) {
+            physCtx.fillStyle = 'rgba(255, 0, 0, 0.1)';
+            physCtx.fillRect(0, 0, W, H);
+            physCtx.fillStyle = '#e74c3c';
+            physCtx.font = 'bold 20px sans-serif';
+            physCtx.textAlign = 'center';
+            physCtx.fillText('⚠ 物体が動き出します！', W / 2, 40);
+        }
+        
+        // 状態表示の更新
+        updateForceStatus(forces, mu);
+    }
+    
+    // 力の矢印描画関数
+    function drawForceArrow(ctx, fromX, fromY, toX, toY, color, width) {
+        const headLen = 12;
+        const angle = Math.atan2(toY - fromY, toX - fromX);
+        
+        ctx.strokeStyle = color;
+        ctx.lineWidth = width;
+        ctx.beginPath();
+        ctx.moveTo(fromX, fromY);
+        ctx.lineTo(toX, toY);
+        ctx.stroke();
+        
+        ctx.beginPath();
+        ctx.moveTo(toX, toY);
+        ctx.lineTo(toX - headLen * Math.cos(angle - Math.PI / 6), toY - headLen * Math.sin(angle - Math.PI / 6));
+        ctx.lineTo(toX - headLen * Math.cos(angle + Math.PI / 6), toY - headLen * Math.sin(angle + Math.PI / 6));
+        ctx.closePath();
+        ctx.fillStyle = color;
+        ctx.fill();
+    }
+    
+    // 状態表示更新
+    function updateForceStatus(forces, mu) {
+        let status = `<strong>力のつり合い（水平方向）：</strong><br>`;
+        status += `・弾性力 F = ${forces.F.toFixed(1)} N（ばねの伸び: ${forces.springExt.toFixed(2)} m）<br>`;
+        status += `・摩擦力 f = ${forces.f.toFixed(1)} N（最大: ${forces.fMax.toFixed(1)} N）<br>`;
+        status += `<strong>力のつり合い（鉛直方向）：</strong><br>`;
+        status += `・重力 mg = ${forces.W.toFixed(0)} N、垂直抗力 N = ${forces.N.toFixed(0)} N<br>`;
+        
+        if (forces.isStable) {
+            status += `<span style="color:green">✓ 物体は静止しています（F = f）</span>`;
+        } else {
+            status += `<span style="color:red">⚠ 弾性力が最大静止摩擦力を超えました！物体は動き出します</span>`;
+        }
+        
+        forceStatus.innerHTML = status;
+    }
+    
+    // グラフ描画
+    function drawForceGraph() {
+        const springForce = parseFloat(forceSlider.value);
+        const mu = parseFloat(muSlider.value);
+        const forces = calculateForces(springForce, mu);
+        
+        const W = graphCanvas.width;
+        const H = graphCanvas.height;
+        
+        graphCtx.clearRect(0, 0, W, H);
+        graphCtx.fillStyle = '#fafafa';
+        graphCtx.fillRect(0, 0, W, H);
+        
+        // 余白設定
+        const margin = { top: 30, right: 30, bottom: 40, left: 60 };
+        const graphW = W - margin.left - margin.right;
+        const graphH = H - margin.top - margin.bottom;
+        
+        // 最大値
+        const maxForce = Math.max(forces.W, forces.N, forces.f, forces.F, forces.fMax, 20) * 1.2;
+        
+        // 棒グラフのデータ
+        const bars = [
+            { label: 'mg', value: forces.W, color: '#e74c3c' },
+            { label: 'N', value: forces.N, color: '#3498db' },
+            { label: 'F(弾性力)', value: forces.F, color: '#2ecc71' },
+            { label: 'f(摩擦力)', value: forces.f, color: '#f39c12' },
+            { label: 'f_max', value: forces.fMax, color: '#f39c1266' }
+        ];
+        
+        const barWidth = graphW / bars.length * 0.6;
+        const barSpacing = graphW / bars.length;
+        
+        graphCtx.save();
+        graphCtx.translate(margin.left, margin.top);
+        
+        // Y軸
+        graphCtx.strokeStyle = '#333';
+        graphCtx.lineWidth = 1;
+        graphCtx.beginPath();
+        graphCtx.moveTo(0, 0);
+        graphCtx.lineTo(0, graphH);
+        graphCtx.stroke();
+        
+        // Y軸目盛り
+        graphCtx.fillStyle = '#333';
+        graphCtx.font = '12px sans-serif';
+        graphCtx.textAlign = 'right';
+        for (let i = 0; i <= 5; i++) {
+            const y = graphH - (i / 5) * graphH;
+            const val = (i / 5) * maxForce;
+            graphCtx.fillText(val.toFixed(0), -10, y + 4);
+            graphCtx.strokeStyle = '#ddd';
+            graphCtx.beginPath();
+            graphCtx.moveTo(0, y);
+            graphCtx.lineTo(graphW, y);
+            graphCtx.stroke();
+        }
+        
+        // 棒グラフ描画
+        bars.forEach((bar, i) => {
+            const x = i * barSpacing + (barSpacing - barWidth) / 2;
+            const barH = (bar.value / maxForce) * graphH;
+            
+            graphCtx.fillStyle = bar.color;
+            graphCtx.fillRect(x, graphH - barH, barWidth, barH);
+            
+            // ラベル
+            graphCtx.fillStyle = '#333';
+            graphCtx.font = '10px sans-serif';
+            graphCtx.textAlign = 'center';
+            graphCtx.fillText(bar.label, x + barWidth / 2, graphH + 15);
+            
+            // 値
+            graphCtx.fillText(bar.value.toFixed(1), x + barWidth / 2, graphH - barH - 5);
+        });
+        
+        graphCtx.restore();
+    }
+    
+    // イベントリスナー
+    forceSlider.addEventListener('input', function() {
+        const force = parseFloat(this.value);
+        forceDisplay.textContent = force.toFixed(1) + ' N';
+        const ext = force / springK;
+        springExtDisplay.textContent = `ばねの伸び：${ext.toFixed(2)} m（ばね定数 k = ${springK} N/m）`;
+        drawSimulation();
+        drawForceGraph();
+    });
+    
+    muSlider.addEventListener('input', function() {
+        muDisplay.textContent = this.value;
+        surfaceDesc.textContent = getSurfaceDescription(parseFloat(this.value));
+        drawSimulation();
+        drawForceGraph();
+    });
+    
+    resetBtn.addEventListener('click', function() {
+        forceSlider.value = 5;
+        muSlider.value = 0.3;
+        forceDisplay.textContent = '5.0 N';
+        muDisplay.textContent = '0.3';
+        springExtDisplay.textContent = `ばねの伸び：0.10 m（ばね定数 k = ${springK} N/m）`;
+        surfaceDesc.textContent = getSurfaceDescription(0.3);
+        drawSimulation();
+        drawForceGraph();
+    });
+    
+    // リサイズ対応
+    window.addEventListener('resize', function() {
+        resizeCanvases();
+        drawSimulation();
+        drawForceGraph();
+    });
+    
+    // 初期化
+    document.addEventListener('DOMContentLoaded', function() {
+        resizeCanvases();
+        drawSimulation();
+        drawForceGraph();
+        surfaceDesc.textContent = getSurfaceDescription(0.3);
+        
+        // 解説タブのベクトル図も初期化
+        drawVectorDiagram();
+    });
+    
+    // ページ読み込み時にも実行
+    resizeCanvases();
+    drawSimulation();
+    drawForceGraph();
+    surfaceDesc.textContent = getSurfaceDescription(0.3);
+    </script>
+</body>
+</html>

@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高校物理 - 相対速度</title>
+    <script>
+      window.MathJax = {
+      tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']]
+     }
+     };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        header {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .back-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        h1 {
+            color: #333;
+        }
+        .container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .tab-btn {
+            flex: 1;
+            min-width: 150px;
+            padding: 12px 20px;
+            border: none;
+            background: #f0f0f0;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        .tab-btn.active {
+            background: #667eea;
+            color: white;
+        }
+        .tab-btn:hover {
+            background: #8899f0;
+            color: white;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        h3 {
+            color: #555;
+            margin: 25px 0 15px 0;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #667eea;
+        }
+        .pdf-placeholder {
+            background: #f9f9f9;
+            padding: 40px;
+            text-align: center;
+            border-radius: 5px;
+            color: #666;
+        }
+        
+        /* 解説用スタイル */
+        .lecture-content {
+            line-height: 1.8;
+            color: #333;
+        }
+        .lecture-content p {
+            margin-bottom: 15px;
+        }
+        .important-box {
+            background: linear-gradient(135deg, #e8f4fd 0%, #d1e8ff 100%);
+            border-left: 5px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+        .formula-box {
+            background: #fff9e6;
+            border: 2px solid #f0c040;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .example-box {
+            background: #f0fff0;
+            border: 2px solid #50c050;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        .diagram-container {
+            background: #fafafa;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .diagram-container canvas {
+            max-width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        
+        /* 問題用スタイル */
+        .problem-box {
+            background: #f5f5f5;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+        }
+        .problem-box h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        details {
+            margin-top: 15px;
+        }
+        summary {
+            cursor: pointer;
+            color: #667eea;
+            font-weight: bold;
+            padding: 10px;
+            background: #e8e8e8;
+            border-radius: 5px;
+        }
+        summary:hover {
+            background: #d8d8f8;
+        }
+        .answer-content {
+            padding: 15px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 0 0 5px 5px;
+            margin-top: 5px;
+        }
+        
+        /* シミュレーション用スタイル */
+        #sim-container {
+            background: #f5f5f5;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        #physicsCanvas {
+            display: block;
+            width: 100%;
+            background: white;
+            border-radius: 5px;
+            border: 2px solid #ddd;
+        }
+        .sim-controls {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .control-group {
+            margin-bottom: 20px;
+        }
+        .control-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        .control-group input[type="range"] {
+            width: 100%;
+            margin: 10px 0;
+        }
+        .value-display {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            min-width: 100px;
+            text-align: center;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .sim-button {
+            flex: 1;
+            min-width: 120px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .sim-button.start {
+            background: #4CAF50;
+            color: white;
+        }
+        .sim-button.start:hover {
+            background: #45a049;
+        }
+        .sim-button.reset {
+            background: #f44336;
+            color: white;
+        }
+        .sim-button.reset:hover {
+            background: #da190b;
+        }
+        .view-toggle {
+            background: #ff9800;
+            color: white;
+        }
+        .view-toggle:hover {
+            background: #e68900;
+        }
+        .view-toggle.active {
+            background: #667eea;
+        }
+        .graph-container {
+            margin-top: 20px;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #ddd;
+        }
+        .graph-container h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+            border-bottom: none;
+        }
+        #graphCanvas {
+            display: block;
+            width: 100%;
+            border: 1px solid #eee;
+        }
+        .info-display {
+            background: #333;
+            color: #0f0;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: monospace;
+            margin-top: 15px;
+        }
+        .info-display p {
+            margin: 5px 0;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            header, .container {
+                padding: 15px;
+            }
+            .tab-btn {
+                min-width: 100px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="back-link">← 目次に戻る</a>
+        <h1>相対速度 ～物の見え方は立場で変わる～</h1>
+    </header>
+    <div class="container">
+        
+        <div class="tabs">
+            <button class="tab-btn active" onclick="openTab('lecture')">解説編</button>
+            <button class="tab-btn" onclick="openTab('problem')">問題編</button>
+            <button class="tab-btn" onclick="openTab('simulation')">シミュレーション</button>
+        </div>
+        
+        <!-- ========== 解説タブ ========== -->
+        <div id="lecture" class="tab-content active">
+            <h2>授業資料</h2>
+            <iframe src="https://drive.google.com/file/d/1rd3AUHNkj-NLM0IEztEdsiVOdPwxD6EA/preview" width="100%" height="500"></iframe>
+            
+            <div class="lecture-content">
+                <h3>1. 絶対的な見方と相対的な見方</h3>
+                
+                <p>電車に乗っているとき、窓の外の景色が後ろに流れていくように見えます。このとき、あなたは次のどちらの見方をしていますか？</p>
+                
+                <div class="example-box">
+                    <p><strong>見方①：「自分（電車）が動いている」と考える</strong></p>
+                    <p>→ 地面は止まっていて、自分が前に進んでいる。これが<strong>絶対的な視点</strong>です。</p>
+                    <br>
+                    <p><strong>見方②：「外の景色が動いている」と考える</strong></p>
+                    <p>→ 自分は止まっていて、景色が後ろに流れている。これが<strong>相対的な視点</strong>です。</p>
+                </div>
+                
+                <p>私たちは普段、地面を基準（止まっているもの）として物の動きを見ています。これを<strong>絶対的視点</strong>といいます。</p>
+                
+                <p>一方、動いている自分自身を基準にして、他のものがどう動いて見えるかを考えるのが<strong>相対的視点</strong>です。物理では、この「相対的な見方」がとても重要になります。</p>
+                
+                <div class="important-box">
+                    <p><strong>ポイント：</strong>物の動きの見え方は、「何を基準にするか」で変わります。</p>
+                    <p>どちらの見方も正しく、状況に応じて使い分けることで問題が解きやすくなります！</p>
+                </div>
+                
+                <h3>2. 相対速度とは</h3>
+                
+                <p><strong>相対速度</strong>とは、「ある観測者から見た、別の物体の速度」のことです。</p>
+                
+                <p>例えば、あなた（観測者A）が速度 $\vec{v}_A$ で動いているとき、物体Bが速度 $\vec{v}_B$ で動いているとします。このとき、<strong>Aから見たBの速度</strong>（BのAに対する相対速度）$\vec{v}_{BA}$ は次の式で求められます。</p>
+                
+                <div class="formula-box">
+                    <p style="font-size: 1.3em;"><strong>相対速度の公式</strong></p>
+                    <p style="font-size: 1.5em; margin: 15px 0;">$$\vec{v}_{BA} = \vec{v}_B - \vec{v}_A$$</p>
+                    <p>（BのAに対する相対速度）＝（Bの速度）−（Aの速度）</p>
+                </div>
+                
+                <div class="important-box">
+                    <p><strong>覚え方：</strong>「〇〇の△△に対する相対速度」→「〇〇 − △△」</p>
+                    <p>引き算の順番は「見られる物 − 見る人」です！</p>
+                </div>
+                
+                <h3>3. ベクトルの引き算を図で理解する</h3>
+                
+                <p>相対速度はベクトルの引き算です。ベクトルの引き算 $\vec{v}_B - \vec{v}_A$ は、次のように考えます。</p>
+                
+                <div class="example-box">
+                    <p><strong>ベクトルの引き算のやり方：</strong></p>
+                    <p>$$\vec{v}_B - \vec{v}_A = \vec{v}_B + (-\vec{v}_A)$$</p>
+                    <p>つまり、「$\vec{v}_A$ を逆向きにしたベクトル $-\vec{v}_A$ を、$\vec{v}_B$ に足す」と考えます。</p>
+                </div>
+                
+                <div class="diagram-container">
+                    <canvas id="vectorDiagram" width="500" height="300"></canvas>
+                    <p style="margin-top: 10px; color: #666;">図：ベクトルの引き算 $\vec{v}_{BA} = \vec{v}_B - \vec{v}_A$</p>
+                </div>
+                
+                <p><strong>図の見方：</strong></p>
+                <ol style="margin-left: 20px; margin-bottom: 15px;">
+                    <li>青い矢印 $\vec{v}_A$ と 緑の矢印 $\vec{v}_B$ が元のベクトル</li>
+                    <li>$\vec{v}_A$ を逆向きにした $-\vec{v}_A$（点線）を作る</li>
+                    <li>$\vec{v}_B$ の先端から $-\vec{v}_A$ を足すと、赤い矢印 $\vec{v}_{BA}$ が得られる</li>
+                </ol>
+                
+                <h3>4. 1次元の相対速度（同一直線上の運動）</h3>
+                
+                <p>まずは簡単な例として、同じ直線上を動く2つの物体を考えましょう。</p>
+                
+                <div class="example-box">
+                    <p><strong>例題1：同じ向きに進む2台の車</strong></p>
+                    <p>車Aが東向きに 10 m/s、車Bが東向きに 15 m/s で走っています。</p>
+                    <p>Aから見たBの相対速度は？</p>
+                    <br>
+                    <p><strong>解答：</strong></p>
+                    <p>東向きを正とすると、$v_A = +10$ m/s、$v_B = +15$ m/s</p>
+                    <p>$$v_{BA} = v_B - v_A = 15 - 10 = +5 \text{ m/s（東向き）}$$</p>
+                    <p>→ Aから見ると、Bは東向きに 5 m/s で遠ざかっていく。</p>
+                </div>
+                
+                <div class="example-box">
+                    <p><strong>例題2：向かい合って進む2台の車</strong></p>
+                    <p>車Aが東向きに 10 m/s、車Bが西向きに 15 m/s で走っています。</p>
+                    <p>Aから見たBの相対速度は？</p>
+                    <br>
+                    <p><strong>解答：</strong></p>
+                    <p>東向きを正とすると、$v_A = +10$ m/s、$v_B = -15$ m/s</p>
+                    <p>$$v_{BA} = v_B - v_A = -15 - 10 = -25 \text{ m/s（西向き）}$$</p>
+                    <p>→ Aから見ると、Bは西向きに 25 m/s で近づいてくる。</p>
+                </div>
+                
+                <h3>5. 2次元の相対速度（平面上の運動）</h3>
+                
+                <p>物体が異なる方向に動いている場合、相対速度は<strong>ベクトルの成分ごとの引き算</strong>で求めます。</p>
+                
+                <div class="formula-box">
+                    <p><strong>2次元の相対速度</strong></p>
+                    <p>$\vec{v}_A = (v_{Ax}, v_{Ay})$、$\vec{v}_B = (v_{Bx}, v_{By})$ のとき、</p>
+                    <p style="font-size: 1.2em; margin: 10px 0;">$$\vec{v}_{BA} = (v_{Bx} - v_{Ax}, v_{By} - v_{Ay})$$</p>
+                    <p>相対速度の大きさ：$|\vec{v}_{BA}| = \sqrt{(v_{Bx} - v_{Ax})^2 + (v_{By} - v_{Ay})^2}$</p>
+                </div>
+                
+                <div class="example-box">
+                    <p><strong>例題3：車から見た雨</strong></p>
+                    <p>雨が鉛直下向きに 5 m/s で降っています。車が水平に 10 m/s で走っているとき、車から見た雨の速度は？</p>
+                    <br>
+                    <p><strong>解答：</strong></p>
+                    <p>水平右向きを $x$ 軸正、鉛直上向きを $y$ 軸正とする。</p>
+                    <p>車（A）の速度：$\vec{v}_A = (10, 0)$ m/s</p>
+                    <p>雨（B）の速度：$\vec{v}_B = (0, -5)$ m/s</p>
+                    <p>$$\vec{v}_{BA} = \vec{v}_B - \vec{v}_A = (0-10, -5-0) = (-10, -5) \text{ m/s}$$</p>
+                    <p>大きさ：$|\vec{v}_{BA}| = \sqrt{(-10)^2 + (-5)^2} = \sqrt{125} \approx 11.2$ m/s</p>
+                    <p>角度：$\tan\theta = \frac{5}{10} = 0.5$ より $\theta \approx 27°$（鉛直から前方へ傾く）</p>
+                    <br>
+                    <p><strong>結論：</strong>車に乗っている人から見ると、雨は斜め前方から約 11.2 m/s で降ってくるように見える。</p>
+                </div>
+                
+                <div class="important-box">
+                    <p><strong>まとめ：</strong></p>
+                    <ul style="margin-left: 20px;">
+                        <li>相対速度 = 見られる物の速度 − 観測者の速度</li>
+                        <li>ベクトルの引き算は「逆ベクトルを足す」と考える</li>
+                        <li>2次元では成分ごとに計算し、大きさと向きを求める</li>
+                        <li>シミュレーションで実際の見え方を確認しよう！</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ========== 問題タブ ========== -->
+        <div id="problem" class="tab-content">
+            <h2>確認問題</h2>
+            
+            <div class="problem-box">
+                <h4>問題1：1次元の相対速度（基本）</h4>
+                <p>東西に伸びる直線道路を、車Aが東向きに 20 m/s、車Bが西向きに 15 m/s で走っています。</p>
+                <p>(1) Aから見たBの相対速度を求めなさい。</p>
+                <p>(2) Bから見たAの相対速度を求めなさい。</p>
+                
+                <details>
+                    <summary>解答・解説を見る</summary>
+                    <div class="answer-content">
+                        <p><strong>解答：</strong></p>
+                        <p>東向きを正とする。$v_A = +20$ m/s、$v_B = -15$ m/s</p>
+                        <br>
+                        <p><strong>(1) Aから見たBの相対速度 $v_{BA}$</strong></p>
+                        <p>$$v_{BA} = v_B - v_A = -15 - 20 = -35 \text{ m/s}$$</p>
+                        <p>答え：<strong>西向きに 35 m/s</strong></p>
+                        <p>（Aから見ると、Bは猛スピードで西向きに近づいてくる）</p>
+                        <br>
+                        <p><strong>(2) Bから見たAの相対速度 $v_{AB}$</strong></p>
+                        <p>$$v_{AB} = v_A - v_B = 20 - (-15) = +35 \text{ m/s}$$</p>
+                        <p>答え：<strong>東向きに 35 m/s</strong></p>
+                        <p>（Bから見ると、Aは猛スピードで東向きに近づいてくる）</p>
+                        <br>
+                        <p><strong>ポイント：</strong>互いの相対速度は大きさが同じで向きが逆になる。</p>
+                    </div>
+                </details>
+            </div>
+            
+            <div class="problem-box">
+                <h4>問題2：2次元の相対速度（応用）</h4>
+                <p>水平な線路上を電車Aが東向きに 5.0 m/s で走っています。電車の窓から雨を見ると、鉛直方向から 30° 傾いて前方から降ってくるように見えました。</p>
+                <p>地面に対する雨の落下速度（鉛直成分）を求めなさい。ただし、雨は地面に対して鉛直に降っているものとします。</p>
+                
+                <details>
+                    <summary>解答・解説を見る</summary>
+                    <div class="answer-content">
+                        <p><strong>解答：</strong></p>
+                        <p>地面から見た雨の速度を $\vec{v}_R = (0, -v_R)$（鉛直下向き）</p>
+                        <p>電車の速度を $\vec{v}_A = (5.0, 0)$ m/s（東向き）</p>
+                        <br>
+                        <p>電車から見た雨の相対速度は：</p>
+                        <p>$$\vec{v}_{RA} = \vec{v}_R - \vec{v}_A = (-5.0, -v_R)$$</p>
+                        <br>
+                        <p>この相対速度が鉛直から 30° 傾いているので：</p>
+                        <p>$$\tan 30° = \frac{5.0}{v_R}$$</p>
+                        <p>$$v_R = \frac{5.0}{\tan 30°} = \frac{5.0}{1/\sqrt{3}} = 5.0\sqrt{3} \approx 8.7 \text{ m/s}$$</p>
+                        <br>
+                        <p>答え：<strong>約 8.7 m/s</strong>（または $5\sqrt{3}$ m/s）</p>
+                    </div>
+                </details>
+            </div>
+            
+            <div class="problem-box">
+                <h4>問題3：相対速度の概念理解</h4>
+                <p>次の文章の空欄を埋めなさい。</p>
+                <p>「相対速度」とは（ ア ）から見た（ イ ）の速度のことである。AがBに対して持つ相対速度 $\vec{v}_{AB}$ は、式 $\vec{v}_{AB} = $（ ウ ）で表される。</p>
+                <p>また、同じ向きに同じ速さで動いている2つの物体の相対速度は（ エ ）である。</p>
+                
+                <details>
+                    <summary>解答・解説を見る</summary>
+                    <div class="answer-content">
+                        <p><strong>解答：</strong></p>
+                        <p>ア：<strong>観測者（または基準となる物体）</strong></p>
+                        <p>イ：<strong>他の物体（または観測される物体）</strong></p>
+                        <p>ウ：<strong>$\vec{v}_A - \vec{v}_B$</strong></p>
+                        <p>エ：<strong>0（ゼロ）</strong></p>
+                        <br>
+                        <p><strong>解説：</strong></p>
+                        <p>相対速度は「誰から見るか」を明確にすることが大切です。「AのBに対する相対速度」は「Bから見たAの速度」と同じ意味で、$\vec{v}_A - \vec{v}_B$ で計算します。</p>
+                        <p>同じ向きに同じ速さで動く物体同士は、互いに静止しているように見えるため、相対速度は 0 になります。</p>
+                    </div>
+                </details>
+            </div>
+        </div>
+        
+        <!-- ========== シミュレーションタブ ========== -->
+        <div id="simulation" class="tab-content">
+            <h2>車から見た雨のシミュレーション</h2>
+            <p>車の速度と雨の速度を変えて、車から見た雨の見え方を確認しましょう。</p>
+            
+            <div id="sim-container">
+                <canvas id="physicsCanvas"></canvas>
+            </div>
+            
+            <div class="sim-controls">
+                <div class="control-group">
+                    <label>車の速度 (v<sub>車</sub>): <span class="value-display" id="vCarDisplay">10 m/s</span></label>
+                    <input type="range" id="vCarSlider" min="0" max="30" value="10" step="1">
+                </div>
+                
+                <div class="control-group">
+                    <label>雨の落下速度 (v<sub>雨</sub>): <span class="value-display" id="vRainDisplay">5 m/s</span></label>
+                    <input type="range" id="vRainSlider" min="1" max="20" value="5" step="1">
+                </div>
+                
+                <div class="button-group">
+                    <button class="sim-button start" id="startBtn">スタート</button>
+                    <button class="sim-button reset" id="resetBtn">リセット</button>
+                    <button class="sim-button view-toggle" id="viewBtn">視点切替：地面</button>
+                </div>
+                
+                <div class="info-display">
+                    <p><strong>【計算結果】</strong></p>
+                    <p>地面から見た雨の速度：<span id="absRainInfo">鉛直下向き 5 m/s</span></p>
+                    <p>車から見た雨の相対速度：<span id="relRainInfo">計算中...</span></p>
+                    <p>相対速度の角度（鉛直から）：<span id="angleInfo">計算中...</span></p>
+                </div>
+            </div>
+            
+            <div class="graph-container">
+                <h3>速度ベクトル図</h3>
+                <canvas id="graphCanvas"></canvas>
+                <p style="margin-top: 10px; color: #666; text-align: center;">青：車の速度　緑：雨の速度　赤：車から見た雨の相対速度</p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+    // --- タブ切り替え機能 ---
+    function openTab(tabName) {
+        var contents = document.getElementsByClassName("tab-content");
+        for (var i = 0; i < contents.length; i++) {
+            contents[i].style.display = "none";
+            contents[i].classList.remove("active");
+        }
+        var buttons = document.getElementsByClassName("tab-btn");
+        for (var i = 0; i < buttons.length; i++) {
+            buttons[i].classList.remove("active");
+        }
+        document.getElementById(tabName).style.display = "block";
+        document.getElementById(tabName).classList.add("active");
+        if (event) {
+            event.currentTarget.classList.add("active");
+        }
+        
+        // シミュレーションタブが開かれたらキャンバスをリサイズ
+        if (tabName === 'simulation') {
+            resizeCanvases();
+            drawGraph();
+        }
+        
+        // 解説タブが開かれたらベクトル図を描画
+        if (tabName === 'lecture') {
+            drawVectorDiagram();
+        }
+    }
+
+    // --- ベクトル図の描画（解説タブ用） ---
+    function drawVectorDiagram() {
+        const canvas = document.getElementById('vectorDiagram');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const W = canvas.width;
+        const H = canvas.height;
+        
+        ctx.clearRect(0, 0, W, H);
+        ctx.fillStyle = '#fafafa';
+        ctx.fillRect(0, 0, W, H);
+        
+        const originX = 100;
+        const originY = H / 2;
+        const scale = 25;
+        
+        // 原点
+        ctx.beginPath();
+        ctx.arc(originX, originY, 5, 0, Math.PI * 2);
+        ctx.fillStyle = '#333';
+        ctx.fill();
+        ctx.fillStyle = '#333';
+        ctx.font = '14px sans-serif';
+        ctx.fillText('O', originX - 15, originY + 5);
+        
+        // ベクトルvA（青）
+        const vAx = 6, vAy = -2;
+        drawArrow(ctx, originX, originY, originX + vAx * scale, originY + vAy * scale, '#2196F3', 3);
+        ctx.fillStyle = '#2196F3';
+        ctx.fillText('vA', originX + vAx * scale + 10, originY + vAy * scale);
+        
+        // ベクトルvB（緑）
+        const vBx = 3, vBy = 3;
+        drawArrow(ctx, originX, originY, originX + vBx * scale, originY + vBy * scale, '#4CAF50', 3);
+        ctx.fillStyle = '#4CAF50';
+        ctx.fillText('vB', originX + vBx * scale + 10, originY + vBy * scale);
+        
+        // -vA（点線、グレー）
+        ctx.setLineDash([5, 5]);
+        drawArrow(ctx, originX + vBx * scale, originY + vBy * scale, 
+                  originX + vBx * scale - vAx * scale, originY + vBy * scale - vAy * scale, '#999', 2);
+        ctx.setLineDash([]);
+        ctx.fillStyle = '#999';
+        ctx.fillText('-vA', originX + vBx * scale - vAx * scale - 30, originY + vBy * scale - vAy * scale);
+        
+        // 相対速度 vBA = vB - vA（赤）
+        const vBAx = vBx - vAx;
+        const vBAy = vBy - vAy;
+        drawArrow(ctx, originX, originY, originX + vBAx * scale, originY + vBAy * scale, '#f44336', 3);
+        ctx.fillStyle = '#f44336';
+        ctx.font = 'bold 14px sans-serif';
+        ctx.fillText('vBA = vB - vA', originX + vBAx * scale + 10, originY + vBAy * scale + 20);
+    }
+
+    // --- 矢印を描画するヘルパー関数 ---
+    function drawArrow(ctx, fromX, fromY, toX, toY, color, lineWidth) {
+        const headLen = 15;
+        const angle = Math.atan2(toY - fromY, toX - fromX);
+        
+        ctx.strokeStyle = color;
+        ctx.fillStyle = color;
+        ctx.lineWidth = lineWidth;
+        
+        ctx.beginPath();
+        ctx.moveTo(fromX, fromY);
+        ctx.lineTo(toX, toY);
+        ctx.stroke();
+        
+        ctx.beginPath();
+        ctx.moveTo(toX, toY);
+        ctx.lineTo(toX - headLen * Math.cos(angle - Math.PI / 6), toY - headLen * Math.sin(angle - Math.PI / 6));
+        ctx.lineTo(toX - headLen * Math.cos(angle + Math.PI / 6), toY - headLen * Math.sin(angle + Math.PI / 6));
+        ctx.closePath();
+        ctx.fill();
+    }
+
+    // --- シミュレーション変数 ---
+    const physCanvas = document.getElementById('physicsCanvas');
+    const physCtx = physCanvas.getContext('2d');
+    const graphCanvas = document.getElementById('graphCanvas');
+    const graphCtx = graphCanvas.getContext('2d');
+    
+    let vCar = 10;  // 車の速度 m/s
+    let vRain = 5;  // 雨の落下速度 m/s
+    let isRunning = false;
+    let isCarView = false;  // true: 車視点、false: 地面視点
+    let animationId = null;
+    let time = 0;
+    
+    // 雨粒の配列
+    let raindrops = [];
+    const NUM_RAINDROPS = 100;
+    
+    // 車の位置
+    let carX = 100;
+    
+    // --- 初期化 ---
+    function init() {
+        resizeCanvases();
+        initRaindrops();
+        updateDisplays();
+        draw();
+        drawGraph();
+    }
+    
+    function resizeCanvases() {
+        const container = document.getElementById('sim-container');
+        physCanvas.width = container.clientWidth - 40;
+        physCanvas.height = 350;
+        
+        const graphContainer = document.querySelector('.graph-container');
+        graphCanvas.width = graphContainer.clientWidth - 30;
+        graphCanvas.height = 250;
+    }
+    
+    function initRaindrops() {
+        raindrops = [];
+        for (let i = 0; i < NUM_RAINDROPS; i++) {
+            raindrops.push({
+                x: Math.random() * (physCanvas.width + 200) - 100,
+                y: Math.random() * physCanvas.height
+            });
+        }
+    }
+    
+    // --- スライダーイベント ---
+    document.getElementById('vCarSlider').addEventListener('input', function() {
+        vCar = parseFloat(this.value);
+        updateDisplays();
+        drawGraph();
+    });
+    
+    document.getElementById('vRainSlider').addEventListener('input', function() {
+        vRain = parseFloat(this.value);
+        updateDisplays();
+        drawGraph();
+    });
+    
+    // --- ボタンイベント ---
+    document.getElementById('startBtn').addEventListener('click', function() {
+        if (isRunning) {
+            isRunning = false;
+            this.textContent = 'スタート';
+            cancelAnimationFrame(animationId);
+        } else {
+            isRunning = true;
+            this.textContent = '一時停止';
+            animate();
+        }
+    });
+    
+    document.getElementById('resetBtn').addEventListener('click', function() {
+        isRunning = false;
+        document.getElementById('startBtn').textContent = 'スタート';
+        cancelAnimationFrame(animationId);
+        time = 0;
+        carX = 100;
+        initRaindrops();
+        draw();
+    });
+    
+    document.getElementById('viewBtn').addEventListener('click', function() {
+        isCarView = !isCarView;
+        this.textContent = isCarView ? '視点切替：車' : '視点切替：地面';
+        this.classList.toggle('active', isCarView);
+        draw();
+    });
+    
+    // --- 表示更新 ---
+    function updateDisplays() {
+        document.getElementById('vCarDisplay').textContent = vCar + ' m/s';
+        document.getElementById('vRainDisplay').textContent = vRain + ' m/s';
+        
+        // 相対速度の計算
+        const relVx = -vCar;  // 車から見た雨のx成分
+        const relVy = -vRain; // 車から見た雨のy成分
+        const relSpeed = Math.sqrt(relVx * relVx + relVy * relVy);
+        const angle = Math.atan2(Math.abs(relVx), Math.abs(relVy)) * 180 / Math.PI;
+        
+        document.getElementById('absRainInfo').textContent = `鉛直下向き ${vRain} m/s`;
+        document.getElementById('relRainInfo').textContent = `${relSpeed.toFixed(1)} m/s`;
+        document.getElementById('angleInfo').textContent = `${angle.toFixed(1)}°（前方へ傾く）`;
+    }
+    
+    // --- アニメーション ---
+    function animate() {
+        if (!isRunning) return;
+        
+        time += 1/60;
+        
+        // 雨粒の更新
+        const dt = 2;  // アニメーションスピード調整
+        for (let drop of raindrops) {
+            if (isCarView) {
+                // 車視点：雨は斜めに降ってくるように見える
+                drop.x -= vCar * dt * 0.1;
+                drop.y += vRain * dt * 0.5;
+            } else {
+                // 地面視点：雨は真下に降る
+                drop.y += vRain * dt * 0.5;
+            }
+            
+            // 画面外に出たらリセット
+            if (drop.y > physCanvas.height) {
+                drop.y = -10;
+                drop.x = Math.random() * (physCanvas.width + 200) - 100;
+            }
+            if (drop.x < -50) {
+                drop.x = physCanvas.width + 50;
+            }
+        }
+        
+        // 車の更新（地面視点のみ移動）
+        if (!isCarView) {
+            carX += vCar * dt * 0.1;
+            if (carX > physCanvas.width + 50) {
+                carX = -100;
+            }
+        }
+        
+        draw();
+        animationId = requestAnimationFrame(animate);
+    }
+    
+    // --- メイン描画 ---
+    function draw() {
+        const W = physCanvas.width;
+        const H = physCanvas.height;
+        
+        // 背景
+        physCtx.fillStyle = '#87CEEB';  // 空色
+        physCtx.fillRect(0, 0, W, H);
+        
+        // 地面
+        const groundY = H - 60;
+        physCtx.fillStyle = '#808080';
+        physCtx.fillRect(0, groundY, W, 60);
+        
+        // 道路の白線
+        physCtx.strokeStyle = '#fff';
+        physCtx.lineWidth = 3;
+        physCtx.setLineDash([30, 20]);
+        physCtx.beginPath();
+        physCtx.moveTo(0, groundY + 30);
+        physCtx.lineTo(W, groundY + 30);
+        physCtx.stroke();
+        physCtx.setLineDash([]);
+        
+        // 背景の木
+        if (!isCarView) {
+            // 地面視点では木は固定
+            drawTree(physCtx, 100, groundY);
+            drawTree(physCtx, 400, groundY);
+            drawTree(physCtx, 700, groundY);
+        } else {
+            // 車視点では背景が後ろに流れる
+            const bgOffset = (time * vCar * 10) % 300;
+            drawTree(physCtx, 100 - bgOffset, groundY);
+            drawTree(physCtx, 400 - bgOffset, groundY);
+            drawTree(physCtx, 700 - bgOffset, groundY);
+        }
+        
+        // 雨粒
+        physCtx.strokeStyle = '#4444ff';
+        physCtx.lineWidth = 2;
+        
+        const rainAngle = isCarView ? Math.atan2(vCar, vRain) : 0;
+        const rainLen = 15;
+        
+        for (let drop of raindrops) {
+            physCtx.beginPath();
+            physCtx.moveTo(drop.x, drop.y);
+            physCtx.lineTo(
+                drop.x - rainLen * Math.sin(rainAngle),
+                drop.y + rainLen * Math.cos(rainAngle)
+            );
+            physCtx.stroke();
+        }
+        
+        // 車を描画
+        const drawCarX = isCarView ? W / 2 - 50 : carX;
+        drawCar(physCtx, drawCarX, groundY - 40);
+        
+        // 視点表示
+        physCtx.fillStyle = 'rgba(0,0,0,0.7)';
+        physCtx.fillRect(10, 10, 150, 30);
+        physCtx.fillStyle = '#fff';
+        physCtx.font = 'bold 16px sans-serif';
+        physCtx.fillText(isCarView ? '👁 車からの視点' : '👁 地面からの視点', 20, 32);
+    }
+    
+    function drawCar(ctx, x, y) {
+        // 車体
+        ctx.fillStyle = '#e74c3c';
+        ctx.beginPath();
+        ctx.roundRect(x, y, 100, 35, 5);
+        ctx.fill();
+        
+        // 窓
+        ctx.fillStyle = '#3498db';
+        ctx.beginPath();
+        ctx.roundRect(x + 55, y + 5, 35, 20, 3);
+        ctx.fill();
+        
+        // タイヤ
+        ctx.fillStyle = '#333';
+        ctx.beginPath();
+        ctx.arc(x + 20, y + 35, 12, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(x + 80, y + 35, 12, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // ホイール
+        ctx.fillStyle = '#999';
+        ctx.beginPath();
+        ctx.arc(x + 20, y + 35, 6, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(x + 80, y + 35, 6, 0, Math.PI * 2);
+        ctx.fill();
+    }
+    
+    function drawTree(ctx, x, groundY) {
+        if (x < -50 || x > physCanvas.width + 50) return;
+        
+        // 幹
+        ctx.fillStyle = '#8B4513';
+        ctx.fillRect(x - 10, groundY - 80, 20, 80);
+        
+        // 葉
+        ctx.fillStyle = '#228B22';
+        ctx.beginPath();
+        ctx.arc(x, groundY - 100, 40, 0, Math.PI * 2);
+        ctx.fill();
+    }
+    
+    // --- グラフ描画 ---
+    function drawGraph() {
+        const W = graphCanvas.width;
+        const H = graphCanvas.height;
+        const margin = 50;
+        const graphW = W - margin * 2;
+        const graphH = H - margin * 2;
+        
+        graphCtx.clearRect(0, 0, W, H);
+        graphCtx.fillStyle = '#fff';
+        graphCtx.fillRect(0, 0, W, H);
+        
+        // 軸
+        graphCtx.strokeStyle = '#333';
+        graphCtx.lineWidth = 2;
+        graphCtx.beginPath();
+        graphCtx.moveTo(margin, margin);
+        graphCtx.lineTo(margin, H - margin);
+        graphCtx.lineTo(W - margin, H - margin);
+        graphCtx.stroke();
+        
+        // 原点からのスタート
+        const originX = margin + graphW / 2;
+        const originY = H - margin - graphH / 2;
+        
+        // グリッド
+        graphCtx.strokeStyle = '#ddd';
+        graphCtx.lineWidth = 1;
+        const gridSize = 20;
+        for (let x = margin; x <= W - margin; x += gridSize) {
+            graphCtx.beginPath();
+            graphCtx.moveTo(x, margin);
+            graphCtx.lineTo(x, H - margin);
+            graphCtx.stroke();
+        }
+        for (let y = margin; y <= H - margin; y += gridSize) {
+            graphCtx.beginPath();
+            graphCtx.moveTo(margin, y);
+            graphCtx.lineTo(W - margin, y);
+            graphCtx.stroke();
+        }
+        
+        // 軸ラベル
+        graphCtx.fillStyle = '#333';
+        graphCtx.font = '14px sans-serif';
+        graphCtx.fillText('vx (m/s)', W - margin - 50, H - margin + 30);
+        graphCtx.fillText('vy (m/s)', margin - 40, margin + 20);
+        
+        const scale = 4;  // ピクセル/m/s
+        
+        // 原点
+        graphCtx.beginPath();
+        graphCtx.arc(originX, originY, 4, 0, Math.PI * 2);
+        graphCtx.fillStyle = '#333';
+        graphCtx.fill();
+        graphCtx.fillText('O', originX - 15, originY + 5);
+        
+        // 車の速度ベクトル（青）
+        const carEndX = originX + vCar * scale;
+        const carEndY = originY;
+        drawArrow(graphCtx, originX, originY, carEndX, carEndY, '#2196F3', 3);
+        graphCtx.fillStyle = '#2196F3';
+        graphCtx.font = 'bold 14px sans-serif';
+        graphCtx.fillText('v車', carEndX + 5, carEndY - 10);
+        
+        // 雨の速度ベクトル（緑、下向きなのでy正方向）
+        const rainEndX = originX;
+        const rainEndY = originY + vRain * scale;
+        drawArrow(graphCtx, originX, originY, rainEndX, rainEndY, '#4CAF50', 3);
+        graphCtx.fillStyle = '#4CAF50';
+        graphCtx.fillText('v雨', rainEndX + 10, rainEndY);
+        
+        // 相対速度ベクトル（赤）
+        const relVx = 0 - vCar;  // 雨 - 車
+        const relVy = vRain - 0;
+        const relEndX = originX + relVx * scale;
+        const relEndY = originY + relVy * scale;
+        drawArrow(graphCtx, originX, originY, relEndX, relEndY, '#f44336', 3);
+        graphCtx.fillStyle = '#f44336';
+        graphCtx.font = 'bold 14px sans-serif';
+        graphCtx.fillText('v相対', relEndX - 40, relEndY + 20);
+        
+        // -v車（点線で補助線）
+        graphCtx.setLineDash([5, 5]);
+        graphCtx.strokeStyle = '#999';
+        graphCtx.lineWidth = 2;
+        graphCtx.beginPath();
+        graphCtx.moveTo(rainEndX, rainEndY);
+        graphCtx.lineTo(relEndX, relEndY);
+        graphCtx.stroke();
+        graphCtx.setLineDash([]);
+        graphCtx.fillStyle = '#999';
+        graphCtx.font = '12px sans-serif';
+        graphCtx.fillText('-v車', (rainEndX + relEndX) / 2 - 20, (rainEndY + relEndY) / 2 - 5);
+    }
+    
+    // --- ウィンドウリサイズ対応 ---
+    window.addEventListener('resize', function() {
+        resizeCanvases();
+        draw();
+        drawGraph();
+    });
+    
+    // --- 初期化実行 ---
+    init();
+    drawVectorDiagram();
+    </script>
+</body>
+</html>

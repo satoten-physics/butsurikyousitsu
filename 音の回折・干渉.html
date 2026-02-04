@@ -1,0 +1,1638 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高校物理 - 音の回折・干渉</title>
+    <script>
+      window.MathJax = {
+      tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']]
+     }
+     };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        header {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .back-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        h1 {
+            color: #333;
+        }
+        .container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .tab-btn {
+            flex: 1;
+            min-width: 150px;
+            padding: 12px 20px;
+            border: none;
+            background: #f0f0f0;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        .tab-btn.active {
+            background: #667eea;
+            color: white;
+        }
+        .tab-btn:hover {
+            background: #8899f0;
+            color: white;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        h3 {
+            color: #555;
+            margin: 25px 0 15px 0;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #667eea;
+        }
+        h4 {
+            color: #667eea;
+            margin: 20px 0 10px 0;
+        }
+        p {
+            line-height: 1.8;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        .pdf-placeholder {
+            background: #f9f9f9;
+            padding: 40px;
+            text-align: center;
+            border-radius: 5px;
+            color: #666;
+        }
+        
+        /* 解説用ツールのスタイル */
+        .demo-container {
+            background: #f9f9f9;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .demo-canvas {
+            display: block;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 5px;
+            border: 2px solid #ddd;
+        }
+        .demo-controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        .demo-btn {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        .demo-btn.play {
+            background: #4CAF50;
+            color: white;
+        }
+        .demo-btn.play:hover {
+            background: #45a049;
+        }
+        .demo-btn.reset {
+            background: #f44336;
+            color: white;
+        }
+        .demo-btn.reset:hover {
+            background: #da190b;
+        }
+        .demo-btn.toggle {
+            background: #2196F3;
+            color: white;
+        }
+        .demo-btn.toggle:hover {
+            background: #1976D2;
+        }
+        .note {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 10px 15px;
+            margin: 15px 0;
+            font-size: 0.9em;
+            color: #856404;
+        }
+        .formula-box {
+            background: #e8f4f8;
+            border: 1px solid #b8daff;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin: 15px 0;
+            text-align: center;
+        }
+        .important {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+            padding: 10px 15px;
+            margin: 15px 0;
+        }
+        
+        /* シミュレーション用スタイル */
+        #sim-container {
+            background: #f5f5f5;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        #physicsCanvas {
+            display: block;
+            width: 100%;
+            background: white;
+            border-radius: 5px;
+            border: 2px solid #ddd;
+            cursor: grab;
+        }
+        #physicsCanvas:active {
+            cursor: grabbing;
+        }
+        .sim-controls {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .control-group {
+            margin-bottom: 20px;
+        }
+        .control-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        .control-group input[type="range"] {
+            width: 100%;
+            margin: 10px 0;
+        }
+        .value-display {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            min-width: 100px;
+            text-align: center;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .sim-button {
+            flex: 1;
+            min-width: 120px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .sim-button.start {
+            background: #4CAF50;
+            color: white;
+        }
+        .sim-button.start:hover {
+            background: #45a049;
+        }
+        .sim-button.reset {
+            background: #f44336;
+            color: white;
+        }
+        .sim-button.reset:hover {
+            background: #da190b;
+        }
+        .result-display {
+            background: #e8f5e9;
+            border: 2px solid #4CAF50;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        .result-display.weak {
+            background: #ffebee;
+            border-color: #f44336;
+        }
+        .result-display h4 {
+            margin: 0 0 10px 0;
+        }
+        
+        /* 問題タブ用スタイル */
+        .problem-box {
+            background: #f9f9f9;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .problem-box h4 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+        details {
+            background: #e8f4f8;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+        summary {
+            cursor: pointer;
+            font-weight: bold;
+            color: #667eea;
+        }
+        details[open] summary {
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .graph-container {
+            margin-top: 20px;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #ddd;
+        }
+        .graph-container h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+            border: none;
+        }
+        #graphCanvas {
+            display: block;
+            width: 100%;
+            border: 1px solid #eee;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            header, .container {
+                padding: 15px;
+            }
+            .tab-btn {
+                min-width: 100px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="back-link">← 目次に戻る</a>
+        <h1>音の回折・干渉</h1>
+    </header>
+    <div class="container">
+        
+        <div class="tabs">
+            <button class="tab-btn active" onclick="openTab('lecture')">解説編</button>
+            <button class="tab-btn" onclick="openTab('problem')">問題編</button>
+            <button class="tab-btn" onclick="openTab('simulation')">シミュレーション</button>
+        </div>
+        
+        <div id="lecture" class="tab-content active">
+            <h2>音の回折・干渉</h2>
+            
+            <h3>1. 音の回折（復習）</h3>
+            <p>
+                前章で学んだように、波には<strong>回折</strong>という性質があります。
+                回折とは、波が障害物の端や隙間を通過するとき、その裏側に回り込んで広がる現象です。
+            </p>
+            <p>
+                この現象は<strong>ホイヘンスの原理</strong>で説明できます。
+                波面上の各点が新たな波（素元波）の波源となり、それらの包絡面が新しい波面を形成します。
+            </p>
+            <div class="formula-box">
+                <p><strong>回折の特徴</strong></p>
+                <p>波長 $\lambda$ が長いほど、回り込む度合いが大きくなる</p>
+                <p>$v = f\lambda$ より、振動数が固定なら低い音（長い波長）ほど回折しやすい</p>
+            </div>
+            
+            <h3>2. 日常で見られる音の回折</h3>
+            
+            <h4>例1：ドアの隙間から声が聞こえる</h4>
+            <p>
+                教室のドアが少し開いていると、廊下で話している人の声が聞こえることがあります。
+                これは、音波がドアの隙間を通過する際に回折するためです。
+            </p>
+            
+            <div class="demo-container">
+                <canvas id="doorCanvas" class="demo-canvas" width="600" height="400"></canvas>
+            </div>
+            <div class="note">
+                <strong>※注釈：</strong>実際には壁自体を通じて振動が伝わる成分もありますが、ここでは隙間を通じた回折のみを示しています。
+            </div>
+            
+            <h4>例2：高速道路の防音壁</h4>
+            <p>
+                高速道路沿いには防音壁が設置されていますが、特に住宅地側は<strong>内側に湾曲した形状</strong>になっていることがあります。
+                これは、音の回折を抑えるための工夫です。
+            </p>
+            <p>
+                直線的な壁では、壁の上端で回折した音が住宅地側に回り込んでしまいます。
+                内側に湾曲した壁では、回折した音が上方に逃げやすくなり、騒音が軽減されます。
+            </p>
+            
+            <div class="demo-container">
+                <canvas id="wallCanvas" class="demo-canvas" width="600" height="400"></canvas>
+                <div class="demo-controls">
+                    <button class="demo-btn toggle" id="wallToggleBtn">壁の形状を切替</button>
+                </div>
+                <p style="text-align: center; margin-top: 10px; font-weight: bold;" id="wallTypeLabel">現在：直線壁</p>
+            </div>
+            <div class="note">
+                <strong>※注釈：</strong>実際の防音壁では、回折現象の抑制に加えて、音の距離による減衰や吸音材による吸収も考慮されています。
+            </div>
+            
+            <h3>3. 音の干渉（復習）</h3>
+            <p>
+                同じ振動数で同位相の音波を出す2つの音源があるとき、場所によって音が大きく聞こえたり小さく聞こえたりします。
+                これが<strong>音の干渉</strong>です。
+            </p>
+            
+            <div class="formula-box">
+                <p><strong>干渉の条件</strong>（2つの音源 $S_1$, $S_2$ からの経路差を $|l_1 - l_2|$ とする）</p>
+                <p style="margin: 10px 0;"><strong>強め合う条件：</strong> $|l_1 - l_2| = m\lambda$ （$m = 0, 1, 2, ...$）</p>
+                <p><strong>弱め合う条件：</strong> $|l_1 - l_2| = \left(m + \dfrac{1}{2}\right)\lambda$ （$m = 0, 1, 2, ...$）</p>
+            </div>
+            
+            <div class="important">
+                <strong>大事なのは「経路差」</strong><br>
+                干渉の結果は、2つの波源からの距離の差（経路差）が波長の何倍かで決まります。
+            </div>
+            
+            <h3>4. 日常で見られる音の干渉</h3>
+            
+            <h4>例：ノイズキャンセリングイヤホン</h4>
+            <p>
+                ノイズキャンセリングイヤホンは、<strong>音の干渉（弱め合い）</strong>を利用して外部の騒音を打ち消します。
+            </p>
+            <p>
+                イヤホンに内蔵されたマイクが外部の音を検出し、その音と<strong>逆位相（位相が半波長ずれた）</strong>の音波を生成して出力します。
+                すると、外部の音とイヤホンからの音が干渉して弱め合い、騒音が聞こえなくなります。
+            </p>
+            
+            <div class="demo-container">
+                <canvas id="ncCanvas" class="demo-canvas" width="600" height="400"></canvas>
+                <div class="demo-controls">
+                    <button class="demo-btn toggle" id="ncToggleBtn">ノイズキャンセリング ON/OFF</button>
+                </div>
+                <p style="text-align: center; margin-top: 10px; font-weight: bold;" id="ncStatusLabel">ノイズキャンセリング：OFF</p>
+            </div>
+            <div class="note">
+                <strong>※注釈：</strong>イヤホンがマイクで外音を測定してから逆位相の音を出すまでには、わずかな時間差（ラグ）が存在します。
+                しかし、人間の聴覚ではその程度の遅延はほとんど認知できないため、効果的にノイズキャンセリングが機能します。
+            </div>
+            
+            <h3>授業資料</h3>
+            <iframe src="https://drive.google.com/file/d/1rd3AUHNkj-NLM0IEztEdsiVOdPwxD6EA/preview" width="100%" height="500"></iframe>
+        </div>
+        
+        <div id="problem" class="tab-content">
+            <h2>確認問題</h2>
+            
+            <div class="problem-box">
+                <h4>問題1：音の干渉の基本</h4>
+                <p>
+                    図のように2つのスピーカー $S_1$ と $S_2$ から等しい音が出ている。
+                    この音の振動数は $1.7 \times 10^2$ Hz であり、音の速さは $3.4 \times 10^2$ m/s である。
+                </p>
+                <p>（1）この音の波長 $\lambda$ [m] を求めよ。</p>
+                <p>（2）点Aは $S_1$, $S_2$ から等距離にある。点Aは音が強め合う点か、弱め合う点か。</p>
+                <p>（3）点Bは $S_1$ から 5.0m、$S_2$ から 4.0m の位置にある。点Bは音が強め合う点か、弱め合う点か。</p>
+                
+                <details>
+                    <summary>解答・解説を見る</summary>
+                    <p><strong>（1）波長の計算</strong></p>
+                    <p>波の基本式 $v = f\lambda$ より</p>
+                    <p>$$\lambda = \frac{v}{f} = \frac{3.4 \times 10^2}{1.7 \times 10^2} = 2.0 \text{ m}$$</p>
+                    
+                    <p><strong>（2）点Aについて</strong></p>
+                    <p>$S_1A = S_2A$ より、経路差 $|l_1 - l_2| = 0 = 0 \times \lambda$</p>
+                    <p>これは $m = 0$ の<strong>強め合い</strong>の条件を満たす。</p>
+                    
+                    <p><strong>（3）点Bについて</strong></p>
+                    <p>経路差 $|l_1 - l_2| = |5.0 - 4.0| = 1.0$ m</p>
+                    <p>$\dfrac{1.0}{2.0} = 0.5 = \left(0 + \dfrac{1}{2}\right)$ より、$m = 0$ の<strong>弱め合い</strong>の条件を満たす。</p>
+                </details>
+            </div>
+            
+            <div class="problem-box">
+                <h4>問題2：干渉条件の応用</h4>
+                <p>
+                    3.0m 離れた2点 A, B にあるスピーカーから振動数 $f = 1.7 \times 10^2$ Hz の同じ強さの音が出ている。
+                    直線 AB から 4.0m 離れた直線 XY 上でこの音を聞くと、A, B から等距離の点 O では極大であったが、
+                    O から Y に向かって次第に小さくなり、O から 1.5m の点 P で極小となった。
+                </p>
+                <p>（1）音源 A, B での振動は、同位相、逆位相のどちらか。</p>
+                <p>（2）この音波の波長 $\lambda$ [m] と、このときの音の速さ $V$ [m/s] を求めよ。</p>
+                <p>（3）次に、スピーカーの振動数を徐々に上げていくとき、点Pで次に音の大きさが極小になるときの振動数 $f'$ [Hz] を求めよ。</p>
+                
+                <details>
+                    <summary>解答・解説を見る</summary>
+                    <p><strong>（1）音源の位相</strong></p>
+                    <p>点Oは A, B から等距離なので経路差は 0。</p>
+                    <p>点Oで極大（強め合い）ということは、経路差 0 で強め合う条件 $|l_1 - l_2| = m\lambda$ の $m = 0$ を満たす。</p>
+                    <p>これは2つの波が<strong>同位相</strong>であることを意味する。</p>
+                    
+                    <p><strong>（2）波長と音速</strong></p>
+                    <p>点Pでの各音源からの距離を計算する。</p>
+                    <p>$l_1 = \sqrt{4.0^2 + (1.5 + 1.5)^2} = \sqrt{16 + 9} = 5.0$ m</p>
+                    <p>$l_2 = \sqrt{4.0^2 + (1.5 - 1.5)^2} = 4.0$ m</p>
+                    <p>経路差 $|l_1 - l_2| = 1.0$ m</p>
+                    <p>点Pは「Oの次の極小」なので $m = 0$ の弱め合い条件より</p>
+                    <p>$$|l_1 - l_2| = \left(0 + \frac{1}{2}\right)\lambda = \frac{\lambda}{2}$$</p>
+                    <p>$$\therefore \lambda = 2.0 \text{ m}$$</p>
+                    <p>$$V = f\lambda = 1.7 \times 10^2 \times 2.0 = 3.4 \times 10^2 \text{ m/s}$$</p>
+                    
+                    <p><strong>（3）振動数を上げたとき</strong></p>
+                    <p>音速 $V$ は一定なので、振動数を上げると波長は短くなる。</p>
+                    <p>点Pでの経路差 1.0m は変わらないので、次の極小は $m = 1$ のとき</p>
+                    <p>$$|l_1 - l_2| = \left(1 + \frac{1}{2}\right)\lambda' = \frac{3\lambda'}{2}$$</p>
+                    <p>$$1.0 = \frac{3\lambda'}{2} \quad \therefore \lambda' = \frac{2}{3} \text{ m}$$</p>
+                    <p>$$f' = \frac{V}{\lambda'} = \frac{3.4 \times 10^2}{\frac{2}{3}} = 5.1 \times 10^2 \text{ Hz}$$</p>
+                </details>
+            </div>
+            
+            <div class="problem-box">
+                <h4>問題3：回折についての理解</h4>
+                <p>次の（ア）～（エ）の文章について、正しいものをすべて選べ。</p>
+                <p>（ア）音の回折は、波長が短いほど顕著に起こる。</p>
+                <p>（イ）低い音（低周波数）は高い音（高周波数）より回折しやすい。</p>
+                <p>（ウ）防音壁を高くすると、回折による騒音の回り込みを完全に防ぐことができる。</p>
+                <p>（エ）ノイズキャンセリングイヤホンは、外部の音と逆位相の音を出すことで音を打ち消している。</p>
+                
+                <details>
+                    <summary>解答・解説を見る</summary>
+                    <p><strong>正解：（イ）（エ）</strong></p>
+                    <p><strong>（ア）誤り</strong>：回折は波長が<strong>長い</strong>ほど顕著に起こる。</p>
+                    <p><strong>（イ）正しい</strong>：$v = f\lambda$ より、音速一定のとき振動数が低いほど波長が長くなり、回折しやすい。</p>
+                    <p><strong>（ウ）誤り</strong>：壁を高くしても回折は必ず起こる。完全に防ぐことはできないが、軽減することは可能。</p>
+                    <p><strong>（エ）正しい</strong>：弱め合いの干渉を利用したノイズキャンセリング技術の説明として正しい。</p>
+                </details>
+            </div>
+        </div>
+        
+        <div id="simulation" class="tab-content">
+            <h2>音の干渉シミュレーション</h2>
+            <p>2つのスピーカーから出る音波の干渉を観察しましょう。観測点P（赤い点）をドラッグして移動できます。</p>
+            
+            <div id="sim-container">
+                <canvas id="physicsCanvas"></canvas>
+            </div>
+            
+            <div class="graph-container">
+                <h3>波の干渉の様子</h3>
+                <canvas id="graphCanvas"></canvas>
+            </div>
+            
+            <div class="sim-controls">
+                <div class="control-group">
+                    <label>スピーカー間の距離 (d): <span class="value-display" id="dDisplay">3.0 m</span></label>
+                    <input type="range" id="dSlider" min="1" max="6" value="3" step="0.5">
+                </div>
+                
+                <div class="control-group">
+                    <label>波長 (λ): <span class="value-display" id="lambdaDisplay">2.0 m</span></label>
+                    <input type="range" id="lambdaSlider" min="0.5" max="4" value="2" step="0.1">
+                </div>
+                
+                <div class="button-group">
+                    <button class="sim-button start" id="startBtn">スタート</button>
+                    <button class="sim-button reset" id="resetBtn">リセット</button>
+                </div>
+            </div>
+            
+            <div class="result-display" id="resultDisplay">
+                <h4>干渉の結果</h4>
+                <p id="resultText">観測点Pをドラッグして移動させてください</p>
+                <p id="pathDiffText">経路差: --- m</p>
+                <p id="conditionText">条件: ---</p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+    // --- タブ切り替え機能 ---
+    function openTab(tabName) {
+        var contents = document.getElementsByClassName("tab-content");
+        for (var i = 0; i < contents.length; i++) {
+            contents[i].style.display = "none";
+            contents[i].classList.remove("active");
+        }
+        var buttons = document.getElementsByClassName("tab-btn");
+        for (var i = 0; i < buttons.length; i++) {
+            buttons[i].classList.remove("active");
+        }
+        document.getElementById(tabName).style.display = "block";
+        document.getElementById(tabName).classList.add("active");
+        if (event) {
+            event.currentTarget.classList.add("active");
+        }
+    }
+
+    // ============================================
+    // 解説用デモ1: ドアの隙間からの回折（常時再生）
+    // ============================================
+    (function() {
+        const canvas = document.getElementById('doorCanvas');
+        const ctx = canvas.getContext('2d');
+        let time = 0;
+        
+        function resize() {
+            const parent = canvas.parentElement;
+            const rect = parent.getBoundingClientRect();
+            canvas.width = Math.min(600, rect.width - 40);
+            canvas.height = 400;
+        }
+        
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // 背景
+            ctx.fillStyle = '#f5f5f5';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // 廊下（左側）
+            ctx.fillStyle = '#e0e0e0';
+            ctx.fillRect(0, 0, canvas.width * 0.35, canvas.height);
+            
+            // 教室（右側）
+            ctx.fillStyle = '#fff8e1';
+            ctx.fillRect(canvas.width * 0.4, 0, canvas.width * 0.6, canvas.height);
+            
+            // 壁の位置
+            const wallLeft = canvas.width * 0.35;
+            const wallRight = canvas.width * 0.4;
+            const wallWidth = wallRight - wallLeft;
+            
+            // ドアの隙間の位置（下側に配置）
+            const gapTop = canvas.height * 0.7;
+            const gapBottom = canvas.height * 0.85;
+            const gapCenterY = (gapTop + gapBottom) / 2;
+            
+            // 音源の位置（上側に配置 - 斜め方向になる）
+            const sourceX = canvas.width * 0.15;
+            const sourceY = canvas.height * 0.25;
+            
+            // 入射波（廊下側）- 壁より左側のみ
+            for (let i = 0; i < 10; i++) {
+                const radius = (time * 50 + i * 35) % 350;
+                if (radius > 0) {
+                    const alpha = i % 2 === 0 ? 0.6 : 0.3;
+                    ctx.strokeStyle = i % 2 === 0 ? `rgba(102, 126, 234, ${alpha})` : `rgba(102, 126, 234, ${alpha})`;
+                    ctx.lineWidth = i % 2 === 0 ? 2 : 1;
+                    ctx.setLineDash(i % 2 === 0 ? [] : [5, 5]);
+                    
+                    ctx.beginPath();
+                    // 壁より左側のみ描画（クリッピング）
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.rect(0, 0, wallLeft, canvas.height);
+                    ctx.clip();
+                    
+                    ctx.beginPath();
+                    ctx.arc(sourceX, sourceY, radius, 0, Math.PI * 2);
+                    ctx.stroke();
+                    ctx.restore();
+                    
+                    ctx.setLineDash([]);
+                }
+            }
+            
+            // 壁を描画（入射波の上に重ねる）
+            ctx.fillStyle = '#8d6e63';
+            ctx.fillRect(wallLeft, 0, wallWidth, gapTop);
+            ctx.fillRect(wallLeft, gapBottom, wallWidth, canvas.height - gapBottom);
+            
+            // 回折波（隙間から教室側へ）- ホイヘンスの原理に基づく素元波
+            for (let i = 0; i < 8; i++) {
+                const radius = (time * 50 + i * 35) % 280;
+                if (radius > 0) {
+                    const alpha = i % 2 === 0 ? 0.5 : 0.25;
+                    ctx.strokeStyle = i % 2 === 0 ? `rgba(76, 175, 80, ${alpha})` : `rgba(76, 175, 80, ${alpha})`;
+                    ctx.lineWidth = i % 2 === 0 ? 2 : 1;
+                    ctx.setLineDash(i % 2 === 0 ? [] : [5, 5]);
+                    
+                    // 教室側のみにクリッピング
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.rect(wallRight, 0, canvas.width - wallRight, canvas.height);
+                    ctx.clip();
+                    
+                    // 隙間の上端からの素元波
+                    ctx.beginPath();
+                    ctx.arc(wallRight, gapTop, radius, -Math.PI/2, Math.PI/2);
+                    ctx.stroke();
+                    
+                    // 隙間の中央からの素元波
+                    ctx.beginPath();
+                    ctx.arc(wallRight, gapCenterY, radius, -Math.PI/2, Math.PI/2);
+                    ctx.stroke();
+                    
+                    // 隙間の下端からの素元波
+                    ctx.beginPath();
+                    ctx.arc(wallRight, gapBottom, radius, -Math.PI/2, Math.PI/2);
+                    ctx.stroke();
+                    
+                    ctx.restore();
+                    ctx.setLineDash([]);
+                }
+            }
+            
+            // 音源（人のアイコン）
+            ctx.fillStyle = '#667eea';
+            ctx.beginPath();
+            ctx.arc(sourceX, sourceY, 15, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = '#333';
+            ctx.font = '14px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('音源', sourceX, sourceY + 35);
+            
+            // ドアの隙間のラベル
+            ctx.fillStyle = '#333';
+            ctx.font = '12px sans-serif';
+            ctx.save();
+            ctx.translate(wallLeft + wallWidth/2, gapCenterY);
+            ctx.rotate(-Math.PI/2);
+            ctx.fillText('隙間', 0, 4);
+            ctx.restore();
+            
+            // ラベル
+            ctx.fillStyle = '#666';
+            ctx.font = 'bold 14px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('廊下', canvas.width * 0.15, 25);
+            ctx.fillText('教室', canvas.width * 0.7, 25);
+            
+            // 凡例
+            ctx.font = '12px sans-serif';
+            ctx.textAlign = 'left';
+            ctx.fillStyle = '#667eea';
+            ctx.fillText('● 入射波', 10, canvas.height - 40);
+            ctx.fillStyle = '#4CAF50';
+            ctx.fillText('● 回折波（素元波）', 10, canvas.height - 20);
+            
+            time += 0.03;
+            requestAnimationFrame(draw);
+        }
+        
+        window.addEventListener('resize', resize);
+        resize();
+        draw();
+    })();
+
+    // ============================================
+    // 解説用デモ2: 高速道路の防音壁（常時再生）
+    // ============================================
+    (function() {
+        const canvas = document.getElementById('wallCanvas');
+        const ctx = canvas.getContext('2d');
+        let time = 0;
+        let isCurved = false;
+        
+        function resize() {
+            const parent = canvas.parentElement;
+            const rect = parent.getBoundingClientRect();
+            canvas.width = Math.min(600, rect.width - 40);
+            canvas.height = 400;
+        }
+        
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // 空
+            const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height * 0.7);
+            gradient.addColorStop(0, '#87CEEB');
+            gradient.addColorStop(1, '#E0F7FA');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height * 0.7);
+            
+            // 地面（道路側）
+            ctx.fillStyle = '#555';
+            ctx.fillRect(0, canvas.height * 0.7, canvas.width * 0.45, canvas.height * 0.3);
+            
+            // 地面（住宅側）
+            ctx.fillStyle = '#8BC34A';
+            ctx.fillRect(canvas.width * 0.55, canvas.height * 0.7, canvas.width * 0.45, canvas.height * 0.3);
+            
+            // 防音壁の位置
+            const wallX = canvas.width * 0.5;
+            const wallBottom = canvas.height * 0.7;
+            const wallTop = canvas.height * 0.25;
+            const wallWidth = 15;
+            
+            // 車の位置
+            const carX = canvas.width * 0.15 + 30;
+            const carY = canvas.height * 0.65;
+            
+            // 音波（道路側のみ - 壁より左側）
+            for (let i = 0; i < 6; i++) {
+                const radius = (time * 60 + i * 50) % 350;
+                if (radius > 0) {
+                    ctx.save();
+                    // 壁より左側のみにクリッピング
+                    ctx.beginPath();
+                    ctx.rect(0, 0, wallX - wallWidth/2, canvas.height);
+                    ctx.clip();
+                    
+                    const alpha = i % 2 === 0 ? 0.5 : 0.25;
+                    ctx.strokeStyle = `rgba(244, 67, 54, ${alpha})`;
+                    ctx.lineWidth = i % 2 === 0 ? 2 : 1;
+                    ctx.setLineDash(i % 2 === 0 ? [] : [5, 5]);
+                    
+                    ctx.beginPath();
+                    ctx.arc(carX, carY, radius, 0, Math.PI * 2);
+                    ctx.stroke();
+                    
+                    ctx.restore();
+                    ctx.setLineDash([]);
+                }
+            }
+            
+            // 回折波（壁の上端から）
+            for (let i = 0; i < 5; i++) {
+                const baseRadius = (time * 60 + i * 50) % 350;
+                const diffRadius = baseRadius - 150;
+                if (diffRadius > 0) {
+                    ctx.save();
+                    // 壁より右側のみにクリッピング
+                    ctx.beginPath();
+                    ctx.rect(wallX + wallWidth/2, 0, canvas.width - wallX, canvas.height);
+                    ctx.clip();
+                    
+                    const alpha = i % 2 === 0 ? 0.5 : 0.25;
+                    ctx.strokeStyle = `rgba(255, 152, 0, ${alpha})`;
+                    ctx.lineWidth = i % 2 === 0 ? 2 : 1;
+                    ctx.setLineDash(i % 2 === 0 ? [] : [5, 5]);
+                    
+                    if (isCurved) {
+                        // 湾曲壁の場合：回折波が上方に逃げる
+                        ctx.beginPath();
+                        ctx.arc(wallX - 50, wallTop - 20, diffRadius, -Math.PI/2 - 0.3, 0.2);
+                        ctx.stroke();
+                    } else {
+                        // 直線壁の場合：回折波が住宅地側に回り込む
+                        ctx.beginPath();
+                        ctx.arc(wallX, wallTop, diffRadius, -Math.PI/4, Math.PI/2 + 0.3);
+                        ctx.stroke();
+                    }
+                    
+                    ctx.restore();
+                    ctx.setLineDash([]);
+                }
+            }
+            
+            // 防音壁を描画
+            if (isCurved) {
+                // 湾曲した壁
+                ctx.fillStyle = '#78909C';
+                ctx.beginPath();
+                ctx.moveTo(wallX - wallWidth/2, wallBottom);
+                ctx.lineTo(wallX - wallWidth/2, wallTop + 30);
+                ctx.quadraticCurveTo(wallX - wallWidth/2 - 40, wallTop - 20, wallX - 60, wallTop - 30);
+                ctx.lineTo(wallX - 60 + wallWidth, wallTop - 30);
+                ctx.quadraticCurveTo(wallX + wallWidth/2 - 40, wallTop - 10, wallX + wallWidth/2, wallTop + 30);
+                ctx.lineTo(wallX + wallWidth/2, wallBottom);
+                ctx.closePath();
+                ctx.fill();
+                ctx.strokeStyle = '#546E7A';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+            } else {
+                // 直線の壁
+                ctx.fillStyle = '#78909C';
+                ctx.fillRect(wallX - wallWidth/2, wallTop, wallWidth, wallBottom - wallTop);
+                ctx.strokeStyle = '#546E7A';
+                ctx.lineWidth = 2;
+                ctx.strokeRect(wallX - wallWidth/2, wallTop, wallWidth, wallBottom - wallTop);
+            }
+            
+            // 車
+            ctx.fillStyle = '#1565C0';
+            ctx.fillRect(canvas.width * 0.15, canvas.height * 0.65, 60, 30);
+            ctx.fillStyle = '#64B5F6';
+            ctx.fillRect(canvas.width * 0.15 + 10, canvas.height * 0.62, 40, 15);
+            
+            // タイヤ
+            ctx.fillStyle = '#333';
+            ctx.beginPath();
+            ctx.arc(canvas.width * 0.15 + 12, canvas.height * 0.7 + 12, 8, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(canvas.width * 0.15 + 48, canvas.height * 0.7 + 12, 8, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // 家（地面にピッタリ配置）
+            const houseX = canvas.width * 0.75;
+            const houseBottom = canvas.height * 0.7;
+            const houseHeight = 60;
+            const houseWidth = 60;
+            const roofHeight = 35;
+            
+            // 家の本体
+            ctx.fillStyle = '#FFCC80';
+            ctx.fillRect(houseX, houseBottom - houseHeight, houseWidth, houseHeight);
+            
+            // 屋根
+            ctx.fillStyle = '#8D6E63';
+            ctx.beginPath();
+            ctx.moveTo(houseX - 10, houseBottom - houseHeight);
+            ctx.lineTo(houseX + houseWidth/2, houseBottom - houseHeight - roofHeight);
+            ctx.lineTo(houseX + houseWidth + 10, houseBottom - houseHeight);
+            ctx.closePath();
+            ctx.fill();
+            
+            // 窓
+            ctx.fillStyle = '#81D4FA';
+            ctx.fillRect(houseX + 10, houseBottom - houseHeight + 15, 15, 15);
+            ctx.fillRect(houseX + 35, houseBottom - houseHeight + 15, 15, 15);
+            
+            // ドア
+            ctx.fillStyle = '#5D4037';
+            ctx.fillRect(houseX + 22, houseBottom - 35, 16, 35);
+            
+            // ラベル
+            ctx.fillStyle = '#333';
+            ctx.font = 'bold 14px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('道路', canvas.width * 0.2, canvas.height * 0.95);
+            ctx.fillText('住宅地', canvas.width * 0.8, canvas.height * 0.95);
+            ctx.fillText(isCurved ? '湾曲壁' : '直線壁', wallX, wallTop - 10);
+            
+            // 凡例
+            ctx.font = '12px sans-serif';
+            ctx.textAlign = 'left';
+            ctx.fillStyle = '#f44336';
+            ctx.fillText('● 騒音', 10, canvas.height - 40);
+            ctx.fillStyle = '#FF9800';
+            ctx.fillText('● 回折波', 10, canvas.height - 20);
+            
+            time += 0.03;
+            requestAnimationFrame(draw);
+        }
+        
+        document.getElementById('wallToggleBtn').addEventListener('click', () => {
+            isCurved = !isCurved;
+            document.getElementById('wallTypeLabel').textContent = isCurved ? '現在：湾曲壁' : '現在：直線壁';
+        });
+        
+        window.addEventListener('resize', resize);
+        resize();
+        draw();
+    })();
+
+    // ============================================
+    // 解説用デモ3: ノイズキャンセリング（常時再生・修正版）
+    // ============================================
+    (function() {
+        const canvas = document.getElementById('ncCanvas');
+        const ctx = canvas.getContext('2d');
+        let time = 0;
+        let ncEnabled = false;
+        
+        function resize() {
+            const parent = canvas.parentElement;
+            const rect = parent.getBoundingClientRect();
+            canvas.width = Math.min(600, rect.width - 40);
+            canvas.height = 400;
+        }
+        
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // 背景
+            ctx.fillStyle = '#f5f5f5';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // 位置設定（耳とイヤホンを離す）
+            const earX = canvas.width * 0.82;
+            const earY = canvas.height * 0.5;
+            const earphoneX = canvas.width * 0.55;
+            const earphoneY = earY;
+            const noiseSourceX = canvas.width * 0.08;
+            
+            // 波形パラメータ（ゆっくり、波長大きく）
+            const waveSpeed = 0.015;
+            const wavelength = 80;
+            const amplitude = 25;
+            
+            // 波形描画関数
+            function drawSineWave(startX, endX, baseY, amp, wl, phase, color, lineWidth) {
+                ctx.strokeStyle = color;
+                ctx.lineWidth = lineWidth;
+                ctx.beginPath();
+                let first = true;
+                for (let x = startX; x <= endX; x += 2) {
+                    const waveY = baseY + amp * Math.sin((x - startX) / wl * Math.PI * 2 + phase);
+                    if (first) {
+                        ctx.moveTo(x, waveY);
+                        first = false;
+                    } else {
+                        ctx.lineTo(x, waveY);
+                    }
+                }
+                ctx.stroke();
+            }
+            
+            const phase = time * 3;
+            
+            // 外部ノイズの波（赤）- イヤホンまで
+            const noiseY = earY - 80;
+            drawSineWave(noiseSourceX + 40, earphoneX - 35, noiseY, amplitude, wavelength, phase, 'rgba(244, 67, 54, 0.8)', 3);
+            
+            // 外部音源
+            ctx.fillStyle = '#f44336';
+            ctx.beginPath();
+            ctx.arc(noiseSourceX, earY, 25, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 12px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('外部', noiseSourceX, earY - 5);
+            ctx.fillText('ノイズ', noiseSourceX, earY + 10);
+            
+            if (ncEnabled) {
+                // ノイズキャンセリング波（青、逆位相）- イヤホンから耳まで
+                const ncWaveY = earY;
+                drawSineWave(earphoneX + 40, earX - 45, ncWaveY - 40, amplitude, wavelength, phase + Math.PI, 'rgba(33, 150, 243, 0.8)', 3);
+                
+                // 外部ノイズ（イヤホン内部で続く）- 薄く表示
+                drawSineWave(earphoneX + 40, earX - 45, ncWaveY, amplitude, wavelength, phase, 'rgba(244, 67, 54, 0.3)', 2);
+                
+                // 合成波（打ち消された結果）- ほぼ直線
+                ctx.strokeStyle = 'rgba(150, 150, 150, 0.8)';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.moveTo(earphoneX + 40, ncWaveY + 50);
+                ctx.lineTo(earX - 45, ncWaveY + 50);
+                ctx.stroke();
+                
+                // 音楽の波（緑）- 耳に届く
+                const musicY = earY + 100;
+                drawSineWave(earphoneX + 40, earX - 45, musicY, amplitude * 0.8, wavelength * 0.6, phase * 1.5, 'rgba(76, 175, 80, 0.8)', 3);
+                
+                // ラベル
+                ctx.fillStyle = '#2196F3';
+                ctx.font = '12px sans-serif';
+                ctx.textAlign = 'left';
+                ctx.fillText('逆位相の波', earphoneX + 50, ncWaveY - 70);
+                ctx.fillStyle = '#999';
+                ctx.fillText('合成波（打消し）', earphoneX + 50, ncWaveY + 40);
+                ctx.fillStyle = '#4CAF50';
+                ctx.fillText('音楽', earphoneX + 50, musicY - 35);
+            } else {
+                // NCオフ時：ノイズがそのまま耳に入る
+                const noisePassY = earY;
+                drawSineWave(earphoneX + 40, earX - 45, noisePassY, amplitude, wavelength, phase, 'rgba(244, 67, 54, 0.8)', 3);
+                
+                ctx.fillStyle = '#f44336';
+                ctx.font = '12px sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText('ノイズがそのまま聞こえる', (earphoneX + earX) / 2, noisePassY + 50);
+            }
+            
+            // イヤホン（大きく、グレー）
+            ctx.fillStyle = '#333';
+            ctx.beginPath();
+            ctx.ellipse(earphoneX, earphoneY, 35, 45, 0, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = '#888';  // グレーに変更
+            ctx.beginPath();
+            ctx.ellipse(earphoneX, earphoneY, 25, 35, 0, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // マイク表示
+            ctx.fillStyle = '#555';
+            ctx.beginPath();
+            ctx.arc(earphoneX - 25, earphoneY - 20, 8, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = '#333';
+            ctx.font = '10px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('MIC', earphoneX - 25, earphoneY - 35);
+            
+            // 耳（大きく）
+            ctx.fillStyle = '#FFCC80';
+            ctx.beginPath();
+            ctx.ellipse(earX, earY, 30, 50, 0, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = '#FFB74D';
+            ctx.beginPath();
+            ctx.ellipse(earX + 8, earY, 15, 30, 0, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // 耳の穴
+            ctx.fillStyle = '#8D6E63';
+            ctx.beginPath();
+            ctx.ellipse(earX + 5, earY, 8, 12, 0, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // ラベル
+            ctx.fillStyle = '#333';
+            ctx.font = '14px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('イヤホン', earphoneX, earphoneY + 65);
+            ctx.fillText('耳', earX, earY + 70);
+            
+            // NC状態表示
+            ctx.font = 'bold 16px sans-serif';
+            ctx.fillStyle = ncEnabled ? '#4CAF50' : '#f44336';
+            ctx.fillText(ncEnabled ? 'NC: ON' : 'NC: OFF', earphoneX, earphoneY - 60);
+            
+            // 凡例
+            ctx.font = '12px sans-serif';
+            ctx.textAlign = 'left';
+            ctx.fillStyle = '#f44336';
+            ctx.fillText('━ 外部ノイズ', 10, canvas.height - 60);
+            ctx.fillStyle = '#2196F3';
+            ctx.fillText('━ 逆位相の波（NC）', 10, canvas.height - 40);
+            ctx.fillStyle = '#4CAF50';
+            ctx.fillText('━ 音楽', 10, canvas.height - 20);
+            
+            time += waveSpeed;
+            requestAnimationFrame(draw);
+        }
+        
+        document.getElementById('ncToggleBtn').addEventListener('click', () => {
+            ncEnabled = !ncEnabled;
+            document.getElementById('ncStatusLabel').textContent = ncEnabled ? 'ノイズキャンセリング：ON' : 'ノイズキャンセリング：OFF';
+        });
+        
+        window.addEventListener('resize', resize);
+        resize();
+        draw();
+    })();
+
+    // ============================================
+    // メインシミュレーション: 音の干渉（大幅修正版）
+    // ============================================
+    (function() {
+        const canvas = document.getElementById('physicsCanvas');
+        const ctx = canvas.getContext('2d');
+        const graphCanvas = document.getElementById('graphCanvas');
+        const graphCtx = graphCanvas.getContext('2d');
+        
+        let animationId = null;
+        let isPlaying = false;
+        let time = 0;
+        
+        // パラメータ
+        let speakerDistance = 3.0; // m
+        let wavelength = 2.0; // m
+        
+        // 観測点の位置（ピクセル座標）
+        let observerX, observerY;
+        let isDragging = false;
+        
+        // スケール（1m = 50px）
+        const scale = 50;
+        
+        function resize() {
+            canvas.width = canvas.parentElement.clientWidth;
+            canvas.height = 400;
+            graphCanvas.width = graphCanvas.parentElement.clientWidth - 30;
+            graphCanvas.height = 450;
+            
+            // 観測点の初期位置（右側中央）
+            observerX = canvas.width * 0.75;
+            observerY = canvas.height / 2;
+            
+            draw();
+            drawGraph();
+        }
+        
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // 背景
+            ctx.fillStyle = '#fafafa';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // グリッド
+            ctx.strokeStyle = '#e0e0e0';
+            ctx.lineWidth = 1;
+            for (let x = 0; x < canvas.width; x += scale) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, canvas.height);
+                ctx.stroke();
+            }
+            for (let y = 0; y < canvas.height; y += scale) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(canvas.width, y);
+                ctx.stroke();
+            }
+            
+            // 座標系の中心
+            const centerY = canvas.height / 2;
+            
+            // スピーカーの位置（左側に縦並び）
+            const speakerX = canvas.width * 0.15;
+            const s1Y = centerY - (speakerDistance / 2) * scale;
+            const s2Y = centerY + (speakerDistance / 2) * scale;
+            
+            // 距離計算（2点間の距離）
+            const l1 = Math.sqrt(Math.pow(observerX - speakerX, 2) + Math.pow(observerY - s1Y, 2)) / scale;
+            const l2 = Math.sqrt(Math.pow(observerX - speakerX, 2) + Math.pow(observerY - s2Y, 2)) / scale;
+            const pathDiff = Math.abs(l1 - l2);
+            
+            // 経路線
+            ctx.strokeStyle = 'rgba(76, 175, 80, 0.5)';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([5, 5]);
+            ctx.beginPath();
+            ctx.moveTo(speakerX, s1Y);
+            ctx.lineTo(observerX, observerY);
+            ctx.stroke();
+            
+            ctx.strokeStyle = 'rgba(255, 152, 0, 0.5)';
+            ctx.beginPath();
+            ctx.moveTo(speakerX, s2Y);
+            ctx.lineTo(observerX, observerY);
+            ctx.stroke();
+            ctx.setLineDash([]);
+            
+            // 波紋（アニメーション）- 右端まで広がるように
+            if (isPlaying) {
+                const maxRadius = canvas.width; // 右端まで届くように
+                for (let i = 0; i < 15; i++) {
+                    const radius = ((time * 80 + i * wavelength * scale) % maxRadius);
+                    if (radius > 0) {
+                        ctx.strokeStyle = i % 2 === 0 ? 'rgba(102, 126, 234, 0.4)' : 'rgba(102, 126, 234, 0.2)';
+                        ctx.lineWidth = i % 2 === 0 ? 2 : 1;
+                        ctx.setLineDash(i % 2 === 0 ? [] : [5, 5]);
+                        
+                        ctx.beginPath();
+                        ctx.arc(speakerX, s1Y, radius, 0, Math.PI * 2);
+                        ctx.stroke();
+                        
+                        ctx.beginPath();
+                        ctx.arc(speakerX, s2Y, radius, 0, Math.PI * 2);
+                        ctx.stroke();
+                        
+                        ctx.setLineDash([]);
+                    }
+                }
+            }
+            
+            // スピーカー
+            ctx.fillStyle = '#333';
+            ctx.beginPath();
+            ctx.arc(speakerX, s1Y, 15, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(speakerX, s2Y, 15, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.fillStyle = '#667eea';
+            ctx.beginPath();
+            ctx.arc(speakerX, s1Y, 10, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(speakerX, s2Y, 10, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // スピーカーラベル
+            ctx.fillStyle = '#333';
+            ctx.font = 'bold 14px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('S₁', speakerX - 30, s1Y + 5);
+            ctx.fillText('S₂', speakerX - 30, s2Y + 5);
+            
+            // 観測点
+            const isStrong = isConstructive(pathDiff);
+            
+            ctx.fillStyle = isStrong ? '#4CAF50' : '#f44336';
+            ctx.beginPath();
+            ctx.arc(observerX, observerY, 12, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 10px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('P', observerX, observerY + 4);
+            
+            // 距離表示
+            ctx.fillStyle = '#4CAF50';
+            ctx.font = '14px sans-serif';
+            ctx.textAlign = 'left';
+            ctx.fillText(`l₁ = ${l1.toFixed(2)} m`, 10, 30);
+            ctx.fillStyle = '#FF9800';
+            ctx.fillText(`l₂ = ${l2.toFixed(2)} m`, 10, 50);
+            ctx.fillStyle = '#333';
+            ctx.fillText(`|l₁ - l₂| = ${pathDiff.toFixed(2)} m`, 10, 70);
+            
+            // 操作説明
+            ctx.fillStyle = '#666';
+            ctx.font = '12px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('観測点Pをドラッグして移動', canvas.width / 2, canvas.height - 15);
+            
+            // 結果更新
+            updateResult(pathDiff);
+        }
+        
+        function isConstructive(pathDiff) {
+            const ratio = pathDiff / wavelength;
+            const remainder = ratio - Math.floor(ratio);
+            return remainder < 0.25 || remainder > 0.75;
+        }
+        
+        function updateResult(pathDiff) {
+            const resultDisplay = document.getElementById('resultDisplay');
+            const resultText = document.getElementById('resultText');
+            const pathDiffText = document.getElementById('pathDiffText');
+            const conditionText = document.getElementById('conditionText');
+            
+            const ratio = pathDiff / wavelength;
+            const isStrong = isConstructive(pathDiff);
+            
+            resultDisplay.className = isStrong ? 'result-display' : 'result-display weak';
+            resultText.textContent = isStrong ? '🔊 強め合い（音が大きい）' : '🔇 弱め合い（音が小さい）';
+            pathDiffText.textContent = `経路差: ${pathDiff.toFixed(3)} m = ${ratio.toFixed(2)}λ`;
+            
+            const m = Math.round(ratio);
+            const mHalf = Math.round(ratio - 0.5);
+            
+            if (isStrong) {
+                conditionText.textContent = `条件: |l₁ - l₂| ≈ ${m}λ （m = ${m} の強め合い）`;
+            } else {
+                conditionText.textContent = `条件: |l₁ - l₂| ≈ (${mHalf} + 1/2)λ （m = ${mHalf} の弱め合い）`;
+            }
+        }
+        
+        function drawGraph() {
+            graphCtx.clearRect(0, 0, graphCanvas.width, graphCanvas.height);
+            
+            const padding = { top: 50, bottom: 50, left: 70, right: 100 };
+            const graphWidth = graphCanvas.width - padding.left - padding.right;
+            const waveHeight = 100;
+            const waveSpacing = 120;
+            const amplitude = 35;
+            
+            // 背景
+            graphCtx.fillStyle = '#fafafa';
+            graphCtx.fillRect(0, 0, graphCanvas.width, graphCanvas.height);
+            
+            // 距離計算
+            const centerY = canvas.height / 2;
+            const speakerX = canvas.width * 0.15;
+            const s1Y = centerY - (speakerDistance / 2) * scale;
+            const s2Y = centerY + (speakerDistance / 2) * scale;
+            
+            const l1 = Math.sqrt(Math.pow(observerX - speakerX, 2) + Math.pow(observerY - s1Y, 2)) / scale;
+            const l2 = Math.sqrt(Math.pow(observerX - speakerX, 2) + Math.pow(observerY - s2Y, 2)) / scale;
+            const pathDiff = Math.abs(l1 - l2);
+            const phaseDiff = (pathDiff / wavelength) * Math.PI * 2;
+            
+            // 波の開始位置（波源からの距離に対応）
+            const maxDist = Math.max(l1, l2);
+            const l1StartRatio = (maxDist - l1) / maxDist;
+            const l2StartRatio = (maxDist - l2) / maxDist;
+            
+            // 合成波の開始位置（近い方の波源から）
+            const combinedStartRatio = Math.max(l1StartRatio, l2StartRatio);
+            
+            // 波の描画Y位置
+            const combinedWaveY = padding.top + waveHeight / 2;
+            const wave1Y = padding.top + waveHeight / 2 + waveSpacing;
+            const wave2Y = padding.top + waveHeight / 2 + waveSpacing * 2;
+            
+            // 中央線（基準線）を描画
+            graphCtx.strokeStyle = '#ddd';
+            graphCtx.lineWidth = 1;
+            graphCtx.setLineDash([3, 3]);
+            [combinedWaveY, wave1Y, wave2Y].forEach(y => {
+                graphCtx.beginPath();
+                graphCtx.moveTo(padding.left, y);
+                graphCtx.lineTo(padding.left + graphWidth, y);
+                graphCtx.stroke();
+            });
+            graphCtx.setLineDash([]);
+            
+            // S1の波（緑）- S1の位置から右へ
+            const s1StartX = padding.left + l1StartRatio * graphWidth;
+            graphCtx.strokeStyle = '#4CAF50';
+            graphCtx.lineWidth = 3;
+            graphCtx.beginPath();
+            let firstS1 = true;
+            for (let x = s1StartX; x <= padding.left + graphWidth; x++) {
+                const t = ((x - s1StartX) / graphWidth * maxDist / wavelength) * Math.PI * 2 + time * 2;
+                const y = wave1Y + amplitude * Math.sin(t);
+                if (firstS1) {
+                    graphCtx.moveTo(x, y);
+                    firstS1 = false;
+                } else {
+                    graphCtx.lineTo(x, y);
+                }
+            }
+            graphCtx.stroke();
+            
+            // S1波源マーク
+            graphCtx.fillStyle = '#4CAF50';
+            graphCtx.beginPath();
+            graphCtx.arc(s1StartX, wave1Y, 10, 0, Math.PI * 2);
+            graphCtx.fill();
+            graphCtx.fillStyle = 'white';
+            graphCtx.font = 'bold 10px sans-serif';
+            graphCtx.textAlign = 'center';
+            graphCtx.fillText('S₁', s1StartX, wave1Y + 4);
+            
+            // S2の波（オレンジ）- S2の位置から右へ
+            const s2StartX = padding.left + l2StartRatio * graphWidth;
+            graphCtx.strokeStyle = '#FF9800';
+            graphCtx.lineWidth = 3;
+            graphCtx.beginPath();
+            let firstS2 = true;
+            for (let x = s2StartX; x <= padding.left + graphWidth; x++) {
+                const t = ((x - s2StartX) / graphWidth * maxDist / wavelength) * Math.PI * 2 + time * 2;
+                const y = wave2Y + amplitude * Math.sin(t);
+                if (firstS2) {
+                    graphCtx.moveTo(x, y);
+                    firstS2 = false;
+                } else {
+                    graphCtx.lineTo(x, y);
+                }
+            }
+            graphCtx.stroke();
+            
+            // S2波源マーク
+            graphCtx.fillStyle = '#FF9800';
+            graphCtx.beginPath();
+            graphCtx.arc(s2StartX, wave2Y, 10, 0, Math.PI * 2);
+            graphCtx.fill();
+            graphCtx.fillStyle = 'white';
+            graphCtx.font = 'bold 10px sans-serif';
+            graphCtx.textAlign = 'center';
+            graphCtx.fillText('S₂', s2StartX, wave2Y + 4);
+            
+            // 合成波（紫）- 両方の波が存在する領域のみ
+            const combinedStartX = padding.left + combinedStartRatio * graphWidth;
+            graphCtx.strokeStyle = '#9C27B0';
+            graphCtx.lineWidth = 3;
+            graphCtx.beginPath();
+            let firstCombined = true;
+            for (let x = combinedStartX; x <= padding.left + graphWidth; x++) {
+                // S1の波の変位
+                const t1 = ((x - s1StartX) / graphWidth * maxDist / wavelength) * Math.PI * 2 + time * 2;
+                const y1 = Math.sin(t1);
+                
+                // S2の波の変位
+                const t2 = ((x - s2StartX) / graphWidth * maxDist / wavelength) * Math.PI * 2 + time * 2;
+                const y2 = Math.sin(t2);
+                
+                const combined = y1 + y2;
+                const y = combinedWaveY + combined * amplitude;
+                
+                if (firstCombined) {
+                    graphCtx.moveTo(x, y);
+                    firstCombined = false;
+                } else {
+                    graphCtx.lineTo(x, y);
+                }
+            }
+            graphCtx.stroke();
+            
+            // 合成波の開始位置マーク
+            if (combinedStartX > padding.left + 5) {
+                graphCtx.fillStyle = '#9C27B0';
+                graphCtx.beginPath();
+                graphCtx.arc(combinedStartX, combinedWaveY, 6, 0, Math.PI * 2);
+                graphCtx.fill();
+            }
+            
+            // 点P（右端固定）
+            const pX = padding.left + graphWidth;
+            const isStrong = isConstructive(pathDiff);
+            
+            // 縦の点線（点Pの位置）
+            graphCtx.strokeStyle = '#999';
+            graphCtx.lineWidth = 2;
+            graphCtx.setLineDash([5, 5]);
+            graphCtx.beginPath();
+            graphCtx.moveTo(pX, padding.top - 20);
+            graphCtx.lineTo(pX, graphCanvas.height - padding.bottom + 20);
+            graphCtx.stroke();
+            graphCtx.setLineDash([]);
+            
+            // 点Pのマーカー
+            graphCtx.fillStyle = isStrong ? '#4CAF50' : '#f44336';
+            [combinedWaveY, wave1Y, wave2Y].forEach(y => {
+                graphCtx.beginPath();
+                graphCtx.arc(pX, y, 8, 0, Math.PI * 2);
+                graphCtx.fill();
+            });
+            
+            // ラベル
+            graphCtx.fillStyle = '#9C27B0';
+            graphCtx.font = 'bold 14px sans-serif';
+            graphCtx.textAlign = 'left';
+            graphCtx.fillText('合成波', padding.left + graphWidth + 15, combinedWaveY + 5);
+            
+            graphCtx.fillStyle = '#4CAF50';
+            graphCtx.fillText('S₁の波', padding.left + graphWidth + 15, wave1Y + 5);
+            
+            graphCtx.fillStyle = '#FF9800';
+            graphCtx.fillText('S₂の波', padding.left + graphWidth + 15, wave2Y + 5);
+            
+            // 点Pラベル
+            graphCtx.fillStyle = '#333';
+            graphCtx.font = 'bold 12px sans-serif';
+            graphCtx.textAlign = 'center';
+            graphCtx.fillText('点P', pX, graphCanvas.height - padding.bottom + 35);
+            
+            // 情報表示（上部）
+            graphCtx.fillStyle = '#333';
+            graphCtx.font = '14px sans-serif';
+            graphCtx.textAlign = 'left';
+            graphCtx.fillText(`経路差: ${pathDiff.toFixed(2)} m = ${(pathDiff/wavelength).toFixed(2)}λ`, padding.left, 25);
+            graphCtx.fillText(`位相差: ${(phaseDiff * 180 / Math.PI).toFixed(0)}°`, padding.left + 220, 25);
+            
+            graphCtx.fillStyle = isStrong ? '#4CAF50' : '#f44336';
+            graphCtx.font = 'bold 16px sans-serif';
+            graphCtx.fillText(isStrong ? '→ 強め合い' : '→ 弱め合い', padding.left + 380, 25);
+            
+            // 波長情報
+            graphCtx.fillStyle = '#666';
+            graphCtx.font = '12px sans-serif';
+            graphCtx.fillText(`λ = ${wavelength.toFixed(1)} m`, padding.left + 520, 25);
+        }
+        
+        function animate() {
+            time += 0.02;
+            draw();
+            drawGraph();
+            if (isPlaying) {
+                animationId = requestAnimationFrame(animate);
+            }
+        }
+        
+        function start() {
+            if (!isPlaying) {
+                isPlaying = true;
+                document.getElementById('startBtn').textContent = '停止';
+                animate();
+            } else {
+                isPlaying = false;
+                document.getElementById('startBtn').textContent = 'スタート';
+                if (animationId) {
+                    cancelAnimationFrame(animationId);
+                }
+            }
+        }
+        
+        function reset() {
+            isPlaying = false;
+            document.getElementById('startBtn').textContent = 'スタート';
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+            }
+            time = 0;
+            observerX = canvas.width * 0.75;
+            observerY = canvas.height / 2;
+            draw();
+            drawGraph();
+        }
+        
+        // ドラッグ操作
+        function getEventPos(e) {
+            const rect = canvas.getBoundingClientRect();
+            if (e.touches) {
+                return {
+                    x: e.touches[0].clientX - rect.left,
+                    y: e.touches[0].clientY - rect.top
+                };
+            }
+            return {
+                x: e.clientX - rect.left,
+                y: e.clientY - rect.top
+            };
+        }
+        
+        function handleDragStart(e) {
+            const pos = getEventPos(e);
+            const dist = Math.sqrt(Math.pow(pos.x - observerX, 2) + Math.pow(pos.y - observerY, 2));
+            if (dist < 25) {
+                isDragging = true;
+                e.preventDefault();
+            }
+        }
+        
+        function handleDragMove(e) {
+            if (isDragging) {
+                const pos = getEventPos(e);
+                
+                // XY平面上で自由に移動可能
+                observerX = pos.x;
+                observerY = pos.y;
+                
+                // 範囲制限
+                const speakerX = canvas.width * 0.15;
+                observerX = Math.max(speakerX + 30, Math.min(canvas.width - 20, observerX));
+                observerY = Math.max(20, Math.min(canvas.height - 20, observerY));
+                
+                draw();
+                drawGraph();
+                e.preventDefault();
+            }
+        }
+        
+        function handleDragEnd() {
+            isDragging = false;
+        }
+        
+        // マウスイベント
+        canvas.addEventListener('mousedown', handleDragStart);
+        canvas.addEventListener('mousemove', handleDragMove);
+        canvas.addEventListener('mouseup', handleDragEnd);
+        canvas.addEventListener('mouseleave', handleDragEnd);
+        
+        // タッチイベント
+        canvas.addEventListener('touchstart', handleDragStart, { passive: false });
+        canvas.addEventListener('touchmove', handleDragMove, { passive: false });
+        canvas.addEventListener('touchend', handleDragEnd);
+        
+        // スライダーイベント
+        document.getElementById('dSlider').addEventListener('input', (e) => {
+            speakerDistance = parseFloat(e.target.value);
+            document.getElementById('dDisplay').textContent = speakerDistance.toFixed(1) + ' m';
+            draw();
+            drawGraph();
+        });
+        
+        document.getElementById('lambdaSlider').addEventListener('input', (e) => {
+            wavelength = parseFloat(e.target.value);
+            document.getElementById('lambdaDisplay').textContent = wavelength.toFixed(1) + ' m';
+            draw();
+            drawGraph();
+        });
+        
+        document.getElementById('startBtn').addEventListener('click', start);
+        document.getElementById('resetBtn').addEventListener('click', reset);
+        
+        window.addEventListener('resize', resize);
+        
+        // 初期化
+        resize();
+    })();
+
+    </script>
+</body>
+</html>

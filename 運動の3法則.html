@@ -1,0 +1,1715 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高校物理 - 運動の3法則</title>
+    <script>
+      window.MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        startup: {
+          pageReady: function() {
+            return MathJax.startup.defaultPageReady();
+          }
+        }
+      };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        header {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .back-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        h1 {
+            color: #333;
+        }
+        .container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .tab-btn {
+            flex: 1;
+            min-width: 150px;
+            padding: 12px 20px;
+            border: none;
+            background: #f0f0f0;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        .tab-btn.active {
+            background: #667eea;
+            color: white;
+        }
+        .tab-btn:hover {
+            background: #8899f0;
+            color: white;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        h3 {
+            color: #555;
+            margin: 25px 0 15px 0;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #667eea;
+        }
+        .pdf-placeholder {
+            background: #f9f9f9;
+            padding: 40px;
+            text-align: center;
+            border-radius: 5px;
+            color: #666;
+        }
+        
+        /* 解説用スタイル */
+        .lecture-content {
+            line-height: 1.8;
+            color: #333;
+        }
+        .lecture-content p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+        .point-box {
+            background: linear-gradient(135deg, #e8f4fd 0%, #f0e6ff 100%);
+            border-left: 5px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+        .point-box h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        .law-box {
+            background: #fff;
+            border: 2px solid #667eea;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 2px 10px rgba(102, 126, 234, 0.1);
+        }
+        .law-box h4 {
+            color: #667eea;
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .law-number {
+            background: #667eea;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        .example-box {
+            background: #fffbe6;
+            border: 1px solid #ffe58f;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .example-box strong {
+            color: #d48806;
+        }
+        .warning-box {
+            background: #fff2f0;
+            border: 1px solid #ffccc7;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .warning-box strong {
+            color: #cf1322;
+        }
+        .diagram-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .diagram-container canvas {
+            max-width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .diagram-caption {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+        
+        /* 問題用スタイル */
+        .problem-section {
+            margin-bottom: 30px;
+        }
+        .problem-box {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+        .problem-number {
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+        details {
+            background: #e8f4fd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+        summary {
+            cursor: pointer;
+            font-weight: bold;
+            color: #667eea;
+        }
+        details[open] summary {
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #667eea;
+        }
+        
+        /* シミュレーション用スタイル */
+        #sim-container {
+            background: #f5f5f5;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        #physicsCanvas {
+            display: block;
+            width: 100%;
+            background: white;
+            border-radius: 5px;
+            border: 2px solid #ddd;
+        }
+        .sim-controls {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .control-group {
+            margin-bottom: 20px;
+        }
+        .control-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        .control-group input[type="range"] {
+            width: 100%;
+            margin: 10px 0;
+        }
+        .value-display {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            min-width: 100px;
+            text-align: center;
+        }
+        .fixed-value {
+            display: inline-block;
+            background: #6c757d;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            min-width: 100px;
+            text-align: center;
+        }
+        .param-info {
+            background: #e9ecef;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .param-info h4 {
+            color: #495057;
+            margin-bottom: 10px;
+        }
+        .param-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .param-item {
+            flex: 1;
+            min-width: 150px;
+        }
+        .param-item .label {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .sim-button {
+            flex: 1;
+            min-width: 120px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .sim-button.start {
+            background: #4CAF50;
+            color: white;
+        }
+        .sim-button.start:hover {
+            background: #45a049;
+        }
+        .sim-button.reset {
+            background: #f44336;
+            color: white;
+        }
+        .sim-button.reset:hover {
+            background: #da190b;
+        }
+        .graph-container {
+            margin-top: 20px;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #ddd;
+        }
+        .graph-container h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+            border-bottom: none;
+        }
+        #graphCanvas {
+            display: block;
+            width: 100%;
+            border: 1px solid #eee;
+        }
+        .equation-display {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .equation-display h4 {
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+        .equation-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: space-around;
+        }
+        .equation-item {
+            background: rgba(255,255,255,0.15);
+            padding: 15px 20px;
+            border-radius: 8px;
+            text-align: center;
+            min-width: 200px;
+        }
+        .equation-item .label {
+            font-size: 0.9em;
+            opacity: 0.9;
+            margin-bottom: 8px;
+        }
+        .status-display {
+            text-align: center;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        .status-together {
+            background: #d4edda;
+            color: #155724;
+            border: 2px solid #28a745;
+        }
+        .status-sliding {
+            background: #f8d7da;
+            color: #721c24;
+            border: 2px solid #dc3545;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            header, .container {
+                padding: 15px;
+            }
+            .tab-btn {
+                min-width: 100px;
+                font-size: 14px;
+            }
+            .equation-row {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="back-link">← 目次に戻る</a>
+        <h1>運動の3法則</h1>
+    </header>
+    <div class="container">
+        
+        <div class="tabs">
+            <button class="tab-btn active" onclick="openTab('lecture')">解説編</button>
+            <button class="tab-btn" onclick="openTab('problem')">問題編</button>
+            <button class="tab-btn" onclick="openTab('simulation')">シミュレーション</button>
+        </div>
+        
+        <div id="lecture" class="tab-content active">
+            <h2>運動の3法則</h2>
+            
+            <div class="lecture-content">
+                <p>
+                    16〜17世紀にかけて、ガリレイやニュートンなどの研究により、物体の運動について3つの基本法則が発見されました。
+                    これらは「ニュートンの運動の3法則」と呼ばれ、力学の土台となる重要な法則です。
+                </p>
+                
+                <h3>第1法則：慣性の法則</h3>
+                <div class="law-box">
+                    <h4><span class="law-number">1</span>慣性の法則とは</h4>
+                    <p>
+                        <strong>「物体が外力を受けていないとき、あるいは受けていてもその合力が0のとき、静止している物体は静止し続け、運動している物体は等速直線運動を続ける。」</strong>
+                    </p>
+                </div>
+                
+                <p>
+                    つまり、物体には「今の運動状態を保ち続けようとする性質」があります。この性質を<strong>慣性</strong>といいます。
+                    言い換えれば、<strong>「力が働かなければ、物体の運動状態は変化しない」</strong>ということです。
+                </p>
+                
+                <div class="example-box">
+                    <strong>【日常での例】</strong><br>
+                    ・バスが急ブレーキをかけると、乗客は進行方向に倒れそうになる → 乗客の体が「動き続けようとする」ため<br>
+                    ・止まっているバスが急発進すると、乗客は後ろに倒れそうになる → 乗客の体が「止まり続けようとする」ため
+                </div>
+                
+                <h3>第2法則：運動の法則（運動方程式）</h3>
+                <div class="law-box">
+                    <h4><span class="law-number">2</span>運動の法則とは</h4>
+                    <p>
+                        <strong>「力を受ける物体は、その力の向きに加速度を生じる。加速度の大きさは、受ける力の大きさに比例し、物体の質量に反比例する。」</strong>
+                    </p>
+                </div>
+                
+                <p>
+                    この法則を数式で表したものが<strong>運動方程式</strong>です：
+                </p>
+                
+                <div class="point-box">
+                    <h4>運動方程式</h4>
+                    $$ ma = F $$
+                    <p style="margin-top:10px;">
+                        $m$：質量 [kg]、$a$：加速度 [m/s²]、$F$：力 [N]
+                    </p>
+                </div>
+                
+                <p>
+                    運動方程式は「質量 $m$ [kg] の物体を加速度 $a$ [m/s²] で動かすには、$F$ [N] の力が必要」ということを表しています。
+                </p>
+                
+                <h3>第3法則：作用反作用の法則</h3>
+                <div class="law-box">
+                    <h4><span class="law-number">3</span>作用反作用の法則とは</h4>
+                    <p>
+                        <strong>「物体Aから物体Bに力（作用）が働くとき、物体Bから物体Aにも、同一直線上で逆向きに、同じ大きさの力（反作用）が働く。」</strong>
+                    </p>
+                </div>
+                
+                <p>
+                    この法則の本質は、<strong>「力は必ず2つの物体の間で相互に働く」</strong>ということです。
+                    つまり、1つの物体だけに一方的に力が働くことはありません。力を加える側も、必ず同じ大きさの力を受けます。
+                </p>
+                
+                <div class="diagram-container">
+                    <canvas id="actionReactionDiagram" width="500" height="200"></canvas>
+                    <p class="diagram-caption">図：作用反作用の法則 — AがBを押すと、BもAを同じ大きさで押し返す</p>
+                </div>
+                
+                <div class="example-box">
+                    <strong>【作用反作用の具体例】</strong><br>
+                    ・壁を手で押すと、手も壁から押し返される<br>
+                    ・ボートから岸に飛び移ると、ボートは逆方向に動く<br>
+                    ・ロケットがガスを噴射すると、ロケット自身は逆方向に進む
+                </div>
+                
+                <h3>衝突における作用反作用</h3>
+                <p>
+                    2つの物体が衝突するとき、作用反作用の法則が明確に現れます。
+                    衝突時間を $\Delta t$ とすると、物体AとBは互いに<strong>同じ大きさで逆向きの力</strong>を及ぼし合います。
+                </p>
+                
+                <div class="diagram-container">
+                    <canvas id="collisionDiagram" width="600" height="250"></canvas>
+                    <p class="diagram-caption">図：衝突時の作用反作用 — 衝突時間Δtの間、AとBは互いに同じ大きさ・逆向きの力を受ける</p>
+                </div>
+                
+                <div class="diagram-container">
+                    <canvas id="collisionGraph" width="600" height="300"></canvas>
+                    <p class="diagram-caption">図：衝突時の力-時間グラフ — 作用（赤）と反作用（青）は常に同じ大きさで逆向き</p>
+                </div>
+                
+                <div class="point-box">
+                    <h4>衝突における作用反作用のポイント</h4>
+                    <p>
+                        ・AがBから受ける力 $F_{AB}$ と、BがAから受ける力 $F_{BA}$ は、<strong>どの瞬間でも同じ大きさ</strong><br>
+                        ・力の向きは常に<strong>逆向き</strong>（$F_{AB} = -F_{BA}$）<br>
+                        ・衝突時間 $\Delta t$ の間、両方の物体に力が働き続ける<br>
+                        ・質量が異なっても、力の大きさは同じ（加速度が異なる）
+                    </p>
+                </div>
+                
+                <h3>⚠️ よくある間違い：「つり合い」と「作用反作用」の違い</h3>
+                
+                <div class="warning-box">
+                    <strong>【重要】この2つは全く別物です！</strong>
+                </div>
+                
+                <p>
+                    「つり合い」と「作用反作用」は、どちらも「同じ大きさで逆向きの力」という点で似ていますが、決定的な違いがあります。
+                </p>
+                
+                <div class="diagram-container">
+                    <canvas id="comparisonDiagram" width="600" height="280"></canvas>
+                    <p class="diagram-caption">図：つり合いと作用反作用の違い</p>
+                </div>
+                
+                <div class="point-box">
+                    <h4>つり合いと作用反作用の違い</h4>
+                    <table style="width:100%; border-collapse: collapse; margin-top:10px;">
+                        <tr style="background:#667eea; color:white;">
+                            <th style="padding:10px; border:1px solid #ddd;"></th>
+                            <th style="padding:10px; border:1px solid #ddd;">つり合い</th>
+                            <th style="padding:10px; border:1px solid #ddd;">作用反作用</th>
+                        </tr>
+                        <tr>
+                            <td style="padding:10px; border:1px solid #ddd; font-weight:bold;">力が働く物体</td>
+                            <td style="padding:10px; border:1px solid #ddd;"><strong>1つの物体</strong>に働く2力</td>
+                            <td style="padding:10px; border:1px solid #ddd;"><strong>2つの物体</strong>に働き合う2力</td>
+                        </tr>
+                        <tr style="background:#f9f9f9;">
+                            <td style="padding:10px; border:1px solid #ddd; font-weight:bold;">力の種類</td>
+                            <td style="padding:10px; border:1px solid #ddd;">異なる種類でもよい</td>
+                            <td style="padding:10px; border:1px solid #ddd;">同じ種類の力</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:10px; border:1px solid #ddd; font-weight:bold;">例</td>
+                            <td style="padding:10px; border:1px solid #ddd;">机上の物体：重力と垂直抗力</td>
+                            <td style="padding:10px; border:1px solid #ddd;">物体が机を押す力と、机が物体を押す力</td>
+                        </tr>
+                    </table>
+                </div>
+                
+                <h3>授業資料（PDF）</h3>
+                <iframe src="https://drive.google.com/file/d/1rd3AUHNkj-NLM0IEztEdsiVOdPwxD6EA/preview" width="100%" height="500"></iframe>
+            </div>
+        </div>
+        
+        <div id="problem" class="tab-content">
+            <h2>確認問題</h2>
+            
+            <div class="problem-section">
+                <div class="problem-box">
+                    <span class="problem-number">問題 1</span>
+                    <p>
+                        次の文章について、（　）に当てはまる語句を答えなさい。
+                    </p>
+                    <p style="margin: 15px 0; padding: 15px; background: #fff; border-radius: 5px;">
+                        物体が外力を受けていないとき、静止している物体は（ ア ）し続け、運動している物体は（ イ ）を続ける。
+                        このように、物体がその運動状態を保ち続けようとする性質を（ ウ ）という。
+                    </p>
+                    
+                    <details>
+                        <summary>解答・解説を見る</summary>
+                        <p><strong>解答：</strong></p>
+                        <p>ア：静止　　イ：等速直線運動　　ウ：慣性</p>
+                        <p style="margin-top:15px;"><strong>解説：</strong></p>
+                        <p>
+                            これは「慣性の法則（運動の第1法則）」に関する問題です。
+                            力が働いていない（または合力が0の）物体は、現在の運動状態をそのまま維持し続けます。
+                            止まっていれば止まったまま、動いていれば同じ速さで同じ向きに動き続けます。
+                        </p>
+                    </details>
+                </div>
+                
+                <div class="problem-box">
+                    <span class="problem-number">問題 2</span>
+                    <p>
+                        AさんがBさんを力 $F$ で押したとき、作用反作用の法則について正しく説明しているものを全て選びなさい。
+                    </p>
+                    <p style="margin: 15px 0; padding: 15px; background: #fff; border-radius: 5px;">
+                        ①　BさんもAさんを力 $F$ で押し返している<br>
+                        ②　AさんがBさんを押す力と、BさんがAさんを押す力は、同一直線上にある<br>
+                        ③　AさんとBさんに働く力はつり合っているので、2人とも動かない<br>
+                        ④　Aさんの体重がBさんより重ければ、AさんがBさんを押す力の方が大きい
+                    </p>
+                    
+                    <details>
+                        <summary>解答・解説を見る</summary>
+                        <p><strong>解答：</strong>①、②</p>
+                        <p style="margin-top:15px;"><strong>解説：</strong></p>
+                        <p>
+                            ①：正しい。作用反作用の法則より、AがBを押す力と同じ大きさの力でBもAを押し返します。<br><br>
+                            ②：正しい。作用と反作用は必ず同一直線上で働きます。<br><br>
+                            ③：誤り。これは「つり合い」と「作用反作用」を混同しています。
+                            作用反作用の2力は<strong>異なる物体</strong>に働くため、つり合いの関係にはありません。
+                            実際、押した人も押された人も動く可能性があります。<br><br>
+                            ④：誤り。作用反作用の2力は、質量に関係なく常に同じ大きさです。
+                            体重が違っても、互いに及ぼし合う力は等しくなります。
+                        </p>
+                    </details>
+                </div>
+                
+                <div class="problem-box">
+                    <span class="problem-number">問題 3</span>
+                    <p>
+                        質量 2.0 kg の物体を糸でつるして静止させている。重力加速度を $g = 9.8$ m/s² とするとき、以下の問いに答えなさい。
+                    </p>
+                    <p style="margin: 15px 0; padding: 15px; background: #fff; border-radius: 5px;">
+                        (1) 物体に働く重力の大きさを求めなさい。<br>
+                        (2) 糸が物体を引く力（張力）の大きさを求めなさい。<br>
+                        (3) (1)の重力と(2)の張力は、「つり合い」と「作用反作用」のどちらの関係にあるか答え、その理由を説明しなさい。
+                    </p>
+                    
+                    <details>
+                        <summary>解答・解説を見る</summary>
+                        <p><strong>解答：</strong></p>
+                        <p>
+                            (1) $W = mg = 2.0 \times 9.8 = 19.6$ N<br><br>
+                            (2) 物体は静止しているので、力がつり合っている。よって張力 $T = 19.6$ N<br><br>
+                            (3) <strong>つり合い</strong>の関係である。
+                        </p>
+                        <p style="margin-top:15px;"><strong>解説：</strong></p>
+                        <p>
+                            (3)の理由：重力と張力は、どちらも<strong>同じ1つの物体（つるされた物体）</strong>に働いている力です。
+                            「つり合い」は1つの物体に働く2力の関係であり、「作用反作用」は2つの物体間で働き合う力の関係です。
+                            よって、この場合は「つり合い」の関係となります。
+                        </p>
+                        <p style="margin-top:10px;">
+                            なお、「糸が物体を引く力」の反作用は「物体が糸を引く力」であり、これが作用反作用の関係です。
+                        </p>
+                    </details>
+                </div>
+            </div>
+        </div>
+        
+        <div id="simulation" class="tab-content">
+            <h2>作用反作用シミュレーション</h2>
+            <p>テーブルクロス引きの原理：物体Aを右方向に引っ張ったとき、上に乗った物体Bがどう動くか観察しましょう。</p>
+            
+            <div id="sim-container">
+                <canvas id="physicsCanvas"></canvas>
+            </div>
+            
+            <div id="statusDisplay" class="status-display status-together">
+                静止状態
+            </div>
+            
+            <div class="equation-display">
+                <h4>運動方程式</h4>
+                <div class="equation-row">
+                    <div class="equation-item">
+                        <div class="label">物体A（下）の運動方程式</div>
+                        <div id="eqA">$m_A a_A = F - f$</div>
+                    </div>
+                    <div class="equation-item">
+                        <div class="label">物体B（上）の運動方程式</div>
+                        <div id="eqB">$m_B a_B = f$</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="sim-controls">
+                <div class="param-info">
+                    <h4>固定パラメータ</h4>
+                    <div class="param-row">
+                        <div class="param-item">
+                            <div class="label">物体Aの質量 $m_A$</div>
+                            <span class="fixed-value">2.0 kg</span>
+                        </div>
+                        <div class="param-item">
+                            <div class="label">物体Bの質量 $m_B$</div>
+                            <span class="fixed-value">1.0 kg</span>
+                        </div>
+                        <div class="param-item">
+                            <div class="label">静止摩擦係数 $\mu_s$</div>
+                            <span class="fixed-value">0.5</span>
+                        </div>
+                        <div class="param-item">
+                            <div class="label">動摩擦係数 $\mu_k$</div>
+                            <span class="fixed-value">0.3</span>
+                        </div>
+                    </div>
+                    <p style="margin-top:10px; font-size:0.9em; color:#666;">
+                        ※ 最大静止摩擦力: $f_{max} = \mu_s m_B g = 0.5 \times 1.0 \times 9.8 = 4.9$ N
+                    </p>
+                </div>
+                
+                <div class="control-group">
+                    <label>引っ張る力 F（右向き）: <span class="value-display" id="forceDisplay">0 N</span></label>
+                    <input type="range" id="forceSlider" min="0" max="50" value="0" step="1">
+                </div>
+                
+                <div class="button-group">
+                    <button class="sim-button start" id="startBtn">スタート</button>
+                    <button class="sim-button reset" id="resetBtn">リセット</button>
+                </div>
+            </div>
+            
+            <div class="graph-container">
+                <h3>作用反作用の力（AとBの間の摩擦力）</h3>
+                <p style="margin-bottom:10px; color:#666;">AがBから受ける摩擦力（赤）とBがAから受ける摩擦力（青）は常に同じ大きさで逆向き</p>
+                <canvas id="graphCanvas"></canvas>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+    // --- タブ切り替え機能 ---
+    function openTab(tabName) {
+        var contents = document.getElementsByClassName("tab-content");
+        for (var i = 0; i < contents.length; i++) {
+            contents[i].style.display = "none";
+            contents[i].classList.remove("active");
+        }
+        var buttons = document.getElementsByClassName("tab-btn");
+        for (var i = 0; i < buttons.length; i++) {
+            buttons[i].classList.remove("active");
+        }
+        document.getElementById(tabName).style.display = "block";
+        document.getElementById(tabName).classList.add("active");
+        if (event && event.currentTarget) {
+            event.currentTarget.classList.add("active");
+        }
+        
+        // シミュレーションタブを開いたときにCanvasを再描画
+        if (tabName === 'simulation') {
+            resizeCanvas();
+            draw();
+            drawGraph();
+        }
+        // 解説タブを開いたときに図を描画
+        if (tabName === 'lecture') {
+            setTimeout(function() {
+                drawActionReactionDiagram();
+                drawComparisonDiagram();
+                drawCollisionDiagram();
+                drawCollisionGraph();
+            }, 50);
+        }
+    }
+
+    // --- 解説用の図を描画 ---
+    function drawActionReactionDiagram() {
+        const canvas = document.getElementById('actionReactionDiagram');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const w = canvas.width;
+        const h = canvas.height;
+        
+        ctx.clearRect(0, 0, w, h);
+        ctx.fillStyle = '#f8f9fa';
+        ctx.fillRect(0, 0, w, h);
+        
+        // 物体A
+        ctx.fillStyle = '#667eea';
+        ctx.fillRect(120, 80, 80, 60);
+        ctx.fillStyle = 'white';
+        ctx.font = 'bold 20px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('A', 160, 118);
+        
+        // 物体B
+        ctx.fillStyle = '#764ba2';
+        ctx.fillRect(300, 80, 80, 60);
+        ctx.fillStyle = 'white';
+        ctx.fillText('B', 340, 118);
+        
+        // 矢印（AからBへ）
+        ctx.strokeStyle = '#e74c3c';
+        ctx.fillStyle = '#e74c3c';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(200, 100);
+        ctx.lineTo(280, 100);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(280, 100);
+        ctx.lineTo(265, 90);
+        ctx.lineTo(265, 110);
+        ctx.closePath();
+        ctx.fill();
+        
+        // 矢印（BからAへ）
+        ctx.strokeStyle = '#3498db';
+        ctx.fillStyle = '#3498db';
+        ctx.beginPath();
+        ctx.moveTo(300, 120);
+        ctx.lineTo(220, 120);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(220, 120);
+        ctx.lineTo(235, 110);
+        ctx.lineTo(235, 130);
+        ctx.closePath();
+        ctx.fill();
+        
+        // ラベル
+        ctx.fillStyle = '#e74c3c';
+        ctx.font = '14px Arial';
+        ctx.fillText('AがBを押す力（作用）', 240, 85);
+        ctx.fillStyle = '#3498db';
+        ctx.fillText('BがAを押す力（反作用）', 260, 155);
+    }
+    
+    function drawCollisionDiagram() {
+        const canvas = document.getElementById('collisionDiagram');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const w = canvas.width;
+        const h = canvas.height;
+        
+        ctx.clearRect(0, 0, w, h);
+        ctx.fillStyle = '#f8f9fa';
+        ctx.fillRect(0, 0, w, h);
+        
+        // タイトル
+        ctx.fillStyle = '#333';
+        ctx.font = 'bold 16px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('衝突の瞬間（衝突時間 Δt の間）', w/2, 25);
+        
+        // 物体A（左から来る）
+        ctx.fillStyle = '#667eea';
+        ctx.fillRect(180, 100, 70, 50);
+        ctx.fillStyle = 'white';
+        ctx.font = 'bold 18px Arial';
+        ctx.fillText('A', 215, 132);
+        
+        // 物体B（右にいる）
+        ctx.fillStyle = '#764ba2';
+        ctx.fillRect(350, 100, 70, 50);
+        ctx.fillStyle = 'white';
+        ctx.fillText('B', 385, 132);
+        
+        // 衝突の表現（接触点）
+        ctx.strokeStyle = '#ff9800';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.arc(300, 125, 15, 0, Math.PI * 2);
+        ctx.stroke();
+        
+        // 衝撃線
+        for (let i = 0; i < 8; i++) {
+            const angle = (i / 8) * Math.PI * 2;
+            const x1 = 300 + Math.cos(angle) * 20;
+            const y1 = 125 + Math.sin(angle) * 20;
+            const x2 = 300 + Math.cos(angle) * 30;
+            const y2 = 125 + Math.sin(angle) * 30;
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
+        }
+        
+        // AがBから受ける力（左向き）
+        ctx.strokeStyle = '#e74c3c';
+        ctx.fillStyle = '#e74c3c';
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.moveTo(180, 125);
+        ctx.lineTo(100, 125);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(100, 125);
+        ctx.lineTo(115, 115);
+        ctx.lineTo(115, 135);
+        ctx.closePath();
+        ctx.fill();
+        
+        // BがAから受ける力（右向き）
+        ctx.strokeStyle = '#3498db';
+        ctx.fillStyle = '#3498db';
+        ctx.beginPath();
+        ctx.moveTo(420, 125);
+        ctx.lineTo(500, 125);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(500, 125);
+        ctx.lineTo(485, 115);
+        ctx.lineTo(485, 135);
+        ctx.closePath();
+        ctx.fill();
+        
+        // ラベル
+        ctx.font = '13px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillStyle = '#e74c3c';
+        ctx.fillText('AがBから受ける力', 140, 105);
+        ctx.fillText('F_AB', 140, 160);
+        
+        ctx.fillStyle = '#3498db';
+        ctx.fillText('BがAから受ける力', 460, 105);
+        ctx.fillText('F_BA', 460, 160);
+        
+        // 説明
+        ctx.fillStyle = '#333';
+        ctx.font = '14px Arial';
+        ctx.fillText('|F_AB| = |F_BA|（大きさは等しい）', w/2, 200);
+        ctx.fillText('向きは逆向き', w/2, 220);
+    }
+    
+    function drawCollisionGraph() {
+        const canvas = document.getElementById('collisionGraph');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const w = canvas.width;
+        const h = canvas.height;
+        
+        ctx.clearRect(0, 0, w, h);
+        ctx.fillStyle = '#fff';
+        ctx.fillRect(0, 0, w, h);
+        
+        const margin = { top: 40, right: 40, bottom: 50, left: 70 };
+        const plotW = w - margin.left - margin.right;
+        const plotH = h - margin.top - margin.bottom;
+        const centerY = margin.top + plotH / 2;
+        
+        // タイトル
+        ctx.fillStyle = '#333';
+        ctx.font = 'bold 14px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('衝突時の力-時間グラフ（F-t グラフ）', w/2, 20);
+        
+        // 軸
+        ctx.strokeStyle = '#333';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(margin.left, margin.top);
+        ctx.lineTo(margin.left, h - margin.bottom);
+        ctx.lineTo(w - margin.right, h - margin.bottom);
+        ctx.stroke();
+        
+        // 中央線（F=0）
+        ctx.strokeStyle = '#ccc';
+        ctx.lineWidth = 1;
+        ctx.setLineDash([5, 5]);
+        ctx.beginPath();
+        ctx.moveTo(margin.left, centerY);
+        ctx.lineTo(w - margin.right, centerY);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        
+        // 軸ラベル
+        ctx.fillStyle = '#333';
+        ctx.font = '14px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('時間 t', w/2, h - 10);
+        
+        ctx.save();
+        ctx.translate(20, h/2);
+        ctx.rotate(-Math.PI/2);
+        ctx.fillText('力 F', 0, 0);
+        ctx.restore();
+        
+        // 目盛り
+        ctx.font = '12px Arial';
+        ctx.textAlign = 'right';
+        ctx.fillText('+F', margin.left - 5, margin.top + 20);
+        ctx.fillText('0', margin.left - 5, centerY + 5);
+        ctx.fillText('−F', margin.left - 5, h - margin.bottom - 10);
+        
+        // 時間軸の目盛り
+        ctx.textAlign = 'center';
+        const t0 = margin.left + plotW * 0.2;
+        const t1 = margin.left + plotW * 0.4;
+        const t2 = margin.left + plotW * 0.6;
+        ctx.fillText('t₀', t0, h - margin.bottom + 20);
+        ctx.fillText('t₀+Δt', t2, h - margin.bottom + 20);
+        
+        // 衝突時間の範囲を示す
+        ctx.fillStyle = 'rgba(255, 200, 100, 0.3)';
+        ctx.fillRect(t1, margin.top, t2 - t1, plotH);
+        
+        // Δtの表示
+        ctx.strokeStyle = '#ff9800';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(t1, h - margin.bottom + 30);
+        ctx.lineTo(t2, h - margin.bottom + 30);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(t1, h - margin.bottom + 25);
+        ctx.lineTo(t1, h - margin.bottom + 35);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(t2, h - margin.bottom + 25);
+        ctx.lineTo(t2, h - margin.bottom + 35);
+        ctx.stroke();
+        ctx.fillStyle = '#ff9800';
+        ctx.fillText('Δt', (t1 + t2)/2, h - margin.bottom + 45);
+        
+        // BがAから受ける力（正、上側）- 青
+        const peakY = margin.top + 30;
+        ctx.strokeStyle = '#3498db';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(margin.left, centerY);
+        ctx.lineTo(t1, centerY);
+        // ベル型カーブ
+        ctx.bezierCurveTo(t1 + (t2-t1)*0.2, centerY, t1 + (t2-t1)*0.3, peakY, (t1+t2)/2, peakY);
+        ctx.bezierCurveTo(t1 + (t2-t1)*0.7, peakY, t1 + (t2-t1)*0.8, centerY, t2, centerY);
+        ctx.lineTo(w - margin.right, centerY);
+        ctx.stroke();
+        
+        // AがBから受ける力（負、下側）- 赤
+        const bottomY = h - margin.bottom - 30;
+        ctx.strokeStyle = '#e74c3c';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(margin.left, centerY);
+        ctx.lineTo(t1, centerY);
+        // ベル型カーブ（下向き）
+        ctx.bezierCurveTo(t1 + (t2-t1)*0.2, centerY, t1 + (t2-t1)*0.3, bottomY, (t1+t2)/2, bottomY);
+        ctx.bezierCurveTo(t1 + (t2-t1)*0.7, bottomY, t1 + (t2-t1)*0.8, centerY, t2, centerY);
+        ctx.lineTo(w - margin.right, centerY);
+        ctx.stroke();
+        
+        // 凡例
+        ctx.font = '12px Arial';
+        ctx.textAlign = 'left';
+        
+        ctx.fillStyle = '#3498db';
+        ctx.fillRect(w - 180, 30, 15, 15);
+        ctx.fillStyle = '#333';
+        ctx.fillText('F_BA（BがAから受ける力）', w - 160, 42);
+        
+        ctx.fillStyle = '#e74c3c';
+        ctx.fillRect(w - 180, 50, 15, 15);
+        ctx.fillStyle = '#333';
+        ctx.fillText('F_AB（AがBから受ける力）', w - 160, 62);
+        
+        // 補足説明
+        ctx.fillStyle = '#666';
+        ctx.font = '11px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('※ どの瞬間でも |F_AB| = |F_BA|', w/2, h - 5);
+    }
+    
+    function drawComparisonDiagram() {
+        const canvas = document.getElementById('comparisonDiagram');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const w = canvas.width;
+        const h = canvas.height;
+        
+        ctx.clearRect(0, 0, w, h);
+        ctx.fillStyle = '#f8f9fa';
+        ctx.fillRect(0, 0, w, h);
+        
+        // --- つり合いの図（左側）---
+        ctx.fillStyle = '#333';
+        ctx.font = 'bold 16px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('【つり合い】', 150, 25);
+        ctx.font = '12px Arial';
+        ctx.fillText('1つの物体に働く2力', 150, 45);
+        
+        // 机
+        ctx.fillStyle = '#8B4513';
+        ctx.fillRect(70, 180, 160, 20);
+        
+        // 物体
+        ctx.fillStyle = '#667eea';
+        ctx.fillRect(110, 120, 80, 60);
+        ctx.fillStyle = 'white';
+        ctx.font = 'bold 16px Arial';
+        ctx.fillText('物体', 150, 158);
+        
+        // 重力（下向き）
+        ctx.strokeStyle = '#e74c3c';
+        ctx.fillStyle = '#e74c3c';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(150, 180);
+        ctx.lineTo(150, 240);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(150, 240);
+        ctx.lineTo(142, 225);
+        ctx.lineTo(158, 225);
+        ctx.closePath();
+        ctx.fill();
+        ctx.font = '14px Arial';
+        ctx.fillText('重力 mg', 150, 260);
+        
+        // 垂直抗力（上向き）
+        ctx.strokeStyle = '#3498db';
+        ctx.fillStyle = '#3498db';
+        ctx.beginPath();
+        ctx.moveTo(150, 120);
+        ctx.lineTo(150, 60);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(150, 60);
+        ctx.lineTo(142, 75);
+        ctx.lineTo(158, 75);
+        ctx.closePath();
+        ctx.fill();
+        ctx.fillText('垂直抗力 N', 150, 52);
+        
+        // --- 作用反作用の図（右側）---
+        ctx.fillStyle = '#333';
+        ctx.font = 'bold 16px Arial';
+        ctx.fillText('【作用反作用】', 450, 25);
+        ctx.font = '12px Arial';
+        ctx.fillText('2つの物体に働き合う2力', 450, 45);
+        
+        // 机
+        ctx.fillStyle = '#8B4513';
+        ctx.fillRect(370, 180, 160, 40);
+        ctx.fillStyle = 'white';
+        ctx.font = 'bold 14px Arial';
+        ctx.fillText('机', 450, 205);
+        
+        // 物体
+        ctx.fillStyle = '#667eea';
+        ctx.fillRect(410, 120, 80, 60);
+        ctx.fillStyle = 'white';
+        ctx.font = 'bold 14px Arial';
+        ctx.fillText('物体', 450, 155);
+        
+        // 物体が机を押す力（下向き、物体から出る）
+        ctx.strokeStyle = '#e74c3c';
+        ctx.fillStyle = '#e74c3c';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(430, 180);
+        ctx.lineTo(430, 230);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(430, 230);
+        ctx.lineTo(422, 215);
+        ctx.lineTo(438, 215);
+        ctx.closePath();
+        ctx.fill();
+        ctx.font = '12px Arial';
+        ctx.textAlign = 'left';
+        ctx.fillText('物体が机を', 440, 210);
+        ctx.fillText('押す力', 440, 225);
+        
+        // 机が物体を押す力（上向き、机から出る）
+        ctx.strokeStyle = '#3498db';
+        ctx.fillStyle = '#3498db';
+        ctx.beginPath();
+        ctx.moveTo(470, 180);
+        ctx.lineTo(470, 130);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(470, 130);
+        ctx.lineTo(462, 145);
+        ctx.lineTo(478, 145);
+        ctx.closePath();
+        ctx.fill();
+        ctx.textAlign = 'right';
+        ctx.fillText('机が物体を', 468, 115);
+        ctx.fillText('押す力', 468, 100);
+    }
+
+    // --- シミュレーション ---
+    const physicsCanvas = document.getElementById('physicsCanvas');
+    const physicsCtx = physicsCanvas.getContext('2d');
+    const graphCanvas = document.getElementById('graphCanvas');
+    const graphCtx = graphCanvas.getContext('2d');
+    
+    // 物理パラメータ（固定値）
+    const mA = 2.0;  // 物体Aの質量 [kg]
+    const mB = 1.0;  // 物体Bの質量 [kg]
+    const muS = 0.5; // 静止摩擦係数
+    const muK = 0.3; // 動摩擦係数
+    const g = 9.8;   // 重力加速度 [m/s²]
+    
+    // 可変パラメータ
+    let F = 0;     // 引っ張る力 [N]
+    
+    // シミュレーション状態
+    let isRunning = false;
+    let time = 0;
+    let xA = 0;    // 物体Aの位置 [m]
+    let xB = 0;    // 物体Bの位置 [m]
+    let vA = 0;    // 物体Aの速度 [m/s]
+    let vB = 0;    // 物体Bの速度 [m/s]
+    let isSliding = false;
+    let frictionForce = 0;
+    let animationId = null;
+    
+    // グラフデータ
+    let graphData = [];
+    
+    // UI要素
+    const forceSlider = document.getElementById('forceSlider');
+    const forceDisplay = document.getElementById('forceDisplay');
+    const startBtn = document.getElementById('startBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const statusDisplay = document.getElementById('statusDisplay');
+    
+    // スライダーイベント
+    forceSlider.addEventListener('input', function() {
+        F = parseFloat(this.value);
+        forceDisplay.textContent = F.toFixed(0) + ' N';
+        updateEquations();
+        if (!isRunning) {
+            draw();
+            drawGraph();
+        }
+    });
+    
+    // ボタンイベント
+    startBtn.addEventListener('click', function() {
+        if (!isRunning) {
+            isRunning = true;
+            startBtn.textContent = '一時停止';
+            animate();
+        } else {
+            isRunning = false;
+            startBtn.textContent = 'スタート';
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+            }
+        }
+    });
+    
+    resetBtn.addEventListener('click', function() {
+        isRunning = false;
+        startBtn.textContent = 'スタート';
+        if (animationId) {
+            cancelAnimationFrame(animationId);
+        }
+        time = 0;
+        xA = 0;
+        xB = 0;
+        vA = 0;
+        vB = 0;
+        isSliding = false;
+        frictionForce = 0;
+        graphData = [];
+        updateStatus();
+        updateEquations();
+        draw();
+        drawGraph();
+    });
+    
+    // 物理計算
+    function calculatePhysics(dt) {
+        if (F === 0) {
+            // 力が0なら静止
+            frictionForce = 0;
+            return;
+        }
+        
+        // 最大静止摩擦力
+        const fMaxStatic = muS * mB * g;
+        // 動摩擦力
+        const fKinetic = muK * mB * g;
+        
+        // 一体で動くと仮定したときの加速度
+        const aTogether = F / (mA + mB);
+        // そのときBに必要な摩擦力
+        const fNeeded = mB * aTogether;
+        
+        if (!isSliding) {
+            // 静止摩擦の場合
+            if (fNeeded <= fMaxStatic) {
+                // 一体で動く
+                frictionForce = fNeeded;
+                const a = aTogether;
+                vA += a * dt;
+                vB += a * dt;
+                xA += vA * dt;
+                xB += vA * dt; // 一体なのでxBもvAで更新
+            } else {
+                // 滑り始める
+                isSliding = true;
+                frictionForce = fKinetic;
+            }
+        }
+        
+        if (isSliding) {
+            frictionForce = fKinetic;
+            // 物体Aの加速度
+            const aA = (F - fKinetic) / mA;
+            // 物体Bの加速度
+            const aB = fKinetic / mB;
+            
+            vA += aA * dt;
+            vB += aB * dt;
+            xA += vA * dt;
+            xB += vB * dt;
+        }
+        
+        time += dt;
+        
+        // グラフデータ追加
+        if (graphData.length === 0 || time - graphData[graphData.length - 1].t > 0.05) {
+            graphData.push({
+                t: time,
+                fAB: frictionForce,  // AがBから受ける摩擦力（左向き、負）
+                fBA: frictionForce   // BがAから受ける摩擦力（右向き、正）
+            });
+            // データ数制限
+            if (graphData.length > 100) {
+                graphData.shift();
+            }
+        }
+    }
+    
+    // 状態表示更新
+    function updateStatus() {
+        if (F === 0) {
+            statusDisplay.textContent = '静止状態';
+            statusDisplay.className = 'status-display status-together';
+        } else if (!isSliding) {
+            statusDisplay.textContent = '🔗 一体となって運動中（静止摩擦）';
+            statusDisplay.className = 'status-display status-together';
+        } else {
+            statusDisplay.textContent = '⚡ 滑りながら運動中（動摩擦）';
+            statusDisplay.className = 'status-display status-sliding';
+        }
+    }
+    
+    // 運動方程式更新
+    function updateEquations() {
+        const fMaxStatic = muS * mB * g;
+        const fKinetic = muK * mB * g;
+        const aTogether = F / (mA + mB);
+        const fNeeded = mB * aTogether;
+        
+        let eqAText, eqBText;
+        
+        if (F === 0) {
+            eqAText = `$${mA.toFixed(1)} \\times 0 = 0 - 0$`;
+            eqBText = `$${mB.toFixed(1)} \\times 0 = 0$`;
+        } else if (fNeeded <= fMaxStatic) {
+            // 一体で動く
+            const a = aTogether.toFixed(2);
+            const f = fNeeded.toFixed(1);
+            eqAText = `$${mA.toFixed(1)} \\times ${a} = ${F.toFixed(0)} - ${f}$`;
+            eqBText = `$${mB.toFixed(1)} \\times ${a} = ${f}$`;
+        } else {
+            // 滑る
+            const aA = ((F - fKinetic) / mA).toFixed(2);
+            const aB = (fKinetic / mB).toFixed(2);
+            const f = fKinetic.toFixed(1);
+            eqAText = `$${mA.toFixed(1)} \\times ${aA} = ${F.toFixed(0)} - ${f}$`;
+            eqBText = `$${mB.toFixed(1)} \\times ${aB} = ${f}$`;
+        }
+        
+        document.getElementById('eqA').innerHTML = eqAText;
+        document.getElementById('eqB').innerHTML = eqBText;
+        
+        // MathJaxで再レンダリング（非同期読み込み対応）
+        if (window.MathJax && MathJax.typesetPromise) {
+            MathJax.typesetPromise([document.getElementById('eqA'), document.getElementById('eqB')]).catch(function(err) {
+                console.log('MathJax typeset error:', err);
+            });
+        } else if (window.MathJax && MathJax.typeset) {
+            try {
+                MathJax.typeset([document.getElementById('eqA'), document.getElementById('eqB')]);
+            } catch(e) {
+                console.log('MathJax typeset error:', e);
+            }
+        }
+        
+        updateStatus();
+    }
+    
+    // Canvas描画
+    function draw() {
+        const w = physicsCanvas.width;
+        const h = physicsCanvas.height;
+        
+        physicsCtx.clearRect(0, 0, w, h);
+        
+        // 背景
+        physicsCtx.fillStyle = '#f8f9fa';
+        physicsCtx.fillRect(0, 0, w, h);
+        
+        // 床
+        physicsCtx.fillStyle = '#ddd';
+        physicsCtx.fillRect(0, h - 30, w, 30);
+        physicsCtx.strokeStyle = '#999';
+        physicsCtx.lineWidth = 2;
+        physicsCtx.beginPath();
+        physicsCtx.moveTo(0, h - 30);
+        physicsCtx.lineTo(w, h - 30);
+        physicsCtx.stroke();
+        
+        // スケール（1m = 50px）
+        const scale = 50;
+        const baseX = 80;
+        
+        // 物体Aの位置（画面上）
+        const drawXA = baseX + xA * scale;
+        const blockAWidth = 120;
+        const blockAHeight = 50;
+        const blockAY = h - 30 - blockAHeight;
+        
+        // 物体Bの位置（画面上）
+        const drawXB = baseX + xB * scale;
+        const blockBWidth = 80;
+        const blockBHeight = 40;
+        const blockBY = blockAY - blockBHeight;
+        
+        // 物体A（下）を描画
+        physicsCtx.fillStyle = '#667eea';
+        physicsCtx.fillRect(drawXA, blockAY, blockAWidth, blockAHeight);
+        physicsCtx.strokeStyle = '#5563c1';
+        physicsCtx.lineWidth = 2;
+        physicsCtx.strokeRect(drawXA, blockAY, blockAWidth, blockAHeight);
+        physicsCtx.fillStyle = 'white';
+        physicsCtx.font = 'bold 18px Arial';
+        physicsCtx.textAlign = 'center';
+        physicsCtx.fillText('A', drawXA + blockAWidth / 2, blockAY + blockAHeight / 2 + 6);
+        
+        // 物体B（上）を描画
+        physicsCtx.fillStyle = '#764ba2';
+        physicsCtx.fillRect(drawXB + 20, blockBY, blockBWidth, blockBHeight);
+        physicsCtx.strokeStyle = '#5c3a7e';
+        physicsCtx.lineWidth = 2;
+        physicsCtx.strokeRect(drawXB + 20, blockBY, blockBWidth, blockBHeight);
+        physicsCtx.fillStyle = 'white';
+        physicsCtx.fillText('B', drawXB + 20 + blockBWidth / 2, blockBY + blockBHeight / 2 + 6);
+        
+        // 力の矢印を描画
+        const arrowScale = 2; // 力の大きさを矢印の長さに変換
+        
+        // 引っ張る力 F（Aに右向き）- 矢印は右向きに修正
+        if (F > 0) {
+            const arrowStartX = drawXA + blockAWidth + 10;
+            const arrowEndX = arrowStartX + F * arrowScale;
+            drawArrow(physicsCtx, arrowStartX, blockAY + blockAHeight / 2, 
+                      arrowEndX, blockAY + blockAHeight / 2, '#e74c3c', 4);
+            physicsCtx.fillStyle = '#e74c3c';
+            physicsCtx.font = 'bold 14px Arial';
+            physicsCtx.textAlign = 'center';
+            physicsCtx.fillText('F=' + F.toFixed(0) + 'N', (arrowStartX + arrowEndX) / 2, blockAY + blockAHeight / 2 - 15);
+        }
+        
+        // 摩擦力の矢印
+        if (frictionForce > 0) {
+            const fArrowLen = frictionForce * arrowScale * 3;
+            
+            // BがAから受ける摩擦力（右向き、青）- Bを右に加速させる力
+            const bCenterX = drawXB + 20 + blockBWidth / 2;
+            const bCenterY = blockBY + blockBHeight / 2;
+            drawArrow(physicsCtx, bCenterX, bCenterY, bCenterX + fArrowLen, bCenterY, '#3498db', 3);
+            physicsCtx.fillStyle = '#3498db';
+            physicsCtx.font = '12px Arial';
+            physicsCtx.fillText('f=' + frictionForce.toFixed(1) + 'N', bCenterX + fArrowLen / 2, bCenterY - 12);
+            
+            // AがBから受ける摩擦力（左向き、オレンジ）- Aを減速させる方向
+            const aCenterX = drawXA + blockAWidth / 2;
+            const aCenterY = blockAY + 15;
+            drawArrow(physicsCtx, aCenterX, aCenterY, aCenterX - fArrowLen, aCenterY, '#e67e22', 3);
+            physicsCtx.fillStyle = '#e67e22';
+            physicsCtx.fillText("f'=" + frictionForce.toFixed(1) + 'N', aCenterX - fArrowLen / 2, aCenterY - 12);
+        }
+        
+        // 凡例
+        physicsCtx.font = '12px Arial';
+        physicsCtx.textAlign = 'left';
+        physicsCtx.fillStyle = '#e74c3c';
+        physicsCtx.fillText('赤: 引っ張る力F（右向き）', 10, 20);
+        physicsCtx.fillStyle = '#3498db';
+        physicsCtx.fillText('青: BがAから受ける摩擦力（右向き・作用）', 10, 38);
+        physicsCtx.fillStyle = '#e67e22';
+        physicsCtx.fillText('橙: AがBから受ける摩擦力（左向き・反作用）', 10, 56);
+        
+        // 時間と位置の表示
+        physicsCtx.fillStyle = '#333';
+        physicsCtx.textAlign = 'right';
+        physicsCtx.fillText('時間: ' + time.toFixed(2) + ' s', w - 10, 20);
+        physicsCtx.fillText('Aの位置: ' + xA.toFixed(2) + ' m', w - 10, 38);
+        physicsCtx.fillText('Bの位置: ' + xB.toFixed(2) + ' m', w - 10, 56);
+        if (isSliding) {
+            physicsCtx.fillStyle = '#e74c3c';
+            physicsCtx.fillText('ずれ: ' + (xA - xB).toFixed(2) + ' m', w - 10, 74);
+        }
+        
+        // 運動方向を示す矢印（画面下部）
+        physicsCtx.fillStyle = '#666';
+        physicsCtx.font = '11px Arial';
+        physicsCtx.textAlign = 'center';
+        physicsCtx.fillText('← 左　　　運動方向　　　右 →', w / 2, h - 10);
+    }
+    
+    // 矢印描画関数
+    function drawArrow(ctx, fromX, fromY, toX, toY, color, lineWidth) {
+        const headLen = 10;
+        const dx = toX - fromX;
+        const dy = toY - fromY;
+        const angle = Math.atan2(dy, dx);
+        
+        ctx.strokeStyle = color;
+        ctx.fillStyle = color;
+        ctx.lineWidth = lineWidth;
+        
+        ctx.beginPath();
+        ctx.moveTo(fromX, fromY);
+        ctx.lineTo(toX, toY);
+        ctx.stroke();
+        
+        ctx.beginPath();
+        ctx.moveTo(toX, toY);
+        ctx.lineTo(toX - headLen * Math.cos(angle - Math.PI / 6), toY - headLen * Math.sin(angle - Math.PI / 6));
+        ctx.lineTo(toX - headLen * Math.cos(angle + Math.PI / 6), toY - headLen * Math.sin(angle + Math.PI / 6));
+        ctx.closePath();
+        ctx.fill();
+    }
+    
+    // グラフ描画
+    function drawGraph() {
+        const w = graphCanvas.width;
+        const h = graphCanvas.height;
+        
+        graphCtx.clearRect(0, 0, w, h);
+        graphCtx.fillStyle = '#fff';
+        graphCtx.fillRect(0, 0, w, h);
+        
+        const margin = { top: 30, right: 30, bottom: 40, left: 60 };
+        const plotW = w - margin.left - margin.right;
+        const plotH = h - margin.top - margin.bottom;
+        
+        // 軸
+        graphCtx.strokeStyle = '#333';
+        graphCtx.lineWidth = 2;
+        graphCtx.beginPath();
+        graphCtx.moveTo(margin.left, margin.top);
+        graphCtx.lineTo(margin.left, h - margin.bottom);
+        graphCtx.lineTo(w - margin.right, h - margin.bottom);
+        graphCtx.stroke();
+        
+        // 中央線（力=0）
+        const zeroY = margin.top + plotH / 2;
+        graphCtx.strokeStyle = '#ddd';
+        graphCtx.lineWidth = 1;
+        graphCtx.beginPath();
+        graphCtx.moveTo(margin.left, zeroY);
+        graphCtx.lineTo(w - margin.right, zeroY);
+        graphCtx.stroke();
+        
+        // 軸ラベル
+        graphCtx.fillStyle = '#333';
+        graphCtx.font = '14px Arial';
+        graphCtx.textAlign = 'center';
+        graphCtx.fillText('時間 t [s]', w / 2, h - 5);
+        
+        graphCtx.save();
+        graphCtx.translate(15, h / 2);
+        graphCtx.rotate(-Math.PI / 2);
+        graphCtx.fillText('摩擦力 f [N]', 0, 0);
+        graphCtx.restore();
+        
+        // 最大摩擦力でスケーリング
+        const maxF = Math.max(muS * mB * g * 1.5, 10);
+        
+        // 目盛り
+        graphCtx.font = '10px Arial';
+        graphCtx.textAlign = 'right';
+        graphCtx.fillText('+' + maxF.toFixed(0), margin.left - 5, margin.top + 5);
+        graphCtx.fillText('0', margin.left - 5, zeroY + 3);
+        graphCtx.fillText('-' + maxF.toFixed(0), margin.left - 5, h - margin.bottom);
+        
+        if (graphData.length < 2) {
+            // データがない場合のメッセージ
+            graphCtx.textAlign = 'center';
+            graphCtx.fillStyle = '#999';
+            graphCtx.font = '14px Arial';
+            graphCtx.fillText('シミュレーションを開始すると', w / 2, h / 2 - 10);
+            graphCtx.fillText('作用反作用の力がグラフに表示されます', w / 2, h / 2 + 10);
+            return;
+        }
+        
+        // 時間範囲
+        const tMin = graphData[0].t;
+        const tMax = graphData[graphData.length - 1].t;
+        const tRange = Math.max(tMax - tMin, 2);
+        
+        // BがAから受ける摩擦力（正：右向き）を青で描画
+        graphCtx.strokeStyle = '#3498db';
+        graphCtx.lineWidth = 3;
+        graphCtx.beginPath();
+        let first = true;
+        for (const d of graphData) {
+            const x = margin.left + ((d.t - tMin) / tRange) * plotW;
+            const y = zeroY - (d.fBA / maxF) * (plotH / 2);
+            if (first) {
+                graphCtx.moveTo(x, y);
+                first = false;
+            } else {
+                graphCtx.lineTo(x, y);
+            }
+        }
+        graphCtx.stroke();
+        
+        // AがBから受ける摩擦力（負：左向き）を赤で描画
+        graphCtx.strokeStyle = '#e74c3c';
+        graphCtx.lineWidth = 3;
+        graphCtx.beginPath();
+        first = true;
+        for (const d of graphData) {
+            const x = margin.left + ((d.t - tMin) / tRange) * plotW;
+            const y = zeroY + (d.fAB / maxF) * (plotH / 2); // 負の値として描画
+            if (first) {
+                graphCtx.moveTo(x, y);
+                first = false;
+            } else {
+                graphCtx.lineTo(x, y);
+            }
+        }
+        graphCtx.stroke();
+        
+        // 凡例
+        graphCtx.font = '12px Arial';
+        graphCtx.textAlign = 'left';
+        
+        graphCtx.fillStyle = '#3498db';
+        graphCtx.fillRect(w - 200, 10, 15, 15);
+        graphCtx.fillStyle = '#333';
+        graphCtx.fillText('BがAから受ける力(+)', w - 180, 22);
+        
+        graphCtx.fillStyle = '#e74c3c';
+        graphCtx.fillRect(w - 200, 30, 15, 15);
+        graphCtx.fillStyle = '#333';
+        graphCtx.fillText('AがBから受ける力(−)', w - 180, 42);
+    }
+    
+    // アニメーションループ
+    function animate() {
+        if (!isRunning) return;
+        
+        calculatePhysics(0.016); // 約60fps
+        updateStatus();
+        draw();
+        drawGraph();
+        
+        // 画面外に出たらリセット
+        if (xA > 15 || xB > 15) {
+            isRunning = false;
+            startBtn.textContent = 'スタート';
+        }
+        
+        animationId = requestAnimationFrame(animate);
+    }
+    
+    // レスポンシブ対応
+    function resizeCanvas() {
+        const container = document.getElementById('sim-container');
+        if (container) {
+            physicsCanvas.width = container.clientWidth - 40;
+            physicsCanvas.height = 300;
+        }
+        
+        const graphContainer = document.querySelector('.graph-container');
+        if (graphContainer) {
+            graphCanvas.width = graphContainer.clientWidth - 30;
+            graphCanvas.height = 200;
+        }
+    }
+    
+    window.addEventListener('resize', function() {
+        resizeCanvas();
+        draw();
+        drawGraph();
+    });
+    
+    // 初期化
+    function init() {
+        resizeCanvas();
+        updateEquations();
+        draw();
+        drawGraph();
+        
+        // 解説タブの図を描画
+        setTimeout(function() {
+            drawActionReactionDiagram();
+            drawComparisonDiagram();
+            drawCollisionDiagram();
+            drawCollisionGraph();
+        }, 100);
+    }
+    
+    // DOMが読み込まれたら初期化
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+    </script>
+</body>
+</html>

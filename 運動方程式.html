@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高校物理 - 運動方程式</title>
+    <script>
+      window.MathJax = {
+      tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']]
+     }
+     };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        header {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .back-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        h1 {
+            color: #333;
+        }
+        .container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .tab-btn {
+            flex: 1;
+            min-width: 150px;
+            padding: 12px 20px;
+            border: none;
+            background: #f0f0f0;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        .tab-btn.active {
+            background: #667eea;
+            color: white;
+        }
+        .tab-btn:hover {
+            background: #8899f0;
+            color: white;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        .pdf-placeholder {
+            background: #f9f9f9;
+            padding: 40px;
+            text-align: center;
+            border-radius: 5px;
+            color: #666;
+        }
+        
+        /* 解説用スタイル */
+        .lecture-content {
+            line-height: 1.8;
+            color: #333;
+        }
+        .lecture-content h3 {
+            color: #667eea;
+            margin: 25px 0 15px 0;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #667eea;
+        }
+        .lecture-content p {
+            margin-bottom: 15px;
+        }
+        .highlight-box {
+            background: linear-gradient(135deg, #667eea20 0%, #764ba220 100%);
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+        .formula-box {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.2em;
+        }
+        .step-list {
+            background: #f8f9fa;
+            padding: 20px 20px 20px 40px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .step-list li {
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+        .note-box {
+            background: #e7f3ff;
+            border: 1px solid #b3d9ff;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        .note-box::before {
+            content: "📝 ";
+        }
+        
+        /* 問題用スタイル */
+        .problem-section {
+            margin-bottom: 30px;
+        }
+        .problem-section h3 {
+            color: #333;
+            background: #f0f0f0;
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        .problem-text {
+            padding: 15px;
+            background: #fafafa;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            line-height: 1.8;
+        }
+        details {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 10px;
+        }
+        summary {
+            cursor: pointer;
+            font-weight: bold;
+            color: #667eea;
+        }
+        details[open] summary {
+            margin-bottom: 15px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+        .answer-content {
+            line-height: 1.8;
+        }
+        
+        /* シミュレーション用スタイル */
+        #sim-container {
+            background: #f5f5f5;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        #physicsCanvas {
+            display: block;
+            width: 100%;
+            background: white;
+            border-radius: 5px;
+            border: 2px solid #ddd;
+        }
+        .sim-controls {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .control-group {
+            margin-bottom: 20px;
+        }
+        .control-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        .control-group input[type="range"] {
+            width: 100%;
+            margin: 10px 0;
+        }
+        .value-display {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            min-width: 100px;
+            text-align: center;
+        }
+        .value-display.positive {
+            background: #4CAF50;
+        }
+        .value-display.negative {
+            background: #f44336;
+        }
+        .value-display.zero {
+            background: #9e9e9e;
+        }
+        .result-display {
+            background: #333;
+            color: #0f0;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-family: monospace;
+            font-size: 1.1em;
+        }
+        .result-display p {
+            margin: 5px 0;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .sim-button {
+            flex: 1;
+            min-width: 120px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .sim-button.start {
+            background: #4CAF50;
+            color: white;
+        }
+        .sim-button.start:hover {
+            background: #45a049;
+        }
+        .sim-button.reset {
+            background: #f44336;
+            color: white;
+        }
+        .sim-button.reset:hover {
+            background: #da190b;
+        }
+        .graph-container {
+            margin-top: 20px;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #ddd;
+        }
+        .graph-container h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        #graphCanvas {
+            display: block;
+            width: 100%;
+            border: 1px solid #eee;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            header, .container {
+                padding: 15px;
+            }
+            .tab-btn {
+                min-width: 100px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="back-link">← 目次に戻る</a>
+        <h1>運動方程式</h1>
+    </header>
+    <div class="container">
+        
+        <div class="tabs">
+            <button class="tab-btn active" onclick="openTab('lecture')">解説編</button>
+            <button class="tab-btn" onclick="openTab('problem')">問題編</button>
+            <button class="tab-btn" onclick="openTab('simulation')">シミュレーション</button>
+        </div>
+        
+        <!-- ===== 解説タブ ===== -->
+        <div id="lecture" class="tab-content active">
+            <h2>運動方程式を学ぼう</h2>
+            
+            <div class="lecture-content">
+                <h3>物理とは何か？</h3>
+                <div class="highlight-box">
+                    <p><strong>「物理」とは、自然界で起こる現象を「数式」や「言葉」で説明する科目です。</strong></p>
+                    <p>なぜボールは落ちるのか？なぜ車は加速するのか？——こうした身の回りの「なぜ？」に対して、物理は数式という共通言語を使って答えを出します。</p>
+                </div>
+                <p>今回学ぶ<strong>運動方程式</strong>は、「力と運動の関係」を数式で表した、物理学の最も基本的で重要な式の一つです。</p>
+
+                <h3>運動方程式とは</h3>
+                <p>質量 $m$ [kg] の物体に合力 $F$ [N] が働くとき、物体に生じる加速度を $a$ [m/s²] とすると、次の関係が成り立ちます。</p>
+                
+                <div class="formula-box">
+                    $$ma = F$$
+                    <p style="font-size: 0.8em; margin-top: 10px; color: #666;">（質量 × 加速度 = 力）</p>
+                </div>
+                
+                <p>この式を変形すると、加速度は次のように表せます：</p>
+                $$a = \frac{F}{m}$$
+                <p>つまり、<strong>加速度は力に比例し、質量に反比例する</strong>ということです。</p>
+
+                <h3>単位について</h3>
+                <p>運動方程式の各物理量の単位は以下の通りです：</p>
+                <ul class="step-list">
+                    <li><strong>質量 $m$</strong>：kg（キログラム）</li>
+                    <li><strong>加速度 $a$</strong>：m/s²（メートル毎秒毎秒）</li>
+                    <li><strong>力 $F$</strong>：N（ニュートン）= kg·m/s²</li>
+                </ul>
+                <p>力の単位「ニュートン [N]」は、運動方程式から導かれる組立単位です。1 N は「質量 1 kg の物体に 1 m/s² の加速度を生じさせる力」と定義されます。</p>
+
+                <h3>運動方程式の立て方（5ステップ）</h3>
+                <p>物体の運動を解析する際、運動方程式は以下の手順で立てます：</p>
+                <ol class="step-list">
+                    <li><strong>着目する物体を決める</strong><br>どの物体の運動を考えるか明確にする</li>
+                    <li><strong>着目する物体"のみ"が受ける力を図示する</strong><br>重力、張力、垂直抗力、摩擦力などをすべて矢印で描く</li>
+                    <li><strong>垂直な2軸（x軸, y軸）を設定し、それぞれ加速度を書く</strong><br>※運動する向きを正にすると計算が楽</li>
+                    <li><strong>②の力を③で設定した軸で分解する</strong><br>斜めの力は水平成分と鉛直成分に分ける</li>
+                    <li><strong>"着目する物体の"運動方程式を立てる</strong><br>合力 $F$ は④での各方向の力の合計</li>
+                </ol>
+
+                <h3>例：重力による落下</h3>
+                <p>質量 $m$ [kg] の物体が重力だけを受けて落下するとき、物体に働く力は重力 $mg$ [N]（$g$ は重力加速度で約 9.8 m/s²）です。</p>
+                <p>運動方程式 $ma = F$ に代入すると：</p>
+                $$ma = mg$$
+                $$a = g$$
+                <p>つまり、<strong>自由落下する物体の加速度は質量に関係なく一定（$g$ ≈ 9.8 m/s²）</strong>となります。</p>
+
+                <div class="note-box">
+                    <strong>次章の予告：運動の3法則</strong><br>
+                    運動方程式は「運動の第2法則」とも呼ばれます。次章では、「慣性の法則（第1法則）」「作用・反作用の法則（第3法則）」と合わせて、ニュートンが発見した<strong>運動の3法則</strong>について詳しく学びます。
+                </div>
+            </div>
+            
+            <h2 style="margin-top: 40px;">授業資料</h2>
+            <iframe src="https://drive.google.com/file/d/1rd3AUHNkj-NLM0IEztEdsiVOdPwxD6EA/preview" width="100%" height="500"></iframe>
+        </div>
+        
+        <!-- ===== 問題タブ ===== -->
+        <div id="problem" class="tab-content">
+            <h2>確認問題</h2>
+            
+            <div class="problem-section">
+                <h3>問題1：運動方程式の基本</h3>
+                <div class="problem-text">
+                    <p>質量 2.0 kg の物体に 6.0 N の力を水平方向に加えた。このとき、物体に生じる加速度は何 m/s² か。ただし、摩擦は無視できるものとする。</p>
+                </div>
+                <details>
+                    <summary>解答・解説を見る</summary>
+                    <div class="answer-content">
+                        <p><strong>【解答】3.0 m/s²</strong></p>
+                        <p><strong>【解説】</strong></p>
+                        <p>運動方程式 $ma = F$ を使います。</p>
+                        <p>$m = 2.0$ kg、$F = 6.0$ N を代入して：</p>
+                        $$2.0 \times a = 6.0$$
+                        $$a = \frac{6.0}{2.0} = 3.0 \text{ m/s}^2$$
+                        <p>加速度は力に比例し、質量に反比例するという関係がわかります。</p>
+                    </div>
+                </details>
+            </div>
+
+            <div class="problem-section">
+                <h3>問題2：合力と運動方程式</h3>
+                <div class="problem-text">
+                    <p>質量 5.0 kg の物体に糸をつけて、鉛直上向きに 65 N の力で引いた。このとき、物体の加速度はどの向きに何 m/s² か。ただし、重力加速度を 9.8 m/s² とする。</p>
+                </div>
+                <details>
+                    <summary>解答・解説を見る</summary>
+                    <div class="answer-content">
+                        <p><strong>【解答】鉛直上向きに 3.2 m/s²</strong></p>
+                        <p><strong>【解説】</strong></p>
+                        <p>運動方程式の立て方（5ステップ）に従って解きます。</p>
+                        <p>①着目物体：質量 5.0 kg の物体</p>
+                        <p>②物体が受ける力：上向きに張力 65 N、下向きに重力 $mg = 5.0 \times 9.8 = 49$ N</p>
+                        <p>③正の向き：上向きを正とする</p>
+                        <p>④力の分解：今回は鉛直方向のみなので不要</p>
+                        <p>⑤運動方程式を立てる：</p>
+                        $$ma = 65 - 49 = 16 \text{ N}$$
+                        $$5.0 \times a = 16$$
+                        $$a = \frac{16}{5.0} = 3.2 \text{ m/s}^2$$
+                        <p>合力が正（上向き）なので、加速度は<strong>鉛直上向きに 3.2 m/s²</strong>となります。</p>
+                    </div>
+                </details>
+            </div>
+
+            <div class="problem-section">
+                <h3>問題3：運動方程式の意味を説明する</h3>
+                <div class="problem-text">
+                    <p>「同じ力を加えても、質量が大きい物体ほど加速しにくい」という現象を、運動方程式を用いて説明しなさい。</p>
+                </div>
+                <details>
+                    <summary>解答・解説を見る</summary>
+                    <div class="answer-content">
+                        <p><strong>【解答例】</strong></p>
+                        <p>運動方程式 $ma = F$ を加速度について解くと、</p>
+                        $$a = \frac{F}{m}$$
+                        <p>となる。この式から、力 $F$ が一定のとき、加速度 $a$ は質量 $m$ に反比例することがわかる。</p>
+                        <p>したがって、同じ力を加えた場合、質量が大きい物体ほど加速度は小さくなり、「加速しにくい」という現象が説明できる。</p>
+                        <p><strong>【ポイント】</strong></p>
+                        <p>物理では、現象を数式で表し、その数式から論理的に結論を導くことが重要です。「反比例する」という数学的関係から、物理的な意味を読み取る練習をしましょう。</p>
+                    </div>
+                </details>
+            </div>
+        </div>
+        
+        <!-- ===== シミュレーションタブ ===== -->
+        <div id="simulation" class="tab-content">
+            <h2>運動方程式シミュレーション</h2>
+            <p>水平面上の物体に2つの力を加えて、合力と加速度の関係を確認しましょう。</p>
+            
+            <div id="sim-container">
+                <canvas id="physicsCanvas"></canvas>
+            </div>
+            
+            <div class="sim-controls">
+                <div class="control-group">
+                    <label>質量 m: <span class="value-display" id="massDisplay">2.0 kg</span></label>
+                    <input type="range" id="massSlider" min="1" max="10" value="2" step="0.5">
+                </div>
+                
+                <div class="control-group">
+                    <label>力 F₁（右向き）: <span class="value-display positive" id="f1Display">10 N</span></label>
+                    <input type="range" id="f1Slider" min="0" max="20" value="10" step="1">
+                </div>
+                
+                <div class="control-group">
+                    <label>力 F₂（左向き）: <span class="value-display negative" id="f2Display">0 N</span></label>
+                    <input type="range" id="f2Slider" min="0" max="20" value="0" step="1">
+                </div>
+                
+                <div class="result-display">
+                    <p>合力 F = F₁ - F₂ = <span id="totalForce">10</span> N</p>
+                    <p>加速度 a = F / m = <span id="acceleration">5.0</span> m/s²</p>
+                    <p>速度 v = <span id="velocity">0.0</span> m/s</p>
+                </div>
+                
+                <div class="button-group">
+                    <button class="sim-button start" id="startBtn">スタート</button>
+                    <button class="sim-button reset" id="resetBtn">リセット</button>
+                </div>
+            </div>
+            
+            <div class="graph-container">
+                <h3>速度-時間グラフ (v-t)</h3>
+                <p style="color: #666; font-size: 0.9em;">グラフの傾き = 加速度 a</p>
+                <canvas id="graphCanvas"></canvas>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+    // --- タブ切り替え機能 ---
+    function openTab(tabName) {
+        var contents = document.getElementsByClassName("tab-content");
+        for (var i = 0; i < contents.length; i++) {
+            contents[i].style.display = "none";
+            contents[i].classList.remove("active");
+        }
+        var buttons = document.getElementsByClassName("tab-btn");
+        for (var i = 0; i < buttons.length; i++) {
+            buttons[i].classList.remove("active");
+        }
+        document.getElementById(tabName).style.display = "block";
+        document.getElementById(tabName).classList.add("active");
+        if (event) {
+            event.currentTarget.classList.add("active");
+        }
+        
+        // シミュレーションタブが開かれたらCanvasを再描画
+        if (tabName === 'simulation') {
+            resizeCanvas();
+            draw();
+            drawGraph();
+        }
+    }
+
+    // --- シミュレーション ---
+    const physicsCanvas = document.getElementById('physicsCanvas');
+    const ctx = physicsCanvas.getContext('2d');
+    const graphCanvas = document.getElementById('graphCanvas');
+    const gctx = graphCanvas.getContext('2d');
+    
+    // スライダーと表示要素
+    const massSlider = document.getElementById('massSlider');
+    const f1Slider = document.getElementById('f1Slider');
+    const f2Slider = document.getElementById('f2Slider');
+    const massDisplay = document.getElementById('massDisplay');
+    const f1Display = document.getElementById('f1Display');
+    const f2Display = document.getElementById('f2Display');
+    const totalForceDisplay = document.getElementById('totalForce');
+    const accelerationDisplay = document.getElementById('acceleration');
+    const velocityDisplay = document.getElementById('velocity');
+    const startBtn = document.getElementById('startBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    
+    // 物理パラメータ
+    let mass = 2.0;
+    let f1 = 10;
+    let f2 = 0;
+    let acceleration = 0;
+    let velocity = 0;
+    let position = 0;
+    let time = 0;
+    let isRunning = false;
+    let animationId = null;
+    
+    // グラフデータ
+    let graphData = [];
+    const maxTime = 10; // グラフの最大時間
+    const maxVelocity = 50; // グラフの最大速度
+    
+    // Canvas リサイズ
+    function resizeCanvas() {
+        const container = physicsCanvas.parentElement;
+        physicsCanvas.width = container.clientWidth;
+        physicsCanvas.height = 300;
+        graphCanvas.width = container.clientWidth;
+        graphCanvas.height = 250;
+    }
+    
+    // 物理量の更新
+    function updatePhysics() {
+        mass = parseFloat(massSlider.value);
+        f1 = parseFloat(f1Slider.value);
+        f2 = parseFloat(f2Slider.value);
+        
+        const totalForce = f1 - f2;
+        acceleration = totalForce / mass;
+        
+        // 表示更新
+        massDisplay.textContent = mass.toFixed(1) + ' kg';
+        f1Display.textContent = f1 + ' N';
+        f2Display.textContent = f2 + ' N';
+        totalForceDisplay.textContent = totalForce.toFixed(1);
+        accelerationDisplay.textContent = acceleration.toFixed(2);
+        
+        // 合力の色分け
+        const totalForceNum = totalForce;
+        if (totalForceNum > 0) {
+            totalForceDisplay.parentElement.style.color = '#4CAF50';
+        } else if (totalForceNum < 0) {
+            totalForceDisplay.parentElement.style.color = '#f44336';
+        } else {
+            totalForceDisplay.parentElement.style.color = '#9e9e9e';
+        }
+    }
+    
+    // メイン描画
+    function draw() {
+        const w = physicsCanvas.width;
+        const h = physicsCanvas.height;
+        
+        // 背景クリア
+        ctx.fillStyle = '#f0f8ff';
+        ctx.fillRect(0, 0, w, h);
+        
+        // 床の描画
+        ctx.fillStyle = '#8B4513';
+        ctx.fillRect(0, h - 30, w, 30);
+        ctx.fillStyle = '#A0522D';
+        for (let i = 0; i < w; i += 40) {
+            ctx.fillRect(i, h - 30, 20, 30);
+        }
+        
+        // 物体の位置計算（画面内でループ）
+        const boxWidth = 80;
+        const boxHeight = 60;
+        const groundY = h - 30 - boxHeight;
+        let boxX = w * 0.3 + (position * 20) % (w - boxWidth);
+        if (boxX < 0) boxX += w - boxWidth;
+        if (boxX > w - boxWidth) boxX = boxX % (w - boxWidth);
+        
+        // 物体（箱）の描画
+        const gradient = ctx.createLinearGradient(boxX, groundY, boxX + boxWidth, groundY + boxHeight);
+        gradient.addColorStop(0, '#4a90d9');
+        gradient.addColorStop(1, '#2e6cb5');
+        ctx.fillStyle = gradient;
+        ctx.fillRect(boxX, groundY, boxWidth, boxHeight);
+        
+        // 箱の枠線
+        ctx.strokeStyle = '#1a4a7a';
+        ctx.lineWidth = 3;
+        ctx.strokeRect(boxX, groundY, boxWidth, boxHeight);
+        
+        // 質量表示
+        ctx.fillStyle = 'white';
+        ctx.font = 'bold 16px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText(mass.toFixed(1) + ' kg', boxX + boxWidth/2, groundY + boxHeight/2 + 6);
+        
+        // 力の矢印（F1: 右向き）
+        if (f1 > 0) {
+            drawArrow(boxX + boxWidth, groundY + boxHeight/2, boxX + boxWidth + f1 * 5, groundY + boxHeight/2, '#4CAF50', 'F₁=' + f1 + 'N');
+        }
+        
+        // 力の矢印（F2: 左向き）
+        if (f2 > 0) {
+            drawArrow(boxX, groundY + boxHeight/2, boxX - f2 * 5, groundY + boxHeight/2, '#f44336', 'F₂=' + f2 + 'N');
+        }
+        
+        // 合力の矢印（下に表示）
+        const totalForce = f1 - f2;
+        if (totalForce !== 0) {
+            const arrowY = groundY + boxHeight + 30;
+            const startX = boxX + boxWidth/2;
+            const endX = startX + totalForce * 3;
+            drawArrow(startX, arrowY, endX, arrowY, '#9C27B0', '合力F=' + totalForce.toFixed(1) + 'N');
+        }
+        
+        // 加速度の表示
+        ctx.fillStyle = '#333';
+        ctx.font = '14px Arial';
+        ctx.textAlign = 'left';
+        ctx.fillText('加速度 a = ' + acceleration.toFixed(2) + ' m/s²', 20, 30);
+        
+        // 速度の表示
+        velocityDisplay.textContent = velocity.toFixed(2);
+    }
+    
+    // 矢印描画関数
+    function drawArrow(fromX, fromY, toX, toY, color, label) {
+        const headLen = 15;
+        const dx = toX - fromX;
+        const dy = toY - fromY;
+        const angle = Math.atan2(dy, dx);
+        
+        ctx.strokeStyle = color;
+        ctx.fillStyle = color;
+        ctx.lineWidth = 4;
+        
+        // 線
+        ctx.beginPath();
+        ctx.moveTo(fromX, fromY);
+        ctx.lineTo(toX, toY);
+        ctx.stroke();
+        
+        // 矢じり
+        ctx.beginPath();
+        ctx.moveTo(toX, toY);
+        ctx.lineTo(toX - headLen * Math.cos(angle - Math.PI/6), toY - headLen * Math.sin(angle - Math.PI/6));
+        ctx.lineTo(toX - headLen * Math.cos(angle + Math.PI/6), toY - headLen * Math.sin(angle + Math.PI/6));
+        ctx.closePath();
+        ctx.fill();
+        
+        // ラベル
+        ctx.font = 'bold 14px Arial';
+        ctx.textAlign = 'center';
+        const labelY = fromY - 15;
+        ctx.fillText(label, (fromX + toX) / 2, labelY);
+    }
+    
+    // グラフ描画
+    function drawGraph() {
+        const w = graphCanvas.width;
+        const h = graphCanvas.height;
+        const padding = 50;
+        const graphW = w - padding * 2;
+        const graphH = h - padding * 2;
+        
+        // 背景
+        gctx.fillStyle = 'white';
+        gctx.fillRect(0, 0, w, h);
+        
+        // グラフエリア
+        gctx.fillStyle = '#fafafa';
+        gctx.fillRect(padding, padding, graphW, graphH);
+        
+        // グリッド
+        gctx.strokeStyle = '#e0e0e0';
+        gctx.lineWidth = 1;
+        for (let i = 0; i <= 10; i++) {
+            // 縦線
+            const x = padding + (graphW / 10) * i;
+            gctx.beginPath();
+            gctx.moveTo(x, padding);
+            gctx.lineTo(x, padding + graphH);
+            gctx.stroke();
+            // 横線
+            const y = padding + (graphH / 10) * i;
+            gctx.beginPath();
+            gctx.moveTo(padding, y);
+            gctx.lineTo(padding + graphW, y);
+            gctx.stroke();
+        }
+        
+        // 軸
+        gctx.strokeStyle = '#333';
+        gctx.lineWidth = 2;
+        gctx.beginPath();
+        gctx.moveTo(padding, padding);
+        gctx.lineTo(padding, padding + graphH);
+        gctx.lineTo(padding + graphW, padding + graphH);
+        gctx.stroke();
+        
+        // 軸ラベル
+        gctx.fillStyle = '#333';
+        gctx.font = '14px Arial';
+        gctx.textAlign = 'center';
+        gctx.fillText('時間 t [s]', padding + graphW/2, h - 10);
+        
+        gctx.save();
+        gctx.translate(15, padding + graphH/2);
+        gctx.rotate(-Math.PI/2);
+        gctx.fillText('速度 v [m/s]', 0, 0);
+        gctx.restore();
+        
+        // 目盛り
+        gctx.font = '12px Arial';
+        gctx.textAlign = 'center';
+        for (let i = 0; i <= 10; i++) {
+            const t = i;
+            const x = padding + (graphW / 10) * i;
+            gctx.fillText(t.toString(), x, padding + graphH + 20);
+        }
+        
+        gctx.textAlign = 'right';
+        for (let i = 0; i <= 10; i++) {
+            const v = (maxVelocity / 10) * (10 - i);
+            const y = padding + (graphH / 10) * i;
+            gctx.fillText(v.toFixed(0), padding - 10, y + 4);
+        }
+        
+        // 理論直線（v = at）の描画
+        gctx.strokeStyle = '#aaa';
+        gctx.lineWidth = 2;
+        gctx.setLineDash([5, 5]);
+        gctx.beginPath();
+        const startX = padding;
+        const startY = padding + graphH;
+        const endT = maxTime;
+        const endV = acceleration * endT;
+        const endX = padding + graphW;
+        const endY = padding + graphH - (endV / maxVelocity) * graphH;
+        gctx.moveTo(startX, startY);
+        gctx.lineTo(endX, Math.max(padding, endY));
+        gctx.stroke();
+        gctx.setLineDash([]);
+        
+        // 傾きの表示
+        gctx.fillStyle = '#666';
+        gctx.font = '12px Arial';
+        gctx.textAlign = 'left';
+        gctx.fillText('傾き（加速度）= ' + acceleration.toFixed(2) + ' m/s²', padding + 10, padding + 20);
+        
+        // データプロット
+        if (graphData.length > 1) {
+            gctx.strokeStyle = '#667eea';
+            gctx.lineWidth = 3;
+            gctx.beginPath();
+            
+            for (let i = 0; i < graphData.length; i++) {
+                const point = graphData[i];
+                const x = padding + (point.t / maxTime) * graphW;
+                const y = padding + graphH - (point.v / maxVelocity) * graphH;
+                
+                if (i === 0) {
+                    gctx.moveTo(x, y);
+                } else {
+                    gctx.lineTo(x, y);
+                }
+            }
+            gctx.stroke();
+            
+            // 現在位置のポイント
+            if (graphData.length > 0) {
+                const lastPoint = graphData[graphData.length - 1];
+                const x = padding + (lastPoint.t / maxTime) * graphW;
+                const y = padding + graphH - (lastPoint.v / maxVelocity) * graphH;
+                
+                gctx.fillStyle = '#f44336';
+                gctx.beginPath();
+                gctx.arc(x, y, 6, 0, Math.PI * 2);
+                gctx.fill();
+            }
+        }
+    }
+    
+    // アニメーションループ
+    let lastTime = 0;
+    function animate(currentTime) {
+        if (!isRunning) return;
+        
+        if (lastTime === 0) lastTime = currentTime;
+        const dt = (currentTime - lastTime) / 1000; // ミリ秒を秒に変換
+        lastTime = currentTime;
+        
+        // 物理計算（速度制限あり）
+        velocity += acceleration * dt;
+        if (velocity > maxVelocity) velocity = maxVelocity;
+        if (velocity < -maxVelocity) velocity = -maxVelocity;
+        
+        position += velocity * dt;
+        time += dt;
+        
+        // グラフデータ追加
+        if (time <= maxTime) {
+            graphData.push({ t: time, v: velocity });
+        }
+        
+        // 描画
+        draw();
+        drawGraph();
+        
+        // 時間制限
+        if (time < maxTime) {
+            animationId = requestAnimationFrame(animate);
+        } else {
+            isRunning = false;
+            startBtn.textContent = 'スタート';
+        }
+    }
+    
+    // スタートボタン
+    startBtn.addEventListener('click', function() {
+        if (isRunning) {
+            isRunning = false;
+            cancelAnimationFrame(animationId);
+            startBtn.textContent = 'スタート';
+        } else {
+            isRunning = true;
+            lastTime = 0;
+            startBtn.textContent = '停止';
+            animationId = requestAnimationFrame(animate);
+        }
+    });
+    
+    // リセットボタン
+    resetBtn.addEventListener('click', function() {
+        isRunning = false;
+        cancelAnimationFrame(animationId);
+        velocity = 0;
+        position = 0;
+        time = 0;
+        lastTime = 0;
+        graphData = [];
+        startBtn.textContent = 'スタート';
+        updatePhysics();
+        draw();
+        drawGraph();
+    });
+    
+    // スライダーイベント
+    massSlider.addEventListener('input', function() {
+        updatePhysics();
+        draw();
+        drawGraph();
+    });
+    
+    f1Slider.addEventListener('input', function() {
+        updatePhysics();
+        draw();
+        drawGraph();
+    });
+    
+    f2Slider.addEventListener('input', function() {
+        updatePhysics();
+        draw();
+        drawGraph();
+    });
+    
+    // ウィンドウリサイズ対応
+    window.addEventListener('resize', function() {
+        resizeCanvas();
+        draw();
+        drawGraph();
+    });
+    
+    // 初期化
+    resizeCanvas();
+    updatePhysics();
+    draw();
+    drawGraph();
+    </script>
+</body>
+</html>

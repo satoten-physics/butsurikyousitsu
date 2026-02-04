@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高校物理 - 慣性力(相対的な視点が大事)</title>
+    <script>
+      window.MathJax = {
+      tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']]
+     }
+     };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        header {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .back-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        h1 {
+            color: #333;
+        }
+        .container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .tab-btn {
+            flex: 1;
+            min-width: 150px;
+            padding: 12px 20px;
+            border: none;
+            background: #f0f0f0;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        .tab-btn.active {
+            background: #667eea;
+            color: white;
+        }
+        .tab-btn:hover {
+            background: #8899f0;
+            color: white;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        h3 {
+            color: #555;
+            margin: 25px 0 15px 0;
+            border-left: 4px solid #667eea;
+            padding-left: 10px;
+        }
+        .pdf-placeholder {
+            background: #f9f9f9;
+            padding: 40px;
+            text-align: center;
+            border-radius: 5px;
+            color: #666;
+        }
+        .lecture-content {
+            line-height: 1.8;
+            color: #333;
+        }
+        .lecture-content p {
+            margin-bottom: 15px;
+        }
+        .important-box {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+            border-left: 5px solid #f39c12;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+        .important-box h4 {
+            color: #e67e22;
+            margin-bottom: 10px;
+        }
+        .formula-box {
+            background: linear-gradient(135deg, #e8f4fd 0%, #d1ecf1 100%);
+            border: 2px solid #667eea;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .formula-box .formula {
+            font-size: 1.5em;
+            color: #333;
+        }
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .comparison-table th, .comparison-table td {
+            border: 2px solid #667eea;
+            padding: 15px;
+            text-align: center;
+        }
+        .comparison-table th {
+            background: #667eea;
+            color: white;
+        }
+        .comparison-table td {
+            background: #f9f9f9;
+        }
+        
+        /* 問題タブ用スタイル */
+        .problem-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 10px;
+        }
+        .problem-section h4 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        details {
+            margin-top: 15px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+        }
+        details summary {
+            cursor: pointer;
+            font-weight: bold;
+            color: #667eea;
+        }
+        details[open] summary {
+            margin-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        .answer-content {
+            line-height: 1.8;
+        }
+        
+        /* シミュレーション用スタイル */
+        #sim-container {
+            background: #f5f5f5;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        #physicsCanvas {
+            display: block;
+            width: 100%;
+            background: white;
+            border-radius: 5px;
+            border: 2px solid #ddd;
+        }
+        .sim-controls {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .control-group {
+            margin-bottom: 20px;
+        }
+        .control-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        .control-group input[type="range"] {
+            width: 100%;
+            margin: 10px 0;
+        }
+        .value-display {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            min-width: 100px;
+            text-align: center;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .sim-button {
+            flex: 1;
+            min-width: 120px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .sim-button.start {
+            background: #4CAF50;
+            color: white;
+        }
+        .sim-button.start:hover {
+            background: #45a049;
+        }
+        .sim-button.reset {
+            background: #f44336;
+            color: white;
+        }
+        .sim-button.reset:hover {
+            background: #da190b;
+        }
+        .sim-button.view-toggle {
+            background: #2196F3;
+            color: white;
+        }
+        .sim-button.view-toggle:hover {
+            background: #1976D2;
+        }
+        .sim-button.view-toggle.active {
+            background: #ff9800;
+        }
+        .view-indicator {
+            text-align: center;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .view-indicator.outside {
+            background: #e3f2fd;
+            color: #1976D2;
+        }
+        .view-indicator.inside {
+            background: #fff3e0;
+            color: #f57c00;
+        }
+        
+        /* 運動方程式表示エリア */
+        .equation-display {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            border: 3px solid;
+        }
+        .equation-display.outside {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            border-color: #1976D2;
+        }
+        .equation-display.inside {
+            background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+            border-color: #f57c00;
+        }
+        .equation-display h4 {
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        .equation-display.outside h4 {
+            color: #1976D2;
+        }
+        .equation-display.inside h4 {
+            color: #f57c00;
+        }
+        .equation-content {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .equation-content p {
+            margin: 10px 0;
+            line-height: 1.8;
+        }
+        .equation-main {
+            font-size: 1.4em;
+            text-align: center;
+            margin: 15px 0;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 5px;
+        }
+        .equation-note {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 10px;
+        }
+        
+        .graph-container {
+            margin-top: 20px;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #ddd;
+        }
+        .graph-container h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+            border-left: none;
+            padding-left: 0;
+        }
+        #graphCanvas {
+            display: block;
+            width: 100%;
+            border: 1px solid #eee;
+        }
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .legend-color {
+            width: 30px;
+            height: 4px;
+            border-radius: 2px;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            header, .container {
+                padding: 15px;
+            }
+            .tab-btn {
+                min-width: 100px;
+                font-size: 14px;
+            }
+            .comparison-table th, .comparison-table td {
+                padding: 10px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="back-link">← 目次に戻る</a>
+        <h1>慣性力（相対的な視点が大事）</h1>
+    </header>
+    <div class="container">
+        
+        <div class="tabs">
+            <button class="tab-btn active" onclick="openTab('lecture')">解説編</button>
+            <button class="tab-btn" onclick="openTab('problem')">問題編</button>
+            <button class="tab-btn" onclick="openTab('simulation')">シミュレーション</button>
+        </div>
+        
+        <div id="lecture" class="tab-content active">
+            <h2>慣性力 ─ 見方によって変わる力</h2>
+            
+            <div class="lecture-content">
+                <h3>1. 慣性の法則を思い出そう</h3>
+                <p>
+                    前の章で学んだ「慣性の法則」を覚えていますか？物体は外から力を受けない限り、静止しているものは静止し続け、運動しているものは等速直線運動を続けようとします。
+                </p>
+                <p>
+                    バスが急停車したとき、体が前に投げ出されそうになった経験はありませんか？あのとき、「急に力がかかった！」と感じたはずです。でも、外から見ている人には、あなたに力がかかったようには見えません。これこそが今回学ぶ<strong>「慣性力」</strong>の正体です。
+                </p>
+
+                <h3>2. 見方によって力が「ある」「ない」が変わる！</h3>
+                <p>
+                    電車の中で吊り革につかまって立っている人を考えましょう。電車が急停車したとき、何が起きるでしょうか？
+                </p>
+
+                <table class="comparison-table">
+                    <tr>
+                        <th>車外から見た場合（地面に立っている人）</th>
+                        <th>車内から見た場合（電車に乗っている人）</th>
+                    </tr>
+                    <tr>
+                        <td>
+                            電車は減速している。<br>
+                            中の人は<strong>慣性の法則</strong>により、そのまま進み続けようとする。<br>
+                            → 人には特別な力はかかっていない
+                        </td>
+                        <td>
+                            自分（電車）は止まっている。<br>
+                            なのに、人が急に前に倒れそうになった！<br>
+                            → 何か<strong>力がかかったように感じる</strong>
+                        </td>
+                    </tr>
+                </table>
+
+                <div class="important-box">
+                    <h4>🔑 ポイント：視点によって力の有無が変わる</h4>
+                    <p>
+                        車外から見れば「力はかかっていない」のに、車内から見れば「力がかかっている」ように見える。この<strong>「運動している人だけが感じる、実際には存在しない見かけの力」</strong>を<strong>慣性力</strong>といいます。
+                    </p>
+                </div>
+
+                <h3>3. 慣性力の公式</h3>
+                <p>
+                    加速度 $a$ で運動している座標系（電車の中など）から見ると、質量 $m$ の物体には次のような慣性力がかかっているように見えます。
+                </p>
+
+                <div class="formula-box">
+                    <p class="formula">$$F = -ma$$</p>
+                    <p style="margin-top: 15px; color: #555;">
+                        $F$：慣性力 [N]　　$m$：物体の質量 [kg]　　$a$：座標系の加速度 [m/s²]
+                    </p>
+                </div>
+
+                <div class="important-box">
+                    <h4>🔑 マイナスの意味：加速度と逆向き！</h4>
+                    <p>
+                        式の中の<strong>マイナス記号</strong>がとても重要です。慣性力は、<strong>外から見た加速度とは逆方向</strong>に働きます。
+                    </p>
+                    <p>
+                        例：電車が右向きに加速 → 乗客は左向きに押される感覚（慣性力は左向き）<br>
+                        例：バスが前向きに減速（後ろ向きに加速）→ 乗客は前向きに押される感覚（慣性力は前向き）
+                    </p>
+                </div>
+
+                <h3>4. なぜ式の形は変わってはいけないのか？</h3>
+                <p>
+                    ここでとても大切なことを確認しましょう。車外から見ても、車内から見ても、<strong>物体の「動き方」自体は同じ</strong>です。見ている場所が違うだけで、物体が実際にどう動くかは変わりません。
+                </p>
+                <p>
+                    だからこそ、どちらの視点で運動方程式を立てても、<strong>同じ運動を正しく説明できなければなりません</strong>。車内から見たときに慣性力を加えることで、ニュートンの運動方程式 $ma = F$ の形を保ったまま運動を記述できるのです。
+                </p>
+
+                <div class="important-box">
+                    <h4>📝 まとめ</h4>
+                    <ul style="margin-left: 20px; margin-top: 10px;">
+                        <li>慣性力は<strong>加速度運動している観測者だけが感じる「見かけの力」</strong></li>
+                        <li>慣性力の大きさは $|F| = ma$、向きは<strong>加速度と逆方向</strong></li>
+                        <li>式 $F = -ma$ のマイナスは向きを表している</li>
+                        <li>どの視点から見ても物理法則（運動方程式）の形は同じになる</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <h3 style="margin-top: 40px;">📄 授業資料（PDF）</h3>
+            <iframe src="https://drive.google.com/file/d/1rd3AUHNkj-NLM0IEztEdsiVOdPwxD6EA/preview" width="100%" height="500"></iframe>
+        </div>
+        
+        <div id="problem" class="tab-content">
+            <h2>確認問題</h2>
+            
+            <div class="problem-section">
+                <h4>問題1：慣性力の基本</h4>
+                <p>
+                    電車が水平方向右向きに加速度 $a = 2.0 \, \mathrm{m/s^2}$ で加速している。電車内の床の上に質量 $m = 3.0 \, \mathrm{kg}$ の荷物が置かれており、荷物は電車に対して静止している。
+                </p>
+                <p>（1）地面に静止している人から見たとき、荷物にはたらく水平方向の力を答えよ。</p>
+                <p>（2）電車内の人から見たとき、荷物にはたらく力をすべて挙げ、水平方向の力のつり合いの式を書け。</p>
+                
+                <details>
+                    <summary>解答・解説を見る</summary>
+                    <div class="answer-content">
+                        <p><strong>（1）の解答</strong></p>
+                        <p>
+                            地面から見ると、荷物は電車と一緒に加速度 $a = 2.0 \, \mathrm{m/s^2}$ で右向きに加速しています。
+                            この加速の原因は、床との間の<strong>摩擦力</strong>です。
+                        </p>
+                        <p>
+                            運動方程式より：<br>
+                            $$f = ma = 3.0 \times 2.0 = 6.0 \, \mathrm{N}$$
+                        </p>
+                        <p><strong>答え：右向きに 6.0 N の摩擦力</strong></p>
+                        
+                        <hr style="margin: 20px 0;">
+                        
+                        <p><strong>（2）の解答</strong></p>
+                        <p>
+                            電車内から見ると、荷物は静止しています。静止している物体には力がつり合っていなければなりません。
+                        </p>
+                        <p>水平方向にはたらく力：</p>
+                        <ul style="margin-left: 20px;">
+                            <li>摩擦力 $f$（右向き）</li>
+                            <li>慣性力 $F = -ma$（左向き、大きさ $ma = 6.0 \, \mathrm{N}$）</li>
+                        </ul>
+                        <p>
+                            力のつり合いより：<br>
+                            $$f - ma = 0$$
+                            $$f = ma = 6.0 \, \mathrm{N}$$
+                        </p>
+                        <p><strong>答え：摩擦力（右向き）と慣性力（左向き）がつり合っている。式は $f = ma$</strong></p>
+                    </div>
+                </details>
+            </div>
+
+            <div class="problem-section">
+                <h4>問題2：電車内のおもり</h4>
+                <p>
+                    水平方向に一定の加速度 $a$ で走る電車の天井から、質量 $m$ のおもりを軽い糸でつるしたところ、糸は鉛直方向から角度 $\theta$ だけ傾いて静止しているように見えた。重力加速度を $g$ とする。
+                </p>
+                <p>（1）電車の加速度の向きは、糸が傾いた側か、その反対側か答えよ。</p>
+                <p>（2）$\tan\theta$ を $a$ と $g$ を用いて表せ。</p>
+                
+                <details>
+                    <summary>解答・解説を見る</summary>
+                    <div class="answer-content">
+                        <p><strong>（1）の解答</strong></p>
+                        <p>
+                            慣性力は加速度と逆向きに生じます。おもりが傾くのは慣性力によって引っ張られるからです。
+                            したがって、電車の加速度は<strong>糸が傾いた側の反対側</strong>を向いています。
+                        </p>
+                        <p>
+                            （例：糸が後ろに傾いている → 慣性力は後ろ向き → 加速度は前向き）
+                        </p>
+                        <p><strong>答え：糸が傾いた側の反対側</strong></p>
+                        
+                        <hr style="margin: 20px 0;">
+                        
+                        <p><strong>（2）の解答</strong></p>
+                        <p>
+                            電車内から見ると、おもりは静止しているので力がつり合っています。
+                        </p>
+                        <p>おもりにはたらく力：</p>
+                        <ul style="margin-left: 20px;">
+                            <li>重力 $mg$（鉛直下向き）</li>
+                            <li>張力 $T$（糸の方向）</li>
+                            <li>慣性力 $ma$（加速度と逆向き＝水平方向）</li>
+                        </ul>
+                        <p>力のつり合いより：</p>
+                        <p>
+                            水平方向：$T\sin\theta = ma$<br>
+                            鉛直方向：$T\cos\theta = mg$
+                        </p>
+                        <p>
+                            辺々割ると：
+                            $$\frac{T\sin\theta}{T\cos\theta} = \frac{ma}{mg}$$
+                            $$\tan\theta = \frac{a}{g}$$
+                        </p>
+                        <p><strong>答え：$\tan\theta = \dfrac{a}{g}$</strong></p>
+                    </div>
+                </details>
+            </div>
+
+            <div class="problem-section">
+                <h4>問題3：概念の理解</h4>
+                <p>
+                    慣性力について、次の文章の空欄に適切な語句を入れよ。
+                </p>
+                <p>
+                    慣性力は、（　ア　）している座標系から観測したときにだけ現れる（　イ　）の力である。
+                    その大きさは $ma$ であり、向きは観測者の（　ウ　）と（　エ　）向きである。
+                </p>
+                
+                <details>
+                    <summary>解答・解説を見る</summary>
+                    <div class="answer-content">
+                        <p><strong>解答</strong></p>
+                        <p>
+                            ア：<strong>加速度運動</strong><br>
+                            イ：<strong>見かけ</strong>（または「仮想」）<br>
+                            ウ：<strong>加速度</strong><br>
+                            エ：<strong>逆</strong>（または「反対」）
+                        </p>
+                        <hr style="margin: 20px 0;">
+                        <p><strong>解説</strong></p>
+                        <p>
+                            慣性力は、等速直線運動や静止している座標系では現れません。加速度運動している座標系に乗っている観測者だけが感じる「見かけの力」です。実際に何かが押しているわけではないので、「実在しない力」とも言われます。
+                        </p>
+                        <p>
+                            向きについては、式 $F = -ma$ のマイナスが示す通り、加速度と逆向きになります。
+                        </p>
+                    </div>
+                </details>
+            </div>
+        </div>
+        
+        <div id="simulation" class="tab-content">
+            <h2>慣性力シミュレーション</h2>
+            <p>電車の加速度を変えて、車外・車内それぞれの視点から人の動きを観察しましょう。</p>
+            
+            <div class="view-indicator outside" id="viewIndicator">
+                👁 現在の視点：車外（地面に立っている人）
+            </div>
+            
+            <div id="sim-container">
+                <canvas id="physicsCanvas"></canvas>
+            </div>
+            
+            <div class="sim-controls">
+                <div class="control-group">
+                    <label>電車の加速度 (a): <span class="value-display" id="aDisplay">0.0 m/s²</span></label>
+                    <input type="range" id="aSlider" min="-5" max="5" value="0" step="0.5">
+                    <p style="color: #666; font-size: 14px;">※ 正の値：右向きに加速　負の値：左向きに加速（右向きに減速）</p>
+                </div>
+                
+                <div class="button-group">
+                    <button class="sim-button start" id="startBtn">▶ スタート</button>
+                    <button class="sim-button reset" id="resetBtn">↺ リセット</button>
+                    <button class="sim-button view-toggle" id="viewBtn">🔄 車内視点に切替</button>
+                </div>
+            </div>
+            
+            <!-- 運動方程式表示エリア -->
+            <div class="equation-display outside" id="equationDisplay">
+                <h4 id="equationTitle">📐 車外から見た運動方程式（地面に立っている人）</h4>
+                <div class="equation-content">
+                    <p id="motionDescription"><strong>中の人の運動状態：</strong>電車とともに加速度 $a$ で<span style="color: #1976D2; font-weight: bold;">加速度運動している</span></p>
+                    <div class="equation-main" id="equationMain">
+                        $$ma = f$$
+                    </div>
+                    <p id="equationExplanation">
+                        中の人は電車と同じ加速度 $a$ で運動しているので、運動方程式は $ma = f$ となる。<br>
+                        ここで $f$ は床からの<strong>摩擦力</strong>（加速度と同じ向き）。
+                    </p>
+                </div>
+                <p class="equation-note" id="equationNote">※ 慣性力は登場しない。摩擦力だけで加速を説明できる。</p>
+            </div>
+            
+        </div>
+    </div>
+    
+    <script>
+    // --- タブ切り替え機能 ---
+    function openTab(tabName) {
+        var contents = document.getElementsByClassName("tab-content");
+        for (var i = 0; i < contents.length; i++) {
+            contents[i].style.display = "none";
+            contents[i].classList.remove("active");
+        }
+        var buttons = document.getElementsByClassName("tab-btn");
+        for (var i = 0; i < buttons.length; i++) {
+            buttons[i].classList.remove("active");
+        }
+        document.getElementById(tabName).style.display = "block";
+        document.getElementById(tabName).classList.add("active");
+        if (event && event.currentTarget) {
+            event.currentTarget.classList.add("active");
+        }
+        
+        // シミュレーションタブが開かれたらCanvasを初期化
+        if (tabName === 'simulation') {
+            resizeCanvas();
+            drawScene();
+            // MathJaxを再レンダリング
+            if (window.MathJax) {
+                MathJax.typesetPromise();
+            }
+        }
+    }
+
+    // --- シミュレーション ---
+    const canvas = document.getElementById('physicsCanvas');
+    const ctx = canvas.getContext('2d');
+    
+    // 要素の取得
+    const aSlider = document.getElementById('aSlider');
+    const aDisplay = document.getElementById('aDisplay');
+    const startBtn = document.getElementById('startBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const viewBtn = document.getElementById('viewBtn');
+    const viewIndicator = document.getElementById('viewIndicator');
+    const equationDisplay = document.getElementById('equationDisplay');
+    const equationTitle = document.getElementById('equationTitle');
+    const motionDescription = document.getElementById('motionDescription');
+    const equationMain = document.getElementById('equationMain');
+    const equationExplanation = document.getElementById('equationExplanation');
+    const equationNote = document.getElementById('equationNote');
+    
+    // 物理パラメータ
+    let acceleration = 0;       // 電車の加速度 [m/s²]
+    let trainVelocity = 0;      // 電車の速度 [m/s]
+    let trainPosition = 0;      // 電車の位置 [m]
+    let personVelocity = 0;     // 人の速度（地面基準）[m/s]
+    let personRelativePos = 0;  // 人の相対位置（電車内）[m]
+    
+    // シミュレーション状態
+    let isRunning = false;
+    let isInsideView = false;   // true: 車内視点, false: 車外視点
+    let time = 0;
+    let animationId = null;
+    
+    // 描画スケール
+    const scale = 30;  // 1m = 30px
+    
+    // Canvas初期化
+    function resizeCanvas() {
+        const container = canvas.parentElement;
+        canvas.width = container.clientWidth;
+        canvas.height = 400;
+    }
+    
+    // 運動方程式の表示を更新
+    function updateEquationDisplay() {
+        if (isInsideView) {
+            // 車内視点
+            equationDisplay.className = 'equation-display inside';
+            equationTitle.textContent = '📐 車内から見た運動方程式（電車に乗っている人）';
+            motionDescription.innerHTML = '<strong>中の人の運動状態：</strong>電車内では<span style="color: #f57c00; font-weight: bold;">静止している</span>（$a\' = 0$）';
+            equationMain.innerHTML = '$$0 = f - ma$$';
+            equationExplanation.innerHTML = '中の人は電車内で静止しているので、力がつり合っている。<br>' +
+                '摩擦力 $f$（右向き）と<strong style="color: #9b59b6;">慣性力 $ma$</strong>（左向き）がつり合う。<br>' +
+                '整理すると：$f = ma$';
+            equationNote.textContent = '※ 慣性力を導入することで、静止（力のつり合い）として説明できる。';
+        } else {
+            // 車外視点
+            equationDisplay.className = 'equation-display outside';
+            equationTitle.textContent = '📐 車外から見た運動方程式（地面に立っている人）';
+            motionDescription.innerHTML = '<strong>中の人の運動状態：</strong>電車とともに加速度 $a$ で<span style="color: #1976D2; font-weight: bold;">加速度運動している</span>';
+            equationMain.innerHTML = '$$ma = f$$';
+            equationExplanation.innerHTML = '中の人は電車と同じ加速度 $a$ で運動しているので、運動方程式は $ma = f$ となる。<br>' +
+                'ここで $f$ は床からの<strong>摩擦力</strong>（加速度と同じ向き）。';
+            equationNote.textContent = '※ 慣性力は登場しない。摩擦力だけで加速を説明できる。';
+        }
+        
+        // MathJaxを再レンダリング
+        if (window.MathJax) {
+            MathJax.typesetPromise();
+        }
+    }
+    
+    // シーン描画
+    function drawScene() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        const groundY = canvas.height - 50;
+        const trainWidth = 250;
+        const trainHeight = 120;
+        
+        // 視点に応じた描画位置の計算
+        let trainDrawX, personDrawX;
+        
+        if (isInsideView) {
+            // 車内視点：電車は画面中央に固定
+            trainDrawX = (canvas.width - trainWidth) / 2;
+            personDrawX = trainDrawX + trainWidth / 2 + personRelativePos * scale;
+        } else {
+            // 車外視点：電車が動く
+            const centerOffset = canvas.width / 2 - trainWidth / 2;
+            trainDrawX = centerOffset + trainPosition * scale * 0.3; // スケール調整
+            personDrawX = trainDrawX + trainWidth / 2 + personRelativePos * scale;
+        }
+        
+        // 背景（地面）
+        ctx.fillStyle = '#8B4513';
+        ctx.fillRect(0, groundY, canvas.width, 50);
+        
+        // 地面の模様（車外視点では動く）
+        ctx.strokeStyle = '#654321';
+        ctx.lineWidth = 2;
+        for (let i = -20; i < 40; i++) {
+            let lineX;
+            if (isInsideView) {
+                lineX = i * 50 - (trainPosition * scale * 0.3) % 50;
+            } else {
+                lineX = i * 50;
+            }
+            ctx.beginPath();
+            ctx.moveTo(lineX, groundY);
+            ctx.lineTo(lineX, canvas.height);
+            ctx.stroke();
+        }
+        
+        // 線路
+        ctx.fillStyle = '#444';
+        ctx.fillRect(0, groundY - 10, canvas.width, 10);
+        
+        // 電車本体
+        ctx.fillStyle = '#3498db';
+        ctx.fillRect(trainDrawX, groundY - trainHeight - 30, trainWidth, trainHeight);
+        
+        // 電車の窓
+        ctx.fillStyle = '#ecf0f1';
+        for (let i = 0; i < 3; i++) {
+            ctx.fillRect(trainDrawX + 30 + i * 75, groundY - trainHeight - 10, 50, 40);
+        }
+        
+        // 電車の車輪
+        ctx.fillStyle = '#333';
+        ctx.beginPath();
+        ctx.arc(trainDrawX + 50, groundY - 25, 20, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(trainDrawX + trainWidth - 50, groundY - 25, 20, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // 人（棒人間）
+        const personX = Math.max(trainDrawX + 30, Math.min(trainDrawX + trainWidth - 30, personDrawX));
+        const personY = groundY - 50;
+        drawPerson(personX, personY);
+        
+        // 加速度の矢印（電車の上に大きく表示）
+        if (Math.abs(acceleration) > 0.1) {
+            drawAccelerationArrow(trainDrawX + trainWidth / 2, groundY - trainHeight - 70);
+        }
+        
+        // 慣性力の矢印（車内視点のみ、人の横に表示）
+        if (isInsideView && Math.abs(acceleration) > 0.1) {
+            drawInertialForceArrow(personX, personY - 40);
+        }
+        
+        // 摩擦力の矢印（人の足元に表示）
+        if (Math.abs(acceleration) > 0.1) {
+            drawFrictionArrow(personX, personY + 5);
+        }
+        
+        // 視点ラベルと運動状態
+        ctx.fillStyle = '#333';
+        ctx.font = 'bold 18px sans-serif';
+        if (isInsideView) {
+            ctx.fillText('【車内視点】電車と一緒に動いている観測者', 20, 30);
+            ctx.font = 'bold 16px sans-serif';
+            ctx.fillStyle = '#f57c00';
+            ctx.fillText('→ 中の人は「静止」して見える', 20, 55);
+        } else {
+            ctx.fillText('【車外視点】地面に立って見ている観測者', 20, 30);
+            ctx.font = 'bold 16px sans-serif';
+            ctx.fillStyle = '#1976D2';
+            ctx.fillText('→ 中の人は電車と一緒に「加速度運動」している', 20, 55);
+        }
+        
+        // 情報表示
+        ctx.font = '14px sans-serif';
+        ctx.fillStyle = '#666';
+        ctx.fillText(`電車の速度: ${trainVelocity.toFixed(1)} m/s`, 20, 85);
+        ctx.fillText(`経過時間: ${time.toFixed(1)} s`, 20, 105);
+    }
+    
+    // 人を描画
+    function drawPerson(x, y) {
+        ctx.strokeStyle = '#e74c3c';
+        ctx.fillStyle = '#e74c3c';
+        ctx.lineWidth = 3;
+        
+        // 頭
+        ctx.beginPath();
+        ctx.arc(x, y - 55, 12, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // 体
+        ctx.beginPath();
+        ctx.moveTo(x, y - 43);
+        ctx.lineTo(x, y - 10);
+        ctx.stroke();
+        
+        // 腕
+        ctx.beginPath();
+        ctx.moveTo(x - 15, y - 35);
+        ctx.lineTo(x, y - 30);
+        ctx.lineTo(x + 15, y - 35);
+        ctx.stroke();
+        
+        // 足
+        ctx.beginPath();
+        ctx.moveTo(x, y - 10);
+        ctx.lineTo(x - 12, y);
+        ctx.moveTo(x, y - 10);
+        ctx.lineTo(x + 12, y);
+        ctx.stroke();
+    }
+    
+    // 加速度矢印を描画
+    function drawAccelerationArrow(x, y) {
+        const arrowLength = Math.abs(acceleration) * 25;
+        const direction = acceleration > 0 ? 1 : -1;
+        
+        ctx.fillStyle = '#e74c3c';
+        ctx.strokeStyle = '#e74c3c';
+        ctx.lineWidth = 6;
+        
+        // 矢印の線
+        ctx.beginPath();
+        ctx.moveTo(x - direction * arrowLength / 2, y);
+        ctx.lineTo(x + direction * arrowLength / 2, y);
+        ctx.stroke();
+        
+        // 矢じり
+        ctx.beginPath();
+        ctx.moveTo(x + direction * arrowLength / 2, y);
+        ctx.lineTo(x + direction * (arrowLength / 2 - 15), y - 10);
+        ctx.lineTo(x + direction * (arrowLength / 2 - 15), y + 10);
+        ctx.closePath();
+        ctx.fill();
+        
+        // ラベル
+        ctx.font = 'bold 16px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(`電車の加速度 a = ${acceleration.toFixed(1)} m/s²`, x, y - 20);
+        ctx.textAlign = 'left';
+    }
+    
+    // 慣性力矢印を描画（車内視点のみ）
+    function drawInertialForceArrow(x, y) {
+        const arrowLength = Math.abs(acceleration) * 20;
+        const direction = acceleration > 0 ? -1 : 1;  // 加速度と逆向き
+        
+        ctx.fillStyle = '#9b59b6';
+        ctx.strokeStyle = '#9b59b6';
+        ctx.lineWidth = 5;
+        
+        // 矢印の線
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(x + direction * arrowLength, y);
+        ctx.stroke();
+        
+        // 矢じり
+        ctx.beginPath();
+        ctx.moveTo(x + direction * arrowLength, y);
+        ctx.lineTo(x + direction * (arrowLength - 12), y - 8);
+        ctx.lineTo(x + direction * (arrowLength - 12), y + 8);
+        ctx.closePath();
+        ctx.fill();
+        
+        // ラベル
+        ctx.font = 'bold 14px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillStyle = '#9b59b6';
+        ctx.fillText('慣性力 ma', x + direction * arrowLength / 2, y - 15);
+        ctx.textAlign = 'left';
+    }
+    
+    // 摩擦力矢印を描画
+    function drawFrictionArrow(x, y) {
+        const arrowLength = Math.abs(acceleration) * 15;
+        const direction = acceleration > 0 ? 1 : -1;  // 加速度と同じ向き
+        
+        ctx.fillStyle = '#27ae60';
+        ctx.strokeStyle = '#27ae60';
+        ctx.lineWidth = 4;
+        
+        // 矢印の線
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(x + direction * arrowLength, y);
+        ctx.stroke();
+        
+        // 矢じり
+        ctx.beginPath();
+        ctx.moveTo(x + direction * arrowLength, y);
+        ctx.lineTo(x + direction * (arrowLength - 10), y - 6);
+        ctx.lineTo(x + direction * (arrowLength - 10), y + 6);
+        ctx.closePath();
+        ctx.fill();
+        
+        // ラベル
+        ctx.font = 'bold 12px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillStyle = '#27ae60';
+        ctx.fillText('摩擦力 f', x + direction * arrowLength / 2, y + 18);
+        ctx.textAlign = 'left';
+    }
+    
+    // 物理更新
+    function updatePhysics(dt) {
+        // 電車の運動
+        trainVelocity += acceleration * dt;
+        trainPosition += trainVelocity * dt;
+        
+        // 人の運動（地面基準では慣性で動こうとする）
+        const friction = 5;
+        const relativeVelocity = trainVelocity - personVelocity;
+        personVelocity += relativeVelocity * friction * dt;
+        
+        // 人の電車内での相対位置
+        personRelativePos = -relativeVelocity * 0.5;
+        personRelativePos = Math.max(-2, Math.min(2, personRelativePos));
+    }
+    
+    // アニメーションループ
+    function animate() {
+        if (!isRunning) return;
+        
+        const dt = 0.05;
+        time += dt;
+        
+        updatePhysics(dt);
+        drawScene();
+        
+        animationId = requestAnimationFrame(animate);
+    }
+    
+    // イベントリスナー
+    aSlider.addEventListener('input', function() {
+        acceleration = parseFloat(this.value);
+        aDisplay.textContent = acceleration.toFixed(1) + ' m/s²';
+        if (!isRunning) {
+            drawScene();
+        }
+    });
+    
+    startBtn.addEventListener('click', function() {
+        if (isRunning) {
+            isRunning = false;
+            this.textContent = '▶ スタート';
+            this.style.background = '#4CAF50';
+            if (animationId) cancelAnimationFrame(animationId);
+        } else {
+            isRunning = true;
+            this.textContent = '⏸ 一時停止';
+            this.style.background = '#ff9800';
+            animate();
+        }
+    });
+    
+    resetBtn.addEventListener('click', function() {
+        isRunning = false;
+        startBtn.textContent = '▶ スタート';
+        startBtn.style.background = '#4CAF50';
+        if (animationId) cancelAnimationFrame(animationId);
+        
+        trainVelocity = 0;
+        trainPosition = 0;
+        personVelocity = 0;
+        personRelativePos = 0;
+        time = 0;
+        
+        drawScene();
+    });
+    
+    viewBtn.addEventListener('click', function() {
+        isInsideView = !isInsideView;
+        
+        if (isInsideView) {
+            this.textContent = '🔄 車外視点に切替';
+            this.classList.add('active');
+            viewIndicator.textContent = '👁 現在の視点：車内（電車に乗っている人）';
+            viewIndicator.className = 'view-indicator inside';
+        } else {
+            this.textContent = '🔄 車内視点に切替';
+            this.classList.remove('active');
+            viewIndicator.textContent = '👁 現在の視点：車外（地面に立っている人）';
+            viewIndicator.className = 'view-indicator outside';
+        }
+        
+        updateEquationDisplay();
+        drawScene();
+    });
+    
+    // ウィンドウリサイズ対応
+    window.addEventListener('resize', function() {
+        resizeCanvas();
+        drawScene();
+    });
+    
+    // 初期化
+    resizeCanvas();
+    drawScene();
+    updateEquationDisplay();
+    </script>
+</body>
+</html>

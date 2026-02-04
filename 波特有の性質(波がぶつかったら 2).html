@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高校物理 - 波の屈折</title>
+    <script>
+      window.MathJax = {
+      tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']]
+     }
+     };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        header {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .back-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        h1 {
+            color: #333;
+        }
+        .container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .tab-btn {
+            flex: 1;
+            min-width: 150px;
+            padding: 12px 20px;
+            border: none;
+            background: #f0f0f0;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        .tab-btn.active {
+            background: #667eea;
+            color: white;
+        }
+        .tab-btn:hover {
+            background: #8899f0;
+            color: white;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        h3 {
+            color: #555;
+            margin: 25px 0 15px 0;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #667eea;
+        }
+        .pdf-placeholder {
+            background: #f9f9f9;
+            padding: 40px;
+            text-align: center;
+            border-radius: 5px;
+            color: #666;
+        }
+        .lecture-content {
+            line-height: 1.8;
+            color: #333;
+        }
+        .lecture-content p {
+            margin-bottom: 15px;
+        }
+        .important-box {
+            background: linear-gradient(135deg, #667eea20 0%, #764ba220 100%);
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+        .important-box h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        .formula-box {
+            background: #fff3e0;
+            border: 2px solid #ff9800;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .formula-box .formula {
+            font-size: 1.3em;
+            margin: 10px 0;
+        }
+        .point-box {
+            background: #e8f5e9;
+            border-left: 4px solid #4CAF50;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+        .point-box h4 {
+            color: #4CAF50;
+            margin-bottom: 10px;
+        }
+        .note-box {
+            background: #fff8e1;
+            border-left: 4px solid #ffc107;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+        .challenge-box {
+            background: #fce4ec;
+            border: 2px dashed #e91e63;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        .challenge-box h4 {
+            color: #e91e63;
+            margin-bottom: 10px;
+        }
+        
+        /* 問題タブ用スタイル */
+        .problem-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 10px;
+        }
+        .problem-section h4 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        .problem-section p {
+            margin-bottom: 10px;
+            line-height: 1.8;
+        }
+        details {
+            margin-top: 15px;
+            padding: 15px;
+            background: white;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        summary {
+            cursor: pointer;
+            font-weight: bold;
+            color: #667eea;
+            padding: 5px;
+        }
+        summary:hover {
+            color: #764ba2;
+        }
+        details[open] summary {
+            margin-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        .answer-content {
+            line-height: 1.8;
+        }
+        .answer-content p {
+            margin-bottom: 10px;
+        }
+        
+        /* シミュレーション用スタイル */
+        #sim-container {
+            background: #f5f5f5;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        #physicsCanvas {
+            display: block;
+            width: 100%;
+            background: white;
+            border-radius: 5px;
+            border: 2px solid #ddd;
+        }
+        .sim-controls {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .control-group {
+            margin-bottom: 20px;
+        }
+        .control-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        .control-group input[type="range"] {
+            width: 100%;
+            margin: 10px 0;
+        }
+        .value-display {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            min-width: 100px;
+            text-align: center;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .sim-button {
+            flex: 1;
+            min-width: 120px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .sim-button.start {
+            background: #4CAF50;
+            color: white;
+        }
+        .sim-button.start:hover {
+            background: #45a049;
+        }
+        .sim-button.reset {
+            background: #f44336;
+            color: white;
+        }
+        .sim-button.reset:hover {
+            background: #da190b;
+        }
+        .graph-container {
+            margin-top: 20px;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #ddd;
+        }
+        .graph-container h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+            border-bottom: none;
+        }
+        #graphCanvas {
+            display: block;
+            width: 100%;
+            border: 1px solid #eee;
+        }
+        .info-display {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+        .info-display h4 {
+            color: #1976d2;
+            margin-bottom: 10px;
+        }
+        .info-display p {
+            margin: 5px 0;
+            font-family: monospace;
+            font-size: 14px;
+        }
+        .discovery-box {
+            background: #fff3e0;
+            border: 2px solid #ff9800;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            display: none;
+        }
+        .discovery-box h4 {
+            color: #e65100;
+            margin-bottom: 10px;
+        }
+        .discovery-box.visible {
+            display: block;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            header, .container {
+                padding: 15px;
+            }
+            .tab-btn {
+                min-width: 100px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="back-link">← 目次に戻る</a>
+        <h1>波の屈折</h1>
+    </header>
+    <div class="container">
+        
+        <div class="tabs">
+            <button class="tab-btn active" onclick="openTab('lecture')">解説編</button>
+            <button class="tab-btn" onclick="openTab('problem')">問題編</button>
+            <button class="tab-btn" onclick="openTab('simulation')">シミュレーション</button>
+        </div>
+        
+        <div id="lecture" class="tab-content active">
+            <h2>波の屈折</h2>
+            
+            <div class="lecture-content">
+                <h3>屈折とは？</h3>
+                <p>
+                    波が異なる2つの媒質（媒質Ⅰと媒質Ⅱ）の境界面に向かって進むとき、境界面で<strong>一部は反射し、残りは屈折して媒質Ⅱの中を進みます</strong>。
+                </p>
+                
+                <div class="important-box">
+                    <h4>🔑 屈折のポイント</h4>
+                    <p>
+                        屈折して進む波を<strong>屈折波</strong>といい、屈折波の進む向きと法線（境界面に垂直な線）とのなす角を<strong>屈折角</strong>といいます。
+                    </p>
+                </div>
+
+                <h3>屈折の法則（スネルの法則）</h3>
+                <p>
+                    屈折の法則は「光」の単元で詳しく学びますので、今はまず<strong>公式を覚えて、そのまま代入できるようになれば大丈夫</strong>です！
+                </p>
+
+                <div class="formula-box">
+                    <h4>📐 屈折の法則</h4>
+                    <div class="formula">
+                        $$ n_{12} = \frac{\sin\theta_1}{\sin\theta_2} = \frac{v_1}{v_2} = \frac{\lambda_1}{\lambda_2} $$
+                    </div>
+                    <p style="text-align: left; margin-top: 15px;">
+                        $\theta_1$：入射角　　$\theta_2$：屈折角<br>
+                        $v_1, v_2$：媒質Ⅰ, Ⅱでの波の速さ<br>
+                        $\lambda_1, \lambda_2$：媒質Ⅰ, Ⅱでの波長<br>
+                        $n_{12}$：媒質Ⅰに対する媒質Ⅱの相対屈折率
+                    </p>
+                </div>
+
+                <div class="point-box">
+                    <h4>✨ この公式の本質</h4>
+                    <p>
+                        屈折率という言葉は難しく感じるかもしれませんが、本質はシンプルです。
+                    </p>
+                    <p>
+                        <strong>「角度」「波長」「速さ」、それぞれ同士で比べたときの割合がすべて等しくなる</strong>
+                    </p>
+                    <p>
+                        つまり、$\sin\theta$ の比、$v$ の比、$\lambda$ の比がすべて同じ値になるということです。この「同じ割合」のことを屈折率と呼んでいるのです。
+                    </p>
+                </div>
+
+                <h3>振動数は変わらない！</h3>
+                <div class="note-box">
+                    <p>
+                        <strong>⚠️ 重要</strong>：どの媒質でも、波源と同じ振動数で境界面を振動させるので、<strong>境界面を通過しても振動数は不変</strong>です。
+                    </p>
+                    <p>
+                        波の基本式 $v = f\lambda$ を思い出してください。振動数 $f$ が一定なので、速さ $v$ が変わると波長 $\lambda$ も変わります。
+                    </p>
+                </div>
+
+                <h3>屈折率について</h3>
+                <p>
+                    屈折率には2種類あります。今の段階では「こういうものがある」程度で大丈夫です。
+                </p>
+                <ul style="margin-left: 20px; line-height: 2;">
+                    <li><strong>相対屈折率</strong> $n_{12}$：ある媒質から別の媒質への屈折の度合い（2つの媒質の関係）</li>
+                    <li><strong>絶対屈折率</strong> $n_1, n_2$：真空に対する各媒質の屈折率（その媒質固有の値）</li>
+                </ul>
+                <p style="margin-top: 15px;">
+                    相対屈折率と絶対屈折率には $n_{12} = \dfrac{n_2}{n_1}$ という関係があります。
+                </p>
+
+                <div class="challenge-box">
+                    <h4>🚀 余裕がある人へ：ホイヘンスの原理</h4>
+                    <p>
+                        屈折の法則は「ホイヘンスの原理」を使って証明することができます。これは次の章で学ぶ内容です。
+                    </p>
+                    <p>
+                        とても難しい考え方ですが、波の本質を理解する上でとても重要な原理です。興味がある人はぜひチャレンジしてみてください！
+                    </p>
+                </div>
+            </div>
+            
+            <h3 style="margin-top: 30px;">授業資料（PDF）</h3>
+            <iframe src="https://drive.google.com/file/d/1rd3AUHNkj-NLM0IEztEdsiVOdPwxD6EA/preview" width="100%" height="500"></iframe>
+        </div>
+        
+        <div id="problem" class="tab-content">
+            <h2>確認問題</h2>
+            
+            <div class="problem-section">
+                <h4>問題1：屈折の法則の基本</h4>
+                <p>
+                    波が媒質Ⅰから媒質Ⅱへ進むとき、入射角が $30°$ で屈折角が $45°$ であった。
+                </p>
+                <p>
+                    (1) 媒質Ⅰに対する媒質Ⅱの相対屈折率 $n_{12}$ を求めよ。
+                </p>
+                <p>
+                    (2) 媒質Ⅰでの波の速さが $v_1 = 300$ m/s のとき、媒質Ⅱでの波の速さ $v_2$ を求めよ。
+                </p>
+                
+                <details>
+                    <summary>解答・解説を見る</summary>
+                    <div class="answer-content">
+                        <p><strong>(1) 相対屈折率</strong></p>
+                        <p>
+                            屈折の法則より、
+                            $$ n_{12} = \frac{\sin\theta_1}{\sin\theta_2} = \frac{\sin 30°}{\sin 45°} = \frac{0.5}{\frac{\sqrt{2}}{2}} = \frac{1}{\sqrt{2}} = \frac{\sqrt{2}}{2} \approx 0.71 $$
+                        </p>
+                        <p><strong>(2) 媒質Ⅱでの波の速さ</strong></p>
+                        <p>
+                            屈折の法則より、$n_{12} = \dfrac{v_1}{v_2}$ なので、
+                            $$ v_2 = \frac{v_1}{n_{12}} = \frac{300}{\frac{\sqrt{2}}{2}} = 300 \times \sqrt{2} \approx 424 \text{ m/s} $$
+                        </p>
+                        <p>
+                            <strong>ポイント</strong>：相対屈折率が1より小さい（$n_{12} < 1$）ということは、媒質Ⅱでの速さが媒質Ⅰより大きいことを意味します。
+                        </p>
+                    </div>
+                </details>
+            </div>
+
+            <div class="problem-section">
+                <h4>問題2：振動数と波長の関係</h4>
+                <p>
+                    振動数 $f = 500$ Hz の波が、媒質Ⅰ（波の速さ $v_1 = 400$ m/s）から媒質Ⅱ（波の速さ $v_2 = 300$ m/s）へ進む。
+                </p>
+                <p>
+                    (1) 媒質Ⅰでの波長 $\lambda_1$ と媒質Ⅱでの波長 $\lambda_2$ をそれぞれ求めよ。
+                </p>
+                <p>
+                    (2) 相対屈折率 $n_{12}$ を、(1)の結果を使って確認せよ。
+                </p>
+                
+                <details>
+                    <summary>解答・解説を見る</summary>
+                    <div class="answer-content">
+                        <p><strong>(1) 各媒質での波長</strong></p>
+                        <p>
+                            波の基本式 $v = f\lambda$ より、$\lambda = \dfrac{v}{f}$
+                        </p>
+                        <p>
+                            媒質Ⅰ：$\lambda_1 = \dfrac{400}{500} = 0.8$ m
+                        </p>
+                        <p>
+                            媒質Ⅱ：$\lambda_2 = \dfrac{300}{500} = 0.6$ m
+                        </p>
+                        <p><strong>(2) 相対屈折率の確認</strong></p>
+                        <p>
+                            速さの比から：$n_{12} = \dfrac{v_1}{v_2} = \dfrac{400}{300} = \dfrac{4}{3}$
+                        </p>
+                        <p>
+                            波長の比から：$n_{12} = \dfrac{\lambda_1}{\lambda_2} = \dfrac{0.8}{0.6} = \dfrac{4}{3}$
+                        </p>
+                        <p>
+                            <strong>確認できました！</strong> 速さの比と波長の比が等しくなっています。
+                        </p>
+                    </div>
+                </details>
+            </div>
+
+            <div class="problem-section">
+                <h4>問題3：屈折の法則の理解</h4>
+                <p>
+                    次の文章の（　）に適切な語句または数式を入れよ。
+                </p>
+                <p>
+                    波が異なる媒質の境界面に入射するとき、一部は（ ア ）し、残りは（ イ ）して進む。
+                    境界面を通過しても（ ウ ）は変化しないが、波の速さが変わるため（ エ ）は変化する。
+                    屈折の法則において、$\sin\theta_1 : \sin\theta_2 = v_1 : v_2 = $ （ オ ） が成り立つ。
+                </p>
+                
+                <details>
+                    <summary>解答・解説を見る</summary>
+                    <div class="answer-content">
+                        <p>
+                            ア：<strong>反射</strong><br>
+                            イ：<strong>屈折</strong><br>
+                            ウ：<strong>振動数</strong><br>
+                            エ：<strong>波長</strong><br>
+                            オ：<strong>$\lambda_1 : \lambda_2$</strong>
+                        </p>
+                        <p style="margin-top: 15px;">
+                            <strong>解説</strong>：波の基本式 $v = f\lambda$ において、振動数 $f$ が一定のまま速さ $v$ が変わると、波長 $\lambda$ も同じ割合で変化します。これが屈折の法則の本質です。
+                        </p>
+                    </div>
+                </details>
+            </div>
+        </div>
+        
+        <div id="simulation" class="tab-content">
+            <h2>屈折のシミュレーション</h2>
+            <p>スライダーを動かして、入射角や屈折率を変えたときの屈折角の変化を観察しましょう。</p>
+            
+            <div id="sim-container">
+                <canvas id="physicsCanvas"></canvas>
+            </div>
+            
+            <div class="sim-controls">
+                <div class="control-group">
+                    <label>入射角 θ₁: <span class="value-display" id="theta1Display">30°</span></label>
+                    <input type="range" id="theta1Slider" min="0" max="89" value="30" step="1">
+                </div>
+                
+                <div class="control-group">
+                    <label>媒質Ⅰの屈折率 n₁: <span class="value-display" id="n1Display">1.0</span></label>
+                    <input type="range" id="n1Slider" min="1.0" max="2.5" value="1.0" step="0.1">
+                </div>
+                
+                <div class="control-group">
+                    <label>媒質Ⅱの屈折率 n₂: <span class="value-display" id="n2Display">1.5</span></label>
+                    <input type="range" id="n2Slider" min="1.0" max="2.5" value="1.5" step="0.1">
+                </div>
+                
+                <div class="button-group">
+                    <button class="sim-button reset" id="resetBtn">リセット</button>
+                </div>
+                
+                <div class="info-display">
+                    <h4>📊 計算結果</h4>
+                    <p id="calcTheta2">屈折角 θ₂ = 19.5°</p>
+                    <p id="calcN12">相対屈折率 n₁₂ = 1.50</p>
+                    <p id="calcRatio">sin θ₁ / sin θ₂ = 1.50</p>
+                </div>
+                
+                <div class="discovery-box" id="discoveryBox">
+                    <h4>🎉 発見！全反射</h4>
+                    <p>
+                        おめでとうございます！あなたは<strong>「全反射」</strong>という現象を発見しました！
+                    </p>
+                    <p>
+                        波が屈折率の大きい媒質（n₁）から小さい媒質（n₂）へ進むとき、入射角がある角度（<strong>臨界角</strong>）を超えると、波は屈折せずにすべて反射します。
+                    </p>
+                    <p id="criticalAngleInfo"></p>
+                    <p>
+                        これは光ファイバーなどに応用されている重要な現象です。「光」の単元で詳しく学びます！
+                    </p>
+                </div>
+            </div>
+            
+            <div class="graph-container">
+                <h3>入射角と屈折角の関係</h3>
+                <canvas id="graphCanvas"></canvas>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+    // --- タブ切り替え機能 ---
+    function openTab(tabName) {
+        var contents = document.getElementsByClassName("tab-content");
+        for (var i = 0; i < contents.length; i++) {
+            contents[i].style.display = "none";
+            contents[i].classList.remove("active");
+        }
+        var buttons = document.getElementsByClassName("tab-btn");
+        for (var i = 0; i < buttons.length; i++) {
+            buttons[i].classList.remove("active");
+        }
+        document.getElementById(tabName).style.display = "block";
+        document.getElementById(tabName).classList.add("active");
+        if (event) {
+            event.currentTarget.classList.add("active");
+        }
+        
+        // シミュレーションタブが開かれたときにCanvasを再描画
+        if (tabName === 'simulation') {
+            resizeCanvas();
+            draw();
+        }
+    }
+
+    // --- シミュレーション ---
+    const canvas = document.getElementById('physicsCanvas');
+    const ctx = canvas.getContext('2d');
+    const graphCanvas = document.getElementById('graphCanvas');
+    const graphCtx = graphCanvas.getContext('2d');
+    
+    // スライダーと表示要素
+    const theta1Slider = document.getElementById('theta1Slider');
+    const n1Slider = document.getElementById('n1Slider');
+    const n2Slider = document.getElementById('n2Slider');
+    const theta1Display = document.getElementById('theta1Display');
+    const n1Display = document.getElementById('n1Display');
+    const n2Display = document.getElementById('n2Display');
+    const calcTheta2 = document.getElementById('calcTheta2');
+    const calcN12 = document.getElementById('calcN12');
+    const calcRatio = document.getElementById('calcRatio');
+    const discoveryBox = document.getElementById('discoveryBox');
+    const criticalAngleInfo = document.getElementById('criticalAngleInfo');
+    const resetBtn = document.getElementById('resetBtn');
+    
+    // 物理パラメータ
+    let theta1 = 30; // 入射角（度）
+    let n1 = 1.0;    // 媒質Ⅰの屈折率
+    let n2 = 1.5;    // 媒質Ⅱの屈折率
+    
+    // 全反射発見フラグ
+    let totalReflectionDiscovered = false;
+    
+    // 度をラジアンに変換
+    function toRad(deg) {
+        return deg * Math.PI / 180;
+    }
+    
+    // ラジアンを度に変換
+    function toDeg(rad) {
+        return rad * 180 / Math.PI;
+    }
+    
+    // 屈折角を計算（全反射の場合はnullを返す）
+    function calcTheta2Angle(theta1Deg, n1Val, n2Val) {
+        const sinTheta1 = Math.sin(toRad(theta1Deg));
+        const sinTheta2 = (n1Val / n2Val) * sinTheta1;
+        
+        if (sinTheta2 > 1) {
+            return null; // 全反射
+        }
+        return toDeg(Math.asin(sinTheta2));
+    }
+    
+    // 臨界角を計算
+    function calcCriticalAngle(n1Val, n2Val) {
+        if (n1Val <= n2Val) return null;
+        return toDeg(Math.asin(n2Val / n1Val));
+    }
+    
+    // Canvasのリサイズ
+    function resizeCanvas() {
+        const container = canvas.parentElement;
+        canvas.width = container.clientWidth;
+        canvas.height = 400;
+        
+        graphCanvas.width = graphCanvas.parentElement.clientWidth - 30;
+        graphCanvas.height = 250;
+    }
+    
+    // メイン描画関数
+    function draw() {
+        const W = canvas.width;
+        const H = canvas.height;
+        
+        // 背景クリア
+        ctx.clearRect(0, 0, W, H);
+        
+        // 境界面の位置
+        const boundaryY = H / 2;
+        const centerX = W / 2;
+        
+        // 媒質Ⅰ（上半分）
+        ctx.fillStyle = '#e3f2fd';
+        ctx.fillRect(0, 0, W, boundaryY);
+        
+        // 媒質Ⅱ（下半分）
+        ctx.fillStyle = '#bbdefb';
+        ctx.fillRect(0, boundaryY, W, boundaryY);
+        
+        // 境界面
+        ctx.strokeStyle = '#333';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(0, boundaryY);
+        ctx.lineTo(W, boundaryY);
+        ctx.stroke();
+        
+        // 媒質ラベル
+        ctx.fillStyle = '#1565c0';
+        ctx.font = 'bold 16px sans-serif';
+        ctx.fillText('媒質Ⅰ (n₁ = ' + n1.toFixed(1) + ')', 10, 25);
+        ctx.fillStyle = '#0d47a1';
+        ctx.fillText('媒質Ⅱ (n₂ = ' + n2.toFixed(1) + ')', 10, boundaryY + 25);
+        
+        // 法線（点線）
+        ctx.strokeStyle = '#999';
+        ctx.lineWidth = 1;
+        ctx.setLineDash([5, 5]);
+        ctx.beginPath();
+        ctx.moveTo(centerX, 0);
+        ctx.lineTo(centerX, H);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        
+        // 法線ラベル
+        ctx.fillStyle = '#666';
+        ctx.font = '12px sans-serif';
+        ctx.fillText('法線', centerX + 5, 15);
+        
+        // 光線の長さ
+        const rayLength = Math.min(W, H) * 0.35;
+        
+        // 入射角（ラジアン）
+        const theta1Rad = toRad(theta1);
+        
+        // 入射光線の描画
+        const incidentStartX = centerX - rayLength * Math.sin(theta1Rad);
+        const incidentStartY = boundaryY - rayLength * Math.cos(theta1Rad);
+        
+        ctx.strokeStyle = '#f44336';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(incidentStartX, incidentStartY);
+        ctx.lineTo(centerX, boundaryY);
+        ctx.stroke();
+        
+        // 入射光線の矢印
+        drawArrow(ctx, incidentStartX, incidentStartY, centerX, boundaryY, '#f44336');
+        
+        // 入射角の弧を描画
+        ctx.strokeStyle = '#f44336';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(centerX, boundaryY, 40, -Math.PI/2, -Math.PI/2 + theta1Rad);
+        ctx.stroke();
+        
+        // 入射角ラベル（法線と入射光線の間、弧の近くに配置）
+        ctx.fillStyle = '#f44336';
+        ctx.font = 'bold 14px sans-serif';
+        const theta1LabelRadius = 65;
+        const theta1LabelAngle = theta1Rad / 2;
+        const theta1LabelX = centerX + theta1LabelRadius * Math.sin(theta1LabelAngle);
+        const theta1LabelY = boundaryY - theta1LabelRadius * Math.cos(theta1LabelAngle);
+        ctx.fillText('θ₁ = ' + theta1 + '°', theta1LabelX, theta1LabelY);
+        
+        // 屈折角の計算
+        const theta2Deg = calcTheta2Angle(theta1, n1, n2);
+        const isTotalReflection = (theta2Deg === null);
+        
+        // 反射光線（常に描画）
+        const reflectEndX = centerX + rayLength * Math.sin(theta1Rad);
+        const reflectEndY = boundaryY - rayLength * Math.cos(theta1Rad);
+        
+        ctx.strokeStyle = isTotalReflection ? '#ff9800' : '#9c27b0';
+        ctx.lineWidth = isTotalReflection ? 3 : 2;
+        ctx.globalAlpha = isTotalReflection ? 1 : 0.5;
+        ctx.beginPath();
+        ctx.moveTo(centerX, boundaryY);
+        ctx.lineTo(reflectEndX, reflectEndY);
+        ctx.stroke();
+        ctx.globalAlpha = 1;
+        
+        // 反射光線の矢印
+        drawArrow(ctx, centerX, boundaryY, reflectEndX, reflectEndY, 
+                  isTotalReflection ? '#ff9800' : '#9c27b0');
+        
+        if (isTotalReflection) {
+            // 全反射の場合
+            ctx.fillStyle = '#ff9800';
+            ctx.font = 'bold 16px sans-serif';
+            ctx.fillText('全反射！', centerX + 50, boundaryY - 30);
+            
+            // 全反射発見
+            if (!totalReflectionDiscovered) {
+                totalReflectionDiscovered = true;
+                discoveryBox.classList.add('visible');
+                const criticalAngle = calcCriticalAngle(n1, n2);
+                criticalAngleInfo.innerHTML = '今の条件での<strong>臨界角は約 ' + 
+                    criticalAngle.toFixed(1) + '°</strong> です。';
+            }
+            
+            // 計算結果の更新
+            calcTheta2.textContent = '屈折角 θ₂ = 全反射（屈折なし）';
+        } else {
+            // 屈折光線の描画
+            const theta2Rad = toRad(theta2Deg);
+            const refractEndX = centerX + rayLength * Math.sin(theta2Rad);
+            const refractEndY = boundaryY + rayLength * Math.cos(theta2Rad);
+            
+            ctx.strokeStyle = '#2196f3';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(centerX, boundaryY);
+            ctx.lineTo(refractEndX, refractEndY);
+            ctx.stroke();
+            
+            // 屈折光線の矢印
+            drawArrow(ctx, centerX, boundaryY, refractEndX, refractEndY, '#2196f3');
+            
+            // 屈折角の弧を描画（法線から屈折光線まで）
+            ctx.strokeStyle = '#2196f3';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(centerX, boundaryY, 40, Math.PI/2 - theta2Rad, Math.PI/2);
+            ctx.stroke();
+            
+            // 屈折角ラベル（法線と屈折光線の間、弧の近くに配置）
+            ctx.fillStyle = '#2196f3';
+            ctx.font = 'bold 14px sans-serif';
+            const theta2LabelRadius = 65;
+            const theta2LabelAngle = theta2Rad / 2;
+            const theta2LabelX = centerX + theta2LabelRadius * Math.sin(theta2LabelAngle);
+            const theta2LabelY = boundaryY + theta2LabelRadius * Math.cos(theta2LabelAngle);
+            ctx.fillText('θ₂ = ' + theta2Deg.toFixed(1) + '°', theta2LabelX, theta2LabelY);
+            
+            // 計算結果の更新
+            calcTheta2.textContent = '屈折角 θ₂ = ' + theta2Deg.toFixed(1) + '°';
+        }
+        
+        // 相対屈折率と比の計算
+        const n12 = n2 / n1;
+        calcN12.textContent = '相対屈折率 n₁₂ = n₂/n₁ = ' + n12.toFixed(2);
+        
+        if (!isTotalReflection && theta1 > 0) {
+            const sinRatio = Math.sin(toRad(theta1)) / Math.sin(toRad(theta2Deg));
+            calcRatio.textContent = 'sin θ₁ / sin θ₂ = ' + sinRatio.toFixed(2) + 
+                ' （n₁₂と一致！）';
+        } else if (theta1 === 0) {
+            calcRatio.textContent = 'θ₁ = 0° のとき、θ₂ = 0°（直進）';
+        } else {
+            calcRatio.textContent = 'sin θ₁ / sin θ₂ = 計算不可（全反射）';
+        }
+        
+        // 凡例
+        ctx.font = '12px sans-serif';
+        ctx.fillStyle = '#f44336';
+        ctx.fillText('● 入射光線', W - 100, 20);
+        ctx.fillStyle = '#2196f3';
+        ctx.fillText('● 屈折光線', W - 100, 40);
+        ctx.fillStyle = '#9c27b0';
+        ctx.fillText('● 反射光線', W - 100, 60);
+        
+        // グラフの描画
+        drawGraph();
+    }
+    
+    // 矢印を描画する関数
+    function drawArrow(ctx, fromX, fromY, toX, toY, color) {
+        const headLength = 12;
+        const angle = Math.atan2(toY - fromY, toX - fromX);
+        
+        ctx.fillStyle = color;
+        ctx.beginPath();
+        ctx.moveTo(toX, toY);
+        ctx.lineTo(toX - headLength * Math.cos(angle - Math.PI/6), 
+                   toY - headLength * Math.sin(angle - Math.PI/6));
+        ctx.lineTo(toX - headLength * Math.cos(angle + Math.PI/6), 
+                   toY - headLength * Math.sin(angle + Math.PI/6));
+        ctx.closePath();
+        ctx.fill();
+    }
+    
+    // グラフ描画関数
+    function drawGraph() {
+        const W = graphCanvas.width;
+        const H = graphCanvas.height;
+        const padding = 50;
+        const graphW = W - padding * 2;
+        const graphH = H - padding * 2;
+        
+        // 背景クリア
+        graphCtx.clearRect(0, 0, W, H);
+        graphCtx.fillStyle = '#fafafa';
+        graphCtx.fillRect(0, 0, W, H);
+        
+        // グラフエリア
+        graphCtx.fillStyle = 'white';
+        graphCtx.fillRect(padding, padding, graphW, graphH);
+        graphCtx.strokeStyle = '#333';
+        graphCtx.lineWidth = 1;
+        graphCtx.strokeRect(padding, padding, graphW, graphH);
+        
+        // 軸ラベル
+        graphCtx.fillStyle = '#333';
+        graphCtx.font = '14px sans-serif';
+        graphCtx.fillText('入射角 θ₁ [°]', W/2 - 40, H - 10);
+        graphCtx.save();
+        graphCtx.translate(15, H/2);
+        graphCtx.rotate(-Math.PI/2);
+        graphCtx.fillText('屈折角 θ₂ [°]', -40, 0);
+        graphCtx.restore();
+        
+        // 目盛り
+        graphCtx.font = '11px sans-serif';
+        graphCtx.fillStyle = '#666';
+        for (let i = 0; i <= 90; i += 15) {
+            const x = padding + (i / 90) * graphW;
+            graphCtx.fillText(i.toString(), x - 8, H - padding + 20);
+            
+            // グリッド線
+            graphCtx.strokeStyle = '#eee';
+            graphCtx.beginPath();
+            graphCtx.moveTo(x, padding);
+            graphCtx.lineTo(x, H - padding);
+            graphCtx.stroke();
+        }
+        for (let i = 0; i <= 90; i += 15) {
+            const y = H - padding - (i / 90) * graphH;
+            graphCtx.fillText(i.toString(), padding - 25, y + 4);
+            
+            // グリッド線
+            graphCtx.strokeStyle = '#eee';
+            graphCtx.beginPath();
+            graphCtx.moveTo(padding, y);
+            graphCtx.lineTo(W - padding, y);
+            graphCtx.stroke();
+        }
+        
+        // θ₁ = θ₂ の直線（参考線）
+        graphCtx.strokeStyle = '#ddd';
+        graphCtx.lineWidth = 1;
+        graphCtx.setLineDash([5, 5]);
+        graphCtx.beginPath();
+        graphCtx.moveTo(padding, H - padding);
+        graphCtx.lineTo(W - padding, padding);
+        graphCtx.stroke();
+        graphCtx.setLineDash([]);
+        
+        // 屈折角の曲線
+        graphCtx.strokeStyle = '#2196f3';
+        graphCtx.lineWidth = 2;
+        graphCtx.beginPath();
+        
+        let criticalAngle = 90;
+        if (n1 > n2) {
+            criticalAngle = toDeg(Math.asin(n2 / n1));
+        }
+        
+        let firstPoint = true;
+        for (let t1 = 0; t1 <= 90; t1 += 0.5) {
+            const t2 = calcTheta2Angle(t1, n1, n2);
+            if (t2 !== null) {
+                const x = padding + (t1 / 90) * graphW;
+                const y = H - padding - (t2 / 90) * graphH;
+                if (firstPoint) {
+                    graphCtx.moveTo(x, y);
+                    firstPoint = false;
+                } else {
+                    graphCtx.lineTo(x, y);
+                }
+            }
+        }
+        graphCtx.stroke();
+        
+        // 全反射領域の表示
+        if (n1 > n2) {
+            graphCtx.fillStyle = 'rgba(255, 152, 0, 0.2)';
+            const critX = padding + (criticalAngle / 90) * graphW;
+            graphCtx.fillRect(critX, padding, W - padding - critX, graphH);
+            
+            // 臨界角の線
+            graphCtx.strokeStyle = '#ff9800';
+            graphCtx.lineWidth = 2;
+            graphCtx.setLineDash([5, 5]);
+            graphCtx.beginPath();
+            graphCtx.moveTo(critX, padding);
+            graphCtx.lineTo(critX, H - padding);
+            graphCtx.stroke();
+            graphCtx.setLineDash([]);
+            
+            graphCtx.fillStyle = '#ff9800';
+            graphCtx.font = '12px sans-serif';
+            graphCtx.fillText('臨界角', critX + 5, padding + 15);
+            graphCtx.fillText('全反射領域', critX + 5, padding + 35);
+        }
+        
+        // 現在の点をプロット
+        const theta2Deg = calcTheta2Angle(theta1, n1, n2);
+        if (theta2Deg !== null) {
+            const px = padding + (theta1 / 90) * graphW;
+            const py = H - padding - (theta2Deg / 90) * graphH;
+            
+            graphCtx.fillStyle = '#f44336';
+            graphCtx.beginPath();
+            graphCtx.arc(px, py, 6, 0, Math.PI * 2);
+            graphCtx.fill();
+            
+            // 補助線
+            graphCtx.strokeStyle = '#f44336';
+            graphCtx.lineWidth = 1;
+            graphCtx.setLineDash([3, 3]);
+            graphCtx.beginPath();
+            graphCtx.moveTo(px, py);
+            graphCtx.lineTo(px, H - padding);
+            graphCtx.moveTo(px, py);
+            graphCtx.lineTo(padding, py);
+            graphCtx.stroke();
+            graphCtx.setLineDash([]);
+        } else {
+            // 全反射時は臨界角の位置に点を表示
+            const critAngle = calcCriticalAngle(n1, n2);
+            if (critAngle !== null) {
+                const px = padding + (theta1 / 90) * graphW;
+                graphCtx.fillStyle = '#ff9800';
+                graphCtx.beginPath();
+                graphCtx.arc(px, padding + 20, 6, 0, Math.PI * 2);
+                graphCtx.fill();
+            }
+        }
+    }
+    
+    // イベントリスナー
+    theta1Slider.addEventListener('input', function() {
+        theta1 = parseFloat(this.value);
+        theta1Display.textContent = theta1 + '°';
+        draw();
+    });
+    
+    n1Slider.addEventListener('input', function() {
+        n1 = parseFloat(this.value);
+        n1Display.textContent = n1.toFixed(1);
+        
+        // 全反射発見ボックスをリセット（条件が変わった場合）
+        if (n1 <= n2) {
+            discoveryBox.classList.remove('visible');
+            totalReflectionDiscovered = false;
+        }
+        draw();
+    });
+    
+    n2Slider.addEventListener('input', function() {
+        n2 = parseFloat(this.value);
+        n2Display.textContent = n2.toFixed(1);
+        
+        // 全反射発見ボックスをリセット（条件が変わった場合）
+        if (n1 <= n2) {
+            discoveryBox.classList.remove('visible');
+            totalReflectionDiscovered = false;
+        }
+        draw();
+    });
+    
+    resetBtn.addEventListener('click', function() {
+        theta1 = 30;
+        n1 = 1.0;
+        n2 = 1.5;
+        
+        theta1Slider.value = theta1;
+        n1Slider.value = n1;
+        n2Slider.value = n2;
+        
+        theta1Display.textContent = theta1 + '°';
+        n1Display.textContent = n1.toFixed(1);
+        n2Display.textContent = n2.toFixed(1);
+        
+        discoveryBox.classList.remove('visible');
+        totalReflectionDiscovered = false;
+        
+        draw();
+    });
+    
+    // リサイズ対応
+    window.addEventListener('resize', function() {
+        resizeCanvas();
+        draw();
+    });
+    
+    // 初期化
+    resizeCanvas();
+    draw();
+    </script>
+</body>
+</html>

@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高校物理 - 自由落下</title>
+    <script>
+      window.MathJax = {
+      tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']]
+     }
+     };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        header {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .back-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        h1 {
+            color: #333;
+        }
+        .container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .tab-btn {
+            flex: 1;
+            min-width: 150px;
+            padding: 12px 20px;
+            border: none;
+            background: #f0f0f0;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        .tab-btn.active {
+            background: #667eea;
+            color: white;
+        }
+        .tab-btn:hover {
+            background: #8899f0;
+            color: white;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        .pdf-placeholder {
+            background: #f9f9f9;
+            padding: 40px;
+            text-align: center;
+            border-radius: 5px;
+            color: #666;
+        }
+        
+        /* シミュレーション用スタイル */
+        #sim-container {
+            background: #f5f5f5;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        #physicsCanvas {
+            display: block;
+            width: 100%;
+            background: white;
+            border-radius: 5px;
+            border: 2px solid #ddd;
+        }
+        .sim-controls {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .control-group {
+            margin-bottom: 20px;
+        }
+        .control-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        .control-group input[type="range"] {
+            width: 100%;
+            margin: 10px 0;
+        }
+        .value-display {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            min-width: 100px;
+            text-align: center;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .sim-button {
+            flex: 1;
+            min-width: 120px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .sim-button.start {
+            background: #4CAF50;
+            color: white;
+        }
+        .sim-button.start:hover {
+            background: #45a049;
+        }
+        .sim-button.reset {
+            background: #f44336;
+            color: white;
+        }
+        .sim-button.reset:hover {
+            background: #da190b;
+        }
+        .graph-container {
+            margin-top: 20px;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #ddd;
+        }
+        .graph-container h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        #graphCanvas {
+            display: block;
+            width: 100%;
+            border: 1px solid #eee;
+        }
+        .formula-box {
+            background: #f0f4ff;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        details {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+        }
+        summary {
+            font-weight: bold;
+            color: #667eea;
+            cursor: pointer;
+            padding: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            header, .container {
+                padding: 15px;
+            }
+            .tab-btn {
+                min-width: 100px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="back-link">← 目次に戻る</a>
+        <h1>自由落下</h1>
+    </header>
+    <div class="container">
+        
+        <div class="tabs">
+            <button class="tab-btn active" onclick="openTab('lecture')">解説編</button>
+            <button class="tab-btn" onclick="openTab('problem')">問題編</button>
+            <button class="tab-btn" onclick="openTab('simulation')">シミュレーション</button>
+        </div>
+        
+        <div id="lecture" class="tab-content active">
+            <h2>自由落下の基本</h2>
+            <p>自由落下とは、物体が初速度ゼロで、重力のみを受けて落下する運動です。空気抵抗を無視すると、質量に関係なくすべての物体が同じ加速度で落下します。</p>
+            
+            <div class="formula-box">
+                <h3>基本公式</h3>
+                <p>鉛直下向きを正とすると、重力加速度を $g$ として：</p>
+                <p>$$v = gt$$</p>
+                <p>$$y = \frac{1}{2}gt^2$$</p>
+                <p>$$v^2 = 2gy$$</p>
+                <p>ここで、$v$ は速度 [m/s]、$y$ は落下距離 [m]、$t$ は時間 [s]、$g \approx 9.8$ m/s² （地球上）です。</p>
+            </div>
+            
+            <h3>授業資料</h3>
+            <iframe src="https://drive.google.com/file/d/1rd3AUHNkj-NLM0IEztEdsiVOdPwxD6EA/preview" width="100%" height="500"></iframe>
+        </div>
+        
+        <div id="problem" class="tab-content">
+            <h2>確認問題</h2>
+            
+            <div style="background: #f9f9f9; padding: 20px; border-radius: 5px; margin: 15px 0;">
+                <h3>問題</h3>
+                <p>ある物体を静かに手放したところ、2.0秒後に地面に到達した。重力加速度を $g = 9.8$ m/s² として、以下の問いに答えよ。</p>
+                <p>（1）地面に到達する直前の速度は何 m/s か。</p>
+                <p>（2）手放した位置の高さは何 m か。</p>
+            </div>
+            
+            <details>
+                <summary>解答・解説を見る</summary>
+                <div style="padding: 15px;">
+                    <h4>解答</h4>
+                    <p><strong>（1）19.6 m/s</strong></p>
+                    <p><strong>（2）19.6 m</strong></p>
+                    
+                    <h4>解説</h4>
+                    <p><strong>（1）速度の計算</strong></p>
+                    <p>自由落下の速度の公式 $v = gt$ を使います。</p>
+                    <p>$$v = 9.8 \times 2.0 = 19.6 \text{ m/s}$$</p>
+                    
+                    <p><strong>（2）高さの計算</strong></p>
+                    <p>自由落下の変位の公式 $y = \frac{1}{2}gt^2$ を使います。</p>
+                    <p>$$y = \frac{1}{2} \times 9.8 \times 2.0^2 = \frac{1}{2} \times 9.8 \times 4.0 = 19.6 \text{ m}$$</p>
+                    
+                    <p style="margin-top: 15px; padding: 10px; background: #e8f4f8; border-radius: 5px;">
+                        <strong>ポイント：</strong>自由落下では初速度が0なので、公式が簡単な形になります。時間がわかれば速度も変位も計算できます。
+                    </p>
+                </div>
+            </details>
+        </div>
+        
+        <div id="simulation" class="tab-content">
+            <h2>自由落下シミュレーション</h2>
+            <p>重力加速度を変えて、落下の様子とグラフの変化を確認しましょう。</p>
+            
+            <div id="sim-container">
+                <canvas id="physicsCanvas"></canvas>
+            </div>
+            
+            <div class="sim-controls">
+                <div class="control-group">
+                    <label>重力加速度 (g): <span class="value-display" id="gDisplay">9.8 m/s²</span></label>
+                    <input type="range" id="gSlider" min="1.6" max="9.8" value="9.8" step="0.2">
+                    <p style="font-size: 12px; color: #666; margin-top: 5px;">
+                        月: 1.6 m/s² | 火星: 3.7 m/s² | 地球: 9.8 m/s²
+                    </p>
+                </div>
+                
+                <div class="button-group">
+                    <button class="sim-button start" id="startBtn">スタート</button>
+                    <button class="sim-button reset" id="resetBtn">リセット</button>
+                </div>
+                
+                <div style="margin-top: 15px; padding: 10px; background: #fff3cd; border-radius: 5px;">
+                    <p style="margin: 0;"><strong>時間:</strong> <span id="timeDisplay">0.00</span> s</p>
+                    <p style="margin: 5px 0 0 0;"><strong>速度:</strong> <span id="velocityDisplay">0.00</span> m/s</p>
+                    <p style="margin: 5px 0 0 0;"><strong>落下距離:</strong> <span id="distanceDisplay">0.00</span> m</p>
+                </div>
+            </div>
+            
+            <div class="graph-container">
+                <h3>速度-時間グラフ (v-t)</h3>
+                <canvas id="graphCanvas"></canvas>
+            </div>
+            
+            <div class="graph-container">
+                <h3>変位-時間グラフ (y-t)</h3>
+                <canvas id="positionGraphCanvas"></canvas>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+    // --- タブ切り替え機能 ---
+    function openTab(tabName) {
+        var contents = document.getElementsByClassName("tab-content");
+        for (var i = 0; i < contents.length; i++) {
+            contents[i].style.display = "none";
+            contents[i].classList.remove("active");
+        }
+        var buttons = document.getElementsByClassName("tab-btn");
+        for (var i = 0; i < buttons.length; i++) {
+            buttons[i].classList.remove("active");
+        }
+        document.getElementById(tabName).style.display = "block";
+        if (event) {
+            event.currentTarget.classList.add("active");
+        }
+    }
+
+    // --- 自由落下シミュレーション ---
+    
+    const canvas = document.getElementById('physicsCanvas');
+    const ctx = canvas.getContext('2d');
+    const graphCanvas = document.getElementById('graphCanvas');
+    const graphCtx = graphCanvas.getContext('2d');
+    const positionGraphCanvas = document.getElementById('positionGraphCanvas');
+    const positionGraphCtx = positionGraphCanvas.getContext('2d');
+    
+    // スライダーとボタンの取得
+    const gSlider = document.getElementById('gSlider');
+    const gDisplay = document.getElementById('gDisplay');
+    const startBtn = document.getElementById('startBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const timeDisplay = document.getElementById('timeDisplay');
+    const velocityDisplay = document.getElementById('velocityDisplay');
+    const distanceDisplay = document.getElementById('distanceDisplay');
+    
+    // 物理パラメータ
+    let g = parseFloat(gSlider.value);
+    let time = 0;
+    let velocity = 0;
+    let distance = 0;
+    let isRunning = false;
+    let animationId = null;
+    
+    // グラフデータ
+    let graphData = [];
+    const maxDataPoints = 100;
+    
+    // Canvas設定
+    function resizeCanvas() {
+        canvas.width = canvas.parentElement.clientWidth;
+        canvas.height = 400;
+        graphCanvas.width = graphCanvas.parentElement.clientWidth;
+        graphCanvas.height = 300;
+        positionGraphCanvas.width = positionGraphCanvas.parentElement.clientWidth;
+        positionGraphCanvas.height = 300;
+        draw();
+        drawGraph();
+        drawPositionGraph();
+    }
+    
+    // スライダーの値更新
+    gSlider.addEventListener('input', function() {
+        g = parseFloat(this.value);
+        gDisplay.textContent = g.toFixed(1) + ' m/s²';
+    });
+    
+    // 初期化
+    function init() {
+        resizeCanvas();
+        gDisplay.textContent = g.toFixed(1) + ' m/s²';
+    }
+    
+    // 物理計算
+    function update(dt) {
+        if (!isRunning) return;
+        
+        const scale = 20; // 1m = 20px
+        const groundY = canvas.height - 30;
+        const startY = 30;
+        const maxDistance = (groundY - startY) / scale;
+        
+        time += dt;
+        velocity = g * time;
+        distance = 0.5 * g * time * time;
+        
+        // 地面に到達したら停止
+        if (distance >= maxDistance) {
+            distance = maxDistance;
+            velocity = g * Math.sqrt(2 * maxDistance / g);
+            isRunning = false;
+            startBtn.textContent = 'スタート';
+            startBtn.classList.add('start');
+        }
+        
+        // グラフデータ追加
+        graphData.push({ time: time, velocity: velocity });
+        if (graphData.length > maxDataPoints) {
+            graphData.shift();
+        }
+        
+        // 表示更新
+        timeDisplay.textContent = time.toFixed(2);
+        velocityDisplay.textContent = velocity.toFixed(2);
+        distanceDisplay.textContent = distance.toFixed(2);
+    }
+    
+    // 描画
+    function draw() {
+        const w = canvas.width;
+        const h = canvas.height;
+        
+        // 背景
+        ctx.fillStyle = '#e8f4f8';
+        ctx.fillRect(0, 0, w, h);
+        
+        // 目盛り線
+        ctx.strokeStyle = '#ccc';
+        ctx.lineWidth = 1;
+        for (let i = 50; i < h; i += 50) {
+            ctx.beginPath();
+            ctx.moveTo(0, i);
+            ctx.lineTo(w, i);
+            ctx.stroke();
+        }
+        
+        // 地面
+        const groundY = h - 30;
+        ctx.fillStyle = '#8B4513';
+        ctx.fillRect(0, groundY, w, 30);
+        
+        // 目盛り表示
+        ctx.fillStyle = '#666';
+        ctx.font = '12px Arial';
+        const scale = 20;
+        for (let i = 1; i <= Math.floor((h - 60) / scale); i++) {
+            ctx.fillText(i + 'm', 5, 30 + i * scale);
+        }
+        
+        // 物体の位置
+        const objX = w / 2;
+        const objY = 30 + distance * scale;
+        
+        // 物体（球）
+        ctx.fillStyle = '#FF6B6B';
+        ctx.beginPath();
+        ctx.arc(objX, objY, 15, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = '#C92A2A';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        
+        // 影
+        ctx.fillStyle = 'rgba(0,0,0,0.2)';
+        ctx.beginPath();
+        ctx.ellipse(objX, groundY + 15, 15, 5, 0, 0, Math.PI * 2);
+        ctx.fill();
+    }
+    
+    // グラフ描画
+    function drawGraph() {
+        const w = graphCanvas.width;
+        const h = graphCanvas.height;
+        const padding = 40;
+        
+        // 背景
+        graphCtx.fillStyle = 'white';
+        graphCtx.fillRect(0, 0, w, h);
+        
+        // 軸
+        graphCtx.strokeStyle = '#333';
+        graphCtx.lineWidth = 2;
+        graphCtx.beginPath();
+        graphCtx.moveTo(padding, padding);
+        graphCtx.lineTo(padding, h - padding);
+        graphCtx.lineTo(w - padding, h - padding);
+        graphCtx.stroke();
+        
+        // ラベル
+        graphCtx.fillStyle = '#333';
+        graphCtx.font = '14px Arial';
+        graphCtx.fillText('v (m/s)', 5, 20);
+        graphCtx.fillText('t (s)', w - 30, h - 5);
+        
+        // y軸の目盛りを先に描画（データがなくても表示）
+        const maxVel = 30; // y軸の最大値を30m/sに固定
+        graphCtx.fillStyle = '#666';
+        graphCtx.font = '10px Arial';
+        for (let i = 0; i <= 5; i++) {
+            const val = (maxVel / 5 * i).toFixed(1);
+            const y = h - padding - (h - 2 * padding) * i / 5;
+            graphCtx.fillText(val, 5, y + 3);
+            
+            // 補助線
+            graphCtx.strokeStyle = '#eee';
+            graphCtx.lineWidth = 1;
+            graphCtx.beginPath();
+            graphCtx.moveTo(padding, y);
+            graphCtx.lineTo(w - padding, y);
+            graphCtx.stroke();
+        }
+        
+        if (graphData.length < 2) return;
+        
+        // スケール計算
+        const maxTime = Math.max(...graphData.map(d => d.time), 0.1);
+        const xScale = (w - 2 * padding) / maxTime;
+        const yScale = (h - 2 * padding) / maxVel;
+        
+        // グラフ線
+        graphCtx.strokeStyle = '#667eea';
+        graphCtx.lineWidth = 3;
+        graphCtx.beginPath();
+        for (let i = 0; i < graphData.length; i++) {
+            const x = padding + graphData[i].time * xScale;
+            const vel = Math.min(graphData[i].velocity, maxVel); // 最大値でクリップ
+            const y = h - padding - vel * yScale;
+            if (i === 0) {
+                graphCtx.moveTo(x, y);
+            } else {
+                graphCtx.lineTo(x, y);
+            }
+        }
+        graphCtx.stroke();
+    }
+    
+    // 変位グラフ描画
+    function drawPositionGraph() {
+        const w = positionGraphCanvas.width;
+        const h = positionGraphCanvas.height;
+        const padding = 40;
+        
+        // 背景
+        positionGraphCtx.fillStyle = 'white';
+        positionGraphCtx.fillRect(0, 0, w, h);
+        
+        // 軸
+        positionGraphCtx.strokeStyle = '#333';
+        positionGraphCtx.lineWidth = 2;
+        positionGraphCtx.beginPath();
+        positionGraphCtx.moveTo(padding, padding);
+        positionGraphCtx.lineTo(padding, h - padding);
+        positionGraphCtx.lineTo(w - padding, h - padding);
+        positionGraphCtx.stroke();
+        
+        // ラベル
+        positionGraphCtx.fillStyle = '#333';
+        positionGraphCtx.font = '14px Arial';
+        positionGraphCtx.fillText('y (m)', 5, 20);
+        positionGraphCtx.fillText('t (s)', w - 30, h - 5);
+        
+        // y軸の最大値を計算（落下可能な最大距離）
+        const scale = 20;
+        const groundY = canvas.height - 30;
+        const startY = 30;
+        const maxDist = (groundY - startY) / scale;
+        
+        // y軸の目盛り
+        positionGraphCtx.fillStyle = '#666';
+        positionGraphCtx.font = '10px Arial';
+        for (let i = 0; i <= 5; i++) {
+            const val = (maxDist / 5 * i).toFixed(1);
+            const y = h - padding - (h - 2 * padding) * i / 5;
+            positionGraphCtx.fillText(val, 5, y + 3);
+            
+            // 補助線
+            positionGraphCtx.strokeStyle = '#eee';
+            positionGraphCtx.lineWidth = 1;
+            positionGraphCtx.beginPath();
+            positionGraphCtx.moveTo(padding, y);
+            positionGraphCtx.lineTo(w - padding, y);
+            positionGraphCtx.stroke();
+        }
+        
+        if (graphData.length < 2) return;
+        
+        // スケール計算
+        const maxTime = Math.max(...graphData.map(d => d.time), 0.1);
+        const xScale = (w - 2 * padding) / maxTime;
+        const yScale = (h - 2 * padding) / maxDist;
+        
+        // グラフ線（放物線）
+        positionGraphCtx.strokeStyle = '#f44336';
+        positionGraphCtx.lineWidth = 3;
+        positionGraphCtx.beginPath();
+        for (let i = 0; i < graphData.length; i++) {
+            const x = padding + graphData[i].time * xScale;
+            const dist = 0.5 * g * graphData[i].time * graphData[i].time;
+            const clippedDist = Math.min(dist, maxDist); // 最大値でクリップ
+            const y = h - padding - clippedDist * yScale;
+            if (i === 0) {
+                positionGraphCtx.moveTo(x, y);
+            } else {
+                positionGraphCtx.lineTo(x, y);
+            }
+        }
+        positionGraphCtx.stroke();
+    }
+    
+    // アニメーションループ
+    let lastTime = 0;
+    function animate(currentTime) {
+        if (lastTime === 0) lastTime = currentTime;
+        const dt = (currentTime - lastTime) / 1000;
+        lastTime = currentTime;
+        
+        update(dt);
+        draw();
+        drawGraph();
+        drawPositionGraph();
+        
+        if (isRunning) {
+            animationId = requestAnimationFrame(animate);
+        }
+    }
+    
+    // スタートボタン
+    startBtn.addEventListener('click', function() {
+        if (!isRunning) {
+            isRunning = true;
+            lastTime = 0;
+            this.textContent = '実行中...';
+            this.classList.remove('start');
+            animationId = requestAnimationFrame(animate);
+        }
+    });
+    
+    // リセットボタン
+    resetBtn.addEventListener('click', function() {
+        isRunning = false;
+        if (animationId) {
+            cancelAnimationFrame(animationId);
+        }
+        time = 0;
+        velocity = 0;
+        distance = 0;
+        graphData = [];
+        lastTime = 0;
+        
+        timeDisplay.textContent = '0.00';
+        velocityDisplay.textContent = '0.00';
+        distanceDisplay.textContent = '0.00';
+        startBtn.textContent = 'スタート';
+        startBtn.classList.add('start');
+        
+        draw();
+        drawGraph();
+        drawPositionGraph();
+    });
+    
+    // リサイズ対応
+    window.addEventListener('resize', resizeCanvas);
+    
+    // 初期化実行
+    init();
+    </script>
+</body>
+</html>

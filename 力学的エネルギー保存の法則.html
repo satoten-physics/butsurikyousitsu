@@ -1,0 +1,1399 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高校物理 - 力学的エネルギー保存の法則</title>
+    <script>
+      window.MathJax = {
+      tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']]
+     }
+     };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        header {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .back-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        h1 {
+            color: #333;
+        }
+        .container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .tab-btn {
+            flex: 1;
+            min-width: 150px;
+            padding: 12px 20px;
+            border: none;
+            background: #f0f0f0;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        .tab-btn.active {
+            background: #667eea;
+            color: white;
+        }
+        .tab-btn:hover {
+            background: #8899f0;
+            color: white;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        h3 {
+            color: #555;
+            margin: 25px 0 15px 0;
+            border-left: 4px solid #667eea;
+            padding-left: 10px;
+        }
+        .pdf-placeholder {
+            background: #f9f9f9;
+            padding: 40px;
+            text-align: center;
+            border-radius: 5px;
+            color: #666;
+        }
+        .explanation {
+            line-height: 1.8;
+            color: #333;
+        }
+        .explanation p {
+            margin-bottom: 15px;
+        }
+        .key-point {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+            border-left: 5px solid #f39c12;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+        .key-point-title {
+            font-weight: bold;
+            color: #d68910;
+            margin-bottom: 8px;
+        }
+        .formula-box {
+            background: linear-gradient(135deg, #e8f4fd 0%, #d6eaf8 100%);
+            border: 2px solid #3498db;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .formula-box .formula-title {
+            font-weight: bold;
+            color: #2980b9;
+            margin-bottom: 10px;
+        }
+        .diagram-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        .diagram-box {
+            background: #f9f9f9;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            min-width: 280px;
+            flex: 1;
+            max-width: 400px;
+        }
+        .diagram-box canvas {
+            display: block;
+            margin: 0 auto 10px auto;
+            border: 1px solid #eee;
+            background: white;
+        }
+        .diagram-caption {
+            font-size: 14px;
+            color: #666;
+            margin-top: 10px;
+        }
+        
+        /* シミュレーション用スタイル */
+        #sim-container, .sim-container {
+            background: #f5f5f5;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        #physicsCanvas, .physics-canvas {
+            display: block;
+            width: 100%;
+            background: white;
+            border-radius: 5px;
+            border: 2px solid #ddd;
+        }
+        .sim-controls {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .control-group {
+            margin-bottom: 20px;
+        }
+        .control-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        .control-group input[type="range"] {
+            width: 100%;
+            margin: 10px 0;
+        }
+        .value-display {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            min-width: 100px;
+            text-align: center;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .sim-button {
+            min-width: 120px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .sim-button.start {
+            background: #4CAF50;
+            color: white;
+        }
+        .sim-button.start:hover {
+            background: #45a049;
+        }
+        .sim-button.reset {
+            background: #f44336;
+            color: white;
+        }
+        .sim-button.reset:hover {
+            background: #da190b;
+        }
+        .sim-button.stop {
+            background: #ff9800;
+            color: white;
+        }
+        .sim-button.stop:hover {
+            background: #f57c00;
+        }
+        .energy-display {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 15px;
+            justify-content: center;
+        }
+        .energy-bar-container {
+            flex: 1;
+            min-width: 200px;
+            max-width: 300px;
+        }
+        .energy-bar-label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+        .energy-bar {
+            height: 30px;
+            background: #e0e0e0;
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+        }
+        .energy-bar-fill {
+            height: 100%;
+            border-radius: 15px;
+            transition: width 0.1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+        }
+        .energy-bar-fill.kinetic {
+            background: linear-gradient(90deg, #e74c3c, #c0392b);
+        }
+        .energy-bar-fill.potential {
+            background: linear-gradient(90deg, #3498db, #2980b9);
+        }
+        .energy-bar-fill.elastic {
+            background: linear-gradient(90deg, #2ecc71, #27ae60);
+        }
+        .sim-formula {
+            background: #fff;
+            border: 2px solid #667eea;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+        }
+        .sim-section {
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 2px dashed #ddd;
+        }
+        .sim-section:last-child {
+            border-bottom: none;
+        }
+        .sim-title {
+            color: #667eea;
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        /* 問題タブ用 */
+        .problem-box {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+        .problem-number {
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+        details {
+            background: #e8f4fd;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+        summary {
+            cursor: pointer;
+            font-weight: bold;
+            color: #2980b9;
+        }
+        details[open] summary {
+            margin-bottom: 15px;
+            border-bottom: 1px solid #bbb;
+            padding-bottom: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            header, .container {
+                padding: 15px;
+            }
+            .tab-btn {
+                min-width: 100px;
+                font-size: 14px;
+            }
+            .diagram-box {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="back-link">← 目次に戻る</a>
+        <h1>力学的エネルギー保存の法則</h1>
+    </header>
+    <div class="container">
+        
+        <div class="tabs">
+            <button class="tab-btn active" onclick="openTab('lecture')">解説編</button>
+            <button class="tab-btn" onclick="openTab('problem')">問題編</button>
+            <button class="tab-btn" onclick="openTab('simulation')">シミュレーション</button>
+        </div>
+        
+        <div id="lecture" class="tab-content active">
+            <h2>授業資料</h2>
+            <iframe src="https://drive.google.com/file/d/1rd3AUHNkj-NLM0IEztEdsiVOdPwxD6EA/preview" width="100%" height="500"></iframe>
+            
+            <div class="explanation">
+                <h2 style="margin-top: 30px;">力学的エネルギーとは？</h2>
+                
+                <p>物理におけるエネルギーとは、<strong>「物体が何m動けるかを示した量」</strong>です。単位は <strong>ジュール [J]</strong> を使います。高校物理の力学では、主に以下の3つのエネルギーを扱います。</p>
+                
+                <div class="formula-box">
+                    <div class="formula-title">力学的エネルギーの3種類</div>
+                    <p>$$\text{力学的エネルギー} = \underbrace{K}_{\text{運動エネルギー}} + \underbrace{U}_{\text{重力による位置エネルギー}} + \underbrace{U'}_{\text{弾性力による位置エネルギー}}$$</p>
+                </div>
+
+                <h3>① 運動エネルギー $K$</h3>
+                <p>運動エネルギーは、<strong>「動いていれば持っている」</strong>エネルギーです。物体が速度 $v$ で動いているとき、その運動エネルギーは次の式で表されます。</p>
+                
+                <div class="formula-box">
+                    <div class="formula-title">運動エネルギー</div>
+                    <p>$$K = \frac{1}{2}mv^2$$</p>
+                    <p style="font-size: 14px; color: #666;">$m$：質量 [kg]、$v$：速さ [m/s]</p>
+                </div>
+                
+                <div class="diagram-container">
+                    <div class="diagram-box">
+                        <canvas id="kineticDiagram1" width="250" height="150"></canvas>
+                        <div class="diagram-caption"><strong>動いている場合 ($v \neq 0$)</strong><br>運動エネルギー $K = \frac{1}{2}mv^2 > 0$</div>
+                    </div>
+                    <div class="diagram-box">
+                        <canvas id="kineticDiagram2" width="250" height="150"></canvas>
+                        <div class="diagram-caption"><strong>静止している場合 ($v = 0$)</strong><br>運動エネルギー $K = 0$</div>
+                    </div>
+                </div>
+                
+                <div class="key-point">
+                    <div class="key-point-title">💡 ポイント</div>
+                    速さ $v$ が2倍になると、運動エネルギーは4倍になります（$v^2$ に比例するため）。動いてさえいれば、運動エネルギーは必ず正の値を持ちます。
+                </div>
+
+                <h3>② 重力による位置エネルギー $U$</h3>
+                <p>重力による位置エネルギーは、<strong>「基準点からどれだけ高い位置にいるか」</strong>で決まるエネルギーです。</p>
+                
+                <div class="formula-box">
+                    <div class="formula-title">重力による位置エネルギー</div>
+                    <p>$$U = mgh$$</p>
+                    <p style="font-size: 14px; color: #666;">$m$：質量 [kg]、$g$：重力加速度 [m/s²]、$h$：基準からの高さ [m]</p>
+                </div>
+                
+                <div class="key-point">
+                    <div class="key-point-title">⚠️ 超重要：基準点の設定</div>
+                    位置エネルギーは<strong>「どこを基準（$h=0$）とするか」</strong>によって値が変わります！基準より低い位置では、位置エネルギーは<strong>負の値</strong>になります。
+                </div>
+                
+                <div class="diagram-container">
+                    <div class="diagram-box">
+                        <canvas id="potentialDiagram1" width="250" height="200"></canvas>
+                        <div class="diagram-caption"><strong>地面を基準 ($h=0$) とした場合</strong><br>高さ $h$ の位置：$U = mgh > 0$</div>
+                    </div>
+                    <div class="diagram-box">
+                        <canvas id="potentialDiagram2" width="250" height="200"></canvas>
+                        <div class="diagram-caption"><strong>高い位置を基準とした場合</strong><br>基準より下：$U = mg(-h') < 0$</div>
+                    </div>
+                </div>
+
+                <h3>③ 弾性力による位置エネルギー $U'$（ばねのエネルギー）</h3>
+                <p>ばねの位置エネルギーは、<strong>「自然長からどれだけずれているか」</strong>で決まります。</p>
+                
+                <div class="formula-box">
+                    <div class="formula-title">弾性力による位置エネルギー</div>
+                    <p>$$U' = \frac{1}{2}kx^2$$</p>
+                    <p style="font-size: 14px; color: #666;">$k$：ばね定数 [N/m]、$x$：自然長からの伸び・縮み [m]</p>
+                </div>
+                
+                <div class="diagram-container">
+                    <div class="diagram-box">
+                        <canvas id="springDiagram1" width="250" height="120"></canvas>
+                        <div class="diagram-caption"><strong>自然長の状態 ($x = 0$)</strong><br>弾性エネルギー $U' = 0$</div>
+                    </div>
+                    <div class="diagram-box">
+                        <canvas id="springDiagram2" width="250" height="120"></canvas>
+                        <div class="diagram-caption"><strong>伸びた状態 ($x > 0$)</strong><br>弾性エネルギー $U' = \frac{1}{2}kx^2 > 0$</div>
+                    </div>
+                    <div class="diagram-box">
+                        <canvas id="springDiagram3" width="250" height="120"></canvas>
+                        <div class="diagram-caption"><strong>縮んだ状態 ($x < 0$)</strong><br>弾性エネルギー $U' = \frac{1}{2}kx^2 > 0$</div>
+                    </div>
+                </div>
+                
+                <div class="key-point">
+                    <div class="key-point-title">💡 ポイント</div>
+                    ばねの位置エネルギーは $x^2$ に比例するため、伸びても縮んでも<strong>常に正の値</strong>（または0）になります。基準は常に「自然長の位置」です。
+                </div>
+
+                <h3>力学的エネルギー保存の法則</h3>
+                <p><strong>保存力</strong>（重力、弾性力など）のみがはたらく場合、力学的エネルギーの総和は一定に保たれます。</p>
+                
+                <div class="formula-box">
+                    <div class="formula-title">力学的エネルギー保存の法則</div>
+                    <p>$$K_1 + U_1 = K_2 + U_2$$</p>
+                    <p>$$\frac{1}{2}mv_1^2 + mgh_1 = \frac{1}{2}mv_2^2 + mgh_2$$</p>
+                    <p style="font-size: 14px; color: #666;">（状態1でのエネルギー）＝（状態2でのエネルギー）</p>
+                </div>
+                
+                <div class="key-point">
+                    <div class="key-point-title">💡 等加速度運動との違い</div>
+                    等加速度直線運動は「時間」と「長さ」と「速さ」の関係式でした。一方、エネルギーは「力」と「長さ」と「速さ」の関係であり、<strong>「何秒間動いたか」は全く関係ありません</strong>。これがエネルギーの強みです！
+                </div>
+            </div>
+        </div>
+        
+        <div id="problem" class="tab-content">
+            <h2>確認問題</h2>
+            
+            <div class="problem-box">
+                <div class="problem-number">問題 1</div>
+                <p>質量 $m = 2.0$ kg の物体を、地面から高さ $h = 5.0$ m の位置で静かに手を離した。重力加速度を $g = 10$ m/s² とする。</p>
+                <p>(1) 手を離した瞬間の力学的エネルギーはいくらか。</p>
+                <p>(2) 地面に達する直前の速さはいくらか。</p>
+                
+                <details>
+                    <summary>解答・解説を見る</summary>
+                    <p><strong>(1) 力学的エネルギー</strong></p>
+                    <p>地面を基準（$h=0$）とすると、</p>
+                    <p>運動エネルギー：$K = \frac{1}{2}mv^2 = \frac{1}{2} \times 2.0 \times 0^2 = 0$ J（静かに離したので $v=0$）</p>
+                    <p>位置エネルギー：$U = mgh = 2.0 \times 10 \times 5.0 = 100$ J</p>
+                    <p>よって、力学的エネルギー $= K + U = 0 + 100 = \boxed{100 \text{ J}}$</p>
+                    
+                    <p style="margin-top: 15px;"><strong>(2) 地面に達する直前の速さ</strong></p>
+                    <p>力学的エネルギー保存則より、</p>
+                    <p>$$\frac{1}{2}mv_1^2 + mgh_1 = \frac{1}{2}mv_2^2 + mgh_2$$</p>
+                    <p>$$0 + 100 = \frac{1}{2} \times 2.0 \times v_2^2 + 0$$</p>
+                    <p>$$v_2^2 = 100$$</p>
+                    <p>$$v_2 = \boxed{10 \text{ m/s}}$$</p>
+                </details>
+            </div>
+            
+            <div class="problem-box">
+                <div class="problem-number">問題 2</div>
+                <p>ばね定数 $k = 200$ N/m のばねを、自然長から $x = 0.10$ m 縮めて物体（質量 $m = 0.50$ kg）を置き、静かに手を離した。摩擦はないものとする。</p>
+                <p>(1) 手を離した瞬間に、ばねに蓄えられている弾性エネルギーはいくらか。</p>
+                <p>(2) 物体が自然長の位置を通過するときの速さはいくらか。</p>
+                
+                <details>
+                    <summary>解答・解説を見る</summary>
+                    <p><strong>(1) 弾性エネルギー</strong></p>
+                    <p>$$U' = \frac{1}{2}kx^2 = \frac{1}{2} \times 200 \times (0.10)^2 = \frac{1}{2} \times 200 \times 0.01 = \boxed{1.0 \text{ J}}$$</p>
+                    
+                    <p style="margin-top: 15px;"><strong>(2) 自然長の位置での速さ</strong></p>
+                    <p>自然長の位置では、$x = 0$ なので弾性エネルギーは 0 になります。</p>
+                    <p>力学的エネルギー保存則より、</p>
+                    <p>$$\frac{1}{2}mv_1^2 + \frac{1}{2}kx_1^2 = \frac{1}{2}mv_2^2 + \frac{1}{2}kx_2^2$$</p>
+                    <p>$$0 + 1.0 = \frac{1}{2} \times 0.50 \times v_2^2 + 0$$</p>
+                    <p>$$v_2^2 = \frac{1.0 \times 2}{0.50} = 4.0$$</p>
+                    <p>$$v_2 = \boxed{2.0 \text{ m/s}}$$</p>
+                </details>
+            </div>
+            
+            <div class="problem-box">
+                <div class="problem-number">問題 3</div>
+                <p>位置エネルギーの基準について、以下の問いに答えよ。</p>
+                <p>高さ 10 m のビルの屋上から、質量 1.0 kg のボールを落とす。重力加速度を $g = 10$ m/s² とする。</p>
+                <p>(1) 地面を基準としたとき、屋上でのボールの位置エネルギーはいくらか。</p>
+                <p>(2) 屋上を基準としたとき、地面でのボールの位置エネルギーはいくらか。</p>
+                <p>(3) どちらの基準でも、屋上から地面までの位置エネルギーの「変化量」は同じになることを示せ。</p>
+                
+                <details>
+                    <summary>解答・解説を見る</summary>
+                    <p><strong>(1) 地面を基準としたとき</strong></p>
+                    <p>屋上は地面から $h = 10$ m の高さにあるので、</p>
+                    <p>$$U = mgh = 1.0 \times 10 \times 10 = \boxed{100 \text{ J}}$$</p>
+                    
+                    <p style="margin-top: 15px;"><strong>(2) 屋上を基準としたとき</strong></p>
+                    <p>地面は屋上より 10 m 低い位置にあるので、$h = -10$ m</p>
+                    <p>$$U = mgh = 1.0 \times 10 \times (-10) = \boxed{-100 \text{ J}}$$</p>
+                    
+                    <p style="margin-top: 15px;"><strong>(3) 変化量の比較</strong></p>
+                    <p><u>地面基準の場合：</u></p>
+                    <p>$\Delta U = U_{\text{地面}} - U_{\text{屋上}} = 0 - 100 = -100$ J</p>
+                    <p><u>屋上基準の場合：</u></p>
+                    <p>$\Delta U = U_{\text{地面}} - U_{\text{屋上}} = (-100) - 0 = -100$ J</p>
+                    <p>どちらの基準でも、位置エネルギーの変化量は $-100$ J で<strong>一致する</strong>。</p>
+                    <p style="margin-top: 10px; background: #fff3cd; padding: 10px; border-radius: 5px;">
+                    <strong>結論：</strong>基準の取り方で位置エネルギーの「値」は変わるが、「変化量」は変わらない。だから、力学的エネルギー保存則は基準に依らず成り立つ。
+                    </p>
+                </details>
+            </div>
+        </div>
+        
+        <div id="simulation" class="tab-content">
+            <h2>エネルギー保存シミュレーション</h2>
+            
+            <!-- 自由落下シミュレーション -->
+            <div class="sim-section">
+                <h3 class="sim-title">🍎 自由落下のエネルギー変換</h3>
+                <p style="text-align: center; margin-bottom: 15px;">高さ $h$ から物体を落下させ、位置エネルギーが運動エネルギーに変換される様子を観察しましょう。</p>
+                
+                <div class="sim-formula">
+                    <strong>力学的エネルギー保存の法則：</strong>
+                    $$\frac{1}{2}mv^2 + mgh = \text{一定（初期の位置エネルギー）}$$
+                </div>
+                
+                <div class="sim-container">
+                    <canvas id="fallCanvas"></canvas>
+                </div>
+                
+                <div class="energy-display" id="fallEnergyDisplay">
+                    <div class="energy-bar-container">
+                        <div class="energy-bar-label">🔴 運動エネルギー $K$</div>
+                        <div class="energy-bar">
+                            <div class="energy-bar-fill kinetic" id="fallKineticBar" style="width: 0%;">0%</div>
+                        </div>
+                    </div>
+                    <div class="energy-bar-container">
+                        <div class="energy-bar-label">🔵 位置エネルギー $U$</div>
+                        <div class="energy-bar">
+                            <div class="energy-bar-fill potential" id="fallPotentialBar" style="width: 100%;">100%</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="sim-controls">
+                    <div class="button-group">
+                        <button class="sim-button start" id="fallStartBtn">スタート</button>
+                        <button class="sim-button stop" id="fallStopBtn">ストップ</button>
+                        <button class="sim-button reset" id="fallResetBtn">リセット</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ばね振動シミュレーション -->
+            <div class="sim-section">
+                <h3 class="sim-title">🌀 ばねの振動とエネルギー変換</h3>
+                <p style="text-align: center; margin-bottom: 15px;">摩擦のない水平面上で、ばねにつながれた物体が振動する様子を観察しましょう。</p>
+                
+                <div class="sim-formula">
+                    <strong>力学的エネルギー保存の法則：</strong>
+                    $$\frac{1}{2}mv^2 + \frac{1}{2}kx^2 = \text{一定（初期の弾性エネルギー）}$$
+                </div>
+                
+                <div class="sim-container">
+                    <canvas id="springCanvas"></canvas>
+                </div>
+                
+                <div class="energy-display" id="springEnergyDisplay">
+                    <div class="energy-bar-container">
+                        <div class="energy-bar-label">🔴 運動エネルギー $K$</div>
+                        <div class="energy-bar">
+                            <div class="energy-bar-fill kinetic" id="springKineticBar" style="width: 0%;">0%</div>
+                        </div>
+                    </div>
+                    <div class="energy-bar-container">
+                        <div class="energy-bar-label">🟢 弾性エネルギー $U'$</div>
+                        <div class="energy-bar">
+                            <div class="energy-bar-fill elastic" id="springElasticBar" style="width: 100%;">100%</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="sim-controls">
+                    <div class="button-group">
+                        <button class="sim-button start" id="springStartBtn">スタート</button>
+                        <button class="sim-button stop" id="springStopBtn">ストップ</button>
+                        <button class="sim-button reset" id="springResetBtn">リセット</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+    // --- タブ切り替え機能 ---
+    function openTab(tabName) {
+        var contents = document.getElementsByClassName("tab-content");
+        for (var i = 0; i < contents.length; i++) {
+            contents[i].style.display = "none";
+            contents[i].classList.remove("active");
+        }
+        var buttons = document.getElementsByClassName("tab-btn");
+        for (var i = 0; i < buttons.length; i++) {
+            buttons[i].classList.remove("active");
+        }
+        document.getElementById(tabName).style.display = "block";
+        document.getElementById(tabName).classList.add("active");
+        if (event) {
+            event.currentTarget.classList.add("active");
+        }
+        
+        // シミュレーションタブが開かれたらCanvasをリサイズ
+        if (tabName === 'simulation') {
+            resizeAllCanvases();
+        }
+    }
+
+    // --- 解説図の描画 ---
+    function drawKineticDiagrams() {
+        // 動いている場合
+        const c1 = document.getElementById('kineticDiagram1');
+        const ctx1 = c1.getContext('2d');
+        ctx1.clearRect(0, 0, c1.width, c1.height);
+        
+        // 地面
+        ctx1.fillStyle = '#8B4513';
+        ctx1.fillRect(0, 120, c1.width, 30);
+        
+        // 物体
+        ctx1.fillStyle = '#e74c3c';
+        ctx1.fillRect(80, 80, 40, 40);
+        ctx1.fillStyle = '#fff';
+        ctx1.font = 'bold 16px Arial';
+        ctx1.fillText('m', 92, 107);
+        
+        // 速度矢印
+        ctx1.strokeStyle = '#2ecc71';
+        ctx1.lineWidth = 3;
+        ctx1.beginPath();
+        ctx1.moveTo(130, 100);
+        ctx1.lineTo(200, 100);
+        ctx1.stroke();
+        ctx1.beginPath();
+        ctx1.moveTo(200, 100);
+        ctx1.lineTo(185, 90);
+        ctx1.lineTo(185, 110);
+        ctx1.closePath();
+        ctx1.fillStyle = '#2ecc71';
+        ctx1.fill();
+        
+        ctx1.fillStyle = '#2ecc71';
+        ctx1.font = 'bold 18px Arial';
+        ctx1.fillText('v', 205, 105);
+        
+        // 静止している場合
+        const c2 = document.getElementById('kineticDiagram2');
+        const ctx2 = c2.getContext('2d');
+        ctx2.clearRect(0, 0, c2.width, c2.height);
+        
+        // 地面
+        ctx2.fillStyle = '#8B4513';
+        ctx2.fillRect(0, 120, c2.width, 30);
+        
+        // 物体
+        ctx2.fillStyle = '#95a5a6';
+        ctx2.fillRect(105, 80, 40, 40);
+        ctx2.fillStyle = '#fff';
+        ctx2.font = 'bold 16px Arial';
+        ctx2.fillText('m', 117, 107);
+        
+        // v=0 表示
+        ctx2.fillStyle = '#666';
+        ctx2.font = '16px Arial';
+        ctx2.fillText('v = 0', 155, 100);
+    }
+    
+    function drawPotentialDiagrams() {
+        // 地面基準
+        const c1 = document.getElementById('potentialDiagram1');
+        const ctx1 = c1.getContext('2d');
+        ctx1.clearRect(0, 0, c1.width, c1.height);
+        
+        // 地面
+        ctx1.fillStyle = '#8B4513';
+        ctx1.fillRect(0, 170, c1.width, 30);
+        ctx1.fillStyle = '#333';
+        ctx1.font = '12px Arial';
+        ctx1.fillText('基準 (h=0)', 170, 185);
+        
+        // 基準線
+        ctx1.strokeStyle = '#e74c3c';
+        ctx1.setLineDash([5, 5]);
+        ctx1.beginPath();
+        ctx1.moveTo(0, 170);
+        ctx1.lineTo(c1.width, 170);
+        ctx1.stroke();
+        ctx1.setLineDash([]);
+        
+        // 高さの矢印
+        ctx1.strokeStyle = '#3498db';
+        ctx1.lineWidth = 2;
+        ctx1.beginPath();
+        ctx1.moveTo(50, 170);
+        ctx1.lineTo(50, 60);
+        ctx1.stroke();
+        ctx1.beginPath();
+        ctx1.moveTo(50, 60);
+        ctx1.lineTo(45, 75);
+        ctx1.moveTo(50, 60);
+        ctx1.lineTo(55, 75);
+        ctx1.stroke();
+        ctx1.beginPath();
+        ctx1.moveTo(50, 170);
+        ctx1.lineTo(45, 155);
+        ctx1.moveTo(50, 170);
+        ctx1.lineTo(55, 155);
+        ctx1.stroke();
+        
+        ctx1.fillStyle = '#3498db';
+        ctx1.font = 'bold 16px Arial';
+        ctx1.fillText('h', 55, 120);
+        
+        // 物体
+        ctx1.fillStyle = '#3498db';
+        ctx1.fillRect(80, 40, 35, 35);
+        ctx1.fillStyle = '#fff';
+        ctx1.font = 'bold 14px Arial';
+        ctx1.fillText('m', 90, 63);
+        
+        // U = mgh 表示
+        ctx1.fillStyle = '#333';
+        ctx1.font = '14px Arial';
+        ctx1.fillText('U = mgh > 0', 130, 60);
+        
+        // 高い位置基準
+        const c2 = document.getElementById('potentialDiagram2');
+        const ctx2 = c2.getContext('2d');
+        ctx2.clearRect(0, 0, c2.width, c2.height);
+        
+        // 基準線（上）
+        ctx2.strokeStyle = '#e74c3c';
+        ctx2.setLineDash([5, 5]);
+        ctx2.beginPath();
+        ctx2.moveTo(0, 40);
+        ctx2.lineTo(c2.width, 40);
+        ctx2.stroke();
+        ctx2.setLineDash([]);
+        ctx2.fillStyle = '#333';
+        ctx2.font = '12px Arial';
+        ctx2.fillText('基準 (h=0)', 170, 35);
+        
+        // 地面
+        ctx2.fillStyle = '#8B4513';
+        ctx2.fillRect(0, 170, c2.width, 30);
+        
+        // 高さの矢印（負）
+        ctx2.strokeStyle = '#9b59b6';
+        ctx2.lineWidth = 2;
+        ctx2.beginPath();
+        ctx2.moveTo(50, 40);
+        ctx2.lineTo(50, 150);
+        ctx2.stroke();
+        ctx2.beginPath();
+        ctx2.moveTo(50, 150);
+        ctx2.lineTo(45, 135);
+        ctx2.moveTo(50, 150);
+        ctx2.lineTo(55, 135);
+        ctx2.stroke();
+        
+        ctx2.fillStyle = '#9b59b6';
+        ctx2.font = 'bold 16px Arial';
+        ctx2.fillText("-h'", 55, 100);
+        
+        // 物体
+        ctx2.fillStyle = '#9b59b6';
+        ctx2.fillRect(80, 133, 35, 35);
+        ctx2.fillStyle = '#fff';
+        ctx2.font = 'bold 14px Arial';
+        ctx2.fillText('m', 90, 156);
+        
+        // U < 0 表示
+        ctx2.fillStyle = '#333';
+        ctx2.font = '14px Arial';
+        ctx2.fillText("U = -mgh' < 0", 125, 155);
+    }
+    
+    function drawSpringDiagrams() {
+        const canvases = ['springDiagram1', 'springDiagram2', 'springDiagram3'];
+        const states = ['natural', 'stretched', 'compressed'];
+        
+        canvases.forEach((id, index) => {
+            const c = document.getElementById(id);
+            const ctx = c.getContext('2d');
+            ctx.clearRect(0, 0, c.width, c.height);
+            
+            const state = states[index];
+            const wallX = 20;
+            const naturalEnd = 120;
+            let blockX;
+            
+            if (state === 'natural') blockX = naturalEnd;
+            else if (state === 'stretched') blockX = naturalEnd + 50;
+            else blockX = naturalEnd - 40;
+            
+            // 壁
+            ctx.fillStyle = '#555';
+            ctx.fillRect(wallX - 10, 30, 10, 60);
+            
+            // 床
+            ctx.fillStyle = '#ccc';
+            ctx.fillRect(wallX, 90, 220, 5);
+            
+            // ばね描画
+            drawSpring(ctx, wallX, 60, blockX, 60, state);
+            
+            // 物体
+            ctx.fillStyle = state === 'natural' ? '#95a5a6' : (state === 'stretched' ? '#3498db' : '#e74c3c');
+            ctx.fillRect(blockX, 45, 30, 30);
+            ctx.fillStyle = '#fff';
+            ctx.font = 'bold 12px Arial';
+            ctx.fillText('m', blockX + 8, 65);
+            
+            // 自然長の位置を示す点線
+            if (state !== 'natural') {
+                ctx.strokeStyle = '#27ae60';
+                ctx.setLineDash([3, 3]);
+                ctx.beginPath();
+                ctx.moveTo(naturalEnd + 15, 30);
+                ctx.lineTo(naturalEnd + 15, 95);
+                ctx.stroke();
+                ctx.setLineDash([]);
+                
+                // x の矢印
+                ctx.strokeStyle = '#e67e22';
+                ctx.lineWidth = 2;
+                const arrowStart = naturalEnd + 15;
+                const arrowEnd = blockX + 15;
+                ctx.beginPath();
+                ctx.moveTo(arrowStart, 25);
+                ctx.lineTo(arrowEnd, 25);
+                ctx.stroke();
+                
+                ctx.fillStyle = '#e67e22';
+                ctx.font = 'bold 14px Arial';
+                ctx.fillText('x', (arrowStart + arrowEnd) / 2 - 5, 18);
+            }
+            
+            // 自然長ラベル
+            if (state === 'natural') {
+                ctx.fillStyle = '#27ae60';
+                ctx.font = '12px Arial';
+                ctx.fillText('自然長', naturalEnd - 5, 105);
+            }
+        });
+    }
+    
+    function drawSpring(ctx, x1, y1, x2, y2, state) {
+        const coils = 10;
+        const amplitude = 8;
+        const length = x2 - x1;
+        const step = length / coils;
+        
+        ctx.strokeStyle = state === 'natural' ? '#666' : (state === 'stretched' ? '#3498db' : '#e74c3c');
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        
+        for (let i = 0; i < coils; i++) {
+            const xPos = x1 + step * (i + 0.5);
+            const yOffset = (i % 2 === 0) ? -amplitude : amplitude;
+            ctx.lineTo(xPos, y1 + yOffset);
+        }
+        ctx.lineTo(x2, y2);
+        ctx.stroke();
+    }
+    
+    // --- 自由落下シミュレーション ---
+    const fallCanvas = document.getElementById('fallCanvas');
+    const fallCtx = fallCanvas.getContext('2d');
+    
+    // 固定パラメータ
+    const FALL_PARAMS = {
+        m: 1.0,      // 質量 [kg]
+        g: 10,       // 重力加速度 [m/s²]
+        h0: 50,      // 初期高さ [m]
+        dt: 0.02     // 時間刻み [s]
+    };
+    
+    let fallState = {
+        y: 0,
+        v: 0,
+        t: 0,
+        running: false,
+        animationId: null
+    };
+    
+    function resetFall() {
+        fallState.y = 0;
+        fallState.v = 0;
+        fallState.t = 0;
+        fallState.running = false;
+        if (fallState.animationId) {
+            cancelAnimationFrame(fallState.animationId);
+        }
+        updateFallEnergyBars();
+        drawFallSimulation();
+    }
+    
+    function startFall() {
+        if (!fallState.running && fallState.y < FALL_PARAMS.h0) {
+            fallState.running = true;
+            animateFall();
+        }
+    }
+    
+    function stopFall() {
+        fallState.running = false;
+        if (fallState.animationId) {
+            cancelAnimationFrame(fallState.animationId);
+        }
+    }
+    
+    function animateFall() {
+        if (!fallState.running) return;
+        
+        // 物理計算
+        fallState.v += FALL_PARAMS.g * FALL_PARAMS.dt;
+        fallState.y += fallState.v * FALL_PARAMS.dt;
+        fallState.t += FALL_PARAMS.dt;
+        
+        // 地面に到達したら停止
+        if (fallState.y >= FALL_PARAMS.h0) {
+            fallState.y = FALL_PARAMS.h0;
+            fallState.v = Math.sqrt(2 * FALL_PARAMS.g * FALL_PARAMS.h0);
+            fallState.running = false;
+        }
+        
+        updateFallEnergyBars();
+        drawFallSimulation();
+        
+        if (fallState.running) {
+            fallState.animationId = requestAnimationFrame(animateFall);
+        }
+    }
+    
+    function updateFallEnergyBars() {
+        const h = FALL_PARAMS.h0 - fallState.y;
+        const totalE = FALL_PARAMS.m * FALL_PARAMS.g * FALL_PARAMS.h0;
+        const K = 0.5 * FALL_PARAMS.m * fallState.v * fallState.v;
+        const U = FALL_PARAMS.m * FALL_PARAMS.g * h;
+        
+        const kPercent = Math.round((K / totalE) * 100);
+        const uPercent = Math.round((U / totalE) * 100);
+        
+        const kBar = document.getElementById('fallKineticBar');
+        const uBar = document.getElementById('fallPotentialBar');
+        
+        kBar.style.width = kPercent + '%';
+        kBar.textContent = kPercent + '%';
+        uBar.style.width = uPercent + '%';
+        uBar.textContent = uPercent + '%';
+    }
+    
+    function drawFallSimulation() {
+        const w = fallCanvas.width;
+        const h = fallCanvas.height;
+        fallCtx.clearRect(0, 0, w, h);
+        
+        const margin = 60;
+        const groundY = h - 40;
+        const topY = 40;
+        const trackX = 100;
+        
+        // 背景
+        fallCtx.fillStyle = '#f0f8ff';
+        fallCtx.fillRect(0, 0, w, h);
+        
+        // 空
+        const skyGrad = fallCtx.createLinearGradient(0, 0, 0, groundY);
+        skyGrad.addColorStop(0, '#87CEEB');
+        skyGrad.addColorStop(1, '#E0F7FA');
+        fallCtx.fillStyle = skyGrad;
+        fallCtx.fillRect(0, 0, w, groundY);
+        
+        // 地面
+        fallCtx.fillStyle = '#8B4513';
+        fallCtx.fillRect(0, groundY, w, h - groundY);
+        fallCtx.fillStyle = '#228B22';
+        fallCtx.fillRect(0, groundY, w, 5);
+        
+        // 高さスケール
+        const scaleH = groundY - topY;
+        const pixelPerMeter = scaleH / FALL_PARAMS.h0;
+        
+        // メモリ
+        fallCtx.strokeStyle = '#666';
+        fallCtx.lineWidth = 1;
+        fallCtx.fillStyle = '#333';
+        fallCtx.font = '12px Arial';
+        for (let meter = 0; meter <= FALL_PARAMS.h0; meter += 10) {
+            const yPos = groundY - meter * pixelPerMeter;
+            fallCtx.beginPath();
+            fallCtx.moveTo(trackX - 15, yPos);
+            fallCtx.lineTo(trackX - 5, yPos);
+            fallCtx.stroke();
+            fallCtx.fillText(meter + 'm', trackX - 45, yPos + 4);
+        }
+        
+        // 物体の位置計算
+        const currentH = FALL_PARAMS.h0 - fallState.y;
+        const ballY = groundY - currentH * pixelPerMeter;
+        const ballRadius = 20;
+        
+        // 落下軌跡
+        fallCtx.strokeStyle = 'rgba(231, 76, 60, 0.3)';
+        fallCtx.setLineDash([5, 5]);
+        fallCtx.beginPath();
+        fallCtx.moveTo(trackX + 60, topY);
+        fallCtx.lineTo(trackX + 60, groundY);
+        fallCtx.stroke();
+        fallCtx.setLineDash([]);
+        
+        // 物体（ボール）
+        const ballGrad = fallCtx.createRadialGradient(
+            trackX + 55, ballY - 5, 0,
+            trackX + 60, ballY, ballRadius
+        );
+        ballGrad.addColorStop(0, '#ff6b6b');
+        ballGrad.addColorStop(1, '#c0392b');
+        fallCtx.fillStyle = ballGrad;
+        fallCtx.beginPath();
+        fallCtx.arc(trackX + 60, ballY, ballRadius, 0, Math.PI * 2);
+        fallCtx.fill();
+        
+        // 速度ベクトル
+        if (fallState.v > 0.1) {
+            const vScale = 2;
+            const vLength = Math.min(fallState.v * vScale, 80);
+            fallCtx.strokeStyle = '#27ae60';
+            fallCtx.lineWidth = 3;
+            fallCtx.beginPath();
+            fallCtx.moveTo(trackX + 60, ballY + ballRadius + 5);
+            fallCtx.lineTo(trackX + 60, ballY + ballRadius + 5 + vLength);
+            fallCtx.stroke();
+            
+            // 矢印の先
+            fallCtx.fillStyle = '#27ae60';
+            fallCtx.beginPath();
+            fallCtx.moveTo(trackX + 60, ballY + ballRadius + 5 + vLength + 10);
+            fallCtx.lineTo(trackX + 52, ballY + ballRadius + 5 + vLength);
+            fallCtx.lineTo(trackX + 68, ballY + ballRadius + 5 + vLength);
+            fallCtx.closePath();
+            fallCtx.fill();
+        }
+        
+        // 情報表示
+        const infoX = w - 180;
+        fallCtx.fillStyle = 'rgba(255,255,255,0.9)';
+        fallCtx.fillRect(infoX - 10, 10, 175, 120);
+        fallCtx.strokeStyle = '#667eea';
+        fallCtx.lineWidth = 2;
+        fallCtx.strokeRect(infoX - 10, 10, 175, 120);
+        
+        fallCtx.fillStyle = '#333';
+        fallCtx.font = '14px Arial';
+        fallCtx.fillText('高さ h = ' + currentH.toFixed(1) + ' m', infoX, 35);
+        fallCtx.fillText('速さ v = ' + fallState.v.toFixed(1) + ' m/s', infoX, 60);
+        fallCtx.fillText('時間 t = ' + fallState.t.toFixed(2) + ' s', infoX, 85);
+        
+        const totalE = FALL_PARAMS.m * FALL_PARAMS.g * FALL_PARAMS.h0;
+        fallCtx.fillStyle = '#667eea';
+        fallCtx.font = 'bold 14px Arial';
+        fallCtx.fillText('総エネルギー = ' + totalE.toFixed(0) + ' J', infoX, 115);
+    }
+    
+    // --- ばね振動シミュレーション ---
+    const springCanvas = document.getElementById('springCanvas');
+    const springCtx = springCanvas.getContext('2d');
+    
+    // 固定パラメータ
+    const SPRING_PARAMS = {
+        m: 1.0,      // 質量 [kg]
+        k: 10,       // ばね定数 [N/m]
+        x0: 0.5,     // 初期変位 [m] (縮み)
+        dt: 0.02     // 時間刻み [s]
+    };
+    
+    let springState = {
+        x: -SPRING_PARAMS.x0,  // 初期は縮んだ状態
+        v: 0,
+        t: 0,
+        running: false,
+        animationId: null
+    };
+    
+    function resetSpring() {
+        springState.x = -SPRING_PARAMS.x0;
+        springState.v = 0;
+        springState.t = 0;
+        springState.running = false;
+        if (springState.animationId) {
+            cancelAnimationFrame(springState.animationId);
+        }
+        updateSpringEnergyBars();
+        drawSpringSimulation();
+    }
+    
+    function startSpring() {
+        if (!springState.running) {
+            springState.running = true;
+            animateSpring();
+        }
+    }
+    
+    function stopSpring() {
+        springState.running = false;
+        if (springState.animationId) {
+            cancelAnimationFrame(springState.animationId);
+        }
+    }
+    
+    function animateSpring() {
+        if (!springState.running) return;
+        
+        // 単振動の物理計算 (F = -kx, a = -k/m * x)
+        const omega = Math.sqrt(SPRING_PARAMS.k / SPRING_PARAMS.m);
+        const a = -omega * omega * springState.x;
+        springState.v += a * SPRING_PARAMS.dt;
+        springState.x += springState.v * SPRING_PARAMS.dt;
+        springState.t += SPRING_PARAMS.dt;
+        
+        updateSpringEnergyBars();
+        drawSpringSimulation();
+        
+        springState.animationId = requestAnimationFrame(animateSpring);
+    }
+    
+    function updateSpringEnergyBars() {
+        const totalE = 0.5 * SPRING_PARAMS.k * SPRING_PARAMS.x0 * SPRING_PARAMS.x0;
+        const K = 0.5 * SPRING_PARAMS.m * springState.v * springState.v;
+        const U = 0.5 * SPRING_PARAMS.k * springState.x * springState.x;
+        
+        const kPercent = Math.round((K / totalE) * 100);
+        const uPercent = Math.round((U / totalE) * 100);
+        
+        const kBar = document.getElementById('springKineticBar');
+        const uBar = document.getElementById('springElasticBar');
+        
+        kBar.style.width = kPercent + '%';
+        kBar.textContent = kPercent + '%';
+        uBar.style.width = uPercent + '%';
+        uBar.textContent = uPercent + '%';
+    }
+    
+    function drawSpringSimulation() {
+        const w = springCanvas.width;
+        const h = springCanvas.height;
+        springCtx.clearRect(0, 0, w, h);
+        
+        const centerY = h / 2;
+        const wallX = 50;
+        const naturalX = w / 2;  // 自然長の位置
+        const scale = 150;  // 1m = 150px
+        
+        // 背景
+        springCtx.fillStyle = '#fafafa';
+        springCtx.fillRect(0, 0, w, h);
+        
+        // 床
+        springCtx.fillStyle = '#ddd';
+        springCtx.fillRect(wallX, centerY + 30, w - wallX, 10);
+        
+        // 壁
+        springCtx.fillStyle = '#555';
+        springCtx.fillRect(wallX - 15, centerY - 60, 15, 100);
+        
+        // 斜線パターン
+        springCtx.strokeStyle = '#333';
+        springCtx.lineWidth = 1;
+        for (let i = 0; i < 10; i++) {
+            springCtx.beginPath();
+            springCtx.moveTo(wallX - 15, centerY - 60 + i * 10);
+            springCtx.lineTo(wallX - 5, centerY - 50 + i * 10);
+            springCtx.stroke();
+        }
+        
+        // 自然長の位置を示す点線
+        springCtx.strokeStyle = '#27ae60';
+        springCtx.setLineDash([5, 5]);
+        springCtx.lineWidth = 2;
+        springCtx.beginPath();
+        springCtx.moveTo(naturalX, centerY - 70);
+        springCtx.lineTo(naturalX, centerY + 40);
+        springCtx.stroke();
+        springCtx.setLineDash([]);
+        
+        springCtx.fillStyle = '#27ae60';
+        springCtx.font = '12px Arial';
+        springCtx.fillText('自然長', naturalX - 15, centerY - 75);
+        
+        // 物体の位置
+        const blockX = naturalX + springState.x * scale;
+        const blockSize = 50;
+        
+        // ばね描画
+        drawAnimatedSpring(springCtx, wallX, centerY, blockX - blockSize/2, centerY);
+        
+        // 物体
+        const blockColor = Math.abs(springState.v) > 0.1 ? '#e74c3c' : '#3498db';
+        springCtx.fillStyle = blockColor;
+        springCtx.fillRect(blockX - blockSize/2, centerY - blockSize/2, blockSize, blockSize);
+        springCtx.fillStyle = '#fff';
+        springCtx.font = 'bold 16px Arial';
+        springCtx.fillText('m', blockX - 8, centerY + 6);
+        
+        // 変位 x の矢印（自然長からのずれ）
+        if (Math.abs(springState.x) > 0.01) {
+            springCtx.strokeStyle = '#e67e22';
+            springCtx.lineWidth = 2;
+            springCtx.beginPath();
+            springCtx.moveTo(naturalX, centerY + 55);
+            springCtx.lineTo(blockX, centerY + 55);
+            springCtx.stroke();
+            
+            // 矢印の先
+            const dir = springState.x > 0 ? 1 : -1;
+            springCtx.fillStyle = '#e67e22';
+            springCtx.beginPath();
+            springCtx.moveTo(blockX, centerY + 55);
+            springCtx.lineTo(blockX - dir * 10, centerY + 50);
+            springCtx.lineTo(blockX - dir * 10, centerY + 60);
+            springCtx.closePath();
+            springCtx.fill();
+            
+            springCtx.fillStyle = '#e67e22';
+            springCtx.font = 'bold 14px Arial';
+            springCtx.fillText('x', (naturalX + blockX) / 2 - 5, centerY + 75);
+        }
+        
+        // 速度ベクトル
+        if (Math.abs(springState.v) > 0.05) {
+            const vScale = 30;
+            const vLength = springState.v * vScale;
+            springCtx.strokeStyle = '#9b59b6';
+            springCtx.lineWidth = 3;
+            springCtx.beginPath();
+            springCtx.moveTo(blockX + blockSize/2 + 5, centerY);
+            springCtx.lineTo(blockX + blockSize/2 + 5 + vLength, centerY);
+            springCtx.stroke();
+            
+            // 矢印の先
+            const vDir = springState.v > 0 ? 1 : -1;
+            springCtx.fillStyle = '#9b59b6';
+            springCtx.beginPath();
+            springCtx.moveTo(blockX + blockSize/2 + 5 + vLength + vDir * 10, centerY);
+            springCtx.lineTo(blockX + blockSize/2 + 5 + vLength, centerY - 6);
+            springCtx.lineTo(blockX + blockSize/2 + 5 + vLength, centerY + 6);
+            springCtx.closePath();
+            springCtx.fill();
+            
+            springCtx.fillStyle = '#9b59b6';
+            springCtx.font = 'bold 12px Arial';
+            springCtx.fillText('v', blockX + blockSize/2 + 10 + vLength * 0.5, centerY - 10);
+        }
+        
+        // 情報表示
+        springCtx.fillStyle = 'rgba(255,255,255,0.9)';
+        springCtx.fillRect(w - 180, 10, 170, 100);
+        springCtx.strokeStyle = '#667eea';
+        springCtx.lineWidth = 2;
+        springCtx.strokeRect(w - 180, 10, 170, 100);
+        
+        springCtx.fillStyle = '#333';
+        springCtx.font = '14px Arial';
+        springCtx.fillText('変位 x = ' + springState.x.toFixed(2) + ' m', w - 170, 35);
+        springCtx.fillText('速度 v = ' + springState.v.toFixed(2) + ' m/s', w - 170, 55);
+        springCtx.fillText('時間 t = ' + springState.t.toFixed(2) + ' s', w - 170, 75);
+        
+        const totalE = 0.5 * SPRING_PARAMS.k * SPRING_PARAMS.x0 * SPRING_PARAMS.x0;
+        springCtx.fillStyle = '#667eea';
+        springCtx.font = 'bold 13px Arial';
+        springCtx.fillText('総エネルギー = ' + totalE.toFixed(2) + ' J', w - 170, 100);
+    }
+    
+    function drawAnimatedSpring(ctx, x1, y1, x2, y2) {
+        const coils = 15;
+        const amplitude = 12;
+        const length = x2 - x1;
+        const step = length / coils;
+        
+        // ばねの色を変位に応じて変化
+        const strain = Math.abs(springState.x) / SPRING_PARAMS.x0;
+        const r = Math.min(255, 100 + strain * 155);
+        const g = Math.max(0, 100 - strain * 100);
+        const b = Math.max(0, 100 - strain * 100);
+        
+        ctx.strokeStyle = `rgb(${Math.round(r)}, ${Math.round(g)}, ${Math.round(b)})`;
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        
+        for (let i = 0; i < coils; i++) {
+            const xPos = x1 + step * (i + 0.5);
+            const yOffset = (i % 2 === 0) ? -amplitude : amplitude;
+            ctx.lineTo(xPos, y1 + yOffset);
+        }
+        ctx.lineTo(x2, y2);
+        ctx.stroke();
+    }
+    
+    // --- キャンバスのリサイズ処理 ---
+    function resizeAllCanvases() {
+        // 自由落下キャンバス
+        const fallContainer = fallCanvas.parentElement;
+        fallCanvas.width = fallContainer.clientWidth;
+        fallCanvas.height = 350;
+        drawFallSimulation();
+        
+        // ばねキャンバス
+        const springContainer = springCanvas.parentElement;
+        springCanvas.width = springContainer.clientWidth;
+        springCanvas.height = 250;
+        drawSpringSimulation();
+    }
+    
+    // --- イベントリスナー設定 ---
+    document.getElementById('fallStartBtn').addEventListener('click', startFall);
+    document.getElementById('fallStopBtn').addEventListener('click', stopFall);
+    document.getElementById('fallResetBtn').addEventListener('click', resetFall);
+    document.getElementById('springStartBtn').addEventListener('click', startSpring);
+    document.getElementById('springStopBtn').addEventListener('click', stopSpring);
+    document.getElementById('springResetBtn').addEventListener('click', resetSpring);
+    
+    window.addEventListener('resize', resizeAllCanvases);
+    
+    // --- 初期化 ---
+    window.addEventListener('load', function() {
+        // 解説図を描画
+        drawKineticDiagrams();
+        drawPotentialDiagrams();
+        drawSpringDiagrams();
+        
+        // シミュレーション初期化
+        resizeAllCanvases();
+        resetFall();
+        resetSpring();
+        
+        // MathJaxの再レンダリング
+        if (typeof MathJax !== 'undefined') {
+            MathJax.typesetPromise();
+        }
+    });
+    </script>
+</body>
+</html>

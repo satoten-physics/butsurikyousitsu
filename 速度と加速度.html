@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高校物理 - 速度と加速度</title>
+    <script>
+      window.MathJax = {
+      tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']]
+     }
+     };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        header {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .back-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        h1 {
+            color: #333;
+        }
+        .container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .tab-btn {
+            flex: 1;
+            min-width: 150px;
+            padding: 12px 20px;
+            border: none;
+            background: #f0f0f0;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        .tab-btn.active {
+            background: #667eea;
+            color: white;
+        }
+        .tab-btn:hover {
+            background: #8899f0;
+            color: white;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        h3 {
+            color: #555;
+            margin: 25px 0 15px 0;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #667eea;
+        }
+        .pdf-placeholder {
+            background: #f9f9f9;
+            padding: 40px;
+            text-align: center;
+            border-radius: 5px;
+            color: #666;
+        }
+        
+        /* 解説用スタイル */
+        .lecture-content {
+            line-height: 1.8;
+            color: #333;
+        }
+        .lecture-content p {
+            margin-bottom: 15px;
+        }
+        .point-box {
+            background: linear-gradient(135deg, #e8f4fd 0%, #e0e7ff 100%);
+            border-left: 5px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+        .point-box h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        .formula-box {
+            background: #fff9e6;
+            border: 2px solid #f0c36d;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .warning-box {
+            background: #fff0f0;
+            border-left: 5px solid #e74c3c;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+        .warning-box h4 {
+            color: #e74c3c;
+            margin-bottom: 10px;
+        }
+        .example-box {
+            background: #f0fff0;
+            border: 2px solid #27ae60;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        .example-box h4 {
+            color: #27ae60;
+            margin-bottom: 10px;
+        }
+        
+        /* 問題用スタイル */
+        .problem-section {
+            margin-bottom: 30px;
+        }
+        .problem-section h3 {
+            color: #667eea;
+        }
+        details {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+        summary {
+            cursor: pointer;
+            font-weight: bold;
+            color: #667eea;
+        }
+        details[open] summary {
+            margin-bottom: 15px;
+        }
+        
+        /* シミュレーション用スタイル */
+        #sim-container {
+            background: #f5f5f5;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        #physicsCanvas {
+            display: block;
+            width: 100%;
+            background: white;
+            border-radius: 5px;
+            border: 2px solid #ddd;
+            cursor: grab;
+        }
+        #physicsCanvas:active {
+            cursor: grabbing;
+        }
+        .sim-controls {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .control-group {
+            margin-bottom: 20px;
+        }
+        .control-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        .control-group input[type="range"] {
+            width: 100%;
+            margin: 10px 0;
+        }
+        .value-display {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            min-width: 100px;
+            text-align: center;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .sim-button {
+            flex: 1;
+            min-width: 120px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .sim-button.start {
+            background: #4CAF50;
+            color: white;
+        }
+        .sim-button.start:hover {
+            background: #45a049;
+        }
+        .sim-button.reset {
+            background: #f44336;
+            color: white;
+        }
+        .sim-button.reset:hover {
+            background: #da190b;
+        }
+        .graph-container {
+            margin-top: 20px;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #ddd;
+        }
+        .graph-container h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+            border: none;
+        }
+        #graphCanvas {
+            display: block;
+            width: 100%;
+            border: 1px solid #eee;
+        }
+        
+        /* シミュレーション情報表示 */
+        .sim-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .info-card {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #ddd;
+            text-align: center;
+        }
+        .info-card.average {
+            border-color: #3498db;
+        }
+        .info-card.instant {
+            border-color: #e74c3c;
+        }
+        .info-card h4 {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        .info-card .value {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .info-card.average .value {
+            color: #3498db;
+        }
+        .info-card.instant .value {
+            color: #e74c3c;
+        }
+        .info-card.velocity {
+            border-color: #3498db;
+            transition: border-color 0.3s;
+        }
+        .info-card.velocity.instant-mode {
+            border-color: #e67e22;
+        }
+        .info-card.velocity .value {
+            color: #3498db;
+            transition: color 0.3s;
+        }
+        .info-card.velocity.instant-mode .value {
+            color: #e67e22;
+        }
+        .info-card.velocity h4 {
+            transition: color 0.3s;
+        }
+        .info-card.velocity.instant-mode h4 {
+            color: #e67e22;
+        }
+        
+        .legend-color.secant {
+            background: #3498db;
+            transition: background 0.3s;
+        }
+        .legend-color.secant.instant-mode {
+            background: #e67e22;
+        }
+        .info-card .unit {
+            font-size: 14px;
+            color: #999;
+        }
+        
+        .sim-instruction {
+            background: #e8f4fd;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #2980b9;
+            font-weight: bold;
+        }
+        
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .legend-color {
+            width: 30px;
+            height: 4px;
+            border-radius: 2px;
+        }
+        .legend-color.curve {
+            background: #333;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            header, .container {
+                padding: 15px;
+            }
+            .tab-btn {
+                min-width: 100px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="back-link">← 目次に戻る</a>
+        <h1>速度と加速度</h1>
+    </header>
+    <div class="container">
+        
+        <div class="tabs">
+            <button class="tab-btn active" onclick="openTab('lecture')">解説編</button>
+            <button class="tab-btn" onclick="openTab('problem')">問題編</button>
+            <button class="tab-btn" onclick="openTab('simulation')">シミュレーション</button>
+        </div>
+        
+        <div id="lecture" class="tab-content active">
+            <h2>速度と加速度の基礎</h2>
+            
+            <div class="lecture-content">
+                <h3>1. 速度とは何か</h3>
+                
+                <p>
+                    小学校で習った「速さ」は、移動距離を時間で割ったものでした。例えば、800mを10分で歩けば「分速80m」です。
+                    しかし、これは「平均」の速さであり、実際には歩く速さは一定ではありません。
+                </p>
+                
+                <div class="point-box">
+                    <h4>📌 物理における速度の考え方</h4>
+                    <p>物理では「ある瞬間」での動きを数式で説明していきます。そのために、時間間隔をどんどん短くしていく考え方が重要です。</p>
+                </div>
+                
+                <p>
+                    位置 $\vec{r}$ が時刻 $t_1$ から $t_2$ の間に $\Delta \vec{r}$ だけ変化したとき、速度は次のように定義されます：
+                </p>
+                
+                <div class="formula-box">
+                    <p><strong>速度の定義</strong></p>
+                    $$\vec{v} = \frac{\Delta \vec{r}}{\Delta t} = \frac{\vec{r}_2 - \vec{r}_1}{t_2 - t_1}$$
+                </div>
+                
+                <p>
+                    ここで重要なのは、<strong>時間間隔 $\Delta t$ の取り方</strong>によって意味が変わることです：
+                </p>
+                
+                <div class="example-box">
+                    <h4>💡 平均の速度と瞬間の速度</h4>
+                    <p><strong>時間間隔が長い場合</strong> → 平均の速度（大まかな動きの把握）</p>
+                    <p><strong>時間間隔が短い場合</strong> → 瞬間の速度（その瞬間の正確な動き）</p>
+                    <p>式の形は同じでも、$\Delta t$ を限りなく小さくすると「瞬間の速度」になります。</p>
+                </div>
+                
+                <h3>2. グラフから速度を読み取る</h3>
+                
+                <p>
+                    $x$-$t$ グラフ（位置-時間グラフ）から速度を読み取る方法を理解しましょう。
+                </p>
+                
+                <div class="point-box">
+                    <h4>📌 x-tグラフの傾きと速度</h4>
+                    <p><strong>2点を結ぶ直線の傾き</strong> = 平均の速度</p>
+                    <p><strong>曲線上のある点における接線の傾き</strong> = 瞬間の速度</p>
+                    <p>2点をどんどん近づけていくと、割線（2点を結ぶ直線）が接線に近づきます。これが「瞬間の速度」の概念です。</p>
+                </div>
+                
+                <p>
+                    下のシミュレーションタブで、実際にこの関係を確かめてみましょう！
+                </p>
+                
+                <h3>3. 加速度とは何か</h3>
+                
+                <p>
+                    現実では一定の速度で動くことはほとんどありません。車のように加速したり減速したりします。
+                    この「速度の変化の割合」を<strong>加速度</strong>といいます。
+                </p>
+                
+                <div class="formula-box">
+                    <p><strong>加速度の定義</strong></p>
+                    $$\vec{a} = \frac{\Delta \vec{v}}{\Delta t} = \frac{\vec{v}_2 - \vec{v}_1}{t_2 - t_1}$$
+                    <p>加速度は「1秒あたりの速度変化」を表します。</p>
+                </div>
+                
+                <p>
+                    速度と同様に、時間間隔によって「平均の加速度」と「瞬間の加速度」があります。
+                </p>
+                
+                <h3>4. 速度・加速度はベクトル量</h3>
+                
+                <div class="warning-box">
+                    <h4>⚠️ 重要：ベクトル量であることの意味</h4>
+                    <p>
+                        速度も加速度も<strong>ベクトル量</strong>です。つまり、大きさだけでなく<strong>向き</strong>も持っています。
+                    </p>
+                    <p>
+                        これは非常に重要で、「減速している＝負の加速度」とは限りません。
+                        例えば、負の方向に進んでいる物体が減速するとき、加速度は正になります。
+                    </p>
+                </div>
+                
+                <div class="example-box">
+                    <h4>💡 具体例で考える</h4>
+                    <p><strong>例1：</strong>正の向きに速度 $+5$ m/s で動く物体が、$+3$ m/s になった</p>
+                    <p>→ 速度変化 $\Delta v = 3 - 5 = -2$ m/s → 加速度は負（減速）</p>
+                    <br>
+                    <p><strong>例2：</strong>負の向きに速度 $-5$ m/s で動く物体が、$-3$ m/s になった</p>
+                    <p>→ 速度変化 $\Delta v = -3 - (-5) = +2$ m/s → 加速度は正（でも減速している！）</p>
+                </div>
+                
+                <div class="warning-box">
+                    <h4>⚠️ ベクトルの合成に注意</h4>
+                    <p>
+                        速度や加速度を合成するときは、単純な足し算ではなく<strong>ベクトルの合成</strong>が必要です。
+                        向きが異なる場合は、成分に分解して計算するか、平行四辺形の法則を使います。
+                    </p>
+                    <p>
+                        例えば、北向き 3 m/s と東向き 4 m/s の合成速度は、$7$ m/s ではなく $\sqrt{3^2 + 4^2} = 5$ m/s です。
+                    </p>
+                </div>
+                
+                <h3>5. v-tグラフの読み取り</h3>
+                
+                <p>
+                    $v$-$t$ グラフ（速度-時間グラフ）からも重要な情報が読み取れます：
+                </p>
+                
+                <div class="point-box">
+                    <h4>📌 v-tグラフのポイント</h4>
+                    <p><strong>グラフの傾き</strong> = 加速度</p>
+                    <p><strong>グラフと時間軸で囲まれた面積</strong> = 変位（移動距離ではない！）</p>
+                    <p>※ 時間軸より下の面積は負の変位として計算します。</p>
+                </div>
+                
+                <h3>授業資料</h3>
+                <iframe src="https://drive.google.com/file/d/1rd3AUHNkj-NLM0IEztEdsiVOdPwxD6EA/preview" width="100%" height="500"></iframe>
+            </div>
+        </div>
+        
+        <div id="problem" class="tab-content">
+            <h2>確認問題</h2>
+            
+            <div class="problem-section">
+                <h3>問題1：x-tグラフから速度を求める</h3>
+                <p>
+                    右図は、$x$ 軸上を運動する物体の位置 $x$ [m] と時間 $t$ [s] の関係を表す $x$-$t$ 図である。
+                    曲線は $x = t^2$ で表される放物線である。
+                </p>
+                <p>（1）$t = 0$ s から $t = 4.0$ s までの平均の速度を求めよ。</p>
+                <p>（2）$t = 2.0$ s における瞬間の速度を求めよ。</p>
+                
+                <details>
+                    <summary>解答・解説を見る</summary>
+                    <p><strong>（1）平均の速度</strong></p>
+                    <p>
+                        平均の速度は、2点間の変位を時間で割ったものです。
+                    </p>
+                    <p>
+                        $t = 0$ s のとき $x = 0^2 = 0$ m<br>
+                        $t = 4.0$ s のとき $x = 4.0^2 = 16$ m
+                    </p>
+                    <p>
+                        $$\bar{v} = \frac{\Delta x}{\Delta t} = \frac{16 - 0}{4.0 - 0} = \frac{16}{4.0} = 4.0 \text{ m/s}$$
+                    </p>
+                    <p><strong>答え：4.0 m/s</strong></p>
+                    <br>
+                    <p><strong>（2）瞬間の速度</strong></p>
+                    <p>
+                        $x = t^2$ を時間 $t$ で微分すると、瞬間の速度が得られます。
+                    </p>
+                    <p>
+                        $$v = \frac{dx}{dt} = 2t$$
+                    </p>
+                    <p>
+                        $t = 2.0$ s を代入すると：
+                        $$v = 2 \times 2.0 = 4.0 \text{ m/s}$$
+                    </p>
+                    <p><strong>答え：4.0 m/s</strong></p>
+                    <p>
+                        ※ この問題では偶然、平均速度と瞬間速度が同じ値になりました。
+                        シミュレーションで確認すると、$t = 2.0$ s は $t = 0$ s と $t = 4.0$ s のちょうど中間であり、
+                        放物線ではこのような対称性があることがわかります。
+                    </p>
+                </details>
+            </div>
+            
+            <div class="problem-section">
+                <h3>問題2：加速度の正負と運動の向き</h3>
+                <p>
+                    $x$ 軸上を運動する物体について、以下の各場合における加速度の正負を答えよ。
+                    また、物体が「加速」しているか「減速」しているかも答えよ。
+                </p>
+                <p>（1）速度が $+3$ m/s から $+7$ m/s に変化した。</p>
+                <p>（2）速度が $+5$ m/s から $+2$ m/s に変化した。</p>
+                <p>（3）速度が $-6$ m/s から $-2$ m/s に変化した。</p>
+                <p>（4）速度が $-2$ m/s から $-8$ m/s に変化した。</p>
+                
+                <details>
+                    <summary>解答・解説を見る</summary>
+                    <p>加速度の符号は $a = \frac{\Delta v}{\Delta t}$ で決まります。$\Delta t > 0$ なので、$\Delta v$ の符号で判断できます。</p>
+                    <p>「加速・減速」は速さ（速度の絶対値）が増えるか減るかで判断します。</p>
+                    <br>
+                    <p><strong>（1）</strong>$\Delta v = 7 - 3 = +4$ m/s → <strong>加速度は正</strong></p>
+                    <p>速さ：$3 → 7$ と増加 → <strong>加速</strong></p>
+                    <br>
+                    <p><strong>（2）</strong>$\Delta v = 2 - 5 = -3$ m/s → <strong>加速度は負</strong></p>
+                    <p>速さ：$5 → 2$ と減少 → <strong>減速</strong></p>
+                    <br>
+                    <p><strong>（3）</strong>$\Delta v = -2 - (-6) = +4$ m/s → <strong>加速度は正</strong></p>
+                    <p>速さ：$6 → 2$ と減少 → <strong>減速</strong>（加速度が正でも減速！）</p>
+                    <br>
+                    <p><strong>（4）</strong>$\Delta v = -8 - (-2) = -6$ m/s → <strong>加速度は負</strong></p>
+                    <p>速さ：$2 → 8$ と増加 → <strong>加速</strong>（加速度が負でも加速！）</p>
+                    <br>
+                    <div class="warning-box">
+                        <h4>⚠️ ポイント</h4>
+                        <p>「加速度が正 = 加速」「加速度が負 = 減速」ではありません！</p>
+                        <p>加速度と速度が<strong>同じ符号</strong>なら加速、<strong>逆の符号</strong>なら減速です。</p>
+                    </div>
+                </details>
+            </div>
+            
+            <div class="problem-section">
+                <h3>問題3：ベクトルの合成</h3>
+                <p>
+                    ボートが静水中では東向きに 4.0 m/s の速さで進むことができる。
+                    このボートが、南向きに 3.0 m/s で流れる川を横断するとき、
+                    岸から見たボートの速度の大きさと向きを求めよ。
+                </p>
+                
+                <details>
+                    <summary>解答・解説を見る</summary>
+                    <p>
+                        ボートの速度と川の流れの速度をベクトル合成します。
+                    </p>
+                    <p>
+                        東向きを $x$ 軸正、北向きを $y$ 軸正とすると：<br>
+                        ボートの速度：$\vec{v}_{\text{boat}} = (4.0, 0)$ m/s<br>
+                        川の流れ：$\vec{v}_{\text{river}} = (0, -3.0)$ m/s
+                    </p>
+                    <p>
+                        合成速度：
+                        $$\vec{v} = \vec{v}_{\text{boat}} + \vec{v}_{\text{river}} = (4.0, -3.0) \text{ m/s}$$
+                    </p>
+                    <p>
+                        <strong>速さ（大きさ）：</strong>
+                        $$|\vec{v}| = \sqrt{4.0^2 + 3.0^2} = \sqrt{16 + 9} = \sqrt{25} = 5.0 \text{ m/s}$$
+                    </p>
+                    <p>
+                        <strong>向き：</strong>東から南へ測った角度を $\theta$ とすると
+                        $$\tan\theta = \frac{3.0}{4.0} = 0.75$$
+                        $$\theta = \arctan(0.75) \approx 37°$$
+                    </p>
+                    <p><strong>答え：5.0 m/s、東から南へ約37°の向き</strong></p>
+                    <br>
+                    <div class="point-box">
+                        <h4>📌 ポイント</h4>
+                        <p>速度はベクトル量なので、単純に $4.0 + 3.0 = 7.0$ m/s とはなりません。</p>
+                        <p>ピタゴラスの定理（または三平方の定理）を使ってベクトル合成します。</p>
+                    </div>
+                </details>
+            </div>
+        </div>
+        
+        <div id="simulation" class="tab-content">
+            <h2>平均の速度と瞬間の速度</h2>
+            <p>$x$-$t$ グラフ上で、2点A・Bを結ぶ直線の傾きが速度を表します。時間間隔 $\Delta t$ を小さくしていくと、平均の速度が瞬間の速度に近づきます。</p>
+            
+            <div class="sim-instruction">
+                🖱️ 点A・Bをドラッグ、またはスライダーで動かしてみましょう！<br>
+              ※ ここでは  Δt ≤ 0.1 秒になると「瞬間の速度」と見なします。
+            </div>
+            
+            <div id="sim-container">
+                <canvas id="physicsCanvas"></canvas>
+            </div>
+            
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-color curve"></div>
+                    <span>x = t² のグラフ</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color secant" id="legendLine"></div>
+                    <span id="legendText">2点A・Bを結ぶ直線</span>
+                </div>
+            </div>
+            
+            <div class="sim-info">
+                <div class="info-card">
+                    <h4>点Aの時刻 t<sub>A</sub></h4>
+                    <div class="value" id="tADisplay">2.00</div>
+                    <div class="unit">秒</div>
+                </div>
+                <div class="info-card">
+                    <h4>点Bの時刻 t<sub>B</sub></h4>
+                    <div class="value" id="tBDisplay">4.00</div>
+                    <div class="unit">秒</div>
+                </div>
+                <div class="info-card">
+                    <h4>時間間隔 Δt</h4>
+                    <div class="value" id="dtDisplay">2.00</div>
+                    <div class="unit">秒</div>
+                </div>
+                <div class="info-card velocity" id="velocityCard">
+                    <h4 id="velocityLabel">平均の速度</h4>
+                    <div class="value" id="velocityDisplay">6.00</div>
+                    <div class="unit">m/s</div>
+                </div>
+            </div>
+            
+            <div class="sim-controls">
+                <div class="control-group">
+                    <label>点Aの時刻 (t<sub>A</sub>): <span class="value-display" id="t1Display">2.0 s</span></label>
+                    <input type="range" id="t1Slider" min="0" max="5" value="2.0" step="0.05">
+                </div>
+                
+                <div class="control-group">
+                    <label>点Bの時刻 (t<sub>B</sub>): <span class="value-display" id="t2Display">4.0 s</span></label>
+                    <input type="range" id="t2Slider" min="0" max="5" value="4.0" step="0.05">
+                </div>
+                
+                <div class="button-group">
+                    <button class="sim-button reset" id="resetBtn">リセット</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+    // --- タブ切り替え機能 ---
+    function openTab(tabName) {
+        var contents = document.getElementsByClassName("tab-content");
+        for (var i = 0; i < contents.length; i++) {
+            contents[i].style.display = "none";
+            contents[i].classList.remove("active");
+        }
+        var buttons = document.getElementsByClassName("tab-btn");
+        for (var i = 0; i < buttons.length; i++) {
+            buttons[i].classList.remove("active");
+        }
+        document.getElementById(tabName).style.display = "block";
+        document.getElementById(tabName).classList.add("active");
+        if (event) {
+            event.currentTarget.classList.add("active");
+        }
+        
+        // シミュレーションタブが開かれたら再描画
+        if (tabName === 'simulation') {
+            resizeCanvas();
+            draw();
+        }
+    }
+
+    // --- シミュレーション ---
+    const canvas = document.getElementById('physicsCanvas');
+    const ctx = canvas.getContext('2d');
+    
+    // グラフの設定
+    const margin = { top: 40, right: 40, bottom: 60, left: 70 };
+    let graphWidth, graphHeight;
+    
+    // 物理パラメータ
+    let tA = 2.0;  // 点Aの時刻
+    let tB = 4.0;  // 点Bの時刻
+    
+    // 瞬間速度とみなす閾値
+    const INSTANT_THRESHOLD = 0.1;
+    
+    // x = t^2 の関数
+    function x(t) {
+        return t * t;
+    }
+    
+    // 瞬間の速度（微分）: v = 2t
+    function instantVelocity(t) {
+        return 2 * t;
+    }
+    
+    // ドラッグ状態
+    let isDragging = false;
+    let dragTarget = null; // 'A' or 'B'
+    
+    // スケール変換
+    function toCanvasX(t) {
+        return margin.left + (t / 5) * graphWidth;
+    }
+    
+    function toCanvasY(xVal) {
+        return canvas.height - margin.bottom - (xVal / 25) * graphHeight;
+    }
+    
+    function toGraphT(canvasX) {
+        return ((canvasX - margin.left) / graphWidth) * 5;
+    }
+    
+    // Canvas リサイズ
+    function resizeCanvas() {
+        canvas.width = canvas.parentElement.clientWidth;
+        canvas.height = 400;
+        graphWidth = canvas.width - margin.left - margin.right;
+        graphHeight = canvas.height - margin.top - margin.bottom;
+    }
+    
+    // 描画
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        const dt = Math.abs(tB - tA);
+        const isInstant = dt <= INSTANT_THRESHOLD;
+        
+        // 線の色を決定
+        const lineColor = isInstant ? '#e67e22' : '#3498db';
+        
+        // 背景
+        ctx.fillStyle = '#fafafa';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        // グラフ領域の背景
+        ctx.fillStyle = 'white';
+        ctx.fillRect(margin.left, margin.top, graphWidth, graphHeight);
+        
+        // グリッド線
+        ctx.strokeStyle = '#e0e0e0';
+        ctx.lineWidth = 1;
+        
+        // 縦のグリッド（t軸）
+        for (let t = 0; t <= 5; t += 1) {
+            const cx = toCanvasX(t);
+            ctx.beginPath();
+            ctx.moveTo(cx, margin.top);
+            ctx.lineTo(cx, canvas.height - margin.bottom);
+            ctx.stroke();
+        }
+        
+        // 横のグリッド（x軸）
+        for (let xVal = 0; xVal <= 25; xVal += 5) {
+            const cy = toCanvasY(xVal);
+            ctx.beginPath();
+            ctx.moveTo(margin.left, cy);
+            ctx.lineTo(canvas.width - margin.right, cy);
+            ctx.stroke();
+        }
+        
+        // 軸
+        ctx.strokeStyle = '#333';
+        ctx.lineWidth = 2;
+        
+        // x軸（時間軸）
+        ctx.beginPath();
+        ctx.moveTo(margin.left, canvas.height - margin.bottom);
+        ctx.lineTo(canvas.width - margin.right, canvas.height - margin.bottom);
+        ctx.stroke();
+        
+        // y軸（位置軸）
+        ctx.beginPath();
+        ctx.moveTo(margin.left, margin.top);
+        ctx.lineTo(margin.left, canvas.height - margin.bottom);
+        ctx.stroke();
+        
+        // 軸ラベル
+        ctx.fillStyle = '#333';
+        ctx.font = '16px sans-serif';
+        ctx.textAlign = 'center';
+        
+        // t軸の目盛り
+        for (let t = 0; t <= 5; t += 1) {
+            const cx = toCanvasX(t);
+            ctx.fillText(t.toString(), cx, canvas.height - margin.bottom + 25);
+        }
+        ctx.fillText('t [s]', canvas.width - margin.right + 20, canvas.height - margin.bottom + 5);
+        
+        // x軸の目盛り
+        ctx.textAlign = 'right';
+        for (let xVal = 0; xVal <= 25; xVal += 5) {
+            const cy = toCanvasY(xVal);
+            ctx.fillText(xVal.toString(), margin.left - 10, cy + 5);
+        }
+        ctx.save();
+        ctx.translate(20, margin.top + graphHeight / 2);
+        ctx.rotate(-Math.PI / 2);
+        ctx.textAlign = 'center';
+        ctx.fillText('x [m]', 0, 0);
+        ctx.restore();
+        
+        // x = t² のグラフを描画
+        ctx.strokeStyle = '#333';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        for (let t = 0; t <= 5; t += 0.05) {
+            const cx = toCanvasX(t);
+            const cy = toCanvasY(x(t));
+            if (t === 0) {
+                ctx.moveTo(cx, cy);
+            } else {
+                ctx.lineTo(cx, cy);
+            }
+        }
+        ctx.stroke();
+        
+        // 2点を結ぶ直線（割線）を描画
+        // Canvasクリッピングを使用してグラフ領域内のみ描画
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(margin.left, margin.top, graphWidth, graphHeight);
+        ctx.clip();
+        
+        if (dt > 0.001) {
+            const slope = (x(tB) - x(tA)) / (tB - tA);
+            ctx.strokeStyle = lineColor;
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            
+            // 直線をグラフ範囲外まで延長（クリッピングで自動的に切り取られる）
+            const lineT1 = -1;
+            const lineT2 = 6;
+            const lineX1 = x(tA) + slope * (lineT1 - tA);
+            const lineX2 = x(tA) + slope * (lineT2 - tA);
+            
+            ctx.moveTo(toCanvasX(lineT1), toCanvasY(lineX1));
+            ctx.lineTo(toCanvasX(lineT2), toCanvasY(lineX2));
+            ctx.stroke();
+        } else {
+            // dtがほぼ0の場合は中点での接線を描画
+            const midT = (tA + tB) / 2;
+            const slope = instantVelocity(midT);
+            ctx.strokeStyle = lineColor;
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            
+            const lineT1 = -1;
+            const lineT2 = 6;
+            const lineX1 = x(midT) + slope * (lineT1 - midT);
+            const lineX2 = x(midT) + slope * (lineT2 - midT);
+            
+            ctx.moveTo(toCanvasX(lineT1), toCanvasY(lineX1));
+            ctx.lineTo(toCanvasX(lineT2), toCanvasY(lineX2));
+            ctx.stroke();
+        }
+        
+        ctx.restore();
+        
+        // 点Aを描画
+        ctx.fillStyle = '#e74c3c';
+        ctx.beginPath();
+        ctx.arc(toCanvasX(tA), toCanvasY(x(tA)), 10, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = 'white';
+        ctx.font = 'bold 12px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('A', toCanvasX(tA), toCanvasY(x(tA)) + 4);
+        
+        // 点Bを描画
+        ctx.fillStyle = '#3498db';
+        ctx.beginPath();
+        ctx.arc(toCanvasX(tB), toCanvasY(x(tB)), 10, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = 'white';
+        ctx.font = 'bold 12px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('B', toCanvasX(tB), toCanvasY(x(tB)) + 4);
+        
+        // 点の座標を表示
+        ctx.font = '14px sans-serif';
+        
+        // 点Aのラベル位置調整
+        ctx.fillStyle = '#e74c3c';
+        const labelAX = toCanvasX(tA) + 15;
+        const labelAY = toCanvasY(x(tA)) - 10;
+        ctx.textAlign = 'left';
+        ctx.fillText(`A (${tA.toFixed(1)}, ${x(tA).toFixed(1)})`, labelAX, labelAY);
+        
+        // 点Bのラベル位置調整
+        ctx.fillStyle = '#3498db';
+        const labelBX = toCanvasX(tB) + 15;
+        const labelBY = toCanvasY(x(tB)) + 20;
+        ctx.fillText(`B (${tB.toFixed(1)}, ${x(tB).toFixed(1)})`, labelBX, labelBY);
+        
+        // 情報更新
+        updateInfo();
+    }
+    
+    // 情報表示の更新
+    function updateInfo() {
+        const dt = Math.abs(tB - tA);
+        const isInstant = dt <= INSTANT_THRESHOLD;
+        
+        // 速度計算
+        let velocity;
+        if (dt > 0.001) {
+            velocity = (x(tB) - x(tA)) / (tB - tA);
+        } else {
+            // ほぼ同じ点の場合は中点での瞬間速度
+            velocity = instantVelocity((tA + tB) / 2);
+        }
+        
+        // 表示更新
+        document.getElementById('tADisplay').textContent = tA.toFixed(2);
+        document.getElementById('tBDisplay').textContent = tB.toFixed(2);
+        document.getElementById('dtDisplay').textContent = dt.toFixed(2);
+        document.getElementById('velocityDisplay').textContent = velocity.toFixed(2);
+        
+        // 速度ラベルと色の切り替え
+        const velocityCard = document.getElementById('velocityCard');
+        const velocityLabel = document.getElementById('velocityLabel');
+        const legendLine = document.getElementById('legendLine');
+        const legendText = document.getElementById('legendText');
+        
+        if (isInstant) {
+            velocityCard.classList.add('instant-mode');
+            velocityLabel.textContent = '瞬間の速度';
+            legendLine.classList.add('instant-mode');
+            legendText.textContent = '接線（瞬間の速度）';
+        } else {
+            velocityCard.classList.remove('instant-mode');
+            velocityLabel.textContent = '平均の速度';
+            legendLine.classList.remove('instant-mode');
+            legendText.textContent = '割線（平均の速度）';
+        }
+        
+        // スライダーの表示も更新
+        document.getElementById('t1Display').textContent = tA.toFixed(2) + ' s';
+        document.getElementById('t2Display').textContent = tB.toFixed(2) + ' s';
+    }
+    
+    // 点との距離を計算
+    function getDistanceToPoint(mouseX, mouseY, t) {
+        const px = toCanvasX(t);
+        const py = toCanvasY(x(t));
+        return Math.sqrt((mouseX - px) ** 2 + (mouseY - py) ** 2);
+    }
+    
+    // マウスイベント
+    canvas.addEventListener('mousedown', function(e) {
+        const rect = canvas.getBoundingClientRect();
+        const mouseX = e.clientX - rect.left;
+        const mouseY = e.clientY - rect.top;
+        
+        const distA = getDistanceToPoint(mouseX, mouseY, tA);
+        const distB = getDistanceToPoint(mouseX, mouseY, tB);
+        
+        if (distA < 20 || distB < 20) {
+            isDragging = true;
+            // より近い点をドラッグ対象にする
+            dragTarget = distA < distB ? 'A' : 'B';
+            canvas.style.cursor = 'grabbing';
+        }
+    });
+    
+    canvas.addEventListener('mousemove', function(e) {
+        const rect = canvas.getBoundingClientRect();
+        const mouseX = e.clientX - rect.left;
+        const mouseY = e.clientY - rect.top;
+        
+        if (isDragging) {
+            let newT = toGraphT(mouseX);
+            newT = Math.max(0, Math.min(5, newT));
+            
+            if (dragTarget === 'A') {
+                tA = newT;
+                document.getElementById('t1Slider').value = tA;
+            } else {
+                tB = newT;
+                document.getElementById('t2Slider').value = tB;
+            }
+            draw();
+        } else {
+            // ホバー時のカーソル変更
+            const distA = getDistanceToPoint(mouseX, mouseY, tA);
+            const distB = getDistanceToPoint(mouseX, mouseY, tB);
+            canvas.style.cursor = (distA < 20 || distB < 20) ? 'grab' : 'default';
+        }
+    });
+    
+    canvas.addEventListener('mouseup', function() {
+        isDragging = false;
+        dragTarget = null;
+        canvas.style.cursor = 'default';
+    });
+    
+    canvas.addEventListener('mouseleave', function() {
+        isDragging = false;
+        dragTarget = null;
+        canvas.style.cursor = 'default';
+    });
+    
+    // タッチイベント（モバイル対応）
+    canvas.addEventListener('touchstart', function(e) {
+        e.preventDefault();
+        const rect = canvas.getBoundingClientRect();
+        const touch = e.touches[0];
+        const touchX = touch.clientX - rect.left;
+        const touchY = touch.clientY - rect.top;
+        
+        const distA = getDistanceToPoint(touchX, touchY, tA);
+        const distB = getDistanceToPoint(touchX, touchY, tB);
+        
+        if (distA < 30 || distB < 30) {
+            isDragging = true;
+            dragTarget = distA < distB ? 'A' : 'B';
+        }
+    });
+    
+    canvas.addEventListener('touchmove', function(e) {
+        e.preventDefault();
+        if (isDragging) {
+            const rect = canvas.getBoundingClientRect();
+            const touch = e.touches[0];
+            const touchX = touch.clientX - rect.left;
+            
+            let newT = toGraphT(touchX);
+            newT = Math.max(0, Math.min(5, newT));
+            
+            if (dragTarget === 'A') {
+                tA = newT;
+                document.getElementById('t1Slider').value = tA;
+            } else {
+                tB = newT;
+                document.getElementById('t2Slider').value = tB;
+            }
+            draw();
+        }
+    });
+    
+    canvas.addEventListener('touchend', function() {
+        isDragging = false;
+        dragTarget = null;
+    });
+    
+    // スライダーイベント
+    document.getElementById('t1Slider').addEventListener('input', function() {
+        tA = parseFloat(this.value);
+        draw();
+    });
+    
+    document.getElementById('t2Slider').addEventListener('input', function() {
+        tB = parseFloat(this.value);
+        draw();
+    });
+    
+    // リセットボタン
+    document.getElementById('resetBtn').addEventListener('click', function() {
+        tA = 2.0;
+        tB = 4.0;
+        document.getElementById('t1Slider').value = tA;
+        document.getElementById('t2Slider').value = tB;
+        draw();
+    });
+    
+    // ウィンドウリサイズ対応
+    window.addEventListener('resize', function() {
+        resizeCanvas();
+        draw();
+    });
+    
+    // 初期化
+    resizeCanvas();
+    draw();
+    </script>
+</body>
+</html>

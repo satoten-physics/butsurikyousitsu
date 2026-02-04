@@ -1,0 +1,1393 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高校物理 - 波特有の性質(波がぶつかったら)</title>
+    <script>
+      window.MathJax = {
+      tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']]
+     }
+     };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        header {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .back-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        h1 {
+            color: #333;
+        }
+        .container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .tab-btn {
+            flex: 1;
+            min-width: 150px;
+            padding: 12px 20px;
+            border: none;
+            background: #f0f0f0;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        .tab-btn.active {
+            background: #667eea;
+            color: white;
+        }
+        .tab-btn:hover {
+            background: #8899f0;
+            color: white;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        h3 {
+            color: #764ba2;
+            margin: 25px 0 15px 0;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #eee;
+        }
+        h4 {
+            color: #555;
+            margin: 20px 0 10px 0;
+        }
+        .pdf-placeholder {
+            background: #f9f9f9;
+            padding: 40px;
+            text-align: center;
+            border-radius: 5px;
+            color: #666;
+        }
+        
+        /* 解説用スタイル */
+        .lecture-content {
+            line-height: 1.8;
+            color: #333;
+        }
+        .lecture-content p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+        .point-box {
+            background: linear-gradient(135deg, #e8f4fc 0%, #f0e8fc 100%);
+            border-left: 5px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+        .point-box h4 {
+            color: #667eea;
+            margin-top: 0;
+        }
+        .formula-box {
+            background: #fff9e6;
+            border: 2px solid #ffc107;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .comparison-table th, .comparison-table td {
+            border: 1px solid #ddd;
+            padding: 15px;
+            text-align: center;
+        }
+        .comparison-table th {
+            background: #667eea;
+            color: white;
+        }
+        .comparison-table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+        .image-placeholder {
+            background: #f0f0f0;
+            padding: 30px;
+            text-align: center;
+            border-radius: 10px;
+            margin: 15px 0;
+            color: #666;
+            font-style: italic;
+        }
+        .note-box {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        .note-box::before {
+            content: "💡 ";
+        }
+
+        /* 問題用スタイル */
+        .problem-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 10px;
+        }
+        .problem-section h4 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        details {
+            margin-top: 15px;
+            padding: 15px;
+            background: #e8f4fc;
+            border-radius: 5px;
+        }
+        summary {
+            cursor: pointer;
+            font-weight: bold;
+            color: #667eea;
+        }
+        details[open] summary {
+            margin-bottom: 15px;
+        }
+        
+        /* シミュレーション用スタイル */
+        .sim-tabs {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        .sim-tab-btn {
+            flex: 1;
+            min-width: 120px;
+            padding: 10px 15px;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        .sim-tab-btn.active {
+            background: #667eea;
+            color: white;
+        }
+        .sim-tab-btn:hover {
+            background: #8899f0;
+            color: white;
+        }
+        .sim-panel {
+            display: none;
+        }
+        .sim-panel.active {
+            display: block;
+        }
+        #sim-container {
+            background: #f5f5f5;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .canvas-wrapper {
+            background: white;
+            border-radius: 5px;
+            border: 2px solid #ddd;
+            overflow: hidden;
+        }
+        canvas {
+            display: block;
+            width: 100%;
+        }
+        .sim-controls {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+        .control-group {
+            margin-bottom: 20px;
+        }
+        .control-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        .control-group input[type="range"] {
+            width: 100%;
+            margin: 10px 0;
+        }
+        .value-display {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            min-width: 100px;
+            text-align: center;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .sim-button {
+            flex: 1;
+            min-width: 120px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .sim-button.start {
+            background: #4CAF50;
+            color: white;
+        }
+        .sim-button.start:hover {
+            background: #45a049;
+        }
+        .sim-button.reset {
+            background: #f44336;
+            color: white;
+        }
+        .sim-button.reset:hover {
+            background: #da190b;
+        }
+        .toggle-group {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        .toggle-btn {
+            flex: 1;
+            padding: 10px 20px;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            cursor: pointer;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        .toggle-btn.active {
+            background: #667eea;
+            color: white;
+        }
+        .legend {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin: 15px 0;
+            padding: 10px;
+            background: #f0f0f0;
+            border-radius: 5px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .legend-color {
+            width: 30px;
+            height: 4px;
+            border-radius: 2px;
+        }
+        .info-display {
+            background: #e8f4fc;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+        }
+        .info-display p {
+            margin: 5px 0;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            header, .container {
+                padding: 15px;
+            }
+            .tab-btn {
+                min-width: 100px;
+                font-size: 14px;
+            }
+            .sim-tab-btn {
+                min-width: 80px;
+                font-size: 12px;
+                padding: 8px 10px;
+            }
+            .comparison-table th, .comparison-table td {
+                padding: 10px 5px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="back-link">← 目次に戻る</a>
+        <h1>波特有の性質（波がぶつかったら）</h1>
+    </header>
+    <div class="container">
+        
+        <div class="tabs">
+            <button class="tab-btn active" onclick="openTab('lecture')">解説編</button>
+            <button class="tab-btn" onclick="openTab('problem')">問題編</button>
+            <button class="tab-btn" onclick="openTab('simulation')">シミュレーション</button>
+        </div>
+        
+        <!-- ==================== 解説タブ ==================== -->
+        <div id="lecture" class="tab-content active">
+            <h2>授業資料</h2>
+            <iframe src="https://drive.google.com/file/d/1rd3AUHNkj-NLM0IEztEdsiVOdPwxD6EA/preview" width="100%" height="500"></iframe>
+            
+            <div class="lecture-content">
+                <h3>1. 波がぶつかるとどうなる？ ～重ね合わせの原理～</h3>
+                
+                <p>波は振動のエネルギーが伝わっていく現象です。では、2つの波が出会ったとき、それぞれの波はどうなるのでしょうか？</p>
+                
+                <p>ボールが2つぶつかれば跳ね返りますが、波の場合は違います。2つの波がぶつかると、その場所での変位は<strong>足し合わされます</strong>。これを<strong>重ね合わせの原理</strong>といいます。</p>
+                
+                <div class="formula-box">
+                    <h4>重ね合わせの原理</h4>
+                    <p>ある地点で波Aの変位が $y_A$、波Bの変位が $y_B$ のとき、合成波の変位 $y$ は</p>
+                    $$ y = y_A + y_B $$
+                </div>
+                
+                <div class="point-box">
+                    <h4>💡 ポイント：変位の「向き」に注意！</h4>
+                    <p>変位には正（上向き）と負（下向き）があります。</p>
+                    <ul style="margin-left: 20px; margin-top: 10px;">
+                        <li>両方が正（山と山）→ 変位は大きくなる（<strong>強め合う</strong>）</li>
+                        <li>一方が正(山)、一方が負(谷)→ 変位はゼロになる（<strong>完全に弱め合う</strong>）</li>
+                    </ul>
+                </div>
+                
+                <h4>波の独立性</h4>
+                <p>重ね合わせの後、2つの波はどうなるでしょうか？実は、<strong>何事もなかったかのように、そのまま通り過ぎていきます</strong>。これを<strong>波の独立性</strong>といいます。</p>
+                <p>ボールとは違い、波同士は互いに影響を与えずにすり抜けていくのです。これは波特有の性質であり、光や音が交差しても混ざらない理由でもあります。</p>
+                
+                <h3>2. 波の反射 ～固定端と自由端～</h3>
+                
+                <p>波は壁や障害物に当たると一部の振動のエネルギーを跳ね返します。これを<strong>反射</strong>といいます。</p>
+                <p style="font-size: 14px; color: #666; margin-top: -10px;">※一部を反射してそれ以外はそのまま進んで行ったり、音や熱に変わったりします。</p>
+                
+                <div class="formula-box">
+                    <h4>反射の法則</h4>
+                    <p>入射角を $\theta$、反射角を $\theta'$ とすると</p>
+                    $$ \theta = \theta' $$
+                    <p style="font-size: 14px; color: #666; margin-top: 10px;">※入射角・反射角は、反射面に垂直な線（法線）との角度</p>
+                </div>
+                
+                <p>ここで重要なのは、<strong>反射する場所（端）の状態</strong>によって、反射波の様子が大きく変わるということです。</p>
+                
+                <h4>🔒 固定端反射</h4>
+                <p>媒質の端が固定されて動けない場合の反射です。例えば、ロープの端を壁に固定した場合がこれにあたります。</p>
+                
+                <div class="point-box">
+                    <h4>固定端反射の特徴</h4>
+                    <ul style="margin-left: 20px;">
+                        <li>端は動けないので、常に変位がゼロ</li>
+                        <li>入射波の山は、反射すると<strong>谷</strong>になって返ってくる</li>
+                        <li>位相が<strong> $\pi$（180°）ずれる</strong></li>
+                        <li>イメージ：「山で入射したら、谷で返る」</li>
+                    </ul>
+                </div>
+                
+                <h4>🔓 自由端反射</h4>
+                <p>媒質の端が自由に動ける場合の反射です。例えば、ロープの端にリングをつけて棒に通し、自由に上下できるようにした場合です。</p>
+                
+                <div class="point-box">
+                    <h4>自由端反射の特徴</h4>
+                    <ul style="margin-left: 20px;">
+                        <li>端は自由に動けるので、変位が最大になりやすい</li>
+                        <li>入射波の山は、反射しても<strong>山</strong>のまま返ってくる</li>
+                        <li>位相は<strong>ずれない（そのまま）</strong></li>
+                        <li>イメージ：「そのまま跳ね返る」</li>
+                    </ul>
+                </div>
+                
+                <table class="comparison-table">
+                    <tr>
+                        <th></th>
+                        <th>固定端反射</th>
+                        <th>自由端反射</th>
+                    </tr>
+                    <tr>
+                        <td><strong>端の状態</strong></td>
+                        <td>動けない（固定）</td>
+                        <td>自由に動ける</td>
+                    </tr>
+                    <tr>
+                        <td><strong>端の変位</strong></td>
+                        <td>常にゼロ</td>
+                        <td>最大（入射波の2倍）</td>
+                    </tr>
+                    <tr>
+                        <td><strong>位相のずれ</strong></td>
+                        <td>$\pi$（逆位相）</td>
+                        <td>なし（同位相）</td>
+                    </tr>
+                    <tr>
+                        <td><strong>山の反射</strong></td>
+                        <td>谷になる</td>
+                        <td>山のまま</td>
+                    </tr>
+                    <tr>
+                        <td><strong>例</strong></td>
+                        <td>壁に固定したロープ</td>
+                        <td>リングで吊るしたロープ</td>
+                    </tr>
+                </table>
+                
+                <h3>3. 定常波（定在波）</h3>
+                
+                <p>波が反射すると、入射波と反射波が同じ媒質中を逆向きに進むことになります。このとき、特別な条件が揃うと、とても不思議な現象が起こります。</p>
+                
+                <div class="formula-box">
+                    <h4>定常波とは</h4>
+                    <p><strong>同じ波長・同じ振幅</strong>で<strong>逆向きに進む</strong>2つの波が重なったとき、<br>
+                    <strong>進まないで、その場で振動し続ける波</strong>が現れます。<br>
+                    これを<strong>定常波（定在波）</strong>といいます。</p>
+                </div>
+                
+                <h4>定常波の性質</h4>
+                
+                <div class="point-box">
+                    <h4>性質1：腹と節</h4>
+                    <p>定常波では、場所によって振動の大きさが異なります。</p>
+                    <ul style="margin-left: 20px; margin-top: 10px;">
+                        <li><strong>腹（はら）</strong>：最も大きく振動する点。振幅は元の波の<strong>2倍</strong>になる</li>
+                        <li><strong>節（ふし）</strong>：全く振動しない点。常に変位がゼロ</li>
+                    </ul>
+                    <p style="margin-top: 10px;">腹と腹の間隔、節と節の間隔はともに $\dfrac{\lambda}{2}$（半波長）です。</p>
+                </div>
+                
+                <div class="point-box">
+                    <h4>性質2：波は「進まない」ように見える</h4>
+                    <p>普通の波（進行波）は山や谷が移動していきますが、定常波では山と谷の位置が変わりません。同じ場所で振動を繰り返すだけです。だから「定まって常にある波」＝「定常波」というのです。</p>
+                </div>
+                
+                <div class="point-box">
+                    <h4>性質3：振幅が2倍になる理由</h4>
+                    <p>腹の位置では、2つの波が常に強め合います。振幅 $A$ の波が2つ重なるので、最大変位は $2A$ になります。</p>
+                </div>
+                
+                <h4>定常波ができる条件</h4>
+                <p>自然界で定常波ができるのは簡単ではありません。以下の3つの条件が必要です。</p>
+                <ol style="margin-left: 25px; line-height: 2;">
+                    <li>2つの波が<strong>逆向き</strong>に進むこと</li>
+                    <li>2つの波の<strong>振幅が同じ</strong>であること</li>
+                    <li>2つの波の<strong>波長（振動数）が同じ</strong>であること</li>
+                </ol>
+                
+                <div class="note-box">
+                    <strong>入射波と反射波の関係</strong><br>
+                    実は、この3条件が自然に揃うのが「入射波と反射波」の関係です。反射波は入射波から生まれるので、振幅・波長・速さがすべて同じで、進行方向だけが逆になります。弦楽器や管楽器では定常波が重要な役割を果たします。
+                </div>
+                
+                <h4>固定端・自由端と定常波</h4>
+                <p>固定端では端が節に、自由端では端が腹になります。これは反射の性質から理解できます。</p>
+                <ul style="margin-left: 25px; line-height: 2;">
+                    <li><strong>固定端</strong>：端は動けない → 変位は常にゼロ → <strong>節</strong>になる</li>
+                    <li><strong>自由端</strong>：端は自由に動ける → 変位が最大 → <strong>腹</strong>になる</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- ==================== 問題タブ ==================== -->
+        <div id="problem" class="tab-content">
+            <h2>確認問題</h2>
+            
+            <div class="problem-section">
+                <h4>問題1：重ね合わせの原理</h4>
+                <p>ある点において、波Aによる変位が $+3$ cm、波Bによる変位が $-5$ cm であった。この点での合成波の変位を求めよ。</p>
+                <details>
+                    <summary>解答・解説を見る</summary>
+                    <p><strong>解答：$-2$ cm</strong></p>
+                    <p>重ね合わせの原理より、合成波の変位は各波の変位の和になります。</p>
+                    $$ y = y_A + y_B = (+3) + (-5) = -2 \text{ cm} $$
+                    <p>変位が負なので、この点では媒質は基準位置より下（谷の方向）に変位しています。</p>
+                </details>
+            </div>
+            
+            <div class="problem-section">
+                <h4>問題2：固定端反射と自由端反射</h4>
+                <p>次の文章の（ア）～（エ）に入る適切な語句を答えよ。</p>
+                <p style="margin: 15px 0; padding: 15px; background: #f0f0f0; border-radius: 5px;">
+                    ロープの端を壁に固定して波を送ると、（ア）反射が起こり、入射波と反射波の位相は（イ）ずれる。一方、ロープの端が自由に動ける場合は（ウ）反射となり、位相は（エ）。
+                </p>
+                <details>
+                    <summary>解答・解説を見る</summary>
+                    <p><strong>解答</strong></p>
+                    <ul style="margin-left: 20px;">
+                        <li>（ア）固定端</li>
+                        <li>（イ）$\pi$（または180°、半波長分）</li>
+                        <li>（ウ）自由端</li>
+                        <li>（エ）ずれない（または同位相、0）</li>
+                    </ul>
+                    <p style="margin-top: 15px;"><strong>解説</strong></p>
+                    <p>固定端反射では、端が動けないため変位が常にゼロになる必要があります。そのため、入射波と反射波が打ち消し合うように、反射波は逆位相（位相が $\pi$ ずれる）になります。</p>
+                    <p>自由端反射では、端が自由に動けるため、位相のずれは生じません。入射波の山は山のまま反射されます。</p>
+                </details>
+            </div>
+            
+            <div class="problem-section">
+                <h4>問題3：定常波</h4>
+                <p>波長 $\lambda = 0.60$ m の波によって定常波が生じている。このとき、隣り合う腹と腹の間隔、および腹と節の間隔をそれぞれ求めよ。</p>
+                <details>
+                    <summary>解答・解説を見る</summary>
+                    <p><strong>解答</strong></p>
+                    <ul style="margin-left: 20px;">
+                        <li>腹と腹の間隔：$0.30$ m</li>
+                        <li>腹と節の間隔：$0.15$ m</li>
+                    </ul>
+                    <p style="margin-top: 15px;"><strong>解説</strong></p>
+                    <p>定常波において、</p>
+                    <ul style="margin-left: 20px;">
+                        <li>隣り合う腹と腹の間隔 ＝ 隣り合う節と節の間隔 ＝ $\dfrac{\lambda}{2}$</li>
+                        <li>腹と節の間隔 ＝ $\dfrac{\lambda}{4}$</li>
+                    </ul>
+                    <p style="margin-top: 10px;">したがって、</p>
+                    $$ \text{腹と腹の間隔} = \frac{\lambda}{2} = \frac{0.60}{2} = 0.30 \text{ m} $$
+                    $$ \text{腹と節の間隔} = \frac{\lambda}{4} = \frac{0.60}{4} = 0.15 \text{ m} $$
+                </details>
+            </div>
+        </div>
+        
+        <!-- ==================== シミュレーションタブ ==================== -->
+        <div id="simulation" class="tab-content">
+            <h2>シミュレーション</h2>
+            
+            <div class="sim-tabs">
+                <button class="sim-tab-btn active" onclick="openSimTab('superposition')">重ね合わせ</button>
+                <button class="sim-tab-btn" onclick="openSimTab('standing')">定常波</button>
+                <button class="sim-tab-btn" onclick="openSimTab('reflection')">反射</button>
+            </div>
+            
+            <!-- ===== 重ね合わせシミュレーション ===== -->
+            <div id="superposition" class="sim-panel active">
+                <p>2つの波が出会うとき、変位が足し合わされる様子を観察しましょう。</p>
+                
+                <div id="sim-container">
+                    <div class="canvas-wrapper">
+                        <canvas id="superpositionCanvas"></canvas>
+                    </div>
+                </div>
+                
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #e74c3c;"></div>
+                        <span>波A（右向き）</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #3498db;"></div>
+                        <span>波B（左向き）</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #2ecc71; height: 6px;"></div>
+                        <span>合成波</span>
+                    </div>
+                </div>
+                
+                <div class="sim-controls">
+                    <div class="control-group">
+                        <label>波Aの振幅: <span class="value-display" id="ampADisplay">30 px</span></label>
+                        <input type="range" id="ampASlider" min="10" max="50" value="30" step="5">
+                    </div>
+                    <div class="control-group">
+                        <label>波Bの振幅: <span class="value-display" id="ampBDisplay">30 px</span></label>
+                        <input type="range" id="ampBSlider" min="10" max="50" value="30" step="5">
+                    </div>
+                    <div class="control-group">
+                        <label>波長: <span class="value-display" id="wlDisplay">100 px</span></label>
+                        <input type="range" id="wlSlider" min="50" max="200" value="100" step="10">
+                    </div>
+                    <div class="control-group">
+                        <label>速さ: <span class="value-display" id="speedDisplay">0.5</span></label>
+                        <input type="range" id="speedSlider" min="0.1" max="2" value="0.5" step="0.1">
+                    </div>
+                    <div class="button-group">
+                        <button class="sim-button start" id="superpositionStartBtn">スタート</button>
+                        <button class="sim-button reset" id="superpositionResetBtn">リセット</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ===== 定常波シミュレーション ===== -->
+            <div id="standing" class="sim-panel">
+                <p>同じ振幅・波長の波が逆向きに進むと、定常波が生じます。腹と節の位置に注目しましょう。</p>
+                
+                <div id="sim-container">
+                    <div class="canvas-wrapper">
+                        <canvas id="standingCanvas"></canvas>
+                    </div>
+                </div>
+                
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: rgba(231, 76, 60, 0.5);"></div>
+                        <span>入射波</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: rgba(52, 152, 219, 0.5);"></div>
+                        <span>反射波</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #2ecc71; height: 6px;"></div>
+                        <span>定常波</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #9b59b6; height: 8px; border-radius: 50%; width: 8px;"></div>
+                        <span>腹</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #e67e22; height: 8px; border-radius: 50%; width: 8px;"></div>
+                        <span>節</span>
+                    </div>
+                </div>
+                
+                <div class="sim-controls">
+                    <div class="control-group">
+                        <label>振幅: <span class="value-display" id="standingAmpDisplay">30 px</span></label>
+                        <input type="range" id="standingAmpSlider" min="10" max="50" value="30" step="5">
+                    </div>
+                    <div class="control-group">
+                        <label>波長: <span class="value-display" id="standingWlDisplay">120 px</span></label>
+                        <input type="range" id="standingWlSlider" min="60" max="240" value="120" step="20">
+                    </div>
+                    <div class="button-group">
+                        <button class="sim-button start" id="standingStartBtn">スタート</button>
+                        <button class="sim-button reset" id="standingResetBtn">リセット</button>
+                    </div>
+                </div>
+                
+                <div class="info-display">
+                    <p><strong>腹と腹の間隔:</strong> <span id="antinodeDistance">60</span> px（= λ/2）</p>
+                    <p><strong>腹での最大振幅:</strong> <span id="maxAmplitude">60</span> px（= 2A）</p>
+                </div>
+            </div>
+            
+            <!-- ===== 反射シミュレーション ===== -->
+            <div id="reflection" class="sim-panel">
+                <p>固定端と自由端で、反射の様子がどう違うか観察しましょう。</p>
+                <p>上手にパルス波を送り出すと定常波を作り出すことができますよ。</p>
+                
+                <div id="sim-container">
+                    <div class="canvas-wrapper">
+                        <canvas id="reflectionCanvas"></canvas>
+                    </div>
+                </div>
+                
+                <div class="toggle-group">
+                    <button class="toggle-btn active" id="fixedEndBtn" onclick="setEndType('fixed')">固定端</button>
+                    <button class="toggle-btn" id="freeEndBtn" onclick="setEndType('free')">自由端</button>
+                </div>
+                
+                <div class="sim-controls">
+                    <div class="control-group">
+                        <label>パルス幅: <span class="value-display" id="pulseWidthDisplay">60 px</span></label>
+                        <input type="range" id="pulseWidthSlider" min="30" max="100" value="60" step="10">
+                    </div>
+                    <div class="control-group">
+                        <label>パルス高さ: <span class="value-display" id="pulseHeightDisplay">50 px</span></label>
+                        <input type="range" id="pulseHeightSlider" min="20" max="80" value="50" step="10">
+                    </div>
+                    <div class="button-group">
+                        <button class="sim-button start" id="reflectionStartBtn">パルスを送る</button>
+                        <button class="sim-button" id="reflectionPauseBtn" style="background: #ff9800; color: white;">一時停止</button>
+                        <button class="sim-button reset" id="reflectionResetBtn">リセット</button>
+                    </div>
+                </div>
+                
+                <div class="info-display" id="reflectionInfo">
+                    <p><strong>現在のモード:</strong> <span id="currentMode">固定端反射</span></p>
+                    <p><strong>特徴:</strong> <span id="modeDescription">端は動かず、位相が π ずれて反射します</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+    // ========================================
+    // タブ切り替え機能
+    // ========================================
+    function openTab(tabName) {
+        var contents = document.getElementsByClassName("tab-content");
+        for (var i = 0; i < contents.length; i++) {
+            contents[i].style.display = "none";
+            contents[i].classList.remove("active");
+        }
+        var buttons = document.getElementsByClassName("tab-btn");
+        for (var i = 0; i < buttons.length; i++) {
+            buttons[i].classList.remove("active");
+        }
+        document.getElementById(tabName).style.display = "block";
+        document.getElementById(tabName).classList.add("active");
+        if (event && event.currentTarget) {
+            event.currentTarget.classList.add("active");
+        }
+        
+        // シミュレーションタブが開かれたらキャンバスを初期化
+        if (tabName === 'simulation') {
+            setTimeout(() => {
+                initAllSimulations();
+            }, 100);
+        }
+    }
+    
+    function openSimTab(tabName) {
+        var panels = document.getElementsByClassName("sim-panel");
+        for (var i = 0; i < panels.length; i++) {
+            panels[i].style.display = "none";
+            panels[i].classList.remove("active");
+        }
+        var buttons = document.getElementsByClassName("sim-tab-btn");
+        for (var i = 0; i < buttons.length; i++) {
+            buttons[i].classList.remove("active");
+        }
+        document.getElementById(tabName).style.display = "block";
+        document.getElementById(tabName).classList.add("active");
+        if (event && event.currentTarget) {
+            event.currentTarget.classList.add("active");
+        }
+        
+        // キャンバスをリサイズ
+        setTimeout(() => {
+            resizeAllCanvases();
+        }, 50);
+    }
+    
+    // ========================================
+    // 共通変数・関数
+    // ========================================
+    let animationIds = {
+        superposition: null,
+        standing: null,
+        reflection: null
+    };
+    
+    function resizeCanvas(canvas, height = 250) {
+        const container = canvas.parentElement;
+        const dpr = window.devicePixelRatio || 1;
+        const width = container.clientWidth;
+        canvas.width = width * dpr;
+        canvas.height = height * dpr;
+        canvas.style.width = width + 'px';
+        canvas.style.height = height + 'px';
+        const ctx = canvas.getContext('2d');
+        ctx.scale(dpr, dpr);
+        return { width, height };
+    }
+    
+    function resizeAllCanvases() {
+        if (document.getElementById('superposition').classList.contains('active')) {
+            initSuperposition();
+        }
+        if (document.getElementById('standing').classList.contains('active')) {
+            initStanding();
+        }
+        if (document.getElementById('reflection').classList.contains('active')) {
+            initReflection();
+        }
+    }
+    
+    function initAllSimulations() {
+        initSuperposition();
+        initStanding();
+        initReflection();
+    }
+    
+    // ========================================
+    // 重ね合わせシミュレーション
+    // ========================================
+    let superpositionState = {
+        running: false,
+        time: 0,
+        ampA: 30,
+        ampB: 30,
+        wavelength: 100,
+        speed: 0.5
+    };
+    
+    function initSuperposition() {
+        const canvas = document.getElementById('superpositionCanvas');
+        const { width, height } = resizeCanvas(canvas);
+        drawSuperposition(canvas, width, height);
+    }
+    
+    function drawSuperposition(canvas, width, height) {
+        const ctx = canvas.getContext('2d');
+        const state = superpositionState;
+        const centerY = height / 2;
+        
+        ctx.clearRect(0, 0, width, height);
+        
+        // 背景グリッド
+        ctx.strokeStyle = '#eee';
+        ctx.lineWidth = 1;
+        for (let y = 0; y <= height; y += 25) {
+            ctx.beginPath();
+            ctx.moveTo(0, y);
+            ctx.lineTo(width, y);
+            ctx.stroke();
+        }
+        
+        // 中心線
+        ctx.strokeStyle = '#ccc';
+        ctx.lineWidth = 2;
+        ctx.setLineDash([5, 5]);
+        ctx.beginPath();
+        ctx.moveTo(0, centerY);
+        ctx.lineTo(width, centerY);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        
+        const k = 2 * Math.PI / state.wavelength;
+        const omega = state.speed * k;
+        
+        // 波A（右向き）
+        ctx.strokeStyle = '#e74c3c';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        for (let x = 0; x <= width; x++) {
+            const y = state.ampA * Math.sin(k * x - omega * state.time);
+            if (x === 0) ctx.moveTo(x, centerY - y);
+            else ctx.lineTo(x, centerY - y);
+        }
+        ctx.stroke();
+        
+        // 波B（左向き）
+        ctx.strokeStyle = '#3498db';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        for (let x = 0; x <= width; x++) {
+            const y = state.ampB * Math.sin(k * x + omega * state.time);
+            if (x === 0) ctx.moveTo(x, centerY - y);
+            else ctx.lineTo(x, centerY - y);
+        }
+        ctx.stroke();
+        
+        // 合成波
+        ctx.strokeStyle = '#2ecc71';
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        for (let x = 0; x <= width; x++) {
+            const yA = state.ampA * Math.sin(k * x - omega * state.time);
+            const yB = state.ampB * Math.sin(k * x + omega * state.time);
+            const y = yA + yB;
+            if (x === 0) ctx.moveTo(x, centerY - y);
+            else ctx.lineTo(x, centerY - y);
+        }
+        ctx.stroke();
+        
+        // ラベル
+        ctx.font = '14px sans-serif';
+        ctx.fillStyle = '#333';
+        ctx.fillText('変位', 10, 20);
+        ctx.fillText('位置 x', width - 50, height - 10);
+    }
+    
+    function animateSuperposition() {
+        if (!superpositionState.running) return;
+        
+        const canvas = document.getElementById('superpositionCanvas');
+        const width = canvas.width / (window.devicePixelRatio || 1);
+        const height = canvas.height / (window.devicePixelRatio || 1);
+        
+        superpositionState.time += 1;
+        drawSuperposition(canvas, width, height);
+        
+        animationIds.superposition = requestAnimationFrame(animateSuperposition);
+    }
+    
+    // 重ね合わせのイベントリスナー
+    document.getElementById('ampASlider').addEventListener('input', function() {
+        superpositionState.ampA = parseFloat(this.value);
+        document.getElementById('ampADisplay').textContent = this.value + ' px';
+        if (!superpositionState.running) initSuperposition();
+    });
+    
+    document.getElementById('ampBSlider').addEventListener('input', function() {
+        superpositionState.ampB = parseFloat(this.value);
+        document.getElementById('ampBDisplay').textContent = this.value + ' px';
+        if (!superpositionState.running) initSuperposition();
+    });
+    
+    document.getElementById('wlSlider').addEventListener('input', function() {
+        superpositionState.wavelength = parseFloat(this.value);
+        document.getElementById('wlDisplay').textContent = this.value + ' px';
+        if (!superpositionState.running) initSuperposition();
+    });
+    
+    document.getElementById('speedSlider').addEventListener('input', function() {
+        superpositionState.speed = parseFloat(this.value);
+        document.getElementById('speedDisplay').textContent = this.value;
+    });
+    
+    document.getElementById('superpositionStartBtn').addEventListener('click', function() {
+        if (superpositionState.running) {
+            superpositionState.running = false;
+            this.textContent = 'スタート';
+            cancelAnimationFrame(animationIds.superposition);
+        } else {
+            superpositionState.running = true;
+            this.textContent = '停止';
+            animateSuperposition();
+        }
+    });
+    
+    document.getElementById('superpositionResetBtn').addEventListener('click', function() {
+        superpositionState.running = false;
+        superpositionState.time = 0;
+        document.getElementById('superpositionStartBtn').textContent = 'スタート';
+        cancelAnimationFrame(animationIds.superposition);
+        initSuperposition();
+    });
+    
+    // ========================================
+    // 定常波シミュレーション
+    // ========================================
+    let standingState = {
+        running: false,
+        time: 0,
+        amplitude: 30,
+        wavelength: 120
+    };
+    
+    function initStanding() {
+        const canvas = document.getElementById('standingCanvas');
+        const { width, height } = resizeCanvas(canvas);
+        updateStandingInfo();
+        drawStanding(canvas, width, height);
+    }
+    
+    function updateStandingInfo() {
+        document.getElementById('antinodeDistance').textContent = standingState.wavelength / 2;
+        document.getElementById('maxAmplitude').textContent = standingState.amplitude * 2;
+    }
+    
+    function drawStanding(canvas, width, height) {
+        const ctx = canvas.getContext('2d');
+        const state = standingState;
+        const centerY = height / 2;
+        
+        ctx.clearRect(0, 0, width, height);
+        
+        // 背景グリッド
+        ctx.strokeStyle = '#eee';
+        ctx.lineWidth = 1;
+        for (let y = 0; y <= height; y += 25) {
+            ctx.beginPath();
+            ctx.moveTo(0, y);
+            ctx.lineTo(width, y);
+            ctx.stroke();
+        }
+        
+        // 中心線
+        ctx.strokeStyle = '#ccc';
+        ctx.lineWidth = 2;
+        ctx.setLineDash([5, 5]);
+        ctx.beginPath();
+        ctx.moveTo(0, centerY);
+        ctx.lineTo(width, centerY);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        
+        const k = 2 * Math.PI / state.wavelength;
+        const omega = 0.02;
+        
+        // 入射波（薄く）
+        ctx.strokeStyle = 'rgba(231, 76, 60, 0.4)';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        for (let x = 0; x <= width; x++) {
+            const y = state.amplitude * Math.sin(k * x - omega * state.time);
+            if (x === 0) ctx.moveTo(x, centerY - y);
+            else ctx.lineTo(x, centerY - y);
+        }
+        ctx.stroke();
+        
+        // 反射波（薄く）
+        ctx.strokeStyle = 'rgba(52, 152, 219, 0.4)';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        for (let x = 0; x <= width; x++) {
+            const y = state.amplitude * Math.sin(k * x + omega * state.time);
+            if (x === 0) ctx.moveTo(x, centerY - y);
+            else ctx.lineTo(x, centerY - y);
+        }
+        ctx.stroke();
+        
+        // 定常波（合成波）
+        ctx.strokeStyle = '#2ecc71';
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        for (let x = 0; x <= width; x++) {
+            // 定常波: 2A * cos(omega*t) * sin(k*x)
+            const y = 2 * state.amplitude * Math.cos(omega * state.time) * Math.sin(k * x);
+            if (x === 0) ctx.moveTo(x, centerY - y);
+            else ctx.lineTo(x, centerY - y);
+        }
+        ctx.stroke();
+        
+        // 腹と節のマーキング
+        const halfWavelength = state.wavelength / 2;
+        const quarterWavelength = state.wavelength / 4;
+        
+        // 節（sin(kx) = 0 となる点: x = n * λ/2）
+        ctx.fillStyle = '#e67e22';
+        for (let x = 0; x <= width; x += halfWavelength) {
+            ctx.beginPath();
+            ctx.arc(x, centerY, 6, 0, 2 * Math.PI);
+            ctx.fill();
+        }
+        
+        // 腹（sin(kx) = ±1 となる点: x = λ/4 + n * λ/2）
+        ctx.fillStyle = '#9b59b6';
+        for (let x = quarterWavelength; x <= width; x += halfWavelength) {
+            ctx.beginPath();
+            ctx.arc(x, centerY, 6, 0, 2 * Math.PI);
+            ctx.fill();
+        }
+        
+        // ラベル
+        ctx.font = '12px sans-serif';
+        ctx.fillStyle = '#9b59b6';
+        ctx.fillText('腹', quarterWavelength - 8, centerY - 15);
+        ctx.fillStyle = '#e67e22';
+        ctx.fillText('節', 5, centerY - 15);
+    }
+    
+    function animateStanding() {
+        if (!standingState.running) return;
+        
+        const canvas = document.getElementById('standingCanvas');
+        const width = canvas.width / (window.devicePixelRatio || 1);
+        const height = canvas.height / (window.devicePixelRatio || 1);
+        
+        standingState.time += 1;
+        drawStanding(canvas, width, height);
+        
+        animationIds.standing = requestAnimationFrame(animateStanding);
+    }
+    
+    // 定常波のイベントリスナー
+    document.getElementById('standingAmpSlider').addEventListener('input', function() {
+        standingState.amplitude = parseFloat(this.value);
+        document.getElementById('standingAmpDisplay').textContent = this.value + ' px';
+        updateStandingInfo();
+        if (!standingState.running) initStanding();
+    });
+    
+    document.getElementById('standingWlSlider').addEventListener('input', function() {
+        standingState.wavelength = parseFloat(this.value);
+        document.getElementById('standingWlDisplay').textContent = this.value + ' px';
+        updateStandingInfo();
+        if (!standingState.running) initStanding();
+    });
+    
+    document.getElementById('standingStartBtn').addEventListener('click', function() {
+        if (standingState.running) {
+            standingState.running = false;
+            this.textContent = 'スタート';
+            cancelAnimationFrame(animationIds.standing);
+        } else {
+            standingState.running = true;
+            this.textContent = '停止';
+            animateStanding();
+        }
+    });
+    
+    document.getElementById('standingResetBtn').addEventListener('click', function() {
+        standingState.running = false;
+        standingState.time = 0;
+        document.getElementById('standingStartBtn').textContent = 'スタート';
+        cancelAnimationFrame(animationIds.standing);
+        initStanding();
+    });
+    
+    // ========================================
+    // 反射シミュレーション
+    // ========================================
+    let reflectionState = {
+        running: false,
+        paused: false,
+        endType: 'fixed', // 'fixed' or 'free'
+        pulseWidth: 60,
+        pulseHeight: 50,
+        speed: 1.5,
+        pulses: [] // 複数のパルスを管理する配列
+    };
+    
+    function initReflection() {
+        const canvas = document.getElementById('reflectionCanvas');
+        const { width, height } = resizeCanvas(canvas);
+        reflectionState.pulses = [];
+        reflectionState.running = false;
+        reflectionState.paused = false;
+        document.getElementById('reflectionPauseBtn').textContent = '一時停止';
+        drawReflection(canvas, width, height);
+    }
+    
+    function setEndType(type) {
+        reflectionState.endType = type;
+        document.getElementById('fixedEndBtn').classList.toggle('active', type === 'fixed');
+        document.getElementById('freeEndBtn').classList.toggle('active', type === 'free');
+        
+        if (type === 'fixed') {
+            document.getElementById('currentMode').textContent = '固定端反射';
+            document.getElementById('modeDescription').textContent = '端は動かず、位相が π ずれて反射します';
+        } else {
+            document.getElementById('currentMode').textContent = '自由端反射';
+            document.getElementById('modeDescription').textContent = '端は自由に動き、位相はそのまま反射します';
+        }
+        
+        initReflection();
+    }
+    
+    function gaussianPulse(x, center, width, height) {
+        const sigma = width / 3;
+        return height * Math.exp(-Math.pow(x - center, 2) / (2 * sigma * sigma));
+    }
+    
+    function addPulse() {
+        const canvas = document.getElementById('reflectionCanvas');
+        const width = canvas.width / (window.devicePixelRatio || 1);
+        
+        reflectionState.pulses.push({
+            x: 50,
+            reflected: false,
+            reflectedX: width + 100,
+            width: reflectionState.pulseWidth,
+            height: reflectionState.pulseHeight
+        });
+    }
+    
+    function drawReflection(canvas, width, height) {
+        const ctx = canvas.getContext('2d');
+        const state = reflectionState;
+        const centerY = height / 2;
+        const wallX = width - 40;
+        
+        ctx.clearRect(0, 0, width, height);
+        
+        // 背景
+        ctx.fillStyle = '#f9f9f9';
+        ctx.fillRect(0, 0, width, height);
+        
+        // 中心線（ロープ）
+        ctx.strokeStyle = '#aaa';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(0, centerY);
+        ctx.lineTo(wallX, centerY);
+        ctx.stroke();
+        
+        // 壁
+        ctx.fillStyle = state.endType === 'fixed' ? '#555' : '#3498db';
+        ctx.fillRect(wallX, centerY - 60, 20, 120);
+        
+        // 固定端/自由端の表示
+        if (state.endType === 'free') {
+            // 自由端：リング
+            ctx.strokeStyle = '#2ecc71';
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            ctx.arc(wallX, centerY, 10, 0, 2 * Math.PI);
+            ctx.stroke();
+        } else {
+            // 固定端：固定点
+            ctx.fillStyle = '#e74c3c';
+            ctx.beginPath();
+            ctx.arc(wallX, centerY, 8, 0, 2 * Math.PI);
+            ctx.fill();
+        }
+        
+        // 波形の描画（すべてのパルスを合成）
+        ctx.strokeStyle = '#667eea';
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        
+        for (let x = 0; x <= wallX; x++) {
+            let y = 0;
+            
+            // すべてのパルスを合成
+            for (const pulse of state.pulses) {
+                // 入射パルス
+                if (pulse.x > -pulse.width * 2 && pulse.x < wallX + pulse.width) {
+                    y += gaussianPulse(x, pulse.x, pulse.width, pulse.height);
+                }
+                
+                // 反射パルス
+                if (pulse.reflected) {
+                    const sign = state.endType === 'fixed' ? -1 : 1;
+                    y += sign * gaussianPulse(x, pulse.reflectedX, pulse.width, pulse.height);
+                }
+            }
+            
+            // 固定端では端の変位は0
+            if (state.endType === 'fixed' && x >= wallX - 5) {
+                y = 0;
+            }
+            
+            if (x === 0) ctx.moveTo(x, centerY - y);
+            else ctx.lineTo(x, centerY - y);
+        }
+        ctx.stroke();
+        
+        // ラベル
+        ctx.font = 'bold 14px sans-serif';
+        ctx.fillStyle = '#333';
+        ctx.fillText(state.endType === 'fixed' ? '固定端' : '自由端', wallX - 25, height - 20);
+        
+        // パルス数の表示
+        ctx.font = '12px sans-serif';
+        ctx.fillStyle = '#666';
+        ctx.fillText('パルス数: ' + state.pulses.length, 10, 20);
+    }
+    
+    function animateReflection() {
+        if (!reflectionState.running || reflectionState.paused) return;
+        
+        const canvas = document.getElementById('reflectionCanvas');
+        const width = canvas.width / (window.devicePixelRatio || 1);
+        const height = canvas.height / (window.devicePixelRatio || 1);
+        const wallX = width - 40;
+        
+        // 各パルスを更新
+        for (const pulse of reflectionState.pulses) {
+            // パルスを進める
+            pulse.x += reflectionState.speed;
+            
+            // 反射判定
+            if (pulse.x >= wallX - pulse.width / 2 && !pulse.reflected) {
+                pulse.reflected = true;
+                pulse.reflectedX = wallX - (pulse.x - wallX);
+            }
+            
+            // 反射波を進める
+            if (pulse.reflected) {
+                pulse.reflectedX -= reflectionState.speed;
+            }
+        }
+        
+        // 画面外に出たパルスを削除
+        reflectionState.pulses = reflectionState.pulses.filter(pulse => {
+            const outOfBounds = pulse.x > width + 100 && pulse.reflectedX < -100;
+            return !outOfBounds;
+        });
+        
+        drawReflection(canvas, width, height);
+        
+        animationIds.reflection = requestAnimationFrame(animateReflection);
+    }
+    
+    // 反射のイベントリスナー
+    document.getElementById('pulseWidthSlider').addEventListener('input', function() {
+        reflectionState.pulseWidth = parseFloat(this.value);
+        document.getElementById('pulseWidthDisplay').textContent = this.value + ' px';
+    });
+    
+    document.getElementById('pulseHeightSlider').addEventListener('input', function() {
+        reflectionState.pulseHeight = parseFloat(this.value);
+        document.getElementById('pulseHeightDisplay').textContent = this.value + ' px';
+    });
+    
+    document.getElementById('reflectionStartBtn').addEventListener('click', function() {
+        // パルスを追加
+        addPulse();
+        
+        // アニメーションを開始（まだ開始していない場合）
+        if (!reflectionState.running) {
+            reflectionState.running = true;
+            reflectionState.paused = false;
+            document.getElementById('reflectionPauseBtn').textContent = '一時停止';
+            animateReflection();
+        }
+    });
+    
+    document.getElementById('reflectionPauseBtn').addEventListener('click', function() {
+        if (reflectionState.paused) {
+            reflectionState.paused = false;
+            this.textContent = '一時停止';
+            animateReflection();
+        } else {
+            reflectionState.paused = true;
+            this.textContent = '再開';
+        }
+    });
+    
+    document.getElementById('reflectionResetBtn').addEventListener('click', function() {
+        reflectionState.running = false;
+        reflectionState.paused = false;
+        cancelAnimationFrame(animationIds.reflection);
+        initReflection();
+    });
+    
+    // ========================================
+    // ウィンドウリサイズ対応
+    // ========================================
+    window.addEventListener('resize', function() {
+        resizeAllCanvases();
+    });
+    
+    // 初期化
+    document.addEventListener('DOMContentLoaded', function() {
+        // 最初のシミュレーションタブがアクティブな場合のみ初期化
+        if (document.getElementById('simulation').classList.contains('active')) {
+            initAllSimulations();
+        }
+    });
+    </script>
+</body>
+</html>

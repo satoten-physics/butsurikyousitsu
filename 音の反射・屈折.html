@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高校物理 - 音の反射・屈折</title>
+    <script>
+      window.MathJax = {
+      tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']]
+     }
+     };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        header {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .back-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        h1 {
+            color: #333;
+        }
+        .container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .tab-btn {
+            flex: 1;
+            min-width: 150px;
+            padding: 12px 20px;
+            border: none;
+            background: #f0f0f0;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        .tab-btn.active {
+            background: #667eea;
+            color: white;
+        }
+        .tab-btn:hover {
+            background: #8899f0;
+            color: white;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        h3 {
+            color: #555;
+            margin: 25px 0 15px 0;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #667eea;
+        }
+        p {
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+        .formula-box {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+        .formula-box h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        .point-box {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        .point-box::before {
+            content: "💡 ポイント";
+            font-weight: bold;
+            color: #856404;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .review-link {
+            display: inline-block;
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 8px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            margin: 5px;
+            transition: all 0.3s;
+        }
+        .review-link:hover {
+            background: #1976d2;
+            color: white;
+        }
+        .review-box {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+        
+        /* 静的図解用スタイル */
+        .diagram-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin: 25px 0;
+        }
+        .diagram-box {
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            min-width: 280px;
+            max-width: 400px;
+        }
+        .diagram-box h5 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        .diagram-canvas {
+            display: block;
+            margin: 0 auto;
+            border: 1px solid #eee;
+            border-radius: 5px;
+        }
+        .diagram-caption {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        /* シミュレーション用スタイル */
+        #sim-container {
+            background: #f5f5f5;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        #physicsCanvas {
+            display: block;
+            width: 100%;
+            background: white;
+            border-radius: 5px;
+            border: 2px solid #ddd;
+        }
+        .sim-controls {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .control-group {
+            margin-bottom: 20px;
+        }
+        .control-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        .control-group input[type="range"] {
+            width: 100%;
+            margin: 10px 0;
+        }
+        .value-display {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            min-width: 100px;
+            text-align: center;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .sim-button {
+            flex: 1;
+            min-width: 120px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .sim-button.start {
+            background: #4CAF50;
+            color: white;
+        }
+        .sim-button.start:hover {
+            background: #45a049;
+        }
+        .sim-button.reset {
+            background: #f44336;
+            color: white;
+        }
+        .sim-button.reset:hover {
+            background: #da190b;
+        }
+        .info-panel {
+            background: #e8f5e9;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+        .info-panel h4 {
+            color: #2e7d32;
+            margin-bottom: 10px;
+        }
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            border-bottom: 1px dashed #c8e6c9;
+        }
+        .info-item:last-child {
+            border-bottom: none;
+        }
+        
+        /* 問題タブ用スタイル */
+        .problem {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border-left: 4px solid #667eea;
+        }
+        .problem h4 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        .problem p {
+            margin-bottom: 10px;
+        }
+        details {
+            background: #fff;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+            border: 1px solid #ddd;
+        }
+        summary {
+            cursor: pointer;
+            font-weight: bold;
+            color: #667eea;
+            padding: 5px;
+        }
+        summary:hover {
+            color: #764ba2;
+        }
+        .solution {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px dashed #ddd;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            header, .container {
+                padding: 15px;
+            }
+            .tab-btn {
+                min-width: 100px;
+                font-size: 14px;
+            }
+            .diagram-container {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="back-link">← 目次に戻る</a>
+        <h1>音の反射・屈折</h1>
+    </header>
+    <div class="container">
+        
+        <div class="tabs">
+            <button class="tab-btn active" onclick="openTab('lecture')">解説編</button>
+            <button class="tab-btn" onclick="openTab('problem')">問題編</button>
+            <button class="tab-btn" onclick="openTab('simulation')">シミュレーション</button>
+        </div>
+        
+        <div id="lecture" class="tab-content active">
+            <h2>音の反射・屈折</h2>
+            
+            <h3>音は波である</h3>
+            <p>
+                音は物質中を伝わる<strong>縦波</strong>であり、波動の一種です。
+                そのため、1節で学んだ波の共通の性質である<strong>反射・屈折・回折・干渉</strong>がすべて起きます。
+            </p>
+            
+            <div class="review-box">
+                <p><strong>📚 復習が必要な方はこちら：</strong></p>
+                <a href="波特有の性質(波がぶつかったら 1).html" class="review-link">🔄 反射の法則を復習</a>
+                <a href="波特有の性質(波がぶつかったら 1).html" class="review-link">↗️ 屈折の法則を復習</a>
+            </div>
+            
+            <h3>反射・屈折の法則（確認）</h3>
+            
+            <div class="formula-box">
+                <h4>反射の法則</h4>
+                <p>音波が媒質の状態が急に変化する境界面に入射したとき、反射が起きます。このとき：</p>
+                $$ \theta = \theta' $$
+                <p style="margin-top:10px;">（入射角 $\theta$ ＝ 反射角 $\theta'$）</p>
+            </div>
+            
+            <div class="formula-box">
+                <h4>屈折の法則（スネルの法則）</h4>
+                <p>媒質の状態が違う場所に波が入射したとき、一部は反射し、一部は屈折して進みます：</p>
+                $$ \frac{\sin\theta_1}{\sin\theta_2} = \frac{v_1}{v_2} = \frac{\lambda_1}{\lambda_2} = \frac{n_2}{n_1} = n_{12} $$
+                <p style="margin-top:10px; font-size:14px;">
+                    $\theta_1$：入射角、$\theta_2$：屈折角<br>
+                    $v_1, v_2$：媒質Ⅰ, Ⅱでの波の速さ<br>
+                    $\lambda_1, \lambda_2$：媒質Ⅰ, Ⅱでの波長<br>
+                    $n_1, n_2$：媒質Ⅰ, Ⅱでの屈折率<br>
+                    $n_{12}$：媒質Ⅰに対する媒質Ⅱの相対屈折率
+                </p>
+            </div>
+            
+            <h3>温度と音速の関係</h3>
+            <p>
+                光の屈折では、媒質の種類（空気→水など）が変わることで屈折が起きました。
+                では、音の場合はどうでしょうか？
+            </p>
+            
+            <div class="point-box">
+                音速は<strong>温度</strong>によって変化します。つまり、同じ空気中でも<strong>温度が違えば音速が変わり</strong>、屈折が起こります！
+            </div>
+            
+            <p>
+                空気中の音速は、温度 $t$ [℃] のとき、およそ次の式で表されます：
+            </p>
+            $$ v = 331.5 + 0.6t \quad \text{[m/s]} $$
+            <p>
+                この式から分かるように、<strong>温度が高いほど音速は速く</strong>なります。
+            </p>
+            
+            <h3>昼と夜で音の聞こえ方が違う理由</h3>
+            <p>
+                「夜の方が遠くの音がよく聞こえる」と感じたことはありませんか？
+                これは気のせいではなく、<strong>屈折の法則</strong>で説明できる現象です。
+            </p>
+            
+            <div class="diagram-container">
+                <div class="diagram-box">
+                    <h5>☀️ 昼間の場合</h5>
+                    <canvas id="dayDiagram" class="diagram-canvas" width="350" height="250"></canvas>
+                    <p class="diagram-caption">
+                        地表：高温（音速 大）<br>
+                        上空：低温（音速 小）<br>
+                        → 音は<span style="color:#e91e63; font-weight:bold;">上向き</span>に曲がる<br>
+                        → 音が「上」に逃げていく
+                    </p>
+                </div>
+                <div class="diagram-box">
+                    <h5>🌙 夜間の場合</h5>
+                    <canvas id="nightDiagram" class="diagram-canvas" width="350" height="250"></canvas>
+                    <p class="diagram-caption">
+                        地表：低温（音速 小）<br>
+                        上空：高温（音速 大）<br>
+                        → 音は<span style="color:#2196f3; font-weight:bold;">下向き</span>に曲がる<br>
+                        → 音が「奥」まで届く
+                    </p>
+                </div>
+            </div>
+            
+            <div class="point-box">
+                <p><strong>屈折の法則から考える：</strong></p>
+                <p>
+                    音波は<strong>音速が遅い側（低温側）に曲がる</strong>性質があります。
+                    これはホイヘンスの原理からも理解できます。
+                </p>
+                <p style="margin-top:10px;">
+                    ・昼間：地表が暖かい → 上空の方が音速が遅い → 音は上に曲がる<br>
+                    ・夜間：地表が冷たい（放射冷却）→ 地表の方が音速が遅い → 音は下に曲がる
+                </p>
+            </div>
+            
+            <h3>冬に音がよく響く理由</h3>
+            <p>
+                冬は夏に比べて気温が低いため、音速自体は遅くなります。
+                しかし、冬の夜間は<strong>放射冷却</strong>により地表付近の気温が特に下がりやすく、
+                温度勾配が大きくなります。そのため、音が地表側に強く屈折し、遠くまで届きやすくなるのです。
+            </p>
+            
+            <h3>授業資料</h3>
+            <iframe src="https://drive.google.com/file/d/1rd3AUHNkj-NLM0IEztEdsiVOdPwxD6EA/preview" width="100%" height="500"></iframe>
+        </div>
+        
+        <div id="problem" class="tab-content">
+            <h2>確認問題</h2>
+            
+            <div class="problem">
+                <h4>問題1：反響音と距離の計算</h4>
+                <p>
+                    船の前方にある静止している氷山までの距離をはかるために、船上で汽笛を鳴らしたら
+                    <strong>4.0秒後</strong>に反響音が聞こえた。
+                    音の速さを $3.3 \times 10^2$ m/s として、以下の問いに答えよ。
+                </p>
+                <p>（1）船が静止している場合、船と氷山との距離を求めよ。</p>
+                <p>（2）船が 10 m/s の速さで氷山に向かって進んでいる場合、汽笛を鳴らした瞬間の船と氷山との距離を求めよ。</p>
+                
+                <details>
+                    <summary>解答・解説を見る</summary>
+                    <div class="solution">
+                        <p><strong>（1）船が静止している場合</strong></p>
+                        <p>
+                            音は船から氷山まで往復するので、片道の距離を $x_1$ とすると：
+                        </p>
+                        $$ 2x_1 = v \times t = 3.3 \times 10^2 \times 4.0 $$
+                        $$ x_1 = \frac{3.3 \times 10^2 \times 4.0}{2} = 6.6 \times 10^2 \text{ m} $$
+                        <p style="margin-top:10px;"><strong>答え：660 m（$6.6 \times 10^2$ m）</strong></p>
+                        
+                        <hr style="margin: 20px 0; border: none; border-top: 1px dashed #ccc;">
+                        
+                        <p><strong>（2）船が移動している場合</strong></p>
+                        <p>
+                            重要なポイント：<strong>音源（船）が動いても、音の速さは変わらない！</strong>
+                        </p>
+                        <p>
+                            汽笛を鳴らした瞬間の距離を $x_2$ とする。<br>
+                            音が氷山に届くまでの時間を $t_1$、反射して戻ってくるまでの時間を $t_2$ とすると：
+                        </p>
+                        <p>・行き：$x_2 = v \cdot t_1 = 330 t_1$</p>
+                        <p>・帰り：船が $t_1$ の間に $10t_1$ 進んでいるので、戻りの距離は $x_2 - 10t_1$</p>
+                        $$ x_2 - 10t_1 = v \cdot t_2 = 330 t_2 $$
+                        <p>また、$t_1 + t_2 = 4.0$ より $t_2 = 4.0 - t_1$</p>
+                        <p>$x_2 = 330 t_1$ を代入：</p>
+                        $$ 330t_1 - 10t_1 = 330(4.0 - t_1) $$
+                        $$ 320t_1 = 1320 - 330t_1 $$
+                        $$ 650t_1 = 1320 $$
+                        $$ t_1 = \frac{1320}{650} \approx 2.03 \text{ s} $$
+                        $$ x_2 = 330 \times 2.03 \approx 6.7 \times 10^2 \text{ m} $$
+                        <p style="margin-top:10px;"><strong>答え：約 670 m（$6.7 \times 10^2$ m）</strong></p>
+                        <p style="margin-top:10px; color:#666; font-size:14px;">
+                            ※ 別解：$2x_2 - 10 \times 4.0 = 330 \times 4.0$ より $x_2 = 680$ m としても可
+                        </p>
+                    </div>
+                </details>
+            </div>
+            
+            <div class="problem">
+                <h4>問題2：音の屈折</h4>
+                <p>
+                    空気中の音の速さを $3.4 \times 10^2$ m/s、水中の音の速さを $1.4 \times 10^3$ m/s とする。
+                    空気中から水面に向けて音波を送ると、音波は水中へ屈折して進む。
+                </p>
+                <p>（1）音波が水面に斜めに入射して進むとき、入射角と屈折角ではいずれが大きいか。</p>
+                <p>（2）入射角が 10° のとき、屈折角の sin の値を求めよ。ただし、$\sin 10° = 0.17$ とする。</p>
+                
+                <details>
+                    <summary>解答・解説を見る</summary>
+                    <div class="solution">
+                        <p><strong>（1）入射角と屈折角の大小</strong></p>
+                        <p>
+                            屈折の法則より：
+                            $$ \frac{\sin\theta_1}{\sin\theta_2} = \frac{v_1}{v_2} $$
+                        </p>
+                        <p>
+                            水中の方が音速が速い（$v_2 > v_1$）ので、$\frac{v_1}{v_2} < 1$
+                        </p>
+                        <p>
+                            よって $\sin\theta_1 < \sin\theta_2$ となり、<strong>屈折角の方が大きい</strong>。
+                        </p>
+                        <p style="margin-top:10px;"><strong>答え：屈折角</strong></p>
+                        
+                        <hr style="margin: 20px 0; border: none; border-top: 1px dashed #ccc;">
+                        
+                        <p><strong>（2）屈折角のsinの値</strong></p>
+                        $$ \frac{\sin 10°}{\sin\theta_2} = \frac{3.4 \times 10^2}{1.4 \times 10^3} $$
+                        $$ \sin\theta_2 = \frac{1.4 \times 10^3}{3.4 \times 10^2} \times \sin 10° $$
+                        $$ \sin\theta_2 = \frac{1.4 \times 10^3}{3.4 \times 10^2} \times 0.17 $$
+                        $$ \sin\theta_2 \approx 4.1 \times 0.17 \approx 0.70 $$
+                        <p style="margin-top:10px;"><strong>答え：$\sin\theta \approx 0.70$</strong></p>
+                    </div>
+                </details>
+            </div>
+            
+            <div class="problem">
+                <h4>問題3：昼夜の音の伝わり方</h4>
+                <p>
+                    夜間の方が昼間よりも遠くの音がよく聞こえるのはなぜか。
+                    「温度」「音速」「屈折」という語句を用いて説明せよ。
+                </p>
+                
+                <details>
+                    <summary>解答・解説を見る</summary>
+                    <div class="solution">
+                        <p><strong>模範解答：</strong></p>
+                        <p>
+                            昼間は地表付近の温度が高く上空ほど低いため、音速は地表付近で速く上空で遅い。
+                            そのため、音波は上向きに屈折し、地表から離れていく。
+                        </p>
+                        <p>
+                            一方、夜間は放射冷却により地表付近の温度が下がり、上空の方が温度が高くなる。
+                            そのため、音速は地表付近で遅く上空で速くなり、音波は下向きに屈折して地表に沿って伝わる。
+                        </p>
+                        <p>
+                            結果として、夜間の方が音が遠くまで届きやすくなる。
+                        </p>
+                    </div>
+                </details>
+            </div>
+        </div>
+        
+        <div id="simulation" class="tab-content">
+            <h2>反響音シミュレーション</h2>
+            <p>船から音を発射し、氷山で反射して戻ってくる様子を観察しましょう。船の速度を変えると、反響音が聞こえるまでの時間がどう変わるか確認できます。</p>
+            
+            <div id="sim-container">
+                <canvas id="physicsCanvas"></canvas>
+            </div>
+            
+            <div class="sim-controls">
+                <div class="control-group">
+                    <label>船の速度 (v): <span class="value-display" id="vDisplay">0 m/s</span></label>
+                    <input type="range" id="vSlider" min="-20" max="50" value="0" step="5">
+                    <p style="font-size:12px; color:#666;">※ 正の値：氷山に近づく、負の値：氷山から離れる</p>
+                </div>
+                
+                <div class="control-group">
+                    <label>初期距離 (d): <span class="value-display" id="dDisplay">500 m</span></label>
+                    <input type="range" id="dSlider" min="200" max="1000" value="500" step="50">
+                </div>
+                
+                <div class="button-group">
+                    <button class="sim-button start" id="startBtn">🔊 汽笛を鳴らす</button>
+                    <button class="sim-button reset" id="resetBtn">🔄 リセット</button>
+                </div>
+                
+                <div class="info-panel">
+                    <h4>📊 計測データ</h4>
+                    <div class="info-item">
+                        <span>音速</span>
+                        <span id="soundSpeedDisplay">330 m/s</span>
+                    </div>
+                    <div class="info-item">
+                        <span>経過時間</span>
+                        <span id="timeDisplay">0.00 秒</span>
+                    </div>
+                    <div class="info-item">
+                        <span>現在の船の位置</span>
+                        <span id="shipPosDisplay">0 m</span>
+                    </div>
+                    <div class="info-item">
+                        <span>音波の位置</span>
+                        <span id="wavePosDisplay">- m</span>
+                    </div>
+                    <div class="info-item">
+                        <span>反響音到達時刻</span>
+                        <span id="echoTimeDisplay">- 秒</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+    // --- タブ切り替え機能 ---
+    function openTab(tabName) {
+        var contents = document.getElementsByClassName("tab-content");
+        for (var i = 0; i < contents.length; i++) {
+            contents[i].style.display = "none";
+            contents[i].classList.remove("active");
+        }
+        var buttons = document.getElementsByClassName("tab-btn");
+        for (var i = 0; i < buttons.length; i++) {
+            buttons[i].classList.remove("active");
+        }
+        document.getElementById(tabName).style.display = "block";
+        document.getElementById(tabName).classList.add("active");
+        if (event) {
+            event.currentTarget.classList.add("active");
+        }
+        
+        // シミュレーションタブが開かれたらCanvasをリサイズ
+        if (tabName === 'simulation') {
+            resizeCanvas();
+        }
+    }
+
+    // --- 静的図解の描画 ---
+    function drawDayDiagram() {
+        const canvas = document.getElementById('dayDiagram');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const w = canvas.width;
+        const h = canvas.height;
+        
+        // 背景クリア
+        ctx.clearRect(0, 0, w, h);
+        
+        // 背景グラデーション（昼：下が暖色、上が寒色）
+        const gradient = ctx.createLinearGradient(0, 0, 0, h);
+        gradient.addColorStop(0, '#87CEEB');  // 上空：涼しい青
+        gradient.addColorStop(1, '#FFE4B5');  // 地表：暖かいオレンジ
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, w, h);
+        
+        // 地面
+        ctx.fillStyle = '#8B4513';
+        ctx.fillRect(0, h - 30, w, 30);
+        ctx.fillStyle = '#228B22';
+        ctx.fillRect(0, h - 35, w, 8);
+        
+        // 太陽
+        ctx.fillStyle = '#FFD700';
+        ctx.beginPath();
+        ctx.arc(50, 40, 25, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // 温度・音速ラベル
+        ctx.font = 'bold 14px sans-serif';
+        ctx.fillStyle = '#1565C0';
+        ctx.fillText('低温', w - 60, 30);
+        ctx.fillText('音速 小', w - 70, 50);
+        
+        ctx.fillStyle = '#E65100';
+        ctx.fillText('音速 大', 20, h - 50);
+        ctx.fillText('高温', 20, h - 70);
+        
+        // 音源（スピーカー）
+        ctx.fillStyle = '#333';
+        ctx.fillRect(60, h - 70, 20, 25);
+        ctx.beginPath();
+        ctx.moveTo(80, h - 75);
+        ctx.lineTo(100, h - 90);
+        ctx.lineTo(100, h - 40);
+        ctx.lineTo(80, h - 45);
+        ctx.closePath();
+        ctx.fill();
+        
+        // 音波の経路（下に凸の二次関数のようなイメージ - 上に曲がる）
+        ctx.strokeStyle = '#E91E63';
+        ctx.lineWidth = 3;
+        ctx.setLineDash([]);
+        ctx.beginPath();
+        
+        // 開始点
+        const startX = 100;
+        const startY = h - 65;
+        ctx.moveTo(startX, startY);
+        
+        // 下に凸の放物線（上に向かって曲がる）
+        // y = a(x - h)^2 + k の形で、下に凸なので a > 0
+        // ただし座標系では上が小さいので、描画上は上に向かう
+        const endX = 300;
+        const endY = 50;
+        const controlX = (startX + endX) / 2;
+        const controlY = startY + 30; // 下に膨らむ制御点
+        
+        ctx.quadraticCurveTo(controlX, controlY, endX, endY);
+        ctx.stroke();
+        
+        // 矢印を曲線の終点に正しく配置
+        const arrowSize = 12;
+        // 曲線の終点付近の接線方向を計算
+        const t = 0.95; // 終点付近
+        const tangentX = 2 * (1 - t) * (controlX - startX) + 2 * t * (endX - controlX);
+        const tangentY = 2 * (1 - t) * (controlY - startY) + 2 * t * (endY - controlY);
+        const angle = Math.atan2(tangentY, tangentX);
+        
+        ctx.fillStyle = '#E91E63';
+        ctx.beginPath();
+        ctx.moveTo(endX, endY);
+        ctx.lineTo(endX - arrowSize * Math.cos(angle - Math.PI / 6), endY - arrowSize * Math.sin(angle - Math.PI / 6));
+        ctx.lineTo(endX - arrowSize * Math.cos(angle + Math.PI / 6), endY - arrowSize * Math.sin(angle + Math.PI / 6));
+        ctx.closePath();
+        ctx.fill();
+        
+        // 説明テキスト
+        ctx.font = 'bold 12px sans-serif';
+        ctx.fillStyle = '#E91E63';
+        ctx.fillText('音が上に逃げる', 180, h - 100);
+    }
+    
+    function drawNightDiagram() {
+        const canvas = document.getElementById('nightDiagram');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const w = canvas.width;
+        const h = canvas.height;
+        
+        // 背景クリア
+        ctx.clearRect(0, 0, w, h);
+        
+        // 背景グラデーション（夜：上が暖色、下が寒色）
+        const gradient = ctx.createLinearGradient(0, 0, 0, h);
+        gradient.addColorStop(0, '#2C3E50');  // 上空：暗い青
+        gradient.addColorStop(0.7, '#34495E');
+        gradient.addColorStop(1, '#1a237e');  // 地表：冷たい紺
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, w, h);
+        
+        // 地面
+        ctx.fillStyle = '#1B5E20';
+        ctx.fillRect(0, h - 30, w, 30);
+        
+        // 月
+        ctx.fillStyle = '#FFF9C4';
+        ctx.beginPath();
+        ctx.arc(w - 50, 40, 20, 0, Math.PI * 2);
+        ctx.fill();
+        // 月のクレーター
+        ctx.fillStyle = '#E0E0E0';
+        ctx.beginPath();
+        ctx.arc(w - 55, 35, 5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(w - 45, 45, 3, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // 星（固定位置）
+        ctx.fillStyle = 'white';
+        const starPositions = [
+            {x: 30, y: 25}, {x: 80, y: 50}, {x: 120, y: 20},
+            {x: 160, y: 60}, {x: 200, y: 30}, {x: 240, y: 55},
+            {x: 50, y: 70}, {x: 140, y: 80}, {x: 180, y: 45},
+            {x: 100, y: 35}, {x: 220, y: 70}, {x: 260, y: 25}
+        ];
+        for (let star of starPositions) {
+            ctx.beginPath();
+            ctx.arc(star.x, star.y, 1.5, 0, Math.PI * 2);
+            ctx.fill();
+        }
+        
+        // 温度・音速ラベル
+        ctx.font = 'bold 14px sans-serif';
+        ctx.fillStyle = '#FF8A65';
+        ctx.fillText('高温', w - 60, 80);
+        ctx.fillText('音速 大', w - 70, 100);
+        
+        ctx.fillStyle = '#81D4FA';
+        ctx.fillText('音速 小', 20, h - 50);
+        ctx.fillText('低温', 20, h - 70);
+        
+        // 音源（スピーカー）
+        ctx.fillStyle = '#FFF';
+        ctx.fillRect(60, h - 70, 20, 25);
+        ctx.beginPath();
+        ctx.moveTo(80, h - 75);
+        ctx.lineTo(100, h - 90);
+        ctx.lineTo(100, h - 40);
+        ctx.lineTo(80, h - 45);
+        ctx.closePath();
+        ctx.fill();
+        
+        // 音波の経路（log関数のようなイメージ - 最初は上がってから水平に近づく）
+        ctx.strokeStyle = '#2196F3';
+        ctx.lineWidth = 3;
+        ctx.setLineDash([]);
+        ctx.beginPath();
+        
+        // 開始点
+        const startX = 100;
+        const startY = h - 65;
+        ctx.moveTo(startX, startY);
+        
+        // log関数的な曲線：最初急に上がり、徐々に水平に
+        // 複数の点を使って滑らかな曲線を描く
+        const points = [];
+        const numPoints = 50;
+        for (let i = 0; i <= numPoints; i++) {
+            const t = i / numPoints;
+            const x = startX + t * 220;
+            // log的な曲線: y = startY - amplitude * log(1 + scale * t)
+            const amplitude = 80;
+            const scale = 5;
+            const y = startY - amplitude * Math.log(1 + scale * t) / Math.log(1 + scale);
+            points.push({x, y});
+        }
+        
+        // 曲線を描画
+        for (let i = 1; i < points.length; i++) {
+            ctx.lineTo(points[i].x, points[i].y);
+        }
+        ctx.stroke();
+        
+        // 矢印を曲線の終点に配置
+        const lastPoint = points[points.length - 1];
+        const prevPoint = points[points.length - 2];
+        const arrowAngle = Math.atan2(lastPoint.y - prevPoint.y, lastPoint.x - prevPoint.x);
+        const arrowSize = 12;
+        
+        ctx.fillStyle = '#2196F3';
+        ctx.beginPath();
+        ctx.moveTo(lastPoint.x, lastPoint.y);
+        ctx.lineTo(lastPoint.x - arrowSize * Math.cos(arrowAngle - Math.PI / 6), lastPoint.y - arrowSize * Math.sin(arrowAngle - Math.PI / 6));
+        ctx.lineTo(lastPoint.x - arrowSize * Math.cos(arrowAngle + Math.PI / 6), lastPoint.y - arrowSize * Math.sin(arrowAngle + Math.PI / 6));
+        ctx.closePath();
+        ctx.fill();
+        
+        // 説明テキスト
+        ctx.font = 'bold 12px sans-serif';
+        ctx.fillStyle = '#2196F3';
+        ctx.fillText('音が遠くまで届く', 180, h - 100);
+    }
+
+    // --- シミュレーション ---
+    const canvas = document.getElementById('physicsCanvas');
+    const ctx = canvas.getContext('2d');
+    
+    // 物理定数
+    const SOUND_SPEED = 330; // m/s
+    
+    // シミュレーション状態
+    let simState = {
+        running: false,
+        time: 0,
+        shipVelocity: 0,      // 船の速度 [m/s]
+        initialDistance: 500,  // 初期距離 [m]
+        shipPosition: 0,       // 船の現在位置（初期位置からの移動量）
+        wavePosition: null,    // 音波の位置（nullは発射前）
+        waveDirection: 1,      // 1: 右向き（氷山へ）、-1: 左向き（戻り）
+        waveReflected: false,  // 反射済みかどうか
+        echoReceived: false,
+        echoTime: null,
+        animationId: null
+    };
+    
+    // 描画用スケール
+    let scale = 1;
+    let offsetX = 50;
+    
+    // UI要素
+    const vSlider = document.getElementById('vSlider');
+    const dSlider = document.getElementById('dSlider');
+    const vDisplay = document.getElementById('vDisplay');
+    const dDisplay = document.getElementById('dDisplay');
+    const startBtn = document.getElementById('startBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const timeDisplay = document.getElementById('timeDisplay');
+    const shipPosDisplay = document.getElementById('shipPosDisplay');
+    const wavePosDisplay = document.getElementById('wavePosDisplay');
+    const echoTimeDisplay = document.getElementById('echoTimeDisplay');
+    
+    // スライダーイベント
+    vSlider.addEventListener('input', function() {
+        simState.shipVelocity = parseFloat(this.value);
+        vDisplay.textContent = this.value + ' m/s';
+    });
+    
+    dSlider.addEventListener('input', function() {
+        simState.initialDistance = parseFloat(this.value);
+        dDisplay.textContent = this.value + ' m';
+        if (!simState.running) {
+            resetSimulation();
+        }
+    });
+    
+    // ボタンイベント
+    startBtn.addEventListener('click', startSimulation);
+    resetBtn.addEventListener('click', resetSimulation);
+    
+    function startSimulation() {
+        if (simState.running) return;
+        
+        simState.running = true;
+        simState.time = 0;
+        simState.shipPosition = 0;
+        simState.echoReceived = false;
+        simState.echoTime = null;
+        
+        // 音波を発射（船の位置から）
+        simState.wavePosition = 0;
+        simState.waveDirection = 1;
+        simState.waveReflected = false;
+        
+        startBtn.disabled = true;
+        startBtn.textContent = '🔊 発射中...';
+        
+        // アニメーション開始
+        let lastTimestamp = null;
+        
+        function animationStep(timestamp) {
+            if (!simState.running) return;
+            
+            if (lastTimestamp === null) {
+                lastTimestamp = timestamp;
+            }
+            
+            const deltaTime = (timestamp - lastTimestamp) / 1000; // 秒に変換
+            lastTimestamp = timestamp;
+            
+            // 時間を進める（実時間の5倍速）
+            const simDeltaTime = deltaTime * 5;
+            simState.time += simDeltaTime;
+            
+            // 船の位置を更新
+            simState.shipPosition += simState.shipVelocity * simDeltaTime;
+            
+            // 氷山の位置（初期距離の位置に固定）
+            const icebergX = simState.initialDistance;
+            
+            // 音波の位置を更新
+            if (simState.wavePosition !== null) {
+                simState.wavePosition += SOUND_SPEED * simState.waveDirection * simDeltaTime;
+                
+                // 氷山で反射
+                if (simState.waveDirection === 1 && simState.wavePosition >= icebergX && !simState.waveReflected) {
+                    simState.wavePosition = icebergX;
+                    simState.waveDirection = -1;
+                    simState.waveReflected = true;
+                }
+                
+                // 船に到達（反射後）
+                if (simState.waveDirection === -1 && simState.wavePosition <= simState.shipPosition) {
+                    if (!simState.echoReceived) {
+                        simState.echoReceived = true;
+                        simState.echoTime = simState.time;
+                        echoTimeDisplay.textContent = simState.echoTime.toFixed(2) + ' 秒';
+                    }
+                }
+            }
+            
+            // 表示更新
+            timeDisplay.textContent = simState.time.toFixed(2) + ' 秒';
+            shipPosDisplay.textContent = simState.shipPosition.toFixed(1) + ' m';
+            
+            if (simState.wavePosition !== null && !simState.echoReceived) {
+                wavePosDisplay.textContent = simState.wavePosition.toFixed(1) + ' m';
+            } else if (simState.echoReceived) {
+                wavePosDisplay.textContent = '到達済み';
+            }
+            
+            draw();
+            
+            // シミュレーション終了判定
+            if (simState.echoReceived || simState.time > 20) {
+                simState.running = false;
+                startBtn.disabled = false;
+                startBtn.textContent = '🔊 汽笛を鳴らす';
+                return;
+            }
+            
+            simState.animationId = requestAnimationFrame(animationStep);
+        }
+        
+        simState.animationId = requestAnimationFrame(animationStep);
+    }
+    
+    function resetSimulation() {
+        simState.running = false;
+        if (simState.animationId) {
+            cancelAnimationFrame(simState.animationId);
+            simState.animationId = null;
+        }
+        
+        simState.time = 0;
+        simState.shipPosition = 0;
+        simState.wavePosition = null;
+        simState.waveDirection = 1;
+        simState.waveReflected = false;
+        simState.echoReceived = false;
+        simState.echoTime = null;
+        
+        startBtn.disabled = false;
+        startBtn.textContent = '🔊 汽笛を鳴らす';
+        
+        timeDisplay.textContent = '0.00 秒';
+        shipPosDisplay.textContent = '0 m';
+        wavePosDisplay.textContent = '- m';
+        echoTimeDisplay.textContent = '- 秒';
+        
+        draw();
+    }
+    
+    function draw() {
+        const w = canvas.width;
+        const h = canvas.height;
+        
+        // 背景
+        ctx.fillStyle = '#E3F2FD';
+        ctx.fillRect(0, 0, w, h);
+        
+        // 海
+        const seaGradient = ctx.createLinearGradient(0, h * 0.6, 0, h);
+        seaGradient.addColorStop(0, '#1976D2');
+        seaGradient.addColorStop(1, '#0D47A1');
+        ctx.fillStyle = seaGradient;
+        ctx.fillRect(0, h * 0.6, w, h * 0.4);
+        
+        // 波模様
+        ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+        ctx.lineWidth = 2;
+        for (let i = 0; i < 5; i++) {
+            ctx.beginPath();
+            for (let x = 0; x < w; x += 10) {
+                const y = h * 0.65 + i * 20 + Math.sin((x + simState.time * 20) / 30) * 5;
+                if (x === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+        }
+        
+        // スケール計算
+        const maxDist = simState.initialDistance + 150;
+        scale = (w - 180) / maxDist;
+        offsetX = 100;
+        
+        const icebergX = simState.initialDistance;
+        const shipAbsX = simState.shipPosition;
+        
+        // 平面波の描画（薄い色で1つだけ）
+        if (simState.wavePosition !== null) {
+            const waveScreenX = offsetX + simState.wavePosition * scale;
+            
+            // 波面を描画
+            const waveColor = simState.waveDirection === 1 ? 'rgba(255, 152, 0, 0.6)' : 'rgba(76, 175, 80, 0.6)';
+            ctx.strokeStyle = waveColor;
+            ctx.lineWidth = 4;
+            
+            // 波面の線を描画（範囲内のみ）
+            if (waveScreenX >= offsetX && waveScreenX <= offsetX + icebergX * scale) {
+                ctx.beginPath();
+                ctx.moveTo(waveScreenX, h * 0.30);
+                ctx.lineTo(waveScreenX, h * 0.55);
+                ctx.stroke();
+                
+                // 薄い波紋も追加
+                ctx.strokeStyle = simState.waveDirection === 1 ? 'rgba(255, 152, 0, 0.25)' : 'rgba(76, 175, 80, 0.25)';
+                ctx.lineWidth = 2;
+                for (let i = 1; i <= 3; i++) {
+                    const offsetWave = simState.waveDirection === 1 ? -i * 20 : i * 20;
+                    const x = waveScreenX + offsetWave;
+                    if (x >= offsetX && x <= offsetX + icebergX * scale) {
+                        ctx.beginPath();
+                        ctx.moveTo(x, h * 0.32);
+                        ctx.lineTo(x, h * 0.53);
+                        ctx.stroke();
+                    }
+                }
+                
+                // 波の進行方向矢印
+                ctx.fillStyle = simState.waveDirection === 1 ? 'rgba(255, 152, 0, 0.9)' : 'rgba(76, 175, 80, 0.9)';
+                ctx.beginPath();
+                if (simState.waveDirection === 1) {
+                    ctx.moveTo(waveScreenX + 15, h * 0.42);
+                    ctx.lineTo(waveScreenX + 3, h * 0.38);
+                    ctx.lineTo(waveScreenX + 3, h * 0.46);
+                } else {
+                    ctx.moveTo(waveScreenX - 15, h * 0.42);
+                    ctx.lineTo(waveScreenX - 3, h * 0.38);
+                    ctx.lineTo(waveScreenX - 3, h * 0.46);
+                }
+                ctx.closePath();
+                ctx.fill();
+            }
+        }
+        
+        // 氷山
+        const icebergScreenX = offsetX + icebergX * scale;
+        ctx.fillStyle = '#B3E5FC';
+        ctx.beginPath();
+        ctx.moveTo(icebergScreenX - 30, h * 0.6);
+        ctx.lineTo(icebergScreenX, h * 0.25);
+        ctx.lineTo(icebergScreenX + 40, h * 0.6);
+        ctx.closePath();
+        ctx.fill();
+        
+        ctx.fillStyle = '#E1F5FE';
+        ctx.beginPath();
+        ctx.moveTo(icebergScreenX - 20, h * 0.6);
+        ctx.lineTo(icebergScreenX + 5, h * 0.35);
+        ctx.lineTo(icebergScreenX + 25, h * 0.6);
+        ctx.closePath();
+        ctx.fill();
+        
+        // 水中の氷山
+        ctx.fillStyle = 'rgba(179, 229, 252, 0.5)';
+        ctx.beginPath();
+        ctx.moveTo(icebergScreenX - 40, h * 0.6);
+        ctx.lineTo(icebergScreenX, h * 0.9);
+        ctx.lineTo(icebergScreenX + 50, h * 0.6);
+        ctx.closePath();
+        ctx.fill();
+        
+        // 氷山ラベル
+        ctx.fillStyle = '#0277BD';
+        ctx.font = 'bold 14px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('氷山', icebergScreenX, h * 0.2);
+        
+        // 船の描画
+        const shipScreenX = offsetX + shipAbsX * scale;
+        drawShip(ctx, shipScreenX, h);
+        
+        // 距離表示
+        ctx.strokeStyle = '#333';
+        ctx.lineWidth = 1;
+        ctx.setLineDash([5, 5]);
+        
+        // 現在の距離線
+        const currentDist = icebergX - shipAbsX;
+        ctx.beginPath();
+        ctx.moveTo(shipScreenX, h * 0.68);
+        ctx.lineTo(icebergScreenX, h * 0.68);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        
+        // 距離ラベル
+        ctx.fillStyle = '#333';
+        ctx.font = '12px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('現在の距離: ' + currentDist.toFixed(0) + ' m', (shipScreenX + icebergScreenX) / 2, h * 0.72);
+        
+        // 反響音受信表示
+        if (simState.echoReceived) {
+            ctx.fillStyle = 'rgba(76, 175, 80, 0.9)';
+            ctx.font = 'bold 20px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('🔔 反響音を受信！', w / 2, h * 0.12);
+            ctx.font = '16px sans-serif';
+            ctx.fillText('往復時間: ' + simState.echoTime.toFixed(2) + ' 秒', w / 2, h * 0.18);
+        }
+        
+        // 凡例
+        ctx.textAlign = 'left';
+        ctx.fillStyle = 'rgba(255, 152, 0, 0.8)';
+        ctx.fillRect(10, 10, 20, 10);
+        ctx.fillStyle = '#333';
+        ctx.font = '12px sans-serif';
+        ctx.fillText('行きの音波', 35, 18);
+        
+        ctx.fillStyle = 'rgba(76, 175, 80, 0.8)';
+        ctx.fillRect(10, 25, 20, 10);
+        ctx.fillStyle = '#333';
+        ctx.fillText('戻りの音波', 35, 33);
+    }
+    
+    // 船を描画する関数
+    function drawShip(ctx, centerX, canvasHeight) {
+        const h = canvasHeight;
+        
+        // 船体（一体化した形状）
+        ctx.fillStyle = '#5D4037';
+        ctx.beginPath();
+        ctx.moveTo(centerX - 40, h * 0.55);  // 左先端
+        ctx.lineTo(centerX - 30, h * 0.60);  // 左下
+        ctx.lineTo(centerX + 35, h * 0.60);  // 右下
+        ctx.lineTo(centerX + 45, h * 0.55);  // 右先端
+        ctx.lineTo(centerX + 35, h * 0.52);  // 右上
+        ctx.lineTo(centerX - 30, h * 0.52);  // 左上
+        ctx.closePath();
+        ctx.fill();
+        
+        // 船の甲板
+        ctx.fillStyle = '#8D6E63';
+        ctx.fillRect(centerX - 25, h * 0.48, 45, 5);
+        
+        // 船橋（操舵室）
+        ctx.fillStyle = '#6D4C41';
+        ctx.fillRect(centerX - 10, h * 0.40, 25, 8);
+        
+        // 窓
+        ctx.fillStyle = '#BBDEFB';
+        ctx.fillRect(centerX - 5, h * 0.41, 6, 4);
+        ctx.fillRect(centerX + 5, h * 0.41, 6, 4);
+        
+        // 煙突
+        ctx.fillStyle = '#424242';
+        ctx.fillRect(centerX, h * 0.32, 8, 8);
+        
+        // 煙突の赤いライン
+        ctx.fillStyle = '#D32F2F';
+        ctx.fillRect(centerX, h * 0.34, 8, 2);
+        
+        // 煙（動いているとき）
+        if (simState.running || Math.abs(simState.shipVelocity) > 0) {
+            ctx.fillStyle = 'rgba(158, 158, 158, 0.5)';
+            for (let i = 0; i < 3; i++) {
+                const smokeX = centerX + 4 - i * 6;
+                const smokeY = h * 0.28 - i * 6;
+                const smokeR = 4 + i * 2;
+                ctx.beginPath();
+                ctx.arc(smokeX, smokeY, smokeR, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+        
+        // 船ラベル
+        ctx.fillStyle = '#3E2723';
+        ctx.font = 'bold 14px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('船', centerX, h * 0.26);
+    }
+    
+    function resizeCanvas() {
+        const container = canvas.parentElement;
+        canvas.width = container.clientWidth;
+        canvas.height = 350;
+        draw();
+    }
+    
+    // 初期化
+    window.addEventListener('load', function() {
+        resizeCanvas();
+        drawDayDiagram();
+        drawNightDiagram();
+    });
+    
+    window.addEventListener('resize', function() {
+        resizeCanvas();
+        drawDayDiagram();
+        drawNightDiagram();
+    });
+    </script>
+</body>
+</html>

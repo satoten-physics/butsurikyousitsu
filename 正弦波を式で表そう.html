@@ -1,0 +1,1404 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高校物理 - 正弦波を式で表そう</title>
+    <script>
+      window.MathJax = {
+      tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']]
+     }
+     };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        header {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .back-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        h1 {
+            color: #333;
+        }
+        .container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .tab-btn {
+            flex: 1;
+            min-width: 150px;
+            padding: 12px 20px;
+            border: none;
+            background: #f0f0f0;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        .tab-btn.active {
+            background: #667eea;
+            color: white;
+        }
+        .tab-btn:hover {
+            background: #8899f0;
+            color: white;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        h3 {
+            color: #555;
+            margin: 25px 0 15px 0;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #667eea;
+        }
+        .lecture-content {
+            line-height: 1.8;
+            color: #333;
+        }
+        .lecture-content p {
+            margin-bottom: 15px;
+        }
+        .formula-box {
+            background: linear-gradient(135deg, #e8f4f8 0%, #f0e8f8 100%);
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+        .formula-box.important {
+            background: linear-gradient(135deg, #fff3e0 0%, #ffe0e0 100%);
+            border-left-color: #ff6b6b;
+        }
+        .point-box {
+            background: #fffde7;
+            border: 2px solid #ffc107;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        .point-box::before {
+            content: "💡 ポイント";
+            display: block;
+            font-weight: bold;
+            color: #f57c00;
+            margin-bottom: 10px;
+        }
+        .step-box {
+            background: #f5f5f5;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 1px solid #ddd;
+        }
+        .step-box h4 {
+            color: #667eea;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .step-number {
+            background: #667eea;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        /* 解説用図のスタイル */
+        .figure-container {
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .figure-container canvas {
+            display: block;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .figure-caption {
+            text-align: center;
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+        
+        /* シミュレーション用スタイル */
+        #sim-container {
+            background: #f5f5f5;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        #physicsCanvas {
+            display: block;
+            width: 100%;
+            background: white;
+            border-radius: 5px;
+            border: 2px solid #ddd;
+        }
+        .sim-controls {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .control-group {
+            margin-bottom: 20px;
+        }
+        .control-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        .control-group input[type="range"] {
+            width: 100%;
+            margin: 10px 0;
+        }
+        .value-display {
+            display: inline-block;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            min-width: 100px;
+            text-align: center;
+        }
+        /* 色分け用 */
+        .color-t { background: #e74c3c; }
+        .color-x { background: #3498db; }
+        .color-phi { background: #27ae60; }
+        .color-y { background: #9b59b6; }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .sim-button {
+            flex: 1;
+            min-width: 120px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .sim-button.reset {
+            background: #f44336;
+            color: white;
+        }
+        .sim-button.reset:hover {
+            background: #da190b;
+        }
+        
+        /* 大きな式の表示 */
+        .main-formula {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+            font-size: 1.4em;
+        }
+        .main-formula .var-t { color: #ffcccc; }
+        .main-formula .var-x { color: #cce5ff; }
+        .main-formula .var-phi { color: #ccffcc; }
+        
+        /* 結果表示 */
+        .result-display {
+            background: #f0f0f0;
+            border: 3px solid #9b59b6;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .result-display h4 {
+            color: #9b59b6;
+            margin-bottom: 10px;
+        }
+        .result-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #9b59b6;
+        }
+        
+        /* ミッションボックス */
+        .mission-box {
+            background: linear-gradient(135deg, #ff9a56 0%, #ff6b6b 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .mission-box h4 {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .mission-box .mission-icon {
+            font-size: 1.5em;
+        }
+        .mission-target {
+            background: rgba(255,255,255,0.2);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-size: 1.2em;
+            text-align: center;
+        }
+        .mission-status {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .mission-status.success {
+            background: #4CAF50;
+        }
+        .mission-status.trying {
+            background: rgba(255,255,255,0.3);
+        }
+        .next-mission-btn {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background: white;
+            color: #ff6b6b;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            display: none;
+        }
+        .next-mission-btn:hover {
+            background: #f0f0f0;
+        }
+        
+        /* 固定値表示 */
+        .fixed-params {
+            background: #e8e8e8;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .fixed-param {
+            background: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        
+        /* 問題用スタイル */
+        .problem-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #fafafa;
+            border-radius: 10px;
+        }
+        .problem-section h4 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+        details {
+            background: #e8f5e9;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+        }
+        details summary {
+            cursor: pointer;
+            font-weight: bold;
+            color: #2e7d32;
+        }
+        details[open] summary {
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #a5d6a7;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            header, .container {
+                padding: 15px;
+            }
+            .tab-btn {
+                min-width: 100px;
+                font-size: 14px;
+            }
+            .main-formula {
+                font-size: 1.1em;
+                padding: 15px;
+            }
+            .fixed-params {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="back-link">← 目次に戻る</a>
+        <h1>正弦波を式で表そう</h1>
+    </header>
+    <div class="container">
+        
+        <div class="tabs">
+            <button class="tab-btn active" onclick="openTab('lecture')">解説編</button>
+            <button class="tab-btn" onclick="openTab('problem')">問題編</button>
+            <button class="tab-btn" onclick="openTab('simulation')">シミュレーション</button>
+        </div>
+        
+        <div id="lecture" class="tab-content active">
+            <h2>正弦波の式を導こう</h2>
+            
+            <div class="lecture-content">
+                <p>波の現象を数式で表すことで、任意の時刻・任意の位置での媒質の変位を計算できるようになります。ここでは、正弦波の式を<strong>順序立てて</strong>導いていきましょう。</p>
+                
+                <h3>Step 1：単振動の復習</h3>
+                <div class="step-box">
+                    <p>波は媒質の振動が伝わる現象です。まず、1点での振動（単振動）を式で表しましょう。</p>
+                    <p>原点（$x = 0$）にある媒質が、時刻 $t = 0$ で $y = 0$ を正の向きに通過する単振動をしているとき、変位 $y$ は次のように表されます：</p>
+                    
+                    <div class="formula-box">
+                        $$y = A \sin \frac{2\pi}{T} t$$
+                    </div>
+                    
+                    <p>ここで、</p>
+                    <ul style="margin-left: 20px; margin-bottom: 15px;">
+                        <li>$A$：振幅（最大変位）[m]</li>
+                        <li>$T$：周期 [s]</li>
+                        <li>$\frac{2\pi}{T}$：角振動数 $\omega$ [rad/s] と書くこともある</li>
+                    </ul>
+                    
+                    <div class="figure-container">
+                        <canvas id="fig1Canvas" width="500" height="200"></canvas>
+                        <p class="figure-caption">図1：基本の単振動（$t=0$ で $y=0$ を正の向きに通過）</p>
+                    </div>
+                </div>
+                
+                <h3>Step 2：初期位相の導入</h3>
+                <div class="step-box">
+                    <p>Step 1 では「$t = 0$ のとき $y = 0$ を正の向きに通過」という条件でした。しかし、実際には $t = 0$ のときに $y \neq 0$ であることも多いです。</p>
+                    
+                    <p>このような場合、<strong>初期位相 $\phi_0$</strong> を導入します：</p>
+                    
+                    <div class="formula-box">
+                        $$y = A \sin \left( \frac{2\pi}{T} t + \phi_0 \right)$$
+                    </div>
+                    
+                    <div class="figure-container">
+                        <canvas id="fig2Canvas" width="500" height="250"></canvas>
+                        <p class="figure-caption">図2：初期位相によって $t=0$ での変位が変わる</p>
+                    </div>
+                    
+                    <div class="point-box">
+                        <p><strong>初期位相 $\phi_0$ の決め方：</strong></p>
+                        <p>$t = 0$ を代入すると $y = A \sin \phi_0$ となるので、</p>
+                        <ul style="margin-left: 20px;">
+                            <li>$t = 0$ で $y = 0$（正の向き） → $\phi_0 = 0$</li>
+                            <li>$t = 0$ で $y = A$（最大） → $\phi_0 = \frac{\pi}{2}$</li>
+                            <li>$t = 0$ で $y = 0$（負の向き） → $\phi_0 = \pi$</li>
+                            <li>$t = 0$ で $y = -A$（最小） → $\phi_0 = -\frac{\pi}{2}$</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <h3>Step 3：位置 $x$ への拡張</h3>
+                <div class="step-box">
+                    <p>ここまでは原点（$x = 0$）での振動でした。次に、波が速さ $v$ で $x$ 軸の正の向きに伝わるとき、<strong>位置 $x$ での変位</strong>を考えます。</p>
+                    
+                    <div class="point-box">
+                        <p>位置 $x$ での振動は、原点での振動より <strong>$\dfrac{x}{v}$ だけ遅れて</strong> 伝わる。</p>
+                        <p>つまり、「時刻 $t$、位置 $x$ での変位」＝「時刻 $t - \dfrac{x}{v}$、位置 $0$ での変位」</p>
+                    </div>
+                    
+                    <div class="figure-container">
+                        <canvas id="fig3Canvas" width="500" height="280"></canvas>
+                        <p class="figure-caption">図3：位置 $x$ での振動は原点より遅れて伝わる</p>
+                    </div>
+                    
+                    <p>したがって、原点での式 $y = A \sin \frac{2\pi}{T} t$ の $t$ を $t - \frac{x}{v}$ に置き換えると：</p>
+                    
+                    <div class="formula-box">
+                        $$y = A \sin \frac{2\pi}{T} \left( t - \frac{x}{v} \right)$$
+                    </div>
+                </div>
+                
+                <h3>Step 4：正弦波の一般式</h3>
+                <div class="step-box">
+                    <p>波の速さ $v$、周期 $T$、波長 $\lambda$ の間には $v = \frac{\lambda}{T}$（つまり $\frac{1}{v} = \frac{T}{\lambda}$）の関係があります。</p>
+                    <p>これを使って式を整理すると：</p>
+                    
+                    <div class="formula-box important">
+                        <p style="font-size: 1.2em; margin-bottom: 10px;"><strong>【正弦波の式】</strong></p>
+                        $$y = A \sin 2\pi \left( \frac{t}{T} - \frac{x}{\lambda} \right)$$
+                    </div>
+                    
+                    <p>初期位相 $\phi_0$ を含めた最も一般的な形は：</p>
+                    <div class="formula-box">
+                        $$y = A \sin \left( 2\pi \left( \frac{t}{T} - \frac{x}{\lambda} \right) + \phi_0 \right)$$
+                    </div>
+                    
+                    <div class="figure-container">
+                        <canvas id="fig4Canvas" width="500" height="200"></canvas>
+                        <p class="figure-caption">図4：正弦波の波形（ある時刻での $y$-$x$ グラフ）</p>
+                    </div>
+                </div>
+                
+                <h3>Step 5：位相について</h3>
+                <div class="step-box">
+                    <p>正弦波の式で、$\sin$ の中身全体を<strong>位相</strong>といいます：</p>
+                    
+                    <div class="formula-box">
+                        $$\text{位相} = 2\pi \left( \frac{t}{T} - \frac{x}{\lambda} \right) + \phi_0 \quad \text{[rad]}$$
+                    </div>
+                    
+                    <div class="figure-container">
+                        <canvas id="fig5Canvas" width="500" height="200"></canvas>
+                        <p class="figure-caption">図5：同位相（赤点同士）と逆位相（赤点と青点）</p>
+                    </div>
+                    
+                    <div class="point-box">
+                        <p><strong>同位相と逆位相：</strong></p>
+                        <ul style="margin-left: 20px;">
+                            <li><strong>同位相</strong>：位相の差が $0, 2\pi, 4\pi, \ldots$（$2n\pi$）のとき、2点は常に同じ変位で振動</li>
+                            <li><strong>逆位相</strong>：位相の差が $\pi, 3\pi, 5\pi, \ldots$（$(2n+1)\pi$）のとき、2点は常に逆向きに振動</li>
+                        </ul>
+                    </div>
+                    
+                    <p>※ 参考：角振動数 $\omega = \frac{2\pi}{T}$、波数 $k = \frac{2\pi}{\lambda}$ を使うと、正弦波の式は $y = A \sin (\omega t - kx + \phi_0)$ とも書けます。</p>
+                </div>
+            </div>
+            
+            <h2 style="margin-top: 40px;">授業資料</h2>
+            <iframe src="https://drive.google.com/file/d/1rd3AUHNkj-NLM0IEztEdsiVOdPwxD6EA/preview" width="100%" height="500"></iframe>
+        </div>
+        
+        <div id="problem" class="tab-content">
+            <h2>確認問題</h2>
+            
+            <div class="problem-section">
+                <h4>問題1：基本的な正弦波の式</h4>
+                <p>振幅 $0.2$ m、周期 $2.0$ s の正弦波が $x$ 軸の正の向きに速さ $3.0$ m/s で進んでいる。原点での媒質は、$t = 0$ のとき $y = 0$ を正の向きに通過した。</p>
+                <p>（1）この波の波長を求めよ。</p>
+                <p>（2）位置 $x$ [m]、時刻 $t$ [s] における変位 $y$ [m] を表す式を求めよ。</p>
+                <p>（3）$t = 1.0$ s のとき、$x = 1.5$ m での変位を求めよ。</p>
+                
+                <details>
+                    <summary>解答・解説を見る</summary>
+                    <p><strong>（1）波長</strong></p>
+                    <p>$v = f\lambda = \frac{\lambda}{T}$ より</p>
+                    <p>$$\lambda = vT = 3.0 \times 2.0 = 6.0 \text{ m}$$</p>
+                    
+                    <p><strong>（2）正弦波の式</strong></p>
+                    <p>$t = 0$ で $y = 0$（正の向き）なので初期位相 $\phi_0 = 0$</p>
+                    <p>$$y = A \sin 2\pi \left( \frac{t}{T} - \frac{x}{\lambda} \right) = 0.2 \sin 2\pi \left( \frac{t}{2.0} - \frac{x}{6.0} \right)$$</p>
+                    <p>整理すると：$$y = 0.2 \sin \pi \left( t - \frac{x}{3} \right) \text{ [m]}$$</p>
+                    
+                    <p><strong>（3）変位の計算</strong></p>
+                    <p>$t = 1.0$、$x = 1.5$ を代入：</p>
+                    <p>$$y = 0.2 \sin \pi \left( 1.0 - \frac{1.5}{3} \right) = 0.2 \sin \pi \times 0.5 = 0.2 \sin \frac{\pi}{2} = 0.2 \text{ m}$$</p>
+                </details>
+            </div>
+            
+            <div class="problem-section">
+                <h4>問題2：初期位相を含む場合</h4>
+                <p>$x$ 軸の正の向きに進む正弦波があり、$t = 0$ のとき原点の媒質は $y = A$（最大変位）の位置にあった。振幅 $A$、周期 $T$、波長 $\lambda$ として、この波の式を求めよ。</p>
+                
+                <details>
+                    <summary>解答・解説を見る</summary>
+                    <p>$t = 0$、$x = 0$ のとき $y = A$ なので：</p>
+                    <p>$$A = A \sin \phi_0$$</p>
+                    <p>$$\sin \phi_0 = 1$$</p>
+                    <p>$$\phi_0 = \frac{\pi}{2}$$</p>
+                    <p>したがって：</p>
+                    <p>$$y = A \sin \left( 2\pi \left( \frac{t}{T} - \frac{x}{\lambda} \right) + \frac{\pi}{2} \right)$$</p>
+                    <p>または、$\sin\left(\theta + \frac{\pi}{2}\right) = \cos\theta$ を使って：</p>
+                    <p>$$y = A \cos 2\pi \left( \frac{t}{T} - \frac{x}{\lambda} \right)$$</p>
+                </details>
+            </div>
+            
+            <div class="problem-section">
+                <h4>問題3：位相差の問題</h4>
+                <p>波長 $4.0$ m の正弦波が $x$ 軸上を伝わっている。$x = 1.0$ m の点と $x = 3.0$ m の点の位相差を求め、これらの点が同位相か逆位相かを答えよ。</p>
+                
+                <details>
+                    <summary>解答・解説を見る</summary>
+                    <p>2点間の距離は $\Delta x = 3.0 - 1.0 = 2.0$ m</p>
+                    <p>位相差は距離に対応するので：</p>
+                    <p>$$\Delta \phi = \frac{2\pi}{\lambda} \Delta x = \frac{2\pi}{4.0} \times 2.0 = \pi \text{ [rad]}$$</p>
+                    <p>位相差が $\pi$ なので、これらの2点は<strong>逆位相</strong>である。</p>
+                    <p>（一方が正の最大変位のとき、他方は負の最大変位となる）</p>
+                </details>
+            </div>
+        </div>
+        
+        <div id="simulation" class="tab-content">
+            <h2>正弦波の変位を求めよう</h2>
+            <p>スライダーで変数を変えて、正弦波の式から変位 $y$ を求めてみましょう。</p>
+            
+            <!-- 固定パラメータ表示 -->
+            <div class="fixed-params">
+                <div class="fixed-param">振幅 A = 1.0 m</div>
+                <div class="fixed-param">周期 T = 2.0 s</div>
+                <div class="fixed-param">波長 λ = 4.0 m</div>
+            </div>
+            
+            <!-- 大きな式の表示 -->
+            <div class="main-formula" id="mainFormula">
+                $$y = 1.0 \sin \left( 2\pi \left( \frac{\color{#ff6b6b}{t}}{\color{black}{2.0}} - \frac{\color{#3498db}{x}}{\color{black}{4.0}} \right) + \color{#27ae60}{\phi_0} \right)$$
+            </div>
+            
+            <!-- 結果表示 -->
+            <div class="result-display">
+                <h4>現在の変位</h4>
+                <div class="result-value" id="resultValue">y = 0.00 m</div>
+            </div>
+            
+            <div id="sim-container">
+                <canvas id="physicsCanvas"></canvas>
+            </div>
+            
+            <div class="sim-controls">
+                <div class="control-group">
+                    <label>時刻 <span class="value-display color-t" id="tDisplay">t = 0.00 s</span></label>
+                    <input type="range" id="tSlider" min="0" max="4" value="0" step="0.01">
+                </div>
+                
+                <div class="control-group">
+                    <label>位置 <span class="value-display color-x" id="xDisplay">x = 0.00 m</span></label>
+                    <input type="range" id="xSlider" min="0" max="8" value="0" step="0.01">
+                </div>
+                
+                <div class="control-group">
+                    <label>初期位相 <span class="value-display color-phi" id="phiDisplay">φ₀ = 0</span></label>
+                    <input type="range" id="phiSlider" min="-3.14159" max="3.14159" value="0" step="0.01">
+                </div>
+                
+                <div class="button-group">
+                    <button class="sim-button reset" id="resetBtn">⟲ リセット（t=0, x=0, φ₀=0）</button>
+                </div>
+            </div>
+            
+            <!-- ミッション -->
+            <div class="mission-box" id="missionBox">
+                <h4><span class="mission-icon">🎯</span> ミッション</h4>
+                <p>スライダーを操作して、指定された変位になるように調整しよう！</p>
+                <div class="mission-target" id="missionTarget">
+                    目標：y = 0.50 m にしよう！
+                </div>
+                <div class="mission-status trying" id="missionStatus">
+                    挑戦中... 現在の変位を目標に近づけよう！
+                </div>
+                <button class="next-mission-btn" id="nextMissionBtn">次のミッションへ →</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+    // --- タブ切り替え機能 ---
+    function openTab(tabName) {
+        var contents = document.getElementsByClassName("tab-content");
+        for (var i = 0; i < contents.length; i++) {
+            contents[i].style.display = "none";
+            contents[i].classList.remove("active");
+        }
+        var buttons = document.getElementsByClassName("tab-btn");
+        for (var i = 0; i < buttons.length; i++) {
+            buttons[i].classList.remove("active");
+        }
+        document.getElementById(tabName).style.display = "block";
+        document.getElementById(tabName).classList.add("active");
+        if (event) {
+            event.currentTarget.classList.add("active");
+        }
+        
+        // 各タブの初期化
+        if (tabName === 'lecture') {
+            setTimeout(drawAllFigures, 100);
+        }
+        if (tabName === 'simulation') {
+            resizeSimCanvas();
+            drawSimulation();
+        }
+        
+        // MathJaxの再レンダリング
+        if (window.MathJax) {
+            MathJax.typesetPromise();
+        }
+    }
+
+    // ========================================
+    // 解説用の静的図の描画
+    // ========================================
+    
+    function drawAllFigures() {
+        drawFigure1();
+        drawFigure2();
+        drawFigure3();
+        drawFigure4();
+        drawFigure5();
+    }
+    
+    // 図1：基本の単振動
+    function drawFigure1() {
+        const canvas = document.getElementById('fig1Canvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const W = canvas.width, H = canvas.height;
+        
+        ctx.fillStyle = '#fff';
+        ctx.fillRect(0, 0, W, H);
+        
+        const margin = { left: 50, right: 20, top: 20, bottom: 30 };
+        const gW = W - margin.left - margin.right;
+        const gH = H - margin.top - margin.bottom;
+        const centerY = margin.top + gH / 2;
+        
+        // 軸
+        ctx.strokeStyle = '#333';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(margin.left, margin.top);
+        ctx.lineTo(margin.left, H - margin.bottom);
+        ctx.lineTo(W - margin.right, H - margin.bottom);
+        ctx.stroke();
+        
+        // 中心線
+        ctx.strokeStyle = '#ccc';
+        ctx.lineWidth = 1;
+        ctx.setLineDash([5, 5]);
+        ctx.beginPath();
+        ctx.moveTo(margin.left, centerY);
+        ctx.lineTo(W - margin.right, centerY);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        
+        // ラベル
+        ctx.fillStyle = '#333';
+        ctx.font = '14px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('t', W - margin.right + 10, H - margin.bottom + 5);
+        ctx.fillText('y', margin.left, margin.top - 5);
+        ctx.textAlign = 'right';
+        ctx.fillText('A', margin.left - 5, margin.top + 15);
+        ctx.fillText('-A', margin.left - 5, H - margin.bottom - 5);
+        ctx.fillText('0', margin.left - 5, centerY + 5);
+        
+        // 波形
+        ctx.strokeStyle = '#667eea';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        const A = gH / 2 * 0.8;
+        for (let i = 0; i <= gW; i++) {
+            const t = (i / gW) * 4 * Math.PI;
+            const y = A * Math.sin(t);
+            const sx = margin.left + i;
+            const sy = centerY - y;
+            if (i === 0) ctx.moveTo(sx, sy);
+            else ctx.lineTo(sx, sy);
+        }
+        ctx.stroke();
+        
+        // t=0の点（原点を通過）
+        ctx.fillStyle = '#e74c3c';
+        ctx.beginPath();
+        ctx.arc(margin.left, centerY, 8, 0, 2 * Math.PI);
+        ctx.fill();
+        
+        // 矢印（正の向きに通過）
+        ctx.strokeStyle = '#e74c3c';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(margin.left, centerY + 20);
+        ctx.lineTo(margin.left, centerY - 20);
+        ctx.lineTo(margin.left - 5, centerY - 10);
+        ctx.moveTo(margin.left, centerY - 20);
+        ctx.lineTo(margin.left + 5, centerY - 10);
+        ctx.stroke();
+    }
+    
+    // 図2：初期位相
+    function drawFigure2() {
+        const canvas = document.getElementById('fig2Canvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const W = canvas.width, H = canvas.height;
+        
+        ctx.fillStyle = '#fff';
+        ctx.fillRect(0, 0, W, H);
+        
+        const margin = { left: 50, right: 20, top: 20, bottom: 50 };
+        const gW = W - margin.left - margin.right;
+        const gH = H - margin.top - margin.bottom;
+        const centerY = margin.top + gH / 2;
+        
+        // 軸
+        ctx.strokeStyle = '#333';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(margin.left, margin.top);
+        ctx.lineTo(margin.left, H - margin.bottom);
+        ctx.lineTo(W - margin.right, H - margin.bottom);
+        ctx.stroke();
+        
+        // 中心線
+        ctx.strokeStyle = '#ccc';
+        ctx.lineWidth = 1;
+        ctx.setLineDash([5, 5]);
+        ctx.beginPath();
+        ctx.moveTo(margin.left, centerY);
+        ctx.lineTo(W - margin.right, centerY);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        
+        // ラベル
+        ctx.fillStyle = '#333';
+        ctx.font = '14px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('t', W - margin.right + 10, H - margin.bottom + 5);
+        
+        const A = gH / 2 * 0.7;
+        const phases = [
+            { phi: 0, color: '#667eea', label: 'φ₀=0' },
+            { phi: Math.PI/2, color: '#e74c3c', label: 'φ₀=π/2' },
+            { phi: Math.PI, color: '#27ae60', label: 'φ₀=π' }
+        ];
+        
+        // 各波形を描画
+        phases.forEach((p, idx) => {
+            ctx.strokeStyle = p.color;
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            for (let i = 0; i <= gW; i++) {
+                const t = (i / gW) * 4 * Math.PI;
+                const y = A * Math.sin(t + p.phi);
+                const sx = margin.left + i;
+                const sy = centerY - y;
+                if (i === 0) ctx.moveTo(sx, sy);
+                else ctx.lineTo(sx, sy);
+            }
+            ctx.stroke();
+            
+            // t=0での点
+            const y0 = A * Math.sin(p.phi);
+            ctx.fillStyle = p.color;
+            ctx.beginPath();
+            ctx.arc(margin.left, centerY - y0, 6, 0, 2 * Math.PI);
+            ctx.fill();
+        });
+        
+        // 凡例
+        ctx.font = '12px Arial';
+        ctx.textAlign = 'left';
+        phases.forEach((p, idx) => {
+            const lx = margin.left + 20 + idx * 120;
+            const ly = H - 20;
+            ctx.fillStyle = p.color;
+            ctx.fillRect(lx, ly - 10, 20, 3);
+            ctx.fillText(p.label, lx + 25, ly - 5);
+        });
+    }
+    
+    // 図3：位置xへの拡張
+    function drawFigure3() {
+        const canvas = document.getElementById('fig3Canvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const W = canvas.width, H = canvas.height;
+        
+        ctx.fillStyle = '#fff';
+        ctx.fillRect(0, 0, W, H);
+        
+        const margin = { left: 50, right: 20, top: 30, bottom: 40 };
+        const gW = W - margin.left - margin.right;
+        const gH = H - margin.top - margin.bottom;
+        const centerY = margin.top + gH / 2;
+        
+        // 軸
+        ctx.strokeStyle = '#333';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(margin.left, margin.top);
+        ctx.lineTo(margin.left, H - margin.bottom);
+        ctx.lineTo(W - margin.right, H - margin.bottom);
+        ctx.stroke();
+        
+        // 中心線
+        ctx.strokeStyle = '#ccc';
+        ctx.lineWidth = 1;
+        ctx.setLineDash([5, 5]);
+        ctx.beginPath();
+        ctx.moveTo(margin.left, centerY);
+        ctx.lineTo(W - margin.right, centerY);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        
+        // ラベル
+        ctx.fillStyle = '#333';
+        ctx.font = '14px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('x', W - margin.right + 10, H - margin.bottom + 5);
+        ctx.fillText('y', margin.left, margin.top - 10);
+        
+        // 波形（ある時刻での形）
+        const A = gH / 2 * 0.7;
+        const lambda = gW / 2; // 2波長分表示
+        ctx.strokeStyle = '#667eea';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        for (let i = 0; i <= gW; i++) {
+            const x = i;
+            const y = A * Math.sin(2 * Math.PI * x / lambda);
+            const sx = margin.left + i;
+            const sy = centerY - y;
+            if (i === 0) ctx.moveTo(sx, sy);
+            else ctx.lineTo(sx, sy);
+        }
+        ctx.stroke();
+        
+        // 原点の点
+        ctx.fillStyle = '#e74c3c';
+        ctx.beginPath();
+        ctx.arc(margin.left, centerY, 8, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.fillStyle = '#333';
+        ctx.font = '12px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('原点 O', margin.left, H - margin.bottom + 25);
+        
+        // 位置xの点
+        const xPos = lambda * 0.7;
+        const yAtX = A * Math.sin(2 * Math.PI * xPos / lambda);
+        ctx.fillStyle = '#3498db';
+        ctx.beginPath();
+        ctx.arc(margin.left + xPos, centerY - yAtX, 8, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.fillText('位置 x', margin.left + xPos, H - margin.bottom + 25);
+        
+        // 遅れを示す矢印
+        ctx.strokeStyle = '#ff9800';
+        ctx.lineWidth = 2;
+        ctx.setLineDash([]);
+        ctx.beginPath();
+        ctx.moveTo(margin.left + 20, margin.top + 15);
+        ctx.lineTo(margin.left + xPos - 20, margin.top + 15);
+        ctx.lineTo(margin.left + xPos - 30, margin.top + 10);
+        ctx.moveTo(margin.left + xPos - 20, margin.top + 15);
+        ctx.lineTo(margin.left + xPos - 30, margin.top + 20);
+        ctx.stroke();
+        
+        ctx.fillStyle = '#ff9800';
+        ctx.font = '12px Arial';
+        ctx.fillText('遅れ x/v', margin.left + xPos / 2, margin.top + 10);
+    }
+    
+    // 図4：正弦波の波形
+    function drawFigure4() {
+        const canvas = document.getElementById('fig4Canvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const W = canvas.width, H = canvas.height;
+        
+        ctx.fillStyle = '#fff';
+        ctx.fillRect(0, 0, W, H);
+        
+        const margin = { left: 50, right: 20, top: 20, bottom: 40 };
+        const gW = W - margin.left - margin.right;
+        const gH = H - margin.top - margin.bottom;
+        const centerY = margin.top + gH / 2;
+        
+        // 軸
+        ctx.strokeStyle = '#333';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(margin.left, margin.top);
+        ctx.lineTo(margin.left, H - margin.bottom);
+        ctx.lineTo(W - margin.right, H - margin.bottom);
+        ctx.stroke();
+        
+        // 中心線
+        ctx.strokeStyle = '#ccc';
+        ctx.lineWidth = 1;
+        ctx.setLineDash([5, 5]);
+        ctx.beginPath();
+        ctx.moveTo(margin.left, centerY);
+        ctx.lineTo(W - margin.right, centerY);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        
+        // ラベル
+        ctx.fillStyle = '#333';
+        ctx.font = '14px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('x', W - margin.right + 10, H - margin.bottom + 5);
+        ctx.textAlign = 'right';
+        ctx.fillText('A', margin.left - 5, margin.top + 15);
+        ctx.fillText('-A', margin.left - 5, H - margin.bottom - 5);
+        
+        // 波形
+        const A = gH / 2 * 0.8;
+        const lambda = gW / 2;
+        ctx.strokeStyle = '#667eea';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        for (let i = 0; i <= gW; i++) {
+            const x = i;
+            const y = A * Math.sin(2 * Math.PI * x / lambda);
+            const sx = margin.left + i;
+            const sy = centerY - y;
+            if (i === 0) ctx.moveTo(sx, sy);
+            else ctx.lineTo(sx, sy);
+        }
+        ctx.stroke();
+        
+        // 波長の表示
+        ctx.strokeStyle = '#e74c3c';
+        ctx.lineWidth = 2;
+        ctx.setLineDash([]);
+        const y_bottom = H - margin.bottom - 20;
+        ctx.beginPath();
+        ctx.moveTo(margin.left, y_bottom);
+        ctx.lineTo(margin.left + lambda, y_bottom);
+        ctx.stroke();
+        // 両端の縦線
+        ctx.beginPath();
+        ctx.moveTo(margin.left, y_bottom - 5);
+        ctx.lineTo(margin.left, y_bottom + 5);
+        ctx.moveTo(margin.left + lambda, y_bottom - 5);
+        ctx.lineTo(margin.left + lambda, y_bottom + 5);
+        ctx.stroke();
+        
+        ctx.fillStyle = '#e74c3c';
+        ctx.textAlign = 'center';
+        ctx.fillText('λ（波長）', margin.left + lambda / 2, y_bottom + 15);
+    }
+    
+    // 図5：同位相と逆位相
+    function drawFigure5() {
+        const canvas = document.getElementById('fig5Canvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const W = canvas.width, H = canvas.height;
+        
+        ctx.fillStyle = '#fff';
+        ctx.fillRect(0, 0, W, H);
+        
+        const margin = { left: 50, right: 20, top: 20, bottom: 30 };
+        const gW = W - margin.left - margin.right;
+        const gH = H - margin.top - margin.bottom;
+        const centerY = margin.top + gH / 2;
+        
+        // 軸
+        ctx.strokeStyle = '#333';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(margin.left, margin.top);
+        ctx.lineTo(margin.left, H - margin.bottom);
+        ctx.lineTo(W - margin.right, H - margin.bottom);
+        ctx.stroke();
+        
+        // 中心線
+        ctx.strokeStyle = '#ccc';
+        ctx.lineWidth = 1;
+        ctx.setLineDash([5, 5]);
+        ctx.beginPath();
+        ctx.moveTo(margin.left, centerY);
+        ctx.lineTo(W - margin.right, centerY);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        
+        // 波形
+        const A = gH / 2 * 0.7;
+        const lambda = gW / 2;
+        ctx.strokeStyle = '#667eea';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        for (let i = 0; i <= gW; i++) {
+            const x = i;
+            const y = A * Math.sin(2 * Math.PI * x / lambda);
+            const sx = margin.left + i;
+            const sy = centerY - y;
+            if (i === 0) ctx.moveTo(sx, sy);
+            else ctx.lineTo(sx, sy);
+        }
+        ctx.stroke();
+        
+        // 同位相の点（赤）
+        const x1 = lambda * 0.25;
+        const x2 = lambda * 1.25; // 1波長離れた点
+        const y1 = A * Math.sin(2 * Math.PI * x1 / lambda);
+        const y2 = A * Math.sin(2 * Math.PI * x2 / lambda);
+        
+        ctx.fillStyle = '#e74c3c';
+        ctx.beginPath();
+        ctx.arc(margin.left + x1, centerY - y1, 8, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(margin.left + x2, centerY - y2, 8, 0, 2 * Math.PI);
+        ctx.fill();
+        
+        // 逆位相の点（青）
+        const x3 = lambda * 0.75; // x1から半波長
+        const y3 = A * Math.sin(2 * Math.PI * x3 / lambda);
+        
+        ctx.fillStyle = '#3498db';
+        ctx.beginPath();
+        ctx.arc(margin.left + x3, centerY - y3, 8, 0, 2 * Math.PI);
+        ctx.fill();
+        
+        // ラベル
+        ctx.font = '11px Arial';
+        ctx.fillStyle = '#e74c3c';
+        ctx.textAlign = 'center';
+        ctx.fillText('同位相', margin.left + (x1 + x2) / 2, margin.top + 10);
+        ctx.fillStyle = '#3498db';
+        ctx.fillText('逆位相', margin.left + x3, H - margin.bottom + 15);
+    }
+
+    // ========================================
+    // シミュレーション
+    // ========================================
+    
+    const simCanvas = document.getElementById('physicsCanvas');
+    const simCtx = simCanvas.getContext('2d');
+    
+    // 固定パラメータ
+    const A = 1.0;      // 振幅
+    const T = 2.0;      // 周期
+    const lambda = 4.0; // 波長
+    
+    // 可変パラメータ
+    let currentT = 0;
+    let currentX = 0;
+    let currentPhi = 0;
+    
+    // ミッション
+    const missions = [
+        { target: 0.5, tolerance: 0.05, text: 'y = 0.50 m' },
+        { target: -0.5, tolerance: 0.05, text: 'y = -0.50 m' },
+        { target: 1.0, tolerance: 0.05, text: 'y = 1.00 m（最大値）' },
+        { target: 0.0, tolerance: 0.05, text: 'y = 0.00 m' },
+        { target: -1.0, tolerance: 0.05, text: 'y = -1.00 m（最小値）' },
+        { target: 0.71, tolerance: 0.05, text: 'y ≈ 0.71 m（≈ √2/2）' }
+    ];
+    let currentMission = 0;
+    
+    // スライダー要素
+    const tSlider = document.getElementById('tSlider');
+    const xSlider = document.getElementById('xSlider');
+    const phiSlider = document.getElementById('phiSlider');
+    const tDisplay = document.getElementById('tDisplay');
+    const xDisplay = document.getElementById('xDisplay');
+    const phiDisplay = document.getElementById('phiDisplay');
+    const resultValue = document.getElementById('resultValue');
+    const missionTarget = document.getElementById('missionTarget');
+    const missionStatus = document.getElementById('missionStatus');
+    const nextMissionBtn = document.getElementById('nextMissionBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    
+    function resizeSimCanvas() {
+        const container = document.getElementById('sim-container');
+        if (container) {
+            simCanvas.width = container.clientWidth - 40;
+            simCanvas.height = 350;
+        }
+    }
+    
+    function calculateY(t, x, phi) {
+        const phase = 2 * Math.PI * (t / T - x / lambda) + phi;
+        return A * Math.sin(phase);
+    }
+    
+    function drawSimulation() {
+        const W = simCanvas.width;
+        const H = simCanvas.height;
+        
+        simCtx.fillStyle = '#fff';
+        simCtx.fillRect(0, 0, W, H);
+        
+        const margin = { left: 70, right: 30, top: 40, bottom: 50 };
+        const gW = W - margin.left - margin.right;
+        const gH = H - margin.top - margin.bottom;
+        const centerY = margin.top + gH / 2;
+        
+        // 軸
+        simCtx.strokeStyle = '#333';
+        simCtx.lineWidth = 2;
+        simCtx.beginPath();
+        simCtx.moveTo(margin.left, margin.top);
+        simCtx.lineTo(margin.left, H - margin.bottom);
+        simCtx.lineTo(W - margin.right, H - margin.bottom);
+        simCtx.stroke();
+        
+        // 中心線（y = 0）
+        simCtx.strokeStyle = '#ccc';
+        simCtx.lineWidth = 1;
+        simCtx.setLineDash([5, 5]);
+        simCtx.beginPath();
+        simCtx.moveTo(margin.left, centerY);
+        simCtx.lineTo(W - margin.right, centerY);
+        simCtx.stroke();
+        simCtx.setLineDash([]);
+        
+        // 振幅の線
+        simCtx.strokeStyle = '#ddd';
+        simCtx.beginPath();
+        simCtx.moveTo(margin.left, margin.top + gH * 0.1);
+        simCtx.lineTo(W - margin.right, margin.top + gH * 0.1);
+        simCtx.moveTo(margin.left, margin.top + gH * 0.9);
+        simCtx.lineTo(W - margin.right, margin.top + gH * 0.9);
+        simCtx.stroke();
+        
+        // y軸ラベル
+        simCtx.fillStyle = '#333';
+        simCtx.font = '14px Arial';
+        simCtx.textAlign = 'right';
+        simCtx.fillText('y [m]', margin.left - 10, margin.top - 10);
+        simCtx.fillText('1.0', margin.left - 5, margin.top + gH * 0.1 + 5);
+        simCtx.fillText('0', margin.left - 5, centerY + 5);
+        simCtx.fillText('-1.0', margin.left - 5, margin.top + gH * 0.9 + 5);
+        
+        // x軸ラベル
+        simCtx.textAlign = 'center';
+        simCtx.fillText('x [m]', W - margin.right, H - margin.bottom + 30);
+        const xMax = 8;
+        for (let x = 0; x <= xMax; x += 2) {
+            const sx = margin.left + (x / xMax) * gW;
+            simCtx.fillText(x.toString(), sx, H - margin.bottom + 20);
+            // 目盛り線
+            simCtx.strokeStyle = '#eee';
+            simCtx.beginPath();
+            simCtx.moveTo(sx, margin.top);
+            simCtx.lineTo(sx, H - margin.bottom);
+            simCtx.stroke();
+        }
+        
+        // 波形描画（現在の時刻tでの波形）
+        const yScale = gH * 0.4 / A;
+        
+        simCtx.strokeStyle = '#667eea';
+        simCtx.lineWidth = 3;
+        simCtx.beginPath();
+        for (let i = 0; i <= gW; i++) {
+            const x = (i / gW) * xMax;
+            const y = calculateY(currentT, x, currentPhi);
+            const sx = margin.left + i;
+            const sy = centerY - y * yScale;
+            if (i === 0) simCtx.moveTo(sx, sy);
+            else simCtx.lineTo(sx, sy);
+        }
+        simCtx.stroke();
+        
+        // 現在の位置xでの縦線（青）
+        const currentXScreen = margin.left + (currentX / xMax) * gW;
+        simCtx.strokeStyle = '#3498db';
+        simCtx.lineWidth = 2;
+        simCtx.setLineDash([8, 4]);
+        simCtx.beginPath();
+        simCtx.moveTo(currentXScreen, margin.top);
+        simCtx.lineTo(currentXScreen, H - margin.bottom);
+        simCtx.stroke();
+        simCtx.setLineDash([]);
+        
+        // 現在の変位を計算
+        const currentY = calculateY(currentT, currentX, currentPhi);
+        const currentYScreen = centerY - currentY * yScale;
+        
+        // 変位を示す水平線（紫）
+        simCtx.strokeStyle = '#9b59b6';
+        simCtx.lineWidth = 2;
+        simCtx.setLineDash([5, 5]);
+        simCtx.beginPath();
+        simCtx.moveTo(margin.left, currentYScreen);
+        simCtx.lineTo(currentXScreen, currentYScreen);
+        simCtx.stroke();
+        simCtx.setLineDash([]);
+        
+        // 現在位置の点（大きめ）
+        simCtx.fillStyle = '#9b59b6';
+        simCtx.beginPath();
+        simCtx.arc(currentXScreen, currentYScreen, 12, 0, 2 * Math.PI);
+        simCtx.fill();
+        
+        // 点の中に白い文字で「y」
+        simCtx.fillStyle = 'white';
+        simCtx.font = 'bold 10px Arial';
+        simCtx.textAlign = 'center';
+        simCtx.textBaseline = 'middle';
+        simCtx.fillText('y', currentXScreen, currentYScreen);
+        simCtx.textBaseline = 'alphabetic';
+        
+        // 情報表示
+        simCtx.font = '14px Arial';
+        simCtx.textAlign = 'left';
+        
+        // 時刻t（赤）
+        simCtx.fillStyle = '#e74c3c';
+        simCtx.fillText(`t = ${currentT.toFixed(2)} s`, margin.left + 10, margin.top + 20);
+        
+        // 位置x（青）
+        simCtx.fillStyle = '#3498db';
+        simCtx.fillText(`x = ${currentX.toFixed(2)} m`, margin.left + 120, margin.top + 20);
+        
+        // 初期位相φ（緑）
+        simCtx.fillStyle = '#27ae60';
+        const phiStr = formatPhi(currentPhi);
+        simCtx.fillText(`φ₀ = ${phiStr}`, margin.left + 230, margin.top + 20);
+        
+        // 結果更新
+        resultValue.textContent = `y = ${currentY.toFixed(2)} m`;
+        
+        // ミッション判定
+        checkMission(currentY);
+    }
+    
+    function formatPhi(phi) {
+        const piVal = phi / Math.PI;
+        if (Math.abs(piVal) < 0.01) return '0';
+        if (Math.abs(piVal - 0.5) < 0.02) return 'π/2';
+        if (Math.abs(piVal - 1) < 0.02) return 'π';
+        if (Math.abs(piVal + 0.5) < 0.02) return '-π/2';
+        if (Math.abs(piVal + 1) < 0.02) return '-π';
+        return (piVal >= 0 ? '' : '-') + Math.abs(piVal).toFixed(2) + 'π';
+    }
+    
+    function checkMission(y) {
+        const mission = missions[currentMission];
+        const diff = Math.abs(y - mission.target);
+        
+        if (diff <= mission.tolerance) {
+            missionStatus.textContent = '🎉 クリア！素晴らしい！';
+            missionStatus.classList.remove('trying');
+            missionStatus.classList.add('success');
+            nextMissionBtn.style.display = 'inline-block';
+        } else {
+            const hint = y < mission.target ? '（もう少し大きく）' : '（もう少し小さく）';
+            missionStatus.textContent = `挑戦中... ${hint}`;
+            missionStatus.classList.remove('success');
+            missionStatus.classList.add('trying');
+            nextMissionBtn.style.display = 'none';
+        }
+    }
+    
+    function updateMissionDisplay() {
+        const mission = missions[currentMission];
+        missionTarget.textContent = `目標：${mission.text} にしよう！`;
+        missionStatus.textContent = '挑戦中... 現在の変位を目標に近づけよう！';
+        missionStatus.classList.remove('success');
+        missionStatus.classList.add('trying');
+        nextMissionBtn.style.display = 'none';
+    }
+    
+    // イベントリスナー
+    tSlider.addEventListener('input', function() {
+        currentT = parseFloat(this.value);
+        tDisplay.textContent = `t = ${currentT.toFixed(2)} s`;
+        drawSimulation();
+    });
+    
+    xSlider.addEventListener('input', function() {
+        currentX = parseFloat(this.value);
+        xDisplay.textContent = `x = ${currentX.toFixed(2)} m`;
+        drawSimulation();
+    });
+    
+    phiSlider.addEventListener('input', function() {
+        currentPhi = parseFloat(this.value);
+        phiDisplay.textContent = `φ₀ = ${formatPhi(currentPhi)}`;
+        drawSimulation();
+    });
+    
+    resetBtn.addEventListener('click', function() {
+        currentT = 0;
+        currentX = 0;
+        currentPhi = 0;
+        tSlider.value = 0;
+        xSlider.value = 0;
+        phiSlider.value = 0;
+        tDisplay.textContent = 't = 0.00 s';
+        xDisplay.textContent = 'x = 0.00 m';
+        phiDisplay.textContent = 'φ₀ = 0';
+        drawSimulation();
+    });
+    
+    nextMissionBtn.addEventListener('click', function() {
+        currentMission = (currentMission + 1) % missions.length;
+        updateMissionDisplay();
+        drawSimulation();
+    });
+    
+    // ウィンドウリサイズ
+    window.addEventListener('resize', function() {
+        resizeSimCanvas();
+        drawSimulation();
+        drawAllFigures();
+    });
+    
+    // 初期化
+    window.addEventListener('load', function() {
+        drawAllFigures();
+        resizeSimCanvas();
+        updateMissionDisplay();
+        drawSimulation();
+    });
+    </script>
+</body>
+</html>

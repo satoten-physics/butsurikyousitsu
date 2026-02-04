@@ -1,0 +1,2770 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高校物理 - 波特有の性質（証明編）</title>
+    <script>
+      window.MathJax = {
+      tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']]
+     }
+     };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        header {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .back-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        h1 {
+            color: #333;
+        }
+        .container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .tab-btn {
+            flex: 1;
+            min-width: 150px;
+            padding: 12px 20px;
+            border: none;
+            background: #f0f0f0;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        .tab-btn.active {
+            background: #667eea;
+            color: white;
+        }
+        .tab-btn:hover {
+            background: #8899f0;
+            color: white;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+        h3 {
+            color: #764ba2;
+            margin: 25px 0 15px 0;
+            font-size: 1.2em;
+        }
+        h4 {
+            color: #555;
+            margin: 20px 0 10px 0;
+            font-size: 1.1em;
+        }
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #fafafa;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        .proof-section {
+            background: #f0f4ff;
+            border-left-color: #764ba2;
+        }
+        .key-point {
+            background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #ff9800;
+        }
+        .formula-box {
+            background: #e8f5e9;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        .step-container {
+            margin: 20px 0;
+        }
+        .step {
+            background: white;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+        .step-header {
+            background: #667eea;
+            color: white;
+            padding: 10px 15px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .step-header:hover {
+            background: #5a6fd6;
+        }
+        .step-content {
+            padding: 15px;
+            display: none;
+        }
+        .step-content.show {
+            display: block;
+        }
+        .step-arrow {
+            transition: transform 0.3s;
+        }
+        .step-arrow.rotated {
+            transform: rotate(180deg);
+        }
+        .static-diagram {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .static-diagram canvas {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            max-width: 100%;
+        }
+        .diagram-caption {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 8px;
+        }
+        
+        /* シミュレーション用スタイル */
+        #sim-container {
+            background: #f5f5f5;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .sim-tabs {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        .sim-tab-btn {
+            flex: 1;
+            min-width: 100px;
+            padding: 10px 15px;
+            border: 2px solid #667eea;
+            background: white;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: all 0.3s;
+            color: #667eea;
+            font-weight: bold;
+        }
+        .sim-tab-btn.active {
+            background: #667eea;
+            color: white;
+        }
+        .sim-tab-btn:hover {
+            background: #e8ecff;
+        }
+        .sim-tab-btn.active:hover {
+            background: #5a6fd6;
+        }
+        .sim-panel {
+            display: none;
+        }
+        .sim-panel.active {
+            display: block;
+        }
+        #physicsCanvas, .sim-canvas {
+            display: block;
+            width: 100%;
+            background: white;
+            border-radius: 5px;
+            border: 2px solid #ddd;
+        }
+        .sim-controls {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+        .control-group {
+            margin-bottom: 20px;
+        }
+        .control-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        .control-group input[type="range"] {
+            width: 100%;
+            margin: 10px 0;
+        }
+        .value-display {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            min-width: 100px;
+            text-align: center;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .sim-button {
+            flex: 1;
+            min-width: 120px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .sim-button.start {
+            background: #4CAF50;
+            color: white;
+        }
+        .sim-button.start:hover {
+            background: #45a049;
+        }
+        .sim-button.pause {
+            background: #ff9800;
+            color: white;
+        }
+        .sim-button.pause:hover {
+            background: #e68a00;
+        }
+        .sim-button.reset {
+            background: #f44336;
+            color: white;
+        }
+        .sim-button.reset:hover {
+            background: #da190b;
+        }
+        .info-panel {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+        .info-panel h4 {
+            color: #1976d2;
+            margin-bottom: 10px;
+        }
+        
+        /* 問題タブ用 */
+        details {
+            background: #f5f5f5;
+            border-radius: 8px;
+            margin: 15px 0;
+            padding: 15px;
+        }
+        summary {
+            cursor: pointer;
+            font-weight: bold;
+            color: #667eea;
+            padding: 10px;
+            background: #e8ecff;
+            border-radius: 5px;
+            margin: -15px -15px 0 -15px;
+        }
+        summary:hover {
+            background: #d0d8ff;
+        }
+        .answer-content {
+            padding-top: 15px;
+        }
+        .problem-box {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 2px solid #667eea;
+        }
+        .problem-box h4 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            header, .container {
+                padding: 15px;
+            }
+            .tab-btn {
+                min-width: 100px;
+                font-size: 14px;
+            }
+            .sim-tab-btn {
+                min-width: 80px;
+                font-size: 12px;
+                padding: 8px 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="back-link">← 目次に戻る</a>
+        <h1>波特有の性質（証明編）</h1>
+    </header>
+    <div class="container">
+        
+        <div class="tabs">
+            <button class="tab-btn active" onclick="openTab('lecture')">解説編</button>
+            <button class="tab-btn" onclick="openTab('problem')">問題編</button>
+            <button class="tab-btn" onclick="openTab('simulation')">シミュレーション</button>
+        </div>
+        
+        <div id="lecture" class="tab-content active">
+            <h2>ホイヘンスの原理による証明</h2>
+            
+            <div class="section">
+                <h3>🌊 ホイヘンスの原理（復習）</h3>
+                <p>波の進み方を説明する基本原理を復習しましょう。</p>
+                
+                <div class="key-point">
+                    <strong>ホイヘンスの原理</strong><br>
+                    ① 波面上の各点は、それぞれが新しい波（<strong>素元波</strong>）の波源となる<br>
+                    ② 次の瞬間の波面は、これらの素元波の<strong>共通接線（包絡線）</strong>として得られる
+                </div>
+                
+                <div class="static-diagram">
+                    <canvas id="huygensBasicCanvas" width="500" height="200"></canvas>
+                    <p class="diagram-caption">図：ホイヘンスの原理の概念図（平面波の場合）</p>
+                </div>
+                
+                <p>この原理を使うと、<strong>反射の法則</strong>、<strong>屈折の法則</strong>、<strong>回折</strong>を統一的に説明できます。</p>
+            </div>
+            
+            <!-- 反射の法則の証明 -->
+            <div class="section proof-section">
+                <h3>📐 反射の法則の証明</h3>
+                <p>入射角 $i$ と反射角 $j$ が等しいことを、ホイヘンスの原理を使って証明します。</p>
+                
+                <div class="formula-box">
+                    <strong>反射の法則：</strong> $i = j$（入射角 ＝ 反射角）
+                </div>
+                
+                <div class="step-container">
+                    <div class="step">
+                        <div class="step-header" onclick="toggleStep(this)">
+                            <span>Step 1：状況設定</span>
+                            <span class="step-arrow">▼</span>
+                        </div>
+                        <div class="step-content show">
+                            <p>平面波が反射面に入射角 $i$ で入射する状況を考えます。波面ABのうち、<strong>点Aが先に反射面に到達</strong>します。</p>
+                            <div class="static-diagram">
+                                <canvas id="reflectStep1Canvas" width="500" height="300"></canvas>
+                            </div>
+                            <p>点Aが反射面に到達した瞬間、点Bはまだ反射面に達していません。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-header" onclick="toggleStep(this)">
+                            <span>Step 2：素元波の発生と点Bの移動</span>
+                            <span class="step-arrow">▼</span>
+                        </div>
+                        <div class="step-content">
+                            <p>点Aが反射面に到達すると、そこから<strong>素元波</strong>が発生します。同時に点Bは反射面に向かって進み続けます。</p>
+                            <div class="static-diagram">
+                                <canvas id="reflectStep2Canvas" width="500" height="300"></canvas>
+                            </div>
+                            <p>点Bが反射面上の点B'に到達するまでの時間を $t$ とすると：</p>
+                            <ul>
+                                <li>点Bが進む距離：$\text{BB'} = vt$</li>
+                                <li>点Aから発生した素元波の半径：$\text{AA'} = vt$</li>
+                            </ul>
+                            <div class="key-point">
+                                <strong>ポイント：</strong>反射前後で媒質は同じなので、波の速さ $v$ は変わらない！<br>
+                                → $\text{BB'} = \text{AA'} = vt$
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-header" onclick="toggleStep(this)">
+                            <span>Step 3：新しい波面の作図</span>
+                            <span class="step-arrow">▼</span>
+                        </div>
+                        <div class="step-content">
+                            <p>点B'から素元波に接線を引くと、その接点A'との直線が反射後の波面になります。</p>
+                            <div class="static-diagram">
+                                <canvas id="reflectStep3Canvas" width="500" height="300"></canvas>
+                            </div>
+                            <p>反射後の波面A'B'が得られました。素元波の半径と接線は直角に交わるので、$\angle \text{AA'B'} = 90°$ です。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-header" onclick="toggleStep(this)">
+                            <span>Step 4：三角形の合同による証明</span>
+                            <span class="step-arrow">▼</span>
+                        </div>
+                        <div class="step-content">
+                            <p>三角形AA'B'と三角形B'BAを比較します。</p>
+                            <div class="static-diagram">
+                                <canvas id="reflectStep4Canvas" width="500" height="320"></canvas>
+                            </div>
+                            <p><strong>△AA'B' と △B'BA について：</strong></p>
+                            <ul>
+                                <li>$\text{AA'} = \text{BB'} = vt$（同じ時間で同じ速さ）</li>
+                                <li>$\text{AB'}$ は共通の斜辺</li>
+                                <li>$\angle \text{AA'B'} = \angle \text{BB'A} = 90°$（波面と進行方向は垂直）</li>
+                            </ul>
+                            <div class="formula-box">
+                                直角三角形の斜辺と他の一辺が等しいので<br>
+                                <strong>△AA'B' ≡ △B'BA（合同）</strong>
+                            </div>
+                            <p>合同な三角形では対応する角が等しいので、$\angle \text{A'AB'} = \angle \text{AB'B}$</p>
+                            <p>ここで、入射角 $i = \angle \text{AB'B}$、反射角 $j = \angle \text{A'AB'}$ より：</p>
+                            <div class="formula-box">
+                                $i = j$　（証明完了）
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 屈折の法則の証明 -->
+            <div class="section proof-section">
+                <h3>📐 屈折の法則の証明</h3>
+                <p>媒質Ⅰ（波の速さ $v_1$）から媒質Ⅱ（波の速さ $v_2$）へ波が進むときの屈折の法則を証明します。</p>
+                
+                <div class="formula-box">
+                    <strong>屈折の法則：</strong> $\displaystyle \frac{\sin\theta_1}{\sin\theta_2} = \frac{v_1}{v_2} = n_{12}$
+                </div>
+                
+                <div class="step-container">
+                    <div class="step">
+                        <div class="step-header" onclick="toggleStep(this)">
+                            <span>Step 1：状況設定</span>
+                            <span class="step-arrow">▼</span>
+                        </div>
+                        <div class="step-content show">
+                            <p>平面波が媒質Ⅰから媒質Ⅱへ、境界面に入射角 $\theta_1$ で入射する状況を考えます。波面ABのうち、<strong>点Aが先に境界面に到達</strong>します。</p>
+                            <div class="static-diagram">
+                                <canvas id="refractStep1Canvas" width="500" height="350"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-header" onclick="toggleStep(this)">
+                            <span>Step 2：素元波の発生（速さの違いに注意！）</span>
+                            <span class="step-arrow">▼</span>
+                        </div>
+                        <div class="step-content">
+                            <p>点Aが境界面に到達すると、<strong>媒質Ⅱの中で</strong>素元波が発生します。</p>
+                            <div class="static-diagram">
+                                <canvas id="refractStep2Canvas" width="500" height="350"></canvas>
+                            </div>
+                            <p>点Bが境界面上の点B'に到達するまでの時間を $t$ とすると：</p>
+                            <ul>
+                                <li>媒質Ⅰ内：点Bは距離 $\text{BB'} = v_1 t$ だけ進む</li>
+                                <li>媒質Ⅱ内：点Aから発生した素元波の半径は $\text{AA'} = v_2 t$</li>
+                            </ul>
+                            <div class="key-point">
+                                <strong>重要ポイント：</strong>媒質が変わると波の速さが変わる！<br>
+                                → $\text{BB'} = v_1 t$ と $\text{AA'} = v_2 t$ は<strong>異なる</strong>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-header" onclick="toggleStep(this)">
+                            <span>Step 3：新しい波面の作図</span>
+                            <span class="step-arrow">▼</span>
+                        </div>
+                        <div class="step-content">
+                            <p>点B'から素元波に接線を引くと、その接点A'との直線が屈折後の波面になります。</p>
+                            <div class="static-diagram">
+                                <canvas id="refractStep3Canvas" width="500" height="350"></canvas>
+                            </div>
+                            <p>$v_2 < v_1$ の場合、素元波の半径が小さいため、波面の向きが変わり、屈折角 $\theta_2 < \theta_1$ となります。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-header" onclick="toggleStep(this)">
+                            <span>Step 4：三角比による証明</span>
+                            <span class="step-arrow">▼</span>
+                        </div>
+                        <div class="step-content">
+                            <p>共通の斜辺 $\text{AB'}$ に着目して、$\sin$ の比を求めます。</p>
+                            <div class="static-diagram">
+                                <canvas id="refractStep4Canvas" width="500" height="350"></canvas>
+                            </div>
+                            <p><strong>△ABB' について（入射側）：</strong></p>
+                            <p style="text-align: center;">$\displaystyle \sin\theta_1 = \frac{\text{BB'}}{\text{AB'}} = \frac{v_1 t}{\text{AB'}}$</p>
+                            
+                            <p><strong>△AA'B' について（屈折側）：</strong></p>
+                            <p style="text-align: center;">$\displaystyle \sin\theta_2 = \frac{\text{AA'}}{\text{AB'}} = \frac{v_2 t}{\text{AB'}}$</p>
+                            
+                            <p><strong>比をとると：</strong></p>
+                            <div class="formula-box">
+                                $\displaystyle \frac{\sin\theta_1}{\sin\theta_2} = \frac{v_1 t / \text{AB'}}{v_2 t / \text{AB'}} = \frac{v_1}{v_2} = n_{12}$
+                            </div>
+                            <p style="text-align: center;"><strong>（証明完了）</strong></p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="key-point">
+                    <strong>振動数は不変！</strong><br>
+                    どの媒質でも波源の振動数 $f$ は同じなので、$v = f\lambda$ より：
+                    $$\frac{v_1}{v_2} = \frac{\lambda_1}{\lambda_2} = n_{12}$$
+                    媒質が変わると<strong>波長</strong>が変わります。
+                </div>
+            </div>
+            
+            <!-- 回折の解釈 -->
+            <div class="section">
+                <h3>🌀 回折の解釈</h3>
+                <p><strong>回折</strong>とは、波が障害物の裏側に回り込む現象です。これもホイヘンスの原理で説明できます。</p>
+                
+                <div class="static-diagram">
+                    <canvas id="diffractionCanvas" width="500" height="300"></canvas>
+                    <p class="diagram-caption">図：スリットを通過する波の回折</p>
+                </div>
+                
+                <p>スリット（隙間）を通過した波面上の各点から素元波が発生し、その包絡線として新しい波面ができます。スリットの端では素元波が障害物の裏側にも広がるため、<strong>波が回り込む</strong>ように見えます。</p>
+                
+                <div class="key-point">
+                    <strong>波長と回折の度合い</strong><br>
+                    回折の度合いは<strong>波長とスリット幅の比</strong>で決まります。
+                </div>
+                
+                <h4>波長による回折の違い</h4>
+                <div class="static-diagram">
+                    <canvas id="diffractionCompareCanvas" width="600" height="250"></canvas>
+                    <p class="diagram-caption">図：波長による回折の度合いの違い（左：長い波長、右：短い波長）</p>
+                </div>
+                
+                <div class="formula-box">
+                    <strong>波長が長い（スリット幅に近い）</strong> → 回折しやすい（大きく回り込む）<br>
+                    <strong>波長が短い（スリット幅より十分小さい）</strong> → 回折しにくい（まっすぐ進む）
+                </div>
+                
+                <p><strong>具体例：</strong></p>
+                <ul>
+                    <li><strong>音（波長：数cm〜数m）</strong>：ドアの隙間から回り込んで聞こえる</li>
+                    <li><strong>光（波長：約400〜700nm）</strong>：ほぼ直進する（影ができる）</li>
+                </ul>
+                
+                <p>光も波なので回折しますが、波長が非常に短いため日常的には観察しにくいのです。</p>
+            </div>
+            
+            <h2>授業資料</h2>
+            <iframe src="https://drive.google.com/file/d/1rd3AUHNkj-NLM0IEztEdsiVOdPwxD6EA/preview" width="100%" height="500"></iframe>
+        </div>
+        
+        <div id="problem" class="tab-content">
+            <h2>確認問題</h2>
+            
+            <div class="problem-box">
+                <h4>問題1：反射の法則の証明</h4>
+                <p>下図のように、波面ABが反射面に入射角 $i$ で入射している。点Aが先に反射面に到達し、点Bが反射面上の点B'に到達するまでの時間を $t$、媒質中の波の速さを $v$ とする。</p>
+                <div class="static-diagram">
+                    <canvas id="problem1Canvas" width="450" height="280"></canvas>
+                </div>
+                <p>(1) 点Bが反射面に到達するまでに進む距離BB'を、$v$, $t$ を用いて表せ。</p>
+                <p>(2) 点Aから発生する素元波の半径AA'を、$v$, $t$ を用いて表せ。</p>
+                <p>(3) 入射角 $i$ と反射角 $j$ が等しいことを、三角形の合同を用いて証明せよ。</p>
+            </div>
+            
+            <details>
+                <summary>解答・解説を表示</summary>
+                <div class="answer-content">
+                    <p><strong>(1)</strong> 波の速さが $v$、時間が $t$ なので：</p>
+                    <div class="formula-box">$\text{BB'} = vt$</div>
+                    
+                    <p><strong>(2)</strong> 反射の前後で媒質は同じなので、波の速さは変わらない。点Aから発生した素元波は、時間 $t$ の間に半径 $vt$ まで広がる：</p>
+                    <div class="formula-box">$\text{AA'} = vt$</div>
+                    
+                    <p><strong>(3)</strong> △AA'B'と△B'BAについて：</p>
+                    <ul>
+                        <li>$\text{AA'} = \text{BB'} = vt$</li>
+                        <li>$\text{AB'}$ は共通</li>
+                        <li>$\angle \text{AA'B'} = \angle \text{BB'A} = 90°$（波面と進行方向は垂直）</li>
+                    </ul>
+                    <p>直角三角形で斜辺と他の一辺がそれぞれ等しいので、△AA'B' ≡ △B'BA</p>
+                    <p>よって対応する角が等しく、$\angle \text{A'AB'} = \angle \text{AB'B}$</p>
+                    <p>ここで $\angle \text{AB'B} = i$（入射角）、$\angle \text{A'AB'} = j$（反射角）より：</p>
+                    <div class="formula-box">$i = j$</div>
+                </div>
+            </details>
+            
+            <div class="problem-box">
+                <h4>問題2：屈折の法則の証明</h4>
+                <p>媒質Ⅰ（波の速さ $v_1$）から媒質Ⅱ（波の速さ $v_2$）へ波が入射角 $\theta_1$ で入射し、屈折角 $\theta_2$ で屈折した。波面の一端Aが境界面に到達してから、他端Bが境界面の点B'に到達するまでの時間を $t$ とする。</p>
+                <p>(1) 媒質Ⅰ中で点Bが進む距離を求めよ。</p>
+                <p>(2) 媒質Ⅱ中で点Aから発生する素元波の半径を求めよ。</p>
+                <p>(3) 共通の辺AB'を用いて、$\sin\theta_1$ と $\sin\theta_2$ をそれぞれ表せ。</p>
+                <p>(4) 屈折の法則 $\displaystyle \frac{\sin\theta_1}{\sin\theta_2} = \frac{v_1}{v_2}$ を導け。</p>
+            </div>
+            
+            <details>
+                <summary>解答・解説を表示</summary>
+                <div class="answer-content">
+                    <p><strong>(1)</strong> 媒質Ⅰ中の波の速さは $v_1$ なので：</p>
+                    <div class="formula-box">$\text{BB'} = v_1 t$</div>
+                    
+                    <p><strong>(2)</strong> 媒質Ⅱ中の波の速さは $v_2$ なので、素元波の半径は：</p>
+                    <div class="formula-box">$\text{AA'} = v_2 t$</div>
+                    
+                    <p><strong>(3)</strong> △ABB'において、$\angle \text{AB'B} = 90°$ より：</p>
+                    <div class="formula-box">$\displaystyle \sin\theta_1 = \frac{\text{BB'}}{\text{AB'}} = \frac{v_1 t}{\text{AB'}}$</div>
+                    <p>△AA'B'において、$\angle \text{AA'B'} = 90°$ より：</p>
+                    <div class="formula-box">$\displaystyle \sin\theta_2 = \frac{\text{AA'}}{\text{AB'}} = \frac{v_2 t}{\text{AB'}}$</div>
+                    
+                    <p><strong>(4)</strong> (3)の結果の比をとると：</p>
+                    $$\frac{\sin\theta_1}{\sin\theta_2} = \frac{v_1 t / \text{AB'}}{v_2 t / \text{AB'}} = \frac{v_1 t}{v_2 t} = \frac{v_1}{v_2}$$
+                    <div class="formula-box">$\displaystyle \frac{\sin\theta_1}{\sin\theta_2} = \frac{v_1}{v_2}$（証明完了）</div>
+                </div>
+            </details>
+            
+            <div class="problem-box">
+                <h4>問題3：回折と波長</h4>
+                <p>音と光はどちらも波であるが、日常生活において音は障害物の裏側に回り込みやすく、光はまっすぐ進んで影を作る。この違いをホイヘンスの原理と波長の観点から説明せよ。</p>
+            </div>
+            
+            <details>
+                <summary>解答・解説を表示</summary>
+                <div class="answer-content">
+                    <p><strong>解答例：</strong></p>
+                    <p>ホイヘンスの原理によると、波面上の各点から素元波が発生し、障害物の端では素元波が裏側にも回り込む。これが回折である。</p>
+                    <p>回折の度合いは、<strong>波長と障害物（またはスリット）のサイズの比</strong>で決まる。波長が障害物のサイズに近いほど、回折が顕著になる。</p>
+                    <ul>
+                        <li><strong>音</strong>：波長が数cm〜数mと長く、ドアの幅（約1m）に近い。そのため大きく回折し、障害物の裏側にも回り込む。</li>
+                        <li><strong>光</strong>：波長が約400〜700nm（$10^{-7}$m程度）と非常に短く、日常的な障害物のサイズに比べて無視できるほど小さい。そのため回折がほとんど起こらず、ほぼ直進して影を作る。</li>
+                    </ul>
+                    <div class="key-point">
+                        波長が長いほど（障害物サイズに近いほど）回折しやすく、波長が短いほど直進性が高い。
+                    </div>
+                </div>
+            </details>
+        </div>
+        
+        <div id="simulation" class="tab-content">
+            <h2>ホイヘンスの原理シミュレーション</h2>
+            <p>素元波と波面の形成過程を可視化します。各タブで異なる現象を確認しましょう。</p>
+            
+            <div class="sim-tabs">
+                <button class="sim-tab-btn active" onclick="openSimTab('reflection')">反射の法則</button>
+                <button class="sim-tab-btn" onclick="openSimTab('refraction')">屈折の法則</button>
+                <button class="sim-tab-btn" onclick="openSimTab('diffraction')">回折</button>
+            </div>
+            
+            <!-- 反射シミュレーション -->
+            <div id="reflectionPanel" class="sim-panel active">
+                <div id="sim-container">
+                    <canvas id="reflectionCanvas" class="sim-canvas"></canvas>
+                </div>
+                
+                <div class="sim-controls">
+                    <div class="control-group">
+                        <label>入射角: <span class="value-display" id="reflectAngleDisplay">45°</span></label>
+                        <input type="range" id="reflectAngleSlider" min="15" max="75" value="45" step="1">
+                    </div>
+                    
+                    <div class="control-group">
+                        <label>素元波の数: <span class="value-display" id="reflectWaveCountDisplay">5個</span></label>
+                        <input type="range" id="reflectWaveCountSlider" min="3" max="8" value="5" step="1">
+                    </div>
+                    
+                    <div class="control-group">
+                        <label>アニメーション速度: <span class="value-display" id="reflectSpeedDisplay">1.0x</span></label>
+                        <input type="range" id="reflectSpeedSlider" min="0.3" max="2" value="1" step="0.1">
+                    </div>
+                    
+                    <div class="button-group">
+                        <button class="sim-button start" id="reflectStartBtn">▶ スタート</button>
+                        <button class="sim-button pause" id="reflectPauseBtn">⏸ 一時停止</button>
+                        <button class="sim-button reset" id="reflectResetBtn">↺ リセット</button>
+                    </div>
+                </div>
+                
+                <div class="info-panel">
+                    <h4>📌 観察ポイント</h4>
+                    <ul>
+                        <li>波面が反射面に<strong>順次到達</strong>し、到達した点から<span style="color: #e91e63; font-weight: bold;">素元波（ピンク色の半円）</span>が発生します</li>
+                        <li>素元波の<span style="color: #4caf50; font-weight: bold;">共通接線（包絡線）</span>が新しい反射波面になります</li>
+                        <li>BB' = AA' = vt となり、入射角と反射角が等しくなることを確認しましょう</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- 屈折シミュレーション -->
+            <div id="refractionPanel" class="sim-panel">
+                <div id="sim-container">
+                    <canvas id="refractionCanvas" class="sim-canvas"></canvas>
+                </div>
+                
+                <div class="sim-controls">
+                    <div class="control-group">
+                        <label>入射角: <span class="value-display" id="refractAngleDisplay">45°</span></label>
+                        <input type="range" id="refractAngleSlider" min="15" max="75" value="45" step="1">
+                    </div>
+                    
+                    <div class="control-group">
+                        <label>媒質Ⅱの屈折率 $n_2$: <span class="value-display" id="refractIndexDisplay">1.5</span></label>
+                        <input type="range" id="refractIndexSlider" min="0.6" max="2.0" value="1.5" step="0.1">
+                    </div>
+                    
+                    <div class="control-group">
+                        <label>素元波の数: <span class="value-display" id="refractWaveCountDisplay">5個</span></label>
+                        <input type="range" id="refractWaveCountSlider" min="3" max="8" value="5" step="1">
+                    </div>
+                    
+                    <div class="control-group">
+                        <label>アニメーション速度: <span class="value-display" id="refractSpeedDisplay">1.0x</span></label>
+                        <input type="range" id="refractSpeedSlider" min="0.3" max="2" value="1" step="0.1">
+                    </div>
+                    
+                    <div class="button-group">
+                        <button class="sim-button start" id="refractStartBtn">▶ スタート</button>
+                        <button class="sim-button pause" id="refractPauseBtn">⏸ 一時停止</button>
+                        <button class="sim-button reset" id="refractResetBtn">↺ リセット</button>
+                    </div>
+                </div>
+                
+                <div class="info-panel">
+                    <h4>📌 観察ポイント</h4>
+                    <ul>
+                        <li>媒質Ⅱでは波の速さが変わるため、<span style="color: #e91e63; font-weight: bold;">素元波の半径</span>が媒質Ⅰでの移動距離と異なります</li>
+                        <li>$n_2 > 1$ のとき：媒質Ⅱで波が遅くなり、屈折角 < 入射角（法線に近づく）</li>
+                        <li>$n_2 < 1$ のとき：媒質Ⅱで波が速くなり、屈折角 > 入射角（法線から遠ざかる）</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- 回折シミュレーション -->
+            <div id="diffractionPanel" class="sim-panel">
+                <div id="sim-container">
+                    <canvas id="diffractionSimCanvas" class="sim-canvas"></canvas>
+                </div>
+                
+                <div class="sim-controls">
+                    <div class="control-group">
+                        <label>波長: <span class="value-display" id="diffractWavelengthDisplay">40 px</span></label>
+                        <input type="range" id="diffractWavelengthSlider" min="15" max="80" value="40" step="5">
+                    </div>
+                    
+                    <div class="control-group">
+                        <label>スリット幅: <span class="value-display" id="diffractSlitDisplay">80 px</span></label>
+                        <input type="range" id="diffractSlitSlider" min="30" max="200" value="80" step="10">
+                    </div>
+                    
+                    <div class="control-group">
+                        <label>アニメーション速度: <span class="value-display" id="diffractSpeedDisplay">1.0x</span></label>
+                        <input type="range" id="diffractSpeedSlider" min="0.3" max="2" value="1" step="0.1">
+                    </div>
+                    
+                    <div class="button-group">
+                        <button class="sim-button start" id="diffractStartBtn">▶ スタート</button>
+                        <button class="sim-button pause" id="diffractPauseBtn">⏸ 一時停止</button>
+                        <button class="sim-button reset" id="diffractResetBtn">↺ リセット</button>
+                    </div>
+                </div>
+                
+                <div class="info-panel">
+                    <h4>📌 観察ポイント</h4>
+                    <ul>
+                        <li><strong>波長を大きく</strong>すると：回折が顕著になり、波が大きく回り込みます</li>
+                        <li><strong>波長を小さく</strong>すると：回折が抑えられ、波は直進しやすくなります</li>
+                        <li><strong>スリット幅を狭く</strong>すると：回折がより顕著になります</li>
+                        <li>波長/スリット幅 の比が大きいほど回折しやすいことを確認しましょう</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+    // --- タブ切り替え機能 ---
+    function openTab(tabName) {
+        var contents = document.getElementsByClassName("tab-content");
+        for (var i = 0; i < contents.length; i++) {
+            contents[i].style.display = "none";
+            contents[i].classList.remove("active");
+        }
+        var buttons = document.getElementsByClassName("tab-btn");
+        for (var i = 0; i < buttons.length; i++) {
+            buttons[i].classList.remove("active");
+        }
+        document.getElementById(tabName).style.display = "block";
+        document.getElementById(tabName).classList.add("active");
+        if (event) {
+            event.currentTarget.classList.add("active");
+        }
+        
+        if (tabName === 'simulation') {
+            setTimeout(() => {
+                initReflectionSim();
+                initRefractionSim();
+                initDiffractionSim();
+            }, 100);
+        }
+    }
+    
+    function openSimTab(simName) {
+        var panels = document.getElementsByClassName("sim-panel");
+        for (var i = 0; i < panels.length; i++) {
+            panels[i].classList.remove("active");
+        }
+        var simBtns = document.getElementsByClassName("sim-tab-btn");
+        for (var i = 0; i < simBtns.length; i++) {
+            simBtns[i].classList.remove("active");
+        }
+        document.getElementById(simName + 'Panel').classList.add("active");
+        event.currentTarget.classList.add("active");
+    }
+    
+    function toggleStep(header) {
+        const content = header.nextElementSibling;
+        const arrow = header.querySelector('.step-arrow');
+        content.classList.toggle('show');
+        arrow.classList.toggle('rotated');
+    }
+    
+    // ============================
+    // 描画ユーティリティ
+    // ============================
+    
+    function drawArrow(ctx, fromX, fromY, toX, toY, headLen = 10) {
+        const angle = Math.atan2(toY - fromY, toX - fromX);
+        ctx.beginPath();
+        ctx.moveTo(fromX, fromY);
+        ctx.lineTo(toX, toY);
+        ctx.lineTo(toX - headLen * Math.cos(angle - Math.PI / 6), toY - headLen * Math.sin(angle - Math.PI / 6));
+        ctx.moveTo(toX, toY);
+        ctx.lineTo(toX - headLen * Math.cos(angle + Math.PI / 6), toY - headLen * Math.sin(angle + Math.PI / 6));
+        ctx.stroke();
+    }
+    
+    function drawRightAngle(ctx, x, y, size, angle1, angle2) {
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(angle1);
+        ctx.beginPath();
+        ctx.moveTo(size, 0);
+        ctx.lineTo(size, size);
+        ctx.lineTo(0, size);
+        ctx.stroke();
+        ctx.restore();
+    }
+    
+    // ============================
+    // 静的図解の描画
+    // ============================
+    
+    // ホイヘンスの原理基本図（修正版）
+    function drawHuygensBasic() {
+        const canvas = document.getElementById('huygensBasicCanvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const W = canvas.width, H = canvas.height;
+        
+        ctx.clearRect(0, 0, W, H);
+        ctx.fillStyle = '#f8f9fa';
+        ctx.fillRect(0, 0, W, H);
+        
+        const waveX1 = 100;  // 元の波面の位置
+        const waveX2 = 280;  // 新しい波面の位置
+        const radius = waveX2 - waveX1;  // 素元波の半径
+        
+        // 元の波面
+        ctx.strokeStyle = '#2196f3';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(waveX1, 30);
+        ctx.lineTo(waveX1, 170);
+        ctx.stroke();
+        
+        // 進行方向矢印
+        ctx.strokeStyle = '#333';
+        ctx.lineWidth = 2;
+        drawArrow(ctx, waveX1 + 20, 100, waveX1 + 70, 100);
+        
+        // 素元波の波源点と素元波（右半分のみ）
+        const wavePoints = [50, 80, 110, 140];
+        ctx.strokeStyle = '#e91e63';
+        ctx.lineWidth = 1.5;
+        wavePoints.forEach(y => {
+            // 素元波（右半分のみ）
+            ctx.beginPath();
+            ctx.arc(waveX1, y, radius, -Math.PI/2, Math.PI/2);
+            ctx.stroke();
+            
+            // 波源点
+            ctx.fillStyle = '#e91e63';
+            ctx.beginPath();
+            ctx.arc(waveX1, y, 4, 0, Math.PI * 2);
+            ctx.fill();
+        });
+        
+        // 新しい波面（包絡線）
+        ctx.strokeStyle = '#4caf50';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(waveX2, 30);
+        ctx.lineTo(waveX2, 170);
+        ctx.stroke();
+        
+        // 進行方向矢印
+        ctx.strokeStyle = '#333';
+        ctx.lineWidth = 2;
+        drawArrow(ctx, waveX2 + 20, 100, waveX2 + 70, 100);
+        
+        // ラベル
+        ctx.fillStyle = '#2196f3';
+        ctx.font = '14px sans-serif';
+        ctx.fillText('元の波面', waveX1 - 30, 190);
+        
+        ctx.fillStyle = '#e91e63';
+        ctx.fillText('素元波', waveX1 + radius/2 - 20, 40);
+        
+        ctx.fillStyle = '#4caf50';
+        ctx.fillText('新しい波面', waveX2 - 35, 190);
+        ctx.fillText('（包絡線）', waveX2 - 30, 205);
+        
+        // 半径の表示
+        ctx.strokeStyle = '#999';
+        ctx.setLineDash([3, 3]);
+        ctx.beginPath();
+        ctx.moveTo(waveX1, 110);
+        ctx.lineTo(waveX2, 110);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.fillStyle = '#666';
+        ctx.fillText('vt', waveX1 + radius/2 - 10, 125);
+    }
+    
+    // 反射Step1（修正版：正しい幾何学的配置）
+    function drawReflectStep1() {
+        const canvas = document.getElementById('reflectStep1Canvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const W = canvas.width, H = canvas.height;
+        
+        ctx.clearRect(0, 0, W, H);
+        ctx.fillStyle = '#f0f4ff';
+        ctx.fillRect(0, 0, W, H);
+        
+        // 反射面
+        const surfaceY = 220;
+        ctx.fillStyle = '#e0e0e0';
+        ctx.fillRect(50, surfaceY, 400, 20);
+        ctx.strokeStyle = '#333';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(50, surfaceY);
+        ctx.lineTo(450, surfaceY);
+        ctx.stroke();
+        
+        const theta = Math.PI / 4; // 入射角45度
+        const Ax = 150, Ay = surfaceY;  // 点A（境界面上）
+        const waveLen = 100;  // 波面の長さ
+        
+        // 点B（まだ境界面に達していない）
+        const Bx = Ax + waveLen * Math.cos(theta);
+        const By = Ay - waveLen * Math.sin(theta);
+        
+        // 入射波面AB
+        ctx.strokeStyle = '#2196f3';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(Ax, Ay);
+        ctx.lineTo(Bx, By);
+        ctx.stroke();
+        
+        // 進行方向（波面に垂直）
+        const dirX = Math.sin(theta);
+        const dirY = Math.cos(theta);
+        const midX = (Ax + Bx) / 2;
+        const midY = (Ay + By) / 2;
+        ctx.strokeStyle = '#333';
+        ctx.lineWidth = 2;
+        drawArrow(ctx, midX - 40*dirX, midY - 40*dirY, midX + 30*dirX, midY + 30*dirY);
+        
+        // 法線（点Aから）
+        ctx.setLineDash([5, 5]);
+        ctx.strokeStyle = '#666';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(Ax, surfaceY);
+        ctx.lineTo(Ax, 50);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        
+        // 入射角の表示
+        ctx.strokeStyle = '#e91e63';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.arc(Ax, surfaceY, 35, -Math.PI/2, -Math.PI/2 + theta, false);
+        ctx.stroke();
+        ctx.fillStyle = '#e91e63';
+        ctx.font = '16px sans-serif';
+        ctx.fillText('i', Ax + 15, surfaceY - 45);
+        
+        // ラベル
+        ctx.fillStyle = '#2196f3';
+        ctx.font = 'bold 16px sans-serif';
+        ctx.fillText('A', Ax - 20, Ay + 20);
+        ctx.fillText('B', Bx + 10, By - 5);
+        
+        ctx.fillStyle = '#666';
+        ctx.font = '14px sans-serif';
+        ctx.fillText('法線', Ax + 5, 65);
+        ctx.fillText('反射面', 380, surfaceY + 15);
+        ctx.fillText('波面AB', Bx + 20, By + 20);
+    }
+    
+    // 反射Step2
+    function drawReflectStep2() {
+        const canvas = document.getElementById('reflectStep2Canvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const W = canvas.width, H = canvas.height;
+        
+        ctx.clearRect(0, 0, W, H);
+        ctx.fillStyle = '#f0f4ff';
+        ctx.fillRect(0, 0, W, H);
+        
+        const surfaceY = 220;
+        ctx.fillStyle = '#e0e0e0';
+        ctx.fillRect(50, surfaceY, 400, 20);
+        ctx.strokeStyle = '#333';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(50, surfaceY);
+        ctx.lineTo(450, surfaceY);
+        ctx.stroke();
+        
+        const theta = Math.PI / 4;
+        const Ax = 150, Ay = surfaceY;
+        const vt = 80;
+        
+        // B'の位置（境界面上）
+        const Bpx = Ax + vt / Math.sin(theta);
+        const Bpy = surfaceY;
+        
+        // 元のBの位置
+        const Bx = Bpx;
+        const By = Bpy - vt / Math.tan(theta);
+        
+        // BB'の移動を示す（点線）
+        ctx.strokeStyle = '#2196f3';
+        ctx.lineWidth = 2;
+        ctx.setLineDash([5, 5]);
+        ctx.beginPath();
+        ctx.moveTo(Bx, By - 30);
+        ctx.lineTo(Bpx, Bpy);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        
+        // 点Aから素元波（上半分のみ）
+        ctx.strokeStyle = '#e91e63';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(Ax, Ay, vt, -Math.PI, 0, false);
+        ctx.stroke();
+        
+        // 点A
+        ctx.fillStyle = '#e91e63';
+        ctx.beginPath();
+        ctx.arc(Ax, Ay, 5, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // 点B'
+        ctx.fillStyle = '#2196f3';
+        ctx.beginPath();
+        ctx.arc(Bpx, Bpy, 5, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // ラベル
+        ctx.font = 'bold 14px sans-serif';
+        ctx.fillStyle = '#e91e63';
+        ctx.fillText('A', Ax - 20, Ay + 20);
+        ctx.fillText('素元波', Ax - 60, Ay - vt/2);
+        
+        ctx.fillStyle = '#2196f3';
+        ctx.fillText('B', Bx + 10, By - 20);
+        ctx.fillText("B'", Bpx + 10, Bpy + 20);
+        
+        // 距離の表示
+        ctx.fillStyle = '#333';
+        ctx.font = '14px sans-serif';
+        ctx.fillText("BB' = vt", Bpx - 30, By - 40);
+        ctx.fillText("AA' = vt", Ax + vt + 10, Ay - vt/2);
+        ctx.fillText("（半径）", Ax + vt + 10, Ay - vt/2 + 18);
+    }
+    
+    // 反射Step3
+    function drawReflectStep3() {
+        const canvas = document.getElementById('reflectStep3Canvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const W = canvas.width, H = canvas.height;
+        
+        ctx.clearRect(0, 0, W, H);
+        ctx.fillStyle = '#f0f4ff';
+        ctx.fillRect(0, 0, W, H);
+        
+        const surfaceY = 220;
+        ctx.fillStyle = '#e0e0e0';
+        ctx.fillRect(50, surfaceY, 400, 20);
+        ctx.strokeStyle = '#333';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(50, surfaceY);
+        ctx.lineTo(450, surfaceY);
+        ctx.stroke();
+        
+        const theta = Math.PI / 4;
+        const Ax = 150, Ay = surfaceY;
+        const vt = 80;
+        const Bpx = Ax + vt / Math.sin(theta);
+        
+        // 素元波
+        ctx.strokeStyle = '#e91e63';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(Ax, Ay, vt, -Math.PI, 0, false);
+        ctx.stroke();
+        
+        // 接点A'
+        const Apx = Ax + vt * Math.sin(theta);
+        const Apy = Ay - vt * Math.cos(theta);
+        
+        // 反射後の波面 A'B'
+        ctx.strokeStyle = '#4caf50';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(Apx, Apy);
+        ctx.lineTo(Bpx, surfaceY);
+        ctx.stroke();
+        
+        // 反射波の進行方向
+        const midX = (Apx + Bpx) / 2;
+        const midY = (Apy + surfaceY) / 2;
+        ctx.strokeStyle = '#333';
+        ctx.lineWidth = 2;
+        drawArrow(ctx, midX - 30*Math.sin(theta), midY - 30*Math.cos(theta), 
+                       midX + 30*Math.sin(theta), midY + 30*Math.cos(theta));
+        
+        // 点
+        ctx.fillStyle = '#e91e63';
+        ctx.beginPath();
+        ctx.arc(Ax, Ay, 5, 0, Math.PI * 2);
+        ctx.fill();
+        
+        ctx.fillStyle = '#4caf50';
+        ctx.beginPath();
+        ctx.arc(Apx, Apy, 5, 0, Math.PI * 2);
+        ctx.fill();
+        
+        ctx.fillStyle = '#2196f3';
+        ctx.beginPath();
+        ctx.arc(Bpx, surfaceY, 5, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // 直角マーク
+        ctx.strokeStyle = '#333';
+        ctx.lineWidth = 1;
+        const angleSize = 12;
+        ctx.beginPath();
+        ctx.moveTo(Apx + angleSize * Math.cos(theta), Apy + angleSize * Math.sin(theta));
+        ctx.lineTo(Apx + angleSize * Math.cos(theta) - angleSize * Math.sin(theta), 
+                   Apy + angleSize * Math.sin(theta) + angleSize * Math.cos(theta));
+        ctx.lineTo(Apx - angleSize * Math.sin(theta), Apy + angleSize * Math.cos(theta));
+        ctx.stroke();
+        
+        // ラベル
+        ctx.font = 'bold 14px sans-serif';
+        ctx.fillStyle = '#e91e63';
+        ctx.fillText('A', Ax - 20, Ay + 20);
+        
+        ctx.fillStyle = '#4caf50';
+        ctx.fillText("A'", Apx - 25, Apy - 5);
+        ctx.fillText('反射波面', midX + 40, midY - 20);
+        
+        ctx.fillStyle = '#2196f3';
+        ctx.fillText("B'", Bpx + 10, surfaceY + 20);
+        
+        // 法線（点B'から）
+        ctx.setLineDash([5, 5]);
+        ctx.strokeStyle = '#666';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(Bpx, surfaceY);
+        ctx.lineTo(Bpx, 50);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        
+        // 反射角
+        ctx.strokeStyle = '#9c27b0';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.arc(Bpx, surfaceY, 35, -Math.PI/2 - theta, -Math.PI/2, false);
+        ctx.stroke();
+        ctx.fillStyle = '#9c27b0';
+        ctx.fillText('j', Bpx - 35, surfaceY - 45);
+    }
+    
+    // 反射Step4
+    function drawReflectStep4() {
+        const canvas = document.getElementById('reflectStep4Canvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const W = canvas.width, H = canvas.height;
+        
+        ctx.clearRect(0, 0, W, H);
+        ctx.fillStyle = '#fff8e1';
+        ctx.fillRect(0, 0, W, H);
+        
+        const surfaceY = 230;
+        ctx.fillStyle = '#e0e0e0';
+        ctx.fillRect(50, surfaceY, 400, 15);
+        ctx.strokeStyle = '#333';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(50, surfaceY);
+        ctx.lineTo(450, surfaceY);
+        ctx.stroke();
+        
+        const theta = Math.PI / 4;
+        const Ax = 140, Ay = surfaceY;
+        const vt = 85;
+        const Bpx = Ax + vt / Math.sin(theta);
+        const Apx = Ax + vt * Math.sin(theta);
+        const Apy = Ay - vt * Math.cos(theta);
+        
+        // 元のBの位置
+        const Bx = Bpx;
+        const By = Apy;  // 同じ高さ
+        
+        // △AA'B'（緑）
+        ctx.fillStyle = 'rgba(76, 175, 80, 0.25)';
+        ctx.beginPath();
+        ctx.moveTo(Ax, Ay);
+        ctx.lineTo(Apx, Apy);
+        ctx.lineTo(Bpx, surfaceY);
+        ctx.closePath();
+        ctx.fill();
+        ctx.strokeStyle = '#4caf50';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        
+        // △B'BA（青）
+        ctx.fillStyle = 'rgba(33, 150, 243, 0.25)';
+        ctx.beginPath();
+        ctx.moveTo(Bpx, surfaceY);
+        ctx.lineTo(Bx, By);
+        ctx.lineTo(Ax, Ay);
+        ctx.closePath();
+        ctx.fill();
+        ctx.strokeStyle = '#2196f3';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        
+        // 共通の斜辺AB'
+        ctx.strokeStyle = '#ff5722';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(Ax, Ay);
+        ctx.lineTo(Bpx, surfaceY);
+        ctx.stroke();
+        
+        // 直角マーク（AA'B'）
+        ctx.strokeStyle = '#333';
+        ctx.lineWidth = 1;
+        const as = 10;
+        ctx.beginPath();
+        ctx.moveTo(Apx + as * Math.cos(theta), Apy + as * Math.sin(theta));
+        ctx.lineTo(Apx + as * Math.cos(theta) - as * Math.sin(theta), Apy + as * Math.sin(theta) + as * Math.cos(theta));
+        ctx.lineTo(Apx - as * Math.sin(theta), Apy + as * Math.cos(theta));
+        ctx.stroke();
+        
+        // 直角マーク（BB'A）
+        ctx.beginPath();
+        ctx.moveTo(Bpx - as, surfaceY - as);
+        ctx.lineTo(Bpx - as, surfaceY);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(Bpx - as, surfaceY - as);
+        ctx.lineTo(Bpx, surfaceY - as);
+        ctx.stroke();
+        
+        // 点
+        ctx.fillStyle = '#e91e63';
+        ctx.beginPath();
+        ctx.arc(Ax, Ay, 5, 0, Math.PI * 2);
+        ctx.fill();
+        
+        ctx.fillStyle = '#4caf50';
+        ctx.beginPath();
+        ctx.arc(Apx, Apy, 5, 0, Math.PI * 2);
+        ctx.fill();
+        
+        ctx.fillStyle = '#2196f3';
+        ctx.beginPath();
+        ctx.arc(Bpx, surfaceY, 5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(Bx, By, 5, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // ラベル
+        ctx.font = 'bold 14px sans-serif';
+        ctx.fillStyle = '#e91e63';
+        ctx.fillText('A', Ax - 18, Ay + 22);
+        
+        ctx.fillStyle = '#4caf50';
+        ctx.fillText("A'", Apx - 5, Apy - 12);
+        
+        ctx.fillStyle = '#2196f3';
+        ctx.fillText("B'", Bpx + 8, surfaceY + 22);
+        ctx.fillText('B', Bx + 8, By - 8);
+        
+        // 辺の長さ
+        ctx.font = '13px sans-serif';
+        ctx.fillStyle = '#4caf50';
+        ctx.fillText("AA' = vt", Ax - 45, (Ay + Apy)/2);
+        
+        ctx.fillStyle = '#2196f3';
+        ctx.fillText("BB' = vt", Bpx + 12, (surfaceY + By)/2 + 5);
+        
+        ctx.fillStyle = '#ff5722';
+        ctx.fillText("AB'（共通）", (Ax + Bpx)/2 - 10, surfaceY + 40);
+        
+        // 角度
+        ctx.fillStyle = '#e91e63';
+        ctx.font = '14px sans-serif';
+        ctx.fillText('i', Bpx - 50, surfaceY - 55);
+        ctx.fillStyle = '#9c27b0';
+        ctx.fillText('j', Ax + 50, Ay - 55);
+        
+        // 結論
+        ctx.fillStyle = '#d32f2f';
+        ctx.font = 'bold 15px sans-serif';
+        ctx.fillText("△AA'B' ≡ △B'BA（合同）", 280, 40);
+        ctx.fillText("∴ i = j", 340, 65);
+    }
+    
+    // 屈折Step1
+    function drawRefractStep1() {
+        const canvas = document.getElementById('refractStep1Canvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const W = canvas.width, H = canvas.height;
+        
+        ctx.clearRect(0, 0, W, H);
+        
+        const boundaryY = 180;
+        
+        // 媒質Ⅰ（上）
+        ctx.fillStyle = '#e3f2fd';
+        ctx.fillRect(0, 0, W, boundaryY);
+        
+        // 媒質Ⅱ（下）
+        ctx.fillStyle = '#fff3e0';
+        ctx.fillRect(0, boundaryY, W, H - boundaryY);
+        
+        // 境界面
+        ctx.strokeStyle = '#333';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(0, boundaryY);
+        ctx.lineTo(W, boundaryY);
+        ctx.stroke();
+        
+        const theta1 = Math.PI / 4;
+        const Ax = 150, Ay = boundaryY;
+        const waveLen = 90;
+        
+        // 点B
+        const Bx = Ax + waveLen * Math.cos(theta1);
+        const By = Ay - waveLen * Math.sin(theta1);
+        
+        // 入射波面AB
+        ctx.strokeStyle = '#2196f3';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(Ax, Ay);
+        ctx.lineTo(Bx, By);
+        ctx.stroke();
+        
+        // 進行方向
+        const dirX = Math.sin(theta1);
+        const dirY = Math.cos(theta1);
+        const midX = (Ax + Bx) / 2;
+        const midY = (Ay + By) / 2;
+        ctx.strokeStyle = '#333';
+        ctx.lineWidth = 2;
+        drawArrow(ctx, midX - 35*dirX, midY - 35*dirY, midX + 25*dirX, midY + 25*dirY);
+        
+        // 法線
+        ctx.setLineDash([5, 5]);
+        ctx.strokeStyle = '#666';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(Ax, 30);
+        ctx.lineTo(Ax, H - 30);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        
+        // 入射角
+        ctx.strokeStyle = '#e91e63';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.arc(Ax, boundaryY, 30, -Math.PI/2, -Math.PI/2 + theta1, false);
+        ctx.stroke();
+        ctx.fillStyle = '#e91e63';
+        ctx.font = '16px sans-serif';
+        ctx.fillText('θ₁', Ax + 12, boundaryY - 38);
+        
+        // ラベル
+        ctx.fillStyle = '#2196f3';
+        ctx.font = 'bold 16px sans-serif';
+        ctx.fillText('A', Ax - 20, Ay - 10);
+        ctx.fillText('B', Bx + 10, By - 5);
+        
+        ctx.fillStyle = '#1976d2';
+        ctx.font = '14px sans-serif';
+        ctx.fillText('媒質Ⅰ（速さ v₁）', W - 140, 40);
+        ctx.fillStyle = '#e65100';
+        ctx.fillText('媒質Ⅱ（速さ v₂）', W - 140, boundaryY + 40);
+        
+        ctx.fillStyle = '#666';
+        ctx.fillText('法線', Ax + 5, 45);
+        ctx.fillText('境界面', 30, boundaryY - 8);
+    }
+    
+    // 屈折Step2
+    function drawRefractStep2() {
+        const canvas = document.getElementById('refractStep2Canvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const W = canvas.width, H = canvas.height;
+        
+        ctx.clearRect(0, 0, W, H);
+        
+        const boundaryY = 180;
+        ctx.fillStyle = '#e3f2fd';
+        ctx.fillRect(0, 0, W, boundaryY);
+        ctx.fillStyle = '#fff3e0';
+        ctx.fillRect(0, boundaryY, W, H - boundaryY);
+        
+        ctx.strokeStyle = '#333';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(0, boundaryY);
+        ctx.lineTo(W, boundaryY);
+        ctx.stroke();
+        
+        const theta1 = Math.PI / 4;
+        const Ax = 150, Ay = boundaryY;
+        const v1t = 80;  // 媒質Ⅰでの移動距離
+        const v2t = 50;  // 媒質Ⅱでの素元波半径（v2 < v1）
+        
+        // B'の位置
+        const Bpx = Ax + v1t / Math.sin(theta1);
+        
+        // 元のBの位置
+        const By = Ay - v1t / Math.tan(theta1);
+        
+        // BB'の移動（点線）
+        ctx.strokeStyle = '#2196f3';
+        ctx.lineWidth = 2;
+        ctx.setLineDash([5, 5]);
+        ctx.beginPath();
+        ctx.moveTo(Bpx, By - 30);
+        ctx.lineTo(Bpx, boundaryY);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        
+        // 素元波（媒質Ⅱ内、下半分のみ）
+        ctx.strokeStyle = '#e91e63';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(Ax, Ay, v2t, 0, Math.PI, false);
+        ctx.stroke();
+        
+        // 点A
+        ctx.fillStyle = '#e91e63';
+        ctx.beginPath();
+        ctx.arc(Ax, Ay, 5, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // 点B'
+        ctx.fillStyle = '#2196f3';
+        ctx.beginPath();
+        ctx.arc(Bpx, boundaryY, 5, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // ラベル
+        ctx.font = 'bold 14px sans-serif';
+        ctx.fillStyle = '#e91e63';
+        ctx.fillText('A', Ax - 20, Ay - 10);
+        ctx.fillText('素元波（媒質Ⅱ内）', Ax - 70, Ay + v2t + 30);
+        
+        ctx.fillStyle = '#2196f3';
+        ctx.fillText('B', Bpx + 10, By - 25);
+        ctx.fillText("B'", Bpx + 10, boundaryY - 10);
+        
+        // 距離
+        ctx.fillStyle = '#333';
+        ctx.font = '14px sans-serif';
+        ctx.fillText("BB' = v₁t", Bpx - 60, By - 10);
+        ctx.fillText("AA' = v₂t", Ax + v2t + 10, Ay + v2t/2);
+        
+        // 重要ポイント
+        ctx.fillStyle = '#d32f2f';
+        ctx.font = 'bold 14px sans-serif';
+        ctx.fillText('※ v₁t ≠ v₂t', W - 120, 80);
+        ctx.fillText('（速さが違う！）', W - 130, 100);
+    }
+    
+    // 屈折Step3
+    function drawRefractStep3() {
+        const canvas = document.getElementById('refractStep3Canvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const W = canvas.width, H = canvas.height;
+        
+        ctx.clearRect(0, 0, W, H);
+        
+        const boundaryY = 180;
+        ctx.fillStyle = '#e3f2fd';
+        ctx.fillRect(0, 0, W, boundaryY);
+        ctx.fillStyle = '#fff3e0';
+        ctx.fillRect(0, boundaryY, W, H - boundaryY);
+        
+        ctx.strokeStyle = '#333';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(0, boundaryY);
+        ctx.lineTo(W, boundaryY);
+        ctx.stroke();
+        
+        const theta1 = Math.PI / 4;
+        const Ax = 150, Ay = boundaryY;
+        const v1t = 80;
+        const v2t = 50;
+        const Bpx = Ax + v1t / Math.sin(theta1);
+        
+        // 素元波
+        ctx.strokeStyle = '#e91e63';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(Ax, Ay, v2t, 0, Math.PI, false);
+        ctx.stroke();
+        
+        // 接点A'の計算
+        const ABp = Bpx - Ax;
+        const theta2 = Math.asin(v2t / ABp);
+        const Apx = Ax + v2t * Math.sin(theta2);
+        const Apy = Ay + v2t * Math.cos(theta2);
+        
+        // 屈折後の波面 A'B'
+        ctx.strokeStyle = '#4caf50';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(Apx, Apy);
+        ctx.lineTo(Bpx, boundaryY);
+        ctx.stroke();
+        
+        // 屈折波の進行方向
+        const midX = (Apx + Bpx) / 2;
+        const midY = (Apy + boundaryY) / 2;
+        ctx.strokeStyle = '#333';
+        ctx.lineWidth = 2;
+        drawArrow(ctx, midX - 25*Math.sin(theta2), midY - 25*Math.cos(theta2),
+                       midX + 30*Math.sin(theta2), midY + 30*Math.cos(theta2));
+        
+        // 法線（点B'から）
+        ctx.setLineDash([5, 5]);
+        ctx.strokeStyle = '#666';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(Bpx, 60);
+        ctx.lineTo(Bpx, H - 30);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        
+        // 屈折角
+        ctx.strokeStyle = '#9c27b0';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.arc(Bpx, boundaryY, 30, Math.PI/2, Math.PI/2 + theta2, false);
+        ctx.stroke();
+        ctx.fillStyle = '#9c27b0';
+        ctx.font = '16px sans-serif';
+        ctx.fillText('θ₂', Bpx - 40, boundaryY + 45);
+        
+        // 点
+        ctx.fillStyle = '#e91e63';
+        ctx.beginPath();
+        ctx.arc(Ax, Ay, 5, 0, Math.PI * 2);
+        ctx.fill();
+        
+        ctx.fillStyle = '#4caf50';
+        ctx.beginPath();
+        ctx.arc(Apx, Apy, 5, 0, Math.PI * 2);
+        ctx.fill();
+        
+        ctx.fillStyle = '#2196f3';
+        ctx.beginPath();
+        ctx.arc(Bpx, boundaryY, 5, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // ラベル
+        ctx.font = 'bold 14px sans-serif';
+        ctx.fillStyle = '#e91e63';
+        ctx.fillText('A', Ax - 20, Ay - 10);
+        
+        ctx.fillStyle = '#4caf50';
+        ctx.fillText("A'", Apx - 25, Apy + 5);
+        ctx.fillText('屈折波面', midX + 45, midY + 15);
+        
+        ctx.fillStyle = '#2196f3';
+        ctx.fillText("B'", Bpx + 10, boundaryY - 10);
+        
+        ctx.fillStyle = '#666';
+        ctx.font = '14px sans-serif';
+        ctx.fillText('法線', Bpx + 5, 75);
+    }
+    
+    // 屈折Step4
+    function drawRefractStep4() {
+        const canvas = document.getElementById('refractStep4Canvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const W = canvas.width, H = canvas.height;
+        
+        ctx.clearRect(0, 0, W, H);
+        ctx.fillStyle = '#fff8e1';
+        ctx.fillRect(0, 0, W, H);
+        
+        const boundaryY = 180;
+        ctx.strokeStyle = '#333';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(0, boundaryY);
+        ctx.lineTo(W, boundaryY);
+        ctx.stroke();
+        
+        const theta1 = Math.PI / 4;
+        const Ax = 140, Ay = boundaryY;
+        const v1t = 85;
+        const v2t = 55;
+        const Bpx = Ax + v1t / Math.sin(theta1);
+        const ABp = Bpx - Ax;
+        const theta2 = Math.asin(v2t / ABp);
+        
+        // Bの位置
+        const Bx = Bpx;
+        const By = Ay - v1t / Math.tan(theta1);
+        
+        // A'の位置
+        const Apx = Ax + v2t * Math.sin(theta2);
+        const Apy = Ay + v2t * Math.cos(theta2);
+        
+        // △ABB'（青・入射側）
+        ctx.fillStyle = 'rgba(33, 150, 243, 0.25)';
+        ctx.beginPath();
+        ctx.moveTo(Ax, Ay);
+        ctx.lineTo(Bx, By);
+        ctx.lineTo(Bpx, boundaryY);
+        ctx.closePath();
+        ctx.fill();
+        ctx.strokeStyle = '#2196f3';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        
+        // △AA'B'（緑・屈折側）
+        ctx.fillStyle = 'rgba(76, 175, 80, 0.25)';
+        ctx.beginPath();
+        ctx.moveTo(Ax, Ay);
+        ctx.lineTo(Apx, Apy);
+        ctx.lineTo(Bpx, boundaryY);
+        ctx.closePath();
+        ctx.fill();
+        ctx.strokeStyle = '#4caf50';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        
+        // 共通の斜辺AB'
+        ctx.strokeStyle = '#ff5722';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(Ax, Ay);
+        ctx.lineTo(Bpx, boundaryY);
+        ctx.stroke();
+        
+        // 直角マーク
+        ctx.strokeStyle = '#333';
+        ctx.lineWidth = 1;
+        const as = 10;
+        // BB'Aの直角
+        ctx.beginPath();
+        ctx.moveTo(Bpx - as, boundaryY - as);
+        ctx.lineTo(Bpx - as, boundaryY);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(Bpx - as, boundaryY - as);
+        ctx.lineTo(Bpx, boundaryY - as);
+        ctx.stroke();
+        
+        // AA'B'の直角
+        ctx.beginPath();
+        ctx.moveTo(Apx + as * Math.cos(theta2), Apy - as * Math.sin(theta2));
+        ctx.lineTo(Apx + as * Math.cos(theta2) + as * Math.sin(theta2), Apy - as * Math.sin(theta2) + as * Math.cos(theta2));
+        ctx.lineTo(Apx + as * Math.sin(theta2), Apy + as * Math.cos(theta2));
+        ctx.stroke();
+        
+        // 点
+        ctx.fillStyle = '#e91e63';
+        ctx.beginPath();
+        ctx.arc(Ax, Ay, 5, 0, Math.PI * 2);
+        ctx.fill();
+        
+        ctx.fillStyle = '#4caf50';
+        ctx.beginPath();
+        ctx.arc(Apx, Apy, 5, 0, Math.PI * 2);
+        ctx.fill();
+        
+        ctx.fillStyle = '#2196f3';
+        ctx.beginPath();
+        ctx.arc(Bpx, boundaryY, 5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(Bx, By, 5, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // ラベル
+        ctx.font = 'bold 14px sans-serif';
+        ctx.fillStyle = '#e91e63';
+        ctx.fillText('A', Ax - 18, Ay - 8);
+        
+        ctx.fillStyle = '#4caf50';
+        ctx.fillText("A'", Apx - 5, Apy + 20);
+        
+        ctx.fillStyle = '#2196f3';
+        ctx.fillText("B'", Bpx + 8, boundaryY - 8);
+        ctx.fillText('B', Bx + 8, By - 8);
+        
+        // 辺の長さ
+        ctx.font = '13px sans-serif';
+        ctx.fillStyle = '#2196f3';
+        ctx.fillText("BB' = v₁t", Bpx + 12, (boundaryY + By)/2);
+        
+        ctx.fillStyle = '#4caf50';
+        ctx.fillText("AA' = v₂t", Ax - 55, (Ay + Apy)/2 + 10);
+        
+        ctx.fillStyle = '#ff5722';
+        ctx.fillText("AB'（共通）", (Ax + Bpx)/2 - 25, boundaryY - 25);
+        
+        // 角度
+        ctx.fillStyle = '#e91e63';
+        ctx.fillText('θ₁', Bpx - 50, boundaryY - 50);
+        ctx.fillStyle = '#9c27b0';
+        ctx.fillText('θ₂', Bpx - 50, boundaryY + 45);
+        
+        // 式
+        ctx.fillStyle = '#333';
+        ctx.font = '13px sans-serif';
+        ctx.fillText("sin θ₁ = BB'/AB' = v₁t/AB'", 300, 50);
+        ctx.fillText("sin θ₂ = AA'/AB' = v₂t/AB'", 300, 75);
+        ctx.fillStyle = '#d32f2f';
+        ctx.font = 'bold 14px sans-serif';
+        ctx.fillText("∴ sin θ₁/sin θ₂ = v₁/v₂", 300, 105);
+    }
+    
+    // 回折図
+    function drawDiffraction() {
+        const canvas = document.getElementById('diffractionCanvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const W = canvas.width, H = canvas.height;
+        
+        ctx.clearRect(0, 0, W, H);
+        ctx.fillStyle = '#f5f5f5';
+        ctx.fillRect(0, 0, W, H);
+        
+        const wallX = 180;
+        const slitTop = 100;
+        const slitBot = 200;
+        
+        // 障害物
+        ctx.fillStyle = '#424242';
+        ctx.fillRect(wallX - 10, 0, 20, slitTop);
+        ctx.fillRect(wallX - 10, slitBot, 20, H - slitBot);
+        
+        // スリット
+        ctx.fillStyle = '#fff9c4';
+        ctx.fillRect(wallX - 10, slitTop, 20, slitBot - slitTop);
+        
+        // 入射波面
+        ctx.strokeStyle = '#2196f3';
+        ctx.lineWidth = 2;
+        for (let x = 40; x <= 160; x += 30) {
+            ctx.beginPath();
+            ctx.moveTo(x, 20);
+            ctx.lineTo(x, 280);
+            ctx.stroke();
+        }
+        
+        // 矢印
+        ctx.strokeStyle = '#333';
+        ctx.lineWidth = 2;
+        drawArrow(ctx, 90, 150, 150, 150);
+        
+        // スリット内の素元波源
+        const slitCenter = (slitTop + slitBot) / 2;
+        const sources = [slitTop + 15, slitCenter - 15, slitCenter, slitCenter + 15, slitBot - 15];
+        
+        // 素元波（右半分のみ）
+        ctx.strokeStyle = '#e91e63';
+        ctx.lineWidth = 1.5;
+        sources.forEach(y => {
+            ctx.fillStyle = '#e91e63';
+            ctx.beginPath();
+            ctx.arc(wallX, y, 4, 0, Math.PI * 2);
+            ctx.fill();
+            
+            for (let r = 30; r <= 120; r += 30) {
+                ctx.beginPath();
+                ctx.arc(wallX, y, r, -Math.PI/2, Math.PI/2);
+                ctx.stroke();
+            }
+        });
+        
+        // 新しい波面（包絡線）
+        ctx.strokeStyle = '#4caf50';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(wallX + 50, slitTop - 30);
+        ctx.quadraticCurveTo(wallX + 90, slitCenter, wallX + 50, slitBot + 30);
+        ctx.stroke();
+        
+        ctx.beginPath();
+        ctx.moveTo(wallX + 100, slitTop - 60);
+        ctx.quadraticCurveTo(wallX + 160, slitCenter, wallX + 100, slitBot + 60);
+        ctx.stroke();
+        
+        // ラベル
+        ctx.fillStyle = '#333';
+        ctx.font = '14px sans-serif';
+        ctx.fillText('入射波', 60, 30);
+        ctx.fillText('障害物', wallX - 50, 60);
+        ctx.fillText('スリット', wallX - 55, slitCenter + 5);
+        ctx.fillStyle = '#e91e63';
+        ctx.fillText('素元波', wallX + 130, 80);
+        ctx.fillStyle = '#4caf50';
+        ctx.fillText('回折波', wallX + 180, slitCenter);
+    }
+    
+    // 回折比較図
+    function drawDiffractionCompare() {
+        const canvas = document.getElementById('diffractionCompareCanvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const W = canvas.width, H = canvas.height;
+        
+        ctx.clearRect(0, 0, W, H);
+        
+        const halfW = W / 2 - 15;
+        
+        // 左側（長い波長）
+        ctx.fillStyle = '#e8f5e9';
+        ctx.fillRect(0, 0, halfW, H);
+        
+        // 右側（短い波長）
+        ctx.fillStyle = '#fce4ec';
+        ctx.fillRect(halfW + 30, 0, halfW, H);
+        
+        // 左の障害物とスリット
+        const wallX1 = 80;
+        const slitH = 80;
+        const centerY = 110;
+        
+        ctx.fillStyle = '#424242';
+        ctx.fillRect(wallX1 - 8, 0, 16, centerY - slitH/2);
+        ctx.fillRect(wallX1 - 8, centerY + slitH/2, 16, H - centerY - slitH/2);
+        
+        // 左の入射波（長い波長）
+        ctx.strokeStyle = '#2196f3';
+        ctx.lineWidth = 2;
+        for (let x = 15; x <= 65; x += 25) {
+            ctx.beginPath();
+            ctx.moveTo(x, 10);
+            ctx.lineTo(x, 210);
+            ctx.stroke();
+        }
+        
+        // 左の回折波（大きく回り込む）
+        ctx.strokeStyle = '#4caf50';
+        ctx.lineWidth = 2;
+        for (let r = 35; r <= 130; r += 35) {
+            ctx.beginPath();
+            ctx.arc(wallX1, centerY, r, -1.2, 1.2);
+            ctx.stroke();
+        }
+        
+        // 右の障害物とスリット
+        const wallX2 = halfW + 30 + 80;
+        ctx.fillStyle = '#424242';
+        ctx.fillRect(wallX2 - 8, 0, 16, centerY - slitH/2);
+        ctx.fillRect(wallX2 - 8, centerY + slitH/2, 16, H - centerY - slitH/2);
+        
+        // 右の入射波（短い波長）
+        ctx.strokeStyle = '#2196f3';
+        ctx.lineWidth = 1.5;
+        for (let x = halfW + 45; x <= halfW + 105; x += 12) {
+            ctx.beginPath();
+            ctx.moveTo(x, 10);
+            ctx.lineTo(x, 210);
+            ctx.stroke();
+        }
+        
+        // 右の回折波（あまり回り込まない）
+        ctx.strokeStyle = '#e91e63';
+        ctx.lineWidth = 1.5;
+        for (let r = 15; r <= 100; r += 15) {
+            ctx.beginPath();
+            ctx.arc(wallX2, centerY, r, -0.3, 0.3);
+            ctx.stroke();
+        }
+        
+        // ラベル
+        ctx.fillStyle = '#2e7d32';
+        ctx.font = 'bold 13px sans-serif';
+        ctx.fillText('波長：長い', 15, 235);
+        ctx.fillText('→ 回折しやすい', 100, 235);
+        
+        ctx.fillStyle = '#c2185b';
+        ctx.fillText('波長：短い', halfW + 45, 235);
+        ctx.fillText('→ 直進しやすい', halfW + 130, 235);
+    }
+    
+    // 問題1の図
+    function drawProblem1() {
+        const canvas = document.getElementById('problem1Canvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const W = canvas.width, H = canvas.height;
+        
+        ctx.clearRect(0, 0, W, H);
+        ctx.fillStyle = '#f5f5f5';
+        ctx.fillRect(0, 0, W, H);
+        
+        const surfaceY = 200;
+        ctx.fillStyle = '#e0e0e0';
+        ctx.fillRect(50, surfaceY, 350, 15);
+        ctx.strokeStyle = '#333';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(50, surfaceY);
+        ctx.lineTo(400, surfaceY);
+        ctx.stroke();
+        
+        const theta = Math.PI / 4;
+        const Ax = 130, Ay = surfaceY;
+        const waveLen = 80;
+        
+        const Bx = Ax + waveLen * Math.cos(theta);
+        const By = Ay - waveLen * Math.sin(theta);
+        
+        // 波面AB
+        ctx.strokeStyle = '#2196f3';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(Ax, Ay);
+        ctx.lineTo(Bx, By);
+        ctx.stroke();
+        
+        // 法線
+        ctx.setLineDash([5, 5]);
+        ctx.strokeStyle = '#666';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(Ax, surfaceY);
+        ctx.lineTo(Ax, 50);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        
+        // 進行方向
+        const dirX = Math.sin(theta);
+        const dirY = Math.cos(theta);
+        ctx.strokeStyle = '#333';
+        ctx.lineWidth = 2;
+        drawArrow(ctx, (Ax+Bx)/2 - 30*dirX, (Ay+By)/2 - 30*dirY, 
+                       (Ax+Bx)/2 + 20*dirX, (Ay+By)/2 + 20*dirY);
+        
+        // 入射角
+        ctx.strokeStyle = '#e91e63';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.arc(Ax, surfaceY, 30, -Math.PI/2, -Math.PI/2 + theta, false);
+        ctx.stroke();
+        ctx.fillStyle = '#e91e63';
+        ctx.font = '16px sans-serif';
+        ctx.fillText('i', Ax + 12, surfaceY - 38);
+        
+        // ラベル
+        ctx.fillStyle = '#2196f3';
+        ctx.font = 'bold 14px sans-serif';
+        ctx.fillText('A', Ax - 18, Ay + 20);
+        ctx.fillText('B', Bx + 10, By - 5);
+        
+        ctx.fillStyle = '#666';
+        ctx.font = '13px sans-serif';
+        ctx.fillText('反射面', 330, surfaceY + 12);
+    }
+    
+    // ============================
+    // シミュレーション
+    // ============================
+    
+    // --- 反射シミュレーション ---
+    let reflectSim = {
+        canvas: null, ctx: null,
+        running: false, paused: false,
+        time: 0, maxTime: 2.5,
+        angle: 45, waveCount: 5, speed: 1,
+        animId: null
+    };
+    
+    function initReflectionSim() {
+        reflectSim.canvas = document.getElementById('reflectionCanvas');
+        if (!reflectSim.canvas) return;
+        
+        reflectSim.canvas.width = reflectSim.canvas.parentElement.clientWidth;
+        reflectSim.canvas.height = 400;
+        reflectSim.ctx = reflectSim.canvas.getContext('2d');
+        
+        document.getElementById('reflectAngleSlider').oninput = function() {
+            reflectSim.angle = parseFloat(this.value);
+            document.getElementById('reflectAngleDisplay').textContent = this.value + '°';
+            if (!reflectSim.running) drawReflectionFrame();
+        };
+        document.getElementById('reflectWaveCountSlider').oninput = function() {
+            reflectSim.waveCount = parseInt(this.value);
+            document.getElementById('reflectWaveCountDisplay').textContent = this.value + '個';
+            if (!reflectSim.running) drawReflectionFrame();
+        };
+        document.getElementById('reflectSpeedSlider').oninput = function() {
+            reflectSim.speed = parseFloat(this.value);
+            document.getElementById('reflectSpeedDisplay').textContent = this.value + 'x';
+        };
+        
+        document.getElementById('reflectStartBtn').onclick = startReflectionSim;
+        document.getElementById('reflectPauseBtn').onclick = pauseReflectionSim;
+        document.getElementById('reflectResetBtn').onclick = resetReflectionSim;
+        
+        drawReflectionFrame();
+    }
+    
+    function startReflectionSim() {
+        if (reflectSim.paused) {
+            reflectSim.paused = false;
+            animateReflection();
+            return;
+        }
+        reflectSim.running = true;
+        reflectSim.paused = false;
+        reflectSim.time = 0;
+        animateReflection();
+    }
+    
+    function pauseReflectionSim() {
+        reflectSim.paused = true;
+        if (reflectSim.animId) cancelAnimationFrame(reflectSim.animId);
+    }
+    
+    function resetReflectionSim() {
+        reflectSim.running = false;
+        reflectSim.paused = false;
+        reflectSim.time = 0;
+        if (reflectSim.animId) cancelAnimationFrame(reflectSim.animId);
+        drawReflectionFrame();
+    }
+    
+    function animateReflection() {
+        if (!reflectSim.running || reflectSim.paused) return;
+        reflectSim.time += 0.016 * reflectSim.speed;
+        drawReflectionFrame();
+        if (reflectSim.time < reflectSim.maxTime) {
+            reflectSim.animId = requestAnimationFrame(animateReflection);
+        } else {
+            reflectSim.running = false;
+        }
+    }
+    
+    function drawReflectionFrame() {
+        const ctx = reflectSim.ctx;
+        const W = reflectSim.canvas.width;
+        const H = reflectSim.canvas.height;
+        const t = reflectSim.time;
+        const theta = reflectSim.angle * Math.PI / 180;
+        const n = reflectSim.waveCount;
+        
+        ctx.clearRect(0, 0, W, H);
+        ctx.fillStyle = '#fafafa';
+        ctx.fillRect(0, 0, W, H);
+        
+        // 反射面
+        const surfaceY = H * 0.7;
+        ctx.fillStyle = '#e0e0e0';
+        ctx.fillRect(0, surfaceY, W, H - surfaceY);
+        ctx.strokeStyle = '#333';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(0, surfaceY);
+        ctx.lineTo(W, surfaceY);
+        ctx.stroke();
+        
+        // パラメータ
+        const v = 120;  // 波の速度
+        const waveLen = 120;  // 波面の長さ
+        
+        // 点Aの初期位置（境界面に最初に到達する点）
+        const Ax0 = W * 0.25;
+        const Ay = surfaceY;
+        
+        // 点Bの初期位置
+        const Bx0 = Ax0 + waveLen * Math.cos(theta);
+        const By0 = Ay - waveLen * Math.sin(theta);
+        
+        // 波面の進行方向（法線方向）
+        const dirX = Math.sin(theta);
+        const dirY = Math.cos(theta);
+        
+        // 点Aが境界面に到達する時刻（t=0とする）
+        // 点Bが境界面に到達する時刻
+        const tB = waveLen * Math.sin(theta) / v;
+        
+        // 現在の時刻での状態
+        // t < 0: 全体が移動中
+        // 0 <= t < tB: Aは境界面上、Bは移動中
+        // t >= tB: 全体が反射完了
+        
+        // 入射波面の描画
+        const waveOffset = v * t;
+        
+        if (t < tB) {
+            // 入射波面の一部がまだ境界面に達していない
+            ctx.strokeStyle = '#2196f3';
+            ctx.lineWidth = 3;
+            
+            // 境界面に達した部分と達していない部分を計算
+            const arrivedFrac = Math.min(1, t / tB);
+            
+            // 達していない部分の波面
+            const Bx_now = Bx0 + waveOffset * dirX;
+            const By_now = By0 + waveOffset * dirY;
+            
+            // 境界面との交点
+            const intersectX = Ax0 + (t / tB) * waveLen * Math.cos(theta);
+            
+            if (By_now < surfaceY) {
+                ctx.beginPath();
+                ctx.moveTo(intersectX, surfaceY);
+                ctx.lineTo(Bx_now, By_now);
+                ctx.stroke();
+            }
+        }
+        
+        // 素元波の描画
+        // 境界面上の各点について、到達時刻を計算し、素元波を描画
+        ctx.strokeStyle = '#e91e63';
+        ctx.lineWidth = 1.5;
+        
+        const arrivedPoints = [];
+        for (let i = 0; i < n; i++) {
+            const frac = i / (n - 1);
+            const arrivalTime = frac * tB;  // この点が境界面に到達する時刻
+            
+            if (t >= arrivalTime) {
+                const px = Ax0 + frac * waveLen * Math.cos(theta);
+                const elapsed = t - arrivalTime;
+                const radius = v * elapsed;
+                
+                arrivedPoints.push({ x: px, radius: radius, arrivalTime: arrivalTime });
+                
+                // 素元波（上半分のみ）
+                if (radius > 0) {
+                    ctx.beginPath();
+                    ctx.arc(px, surfaceY, radius, -Math.PI, 0);
+                    ctx.stroke();
+                }
+                
+                // 波源点
+                ctx.fillStyle = '#e91e63';
+                ctx.beginPath();
+                ctx.arc(px, surfaceY, 4, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+        
+        // 反射波面（包絡線）の描画
+        if (arrivedPoints.length >= 2) {
+            const first = arrivedPoints[0];
+            const last = arrivedPoints[arrivedPoints.length - 1];
+            
+            if (first.radius > 5 && last.radius > 0) {
+                // 接線の計算
+                // 各素元波への共通接線
+                const Apx = first.x + first.radius * Math.sin(theta);
+                const Apy = surfaceY - first.radius * Math.cos(theta);
+                const Bpx = last.x + last.radius * Math.sin(theta);
+                const Bpy = surfaceY - last.radius * Math.cos(theta);
+                
+                if (Apy < surfaceY && Bpy < surfaceY) {
+                    ctx.strokeStyle = '#4caf50';
+                    ctx.lineWidth = 3;
+                    ctx.beginPath();
+                    ctx.moveTo(Apx, Apy);
+                    ctx.lineTo(Bpx, Bpy);
+                    ctx.stroke();
+                    
+                    // 反射波の進行方向
+                    if (t > tB * 0.5) {
+                        const midX = (Apx + Bpx) / 2;
+                        const midY = (Apy + Bpy) / 2;
+                        ctx.strokeStyle = '#333';
+                        ctx.lineWidth = 2;
+                        drawArrow(ctx, midX - 30*Math.sin(theta), midY - 30*Math.cos(theta),
+                                       midX + 30*Math.sin(theta), midY + 30*Math.cos(theta));
+                    }
+                }
+            }
+        }
+        
+        // ラベルと情報
+        ctx.fillStyle = '#333';
+        ctx.font = '16px sans-serif';
+        ctx.fillText(`入射角 i = ${reflectSim.angle}°`, 20, 30);
+        ctx.fillText(`反射角 j = ${reflectSim.angle}°`, 20, 55);
+        
+        // 凡例
+        const legendX = W - 140;
+        ctx.fillStyle = '#2196f3';
+        ctx.fillRect(legendX, 15, 20, 3);
+        ctx.fillStyle = '#333';
+        ctx.font = '12px sans-serif';
+        ctx.fillText('入射波面', legendX + 25, 20);
+        
+        ctx.fillStyle = '#e91e63';
+        ctx.beginPath();
+        ctx.arc(legendX + 10, 40, 5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#333';
+        ctx.fillText('素元波', legendX + 25, 45);
+        
+        ctx.fillStyle = '#4caf50';
+        ctx.fillRect(legendX, 58, 20, 3);
+        ctx.fillStyle = '#333';
+        ctx.fillText('反射波面', legendX + 25, 63);
+    }
+    
+    // --- 屈折シミュレーション ---
+    let refractSim = {
+        canvas: null, ctx: null,
+        running: false, paused: false,
+        time: 0, maxTime: 2.5,
+        angle: 45, n2: 1.5, waveCount: 5, speed: 1,
+        animId: null
+    };
+    
+    function initRefractionSim() {
+        refractSim.canvas = document.getElementById('refractionCanvas');
+        if (!refractSim.canvas) return;
+        
+        refractSim.canvas.width = refractSim.canvas.parentElement.clientWidth;
+        refractSim.canvas.height = 450;
+        refractSim.ctx = refractSim.canvas.getContext('2d');
+        
+        document.getElementById('refractAngleSlider').oninput = function() {
+            refractSim.angle = parseFloat(this.value);
+            document.getElementById('refractAngleDisplay').textContent = this.value + '°';
+            if (!refractSim.running) drawRefractionFrame();
+        };
+        document.getElementById('refractIndexSlider').oninput = function() {
+            refractSim.n2 = parseFloat(this.value);
+            document.getElementById('refractIndexDisplay').textContent = this.value;
+            if (!refractSim.running) drawRefractionFrame();
+        };
+        document.getElementById('refractWaveCountSlider').oninput = function() {
+            refractSim.waveCount = parseInt(this.value);
+            document.getElementById('refractWaveCountDisplay').textContent = this.value + '個';
+            if (!refractSim.running) drawRefractionFrame();
+        };
+        document.getElementById('refractSpeedSlider').oninput = function() {
+            refractSim.speed = parseFloat(this.value);
+            document.getElementById('refractSpeedDisplay').textContent = this.value + 'x';
+        };
+        
+        document.getElementById('refractStartBtn').onclick = startRefractionSim;
+        document.getElementById('refractPauseBtn').onclick = pauseRefractionSim;
+        document.getElementById('refractResetBtn').onclick = resetRefractionSim;
+        
+        drawRefractionFrame();
+    }
+    
+    function startRefractionSim() {
+        if (refractSim.paused) {
+            refractSim.paused = false;
+            animateRefraction();
+            return;
+        }
+        refractSim.running = true;
+        refractSim.paused = false;
+        refractSim.time = 0;
+        animateRefraction();
+    }
+    
+    function pauseRefractionSim() {
+        refractSim.paused = true;
+        if (refractSim.animId) cancelAnimationFrame(refractSim.animId);
+    }
+    
+    function resetRefractionSim() {
+        refractSim.running = false;
+        refractSim.paused = false;
+        refractSim.time = 0;
+        if (refractSim.animId) cancelAnimationFrame(refractSim.animId);
+        drawRefractionFrame();
+    }
+    
+    function animateRefraction() {
+        if (!refractSim.running || refractSim.paused) return;
+        refractSim.time += 0.016 * refractSim.speed;
+        drawRefractionFrame();
+        if (refractSim.time < refractSim.maxTime) {
+            refractSim.animId = requestAnimationFrame(animateRefraction);
+        } else {
+            refractSim.running = false;
+        }
+    }
+    
+    function drawRefractionFrame() {
+        const ctx = refractSim.ctx;
+        const W = refractSim.canvas.width;
+        const H = refractSim.canvas.height;
+        const t = refractSim.time;
+        const theta1 = refractSim.angle * Math.PI / 180;
+        const n2 = refractSim.n2;
+        const n = refractSim.waveCount;
+        
+        ctx.clearRect(0, 0, W, H);
+        
+        // 境界面
+        const boundaryY = H * 0.42;
+        
+        // 媒質Ⅰ（上）
+        ctx.fillStyle = '#e3f2fd';
+        ctx.fillRect(0, 0, W, boundaryY);
+        
+        // 媒質Ⅱ（下）
+        ctx.fillStyle = '#fff3e0';
+        ctx.fillRect(0, boundaryY, W, H - boundaryY);
+        
+        ctx.strokeStyle = '#333';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(0, boundaryY);
+        ctx.lineTo(W, boundaryY);
+        ctx.stroke();
+        
+        // パラメータ
+        const v1 = 120;  // 媒質Ⅰでの速度
+        const v2 = v1 / n2;  // 媒質Ⅱでの速度
+        const waveLen = 100;
+        
+        // 屈折角の計算
+        const sinTheta2 = Math.sin(theta1) / n2;
+        const theta2 = Math.abs(sinTheta2) <= 1 ? Math.asin(sinTheta2) : Math.PI / 2;
+        
+        // 点Aの位置（境界面に最初に到達）
+        const Ax = W * 0.25;
+        const Ay = boundaryY;
+        
+        // 点Bが境界面に到達するまでの時間
+        const tB = waveLen * Math.sin(theta1) / v1;
+        
+        // 入射波面の描画
+        if (t < tB) {
+            ctx.strokeStyle = '#2196f3';
+            ctx.lineWidth = 3;
+            
+            const Bx_now = Ax + waveLen * Math.cos(theta1) + v1 * t * Math.sin(theta1);
+            const By_now = boundaryY - waveLen * Math.sin(theta1) + v1 * t * Math.cos(theta1);
+            const intersectX = Ax + (t / tB) * waveLen * Math.cos(theta1);
+            
+            if (By_now < boundaryY) {
+                ctx.beginPath();
+                ctx.moveTo(intersectX, boundaryY);
+                ctx.lineTo(Bx_now, By_now);
+                ctx.stroke();
+            }
+        }
+        
+        // 素元波の描画（媒質Ⅱ内）
+        ctx.strokeStyle = '#e91e63';
+        ctx.lineWidth = 1.5;
+        
+        const arrivedPoints = [];
+        for (let i = 0; i < n; i++) {
+            const frac = i / (n - 1);
+            const arrivalTime = frac * tB;
+            
+            if (t >= arrivalTime) {
+                const px = Ax + frac * waveLen * Math.cos(theta1);
+                const elapsed = t - arrivalTime;
+                const radius = v2 * elapsed;  // 媒質Ⅱの速度で広がる
+                
+                arrivedPoints.push({ x: px, radius: radius });
+                
+                // 素元波（下半分のみ）
+                if (radius > 0) {
+                    ctx.beginPath();
+                    ctx.arc(px, boundaryY, radius, 0, Math.PI);
+                    ctx.stroke();
+                }
+                
+                // 波源点
+                ctx.fillStyle = '#e91e63';
+                ctx.beginPath();
+                ctx.arc(px, boundaryY, 4, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+        
+        // 屈折波面（包絡線）の描画
+        if (arrivedPoints.length >= 2) {
+            const first = arrivedPoints[0];
+            const last = arrivedPoints[arrivedPoints.length - 1];
+            
+            if (first.radius > 5 && last.radius > 0) {
+                const Apx = first.x + first.radius * Math.sin(theta2);
+                const Apy = boundaryY + first.radius * Math.cos(theta2);
+                const Bpx = last.x + last.radius * Math.sin(theta2);
+                const Bpy = boundaryY + last.radius * Math.cos(theta2);
+                
+                if (Apy > boundaryY && Bpy > boundaryY && Apy < H && Bpy < H) {
+                    ctx.strokeStyle = '#4caf50';
+                    ctx.lineWidth = 3;
+                    ctx.beginPath();
+                    ctx.moveTo(Apx, Apy);
+                    ctx.lineTo(Bpx, Bpy);
+                    ctx.stroke();
+                    
+                    // 屈折波の進行方向
+                    if (t > tB * 0.5) {
+                        const midX = (Apx + Bpx) / 2;
+                        const midY = (Apy + Bpy) / 2;
+                        ctx.strokeStyle = '#333';
+                        ctx.lineWidth = 2;
+                        drawArrow(ctx, midX - 25*Math.sin(theta2), midY - 25*Math.cos(theta2),
+                                       midX + 30*Math.sin(theta2), midY + 30*Math.cos(theta2));
+                    }
+                }
+            }
+        }
+        
+        // 情報表示
+        const theta2Deg = (theta2 * 180 / Math.PI).toFixed(1);
+        ctx.fillStyle = '#333';
+        ctx.font = '16px sans-serif';
+        ctx.fillText(`入射角 θ₁ = ${refractSim.angle}°`, 20, 30);
+        ctx.fillText(`屈折角 θ₂ = ${theta2Deg}°`, 20, 55);
+        ctx.fillText(`屈折率 n₂ = ${n2.toFixed(1)}`, 20, 80);
+        
+        // 媒質ラベル
+        ctx.fillStyle = '#1976d2';
+        ctx.font = '14px sans-serif';
+        ctx.fillText('媒質Ⅰ（n₁ = 1.0）', W - 150, 30);
+        ctx.fillStyle = '#e65100';
+        ctx.fillText(`媒質Ⅱ（n₂ = ${n2.toFixed(1)}）`, W - 150, boundaryY + 30);
+        
+        // 凡例
+        const legendX = 20;
+        const legendY = H - 80;
+        ctx.fillStyle = '#2196f3';
+        ctx.fillRect(legendX, legendY, 20, 3);
+        ctx.fillStyle = '#333';
+        ctx.font = '12px sans-serif';
+        ctx.fillText('入射波面', legendX + 25, legendY + 5);
+        
+        ctx.fillStyle = '#e91e63';
+        ctx.beginPath();
+        ctx.arc(legendX + 10, legendY + 25, 5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#333';
+        ctx.fillText('素元波（媒質Ⅱ）', legendX + 25, legendY + 30);
+        
+        ctx.fillStyle = '#4caf50';
+        ctx.fillRect(legendX, legendY + 43, 20, 3);
+        ctx.fillStyle = '#333';
+        ctx.fillText('屈折波面', legendX + 25, legendY + 48);
+    }
+    
+    // --- 回折シミュレーション ---
+    let diffractSim = {
+        canvas: null, ctx: null,
+        running: false, paused: false,
+        time: 0,
+        wavelength: 40, slitWidth: 80, speed: 1,
+        animId: null
+    };
+    
+    function initDiffractionSim() {
+        diffractSim.canvas = document.getElementById('diffractionSimCanvas');
+        if (!diffractSim.canvas) return;
+        
+        diffractSim.canvas.width = diffractSim.canvas.parentElement.clientWidth;
+        diffractSim.canvas.height = 400;
+        diffractSim.ctx = diffractSim.canvas.getContext('2d');
+        
+        document.getElementById('diffractWavelengthSlider').oninput = function() {
+            diffractSim.wavelength = parseInt(this.value);
+            document.getElementById('diffractWavelengthDisplay').textContent = this.value + ' px';
+            if (!diffractSim.running) drawDiffractionSimFrame();
+        };
+        document.getElementById('diffractSlitSlider').oninput = function() {
+            diffractSim.slitWidth = parseInt(this.value);
+            document.getElementById('diffractSlitDisplay').textContent = this.value + ' px';
+            if (!diffractSim.running) drawDiffractionSimFrame();
+        };
+        document.getElementById('diffractSpeedSlider').oninput = function() {
+            diffractSim.speed = parseFloat(this.value);
+            document.getElementById('diffractSpeedDisplay').textContent = this.value + 'x';
+        };
+        
+        document.getElementById('diffractStartBtn').onclick = startDiffractionSim;
+        document.getElementById('diffractPauseBtn').onclick = pauseDiffractionSim;
+        document.getElementById('diffractResetBtn').onclick = resetDiffractionSim;
+        
+        drawDiffractionSimFrame();
+    }
+    
+    function startDiffractionSim() {
+        if (diffractSim.paused) {
+            diffractSim.paused = false;
+            animateDiffraction();
+            return;
+        }
+        diffractSim.running = true;
+        diffractSim.paused = false;
+        diffractSim.time = 0;
+        animateDiffraction();
+    }
+    
+    function pauseDiffractionSim() {
+        diffractSim.paused = true;
+        if (diffractSim.animId) cancelAnimationFrame(diffractSim.animId);
+    }
+    
+    function resetDiffractionSim() {
+        diffractSim.running = false;
+        diffractSim.paused = false;
+        diffractSim.time = 0;
+        if (diffractSim.animId) cancelAnimationFrame(diffractSim.animId);
+        drawDiffractionSimFrame();
+    }
+    
+    function animateDiffraction() {
+        if (!diffractSim.running || diffractSim.paused) return;
+        diffractSim.time += 0.03 * diffractSim.speed;
+        drawDiffractionSimFrame();
+        diffractSim.animId = requestAnimationFrame(animateDiffraction);
+    }
+    
+    function drawDiffractionSimFrame() {
+        const ctx = diffractSim.ctx;
+        const W = diffractSim.canvas.width;
+        const H = diffractSim.canvas.height;
+        const t = diffractSim.time;
+        const lambda = diffractSim.wavelength;
+        const slitW = diffractSim.slitWidth;
+        
+        ctx.clearRect(0, 0, W, H);
+        ctx.fillStyle = '#fafafa';
+        ctx.fillRect(0, 0, W, H);
+        
+        // 障害物
+        const wallX = W * 0.32;
+        const slitCenterY = H / 2;
+        
+        ctx.fillStyle = '#424242';
+        ctx.fillRect(wallX - 10, 0, 20, slitCenterY - slitW / 2);
+        ctx.fillRect(wallX - 10, slitCenterY + slitW / 2, 20, H - slitCenterY - slitW / 2);
+        
+        // スリット
+        ctx.fillStyle = '#fff9c4';
+        ctx.fillRect(wallX - 10, slitCenterY - slitW / 2, 20, slitW);
+        
+        // 入射波（平面波）
+        ctx.strokeStyle = '#2196f3';
+        ctx.lineWidth = 2;
+        const waveSpeed = 80;
+        const phaseOffset = (t * waveSpeed) % lambda;
+        
+        for (let x = phaseOffset; x < wallX - 10; x += lambda) {
+            ctx.beginPath();
+            ctx.moveTo(x, 0);
+            ctx.lineTo(x, H);
+            ctx.stroke();
+        }
+        
+        // スリット通過後の素元波
+        if (diffractSim.running || t > 0) {
+            const numSources = Math.max(3, Math.ceil(slitW / 20));
+            const sources = [];
+            for (let i = 0; i < numSources; i++) {
+                sources.push(slitCenterY - slitW / 2 + (i + 0.5) * slitW / numSources);
+            }
+            
+            // 素元波を描画
+            ctx.strokeStyle = 'rgba(233, 30, 99, 0.6)';
+            ctx.lineWidth = 1.5;
+            
+            const maxRadius = (W - wallX) * 1.2;
+            for (let phase = phaseOffset; phase < maxRadius; phase += lambda) {
+                sources.forEach(sourceY => {
+                    if (phase > 0) {
+                        ctx.beginPath();
+                        ctx.arc(wallX, sourceY, phase, -Math.PI / 2, Math.PI / 2);
+                        ctx.stroke();
+                    }
+                });
+            }
+            
+            // 素元波源の点
+            ctx.fillStyle = '#e91e63';
+            sources.forEach(y => {
+                ctx.beginPath();
+                ctx.arc(wallX, y, 4, 0, Math.PI * 2);
+                ctx.fill();
+            });
+        }
+        
+        // 情報表示
+        ctx.fillStyle = '#333';
+        ctx.font = '16px sans-serif';
+        ctx.fillText(`波長 λ = ${lambda} px`, 20, 30);
+        ctx.fillText(`スリット幅 d = ${slitW} px`, 20, 55);
+        
+        const ratio = (lambda / slitW).toFixed(2);
+        ctx.fillText(`λ/d = ${ratio}`, 20, 80);
+        
+        let description, color;
+        if (ratio > 0.5) {
+            description = '→ 回折が顕著';
+            color = '#2e7d32';
+        } else if (ratio > 0.2) {
+            description = '→ 中程度の回折';
+            color = '#f57c00';
+        } else {
+            description = '→ 回折が小さい';
+            color = '#c62828';
+        }
+        ctx.fillStyle = color;
+        ctx.fillText(description, 20, 105);
+        
+        // 凡例
+        const legendX = W - 130;
+        ctx.fillStyle = '#2196f3';
+        ctx.fillRect(legendX, 15, 20, 3);
+        ctx.fillStyle = '#333';
+        ctx.font = '12px sans-serif';
+        ctx.fillText('入射波', legendX + 25, 20);
+        
+        ctx.fillStyle = '#e91e63';
+        ctx.beginPath();
+        ctx.arc(legendX + 10, 40, 5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#333';
+        ctx.fillText('素元波', legendX + 25, 45);
+    }
+    
+    // ============================
+    // 初期化
+    // ============================
+    window.onload = function() {
+        drawHuygensBasic();
+        drawReflectStep1();
+        drawReflectStep2();
+        drawReflectStep3();
+        drawReflectStep4();
+        drawRefractStep1();
+        drawRefractStep2();
+        drawRefractStep3();
+        drawRefractStep4();
+        drawDiffraction();
+        drawDiffractionCompare();
+        drawProblem1();
+    };
+    
+    window.addEventListener('resize', function() {
+        if (document.getElementById('simulation').classList.contains('active')) {
+            initReflectionSim();
+            initRefractionSim();
+            initDiffractionSim();
+        }
+    });
+    </script>
+</body>
+</html>

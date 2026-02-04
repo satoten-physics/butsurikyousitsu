@@ -1,0 +1,1708 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高校物理 - 波(波動)という概念</title>
+    <script>
+      window.MathJax = {
+      tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']]
+     }
+     };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        header {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .back-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        h1 {
+            color: #333;
+        }
+        .container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .tab-btn {
+            flex: 1;
+            min-width: 150px;
+            padding: 12px 20px;
+            border: none;
+            background: #f0f0f0;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        .tab-btn.active {
+            background: #667eea;
+            color: white;
+        }
+        .tab-btn:hover {
+            background: #8899f0;
+            color: white;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        h3 {
+            color: #555;
+            margin: 25px 0 15px 0;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #667eea;
+        }
+        h4 {
+            color: #667eea;
+            margin: 20px 0 10px 0;
+        }
+        p {
+            line-height: 1.8;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        .pdf-placeholder {
+            background: #f9f9f9;
+            padding: 40px;
+            text-align: center;
+            border-radius: 5px;
+            color: #666;
+        }
+        
+        /* 解説用スタイル */
+        .concept-box {
+            background: #f0f4ff;
+            border-left: 4px solid #667eea;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .concept-box.important {
+            background: #fff3e0;
+            border-left-color: #ff9800;
+        }
+        .concept-box.formula {
+            background: #e8f5e9;
+            border-left-color: #4caf50;
+        }
+        .concept-box h4 {
+            margin-top: 0;
+            color: #333;
+        }
+        .term-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        .term-table th, .term-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        .term-table th {
+            background: #667eea;
+            color: white;
+        }
+        .term-table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+        .comparison-container {
+            display: flex;
+            gap: 20px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        .comparison-box {
+            flex: 1;
+            min-width: 280px;
+            padding: 20px;
+            border-radius: 10px;
+            background: #f9f9f9;
+        }
+        .comparison-box.transverse {
+            border: 3px solid #E91E63;
+        }
+        .comparison-box.longitudinal {
+            border: 3px solid #4CAF50;
+        }
+        .comparison-box h4 {
+            margin-top: 0;
+        }
+        .comparison-box.transverse h4 {
+            color: #E91E63;
+        }
+        .comparison-box.longitudinal h4 {
+            color: #4CAF50;
+        }
+        
+        /* 動的ツール用キャンバス */
+        .dynamic-tool {
+            background: #f5f5f5;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .dynamic-tool canvas {
+            display: block;
+            background: white;
+            border-radius: 5px;
+            border: 2px solid #ddd;
+        }
+        .dynamic-tool p {
+            text-align: center;
+            color: #666;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+        
+        /* 静的図解用 */
+        .static-diagram {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .static-diagram canvas {
+            display: block;
+        }
+        
+        /* シミュレーション用スタイル */
+        #sim-container {
+            background: #f5f5f5;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        #physicsCanvas {
+            display: block;
+            background: white;
+            border-radius: 5px;
+            border: 2px solid #ddd;
+        }
+        .sim-controls {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .control-group {
+            margin-bottom: 20px;
+        }
+        .control-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        .control-group input[type="range"] {
+            width: 100%;
+            margin: 10px 0;
+        }
+        .value-display {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            min-width: 100px;
+            text-align: center;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .sim-button {
+            flex: 1;
+            min-width: 120px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .sim-button.start {
+            background: #4CAF50;
+            color: white;
+        }
+        .sim-button.start:hover {
+            background: #45a049;
+        }
+        .sim-button.stop {
+            background: #ff9800;
+            color: white;
+        }
+        .sim-button.stop:hover {
+            background: #e68a00;
+        }
+        .sim-button.reset {
+            background: #f44336;
+            color: white;
+        }
+        .sim-button.reset:hover {
+            background: #da190b;
+        }
+        .graph-container {
+            margin-top: 20px;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #ddd;
+        }
+        .graph-container h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+            border-bottom: none;
+            margin-top: 0;
+        }
+        #graphCanvas {
+            display: block;
+            border: 1px solid #eee;
+        }
+        
+        /* サブタブ */
+        .sub-tabs {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 20px;
+            background: #f0f0f0;
+            padding: 5px;
+            border-radius: 8px;
+        }
+        .sub-tab-btn {
+            flex: 1;
+            padding: 10px 15px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.3s;
+            color: #666;
+        }
+        .sub-tab-btn.active {
+            background: white;
+            color: #667eea;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .sub-tab-btn:hover:not(.active) {
+            background: rgba(255,255,255,0.5);
+        }
+        .sub-tab-content {
+            display: none;
+        }
+        .sub-tab-content.active {
+            display: block;
+        }
+        
+        /* 問題タブ用 */
+        details {
+            background: #f9f9f9;
+            border-radius: 8px;
+            margin: 15px 0;
+            padding: 15px;
+        }
+        summary {
+            cursor: pointer;
+            font-weight: bold;
+            color: #667eea;
+            padding: 10px;
+            background: #e8e8e8;
+            border-radius: 5px;
+            margin: -15px -15px 0 -15px;
+        }
+        summary:hover {
+            background: #ddd;
+        }
+        details[open] summary {
+            margin-bottom: 15px;
+        }
+        .problem-box {
+            background: white;
+            border: 2px solid #667eea;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .problem-box h4 {
+            color: #667eea;
+            margin-top: 0;
+        }
+        
+        /* キャンバスラベル */
+        .canvas-label {
+            text-align: center;
+            font-weight: 600;
+            color: #444;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        
+        /* 情報ボックス */
+        .info-box {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border-left: 4px solid #2196F3;
+        }
+        .info-box h4 {
+            margin-top: 0;
+            color: #1976D2;
+        }
+        .info-box p {
+            margin: 5px 0;
+            color: #555;
+            line-height: 1.6;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            header, .container {
+                padding: 15px;
+            }
+            .tab-btn {
+                min-width: 100px;
+                font-size: 14px;
+            }
+            .comparison-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="back-link">← 目次に戻る</a>
+        <h1>波(波動)という概念</h1>
+    </header>
+    <div class="container">
+        
+        <div class="tabs">
+            <button class="tab-btn active" onclick="openTab('lecture')">解説編</button>
+            <button class="tab-btn" onclick="openTab('problem')">問題編</button>
+            <button class="tab-btn" onclick="openTab('simulation')">シミュレーション</button>
+        </div>
+        
+        <!-- ==================== 解説タブ ==================== -->
+        <div id="lecture" class="tab-content active">
+            <h2>波(波動)という概念</h2>
+            
+            <!-- PDF埋め込み -->
+            <iframe src="https://drive.google.com/file/d/1rd3AUHNkj-NLM0IEztEdsiVOdPwxD6EA/preview" width="100%" height="500" style="border: none; border-radius: 8px; margin-bottom: 20px;"></iframe>
+            
+            <h3>1. 波の定義</h3>
+            <div class="concept-box">
+                <h4>📌 波（波動）とは</h4>
+                <p><strong>ある点で起こった振動が、周囲へ次々と伝わっていく現象</strong>のことです。</p>
+                <p>重要なのは、<strong>媒質（波を伝える物質）自体は移動しない</strong>ということ。各点は自分の位置で振動するだけで、振動のパターン（エネルギー）が伝わっていきます。</p>
+            </div>
+            
+            <!-- 動的ツール：波源からの横波発生 -->
+            <div class="dynamic-tool">
+                <canvas id="waveGenerationCanvas" height="200"></canvas>
+                <p>▲ 波源（左端の赤い点）が上下に振動すると、その振動が右へ伝わっていきます。<br>各媒質点（青い点）は上下に動くだけで、横には移動していないことに注目！</p>
+            </div>
+            
+            <h3>2. 波の用語</h3>
+            <table class="term-table">
+                <tr>
+                    <th>用語</th>
+                    <th>意味</th>
+                    <th>補足</th>
+                </tr>
+                <tr>
+                    <td><strong>波源</strong></td>
+                    <td>波の発生源（振動の開始地点）</td>
+                    <td>スピーカー、振動する手など</td>
+                </tr>
+                <tr>
+                    <td><strong>媒質</strong></td>
+                    <td>波を伝える物質</td>
+                    <td>空気、水、ロープなど</td>
+                </tr>
+                <tr>
+                    <td><strong>波の速さ $v$</strong></td>
+                    <td>波（エネルギー）が伝わる速さ</td>
+                    <td>媒質の性質で決まる</td>
+                </tr>
+                <tr>
+                    <td><strong>波形</strong></td>
+                    <td>波の形</td>
+                    <td>高校では主に正弦波を扱う</td>
+                </tr>
+            </table>
+            
+            <!-- 静的図解：波の構造 -->
+            <div class="static-diagram">
+                <canvas id="waveStructureCanvas" height="220"></canvas>
+            </div>
+            
+            <h3>3. 正弦波と波の基本量</h3>
+            <p>波源が<strong>単振動</strong>（一定の周期で繰り返す振動）をすると、伝わっていく波形は<strong>正弦曲線（サインカーブ）</strong>を描きます。この波を<strong>正弦波</strong>といいます。</p>
+            
+            <div class="concept-box formula">
+                <h4>📐 波を表す基本量</h4>
+                <table class="term-table">
+                    <tr>
+                        <th>量</th>
+                        <th>記号</th>
+                        <th>単位</th>
+                        <th>意味</th>
+                    </tr>
+                    <tr>
+                        <td><strong>振幅</strong></td>
+                        <td>$A$</td>
+                        <td>m</td>
+                        <td>振動の中心から山（または谷）までの距離</td>
+                    </tr>
+                    <tr>
+                        <td><strong>波長</strong></td>
+                        <td>$\lambda$（ラムダ）</td>
+                        <td>m</td>
+                        <td>波1個分の長さ（山から山、谷から谷）</td>
+                    </tr>
+                    <tr>
+                        <td><strong>周期</strong></td>
+                        <td>$T$</td>
+                        <td>s</td>
+                        <td>1回の振動にかかる時間</td>
+                    </tr>
+                    <tr>
+                        <td><strong>振動数</strong></td>
+                        <td>$f$</td>
+                        <td>Hz</td>
+                        <td>1秒間に振動する回数</td>
+                    </tr>
+                </table>
+            </div>
+            
+            <div class="concept-box important">
+                <h4>⚡ 波の数え方</h4>
+                <p>波は「<strong>山1つと谷1つのセット</strong>」で1つと数えます。</p>
+                <p>つまり、山だけ、または谷だけでは「半分の波（$\frac{1}{2}$波）」です。</p>
+            </div>
+            
+            <h3>4. 周期と振動数の関係</h3>
+            <div class="concept-box formula">
+                <h4>📐 周期と振動数の関係式</h4>
+                <p style="text-align: center; font-size: 1.3em;">
+                    $$fT = 1 \quad \Leftrightarrow \quad f = \frac{1}{T} \quad \Leftrightarrow \quad T = \frac{1}{f}$$
+                </p>
+                <p>周期 $T$ と振動数 $f$ は<strong>互いに逆数</strong>の関係です。</p>
+                <p>例：周期が $T = 0.5$ s なら、振動数は $f = \frac{1}{0.5} = 2$ Hz（1秒間に2回振動）</p>
+            </div>
+            
+            <h3>5. 波の基本式</h3>
+            <p>波の速さ $v$ は、波長 $\lambda$ と周期 $T$（または振動数 $f$）を使って表せます。</p>
+            
+            <div class="concept-box formula">
+                <h4>📐 波の基本式</h4>
+                <p style="text-align: center; font-size: 1.4em;">
+                    $$v = \frac{\lambda}{T} = f\lambda$$
+                </p>
+                <p><strong>導出の考え方：</strong></p>
+                <p>・1回の振動（時間 $T$）で、波は1波長分（距離 $\lambda$）進む</p>
+                <p>・よって、速さ $v = \frac{\text{距離}}{\text{時間}} = \frac{\lambda}{T}$</p>
+                <p>・$f = \frac{1}{T}$ を代入すると、$v = f\lambda$</p>
+            </div>
+            
+            <h3>6. 横波と縦波</h3>
+            <p>波は、<strong>振動方向</strong>と<strong>進行方向</strong>の関係によって2種類に分類されます。</p>
+            
+            <div class="comparison-container">
+                <div class="comparison-box transverse">
+                    <h4>横波（Transverse Wave）</h4>
+                    <p><strong>振動方向と進行方向が垂直</strong></p>
+                    <p>・媒質が上下（または左右）に振動</p>
+                    <p>・波形に「山」と「谷」ができる</p>
+                    <p><strong>例：</strong>光、電磁波、ロープの波、地震のS波</p>
+                </div>
+                <div class="comparison-box longitudinal">
+                    <h4>縦波（Longitudinal Wave）</h4>
+                    <p><strong>振動方向と進行方向が平行</strong></p>
+                    <p>・媒質が前後に振動</p>
+                    <p>・「密」と「疎」の部分ができる</p>
+                    <p><strong>例：</strong>音波、地震のP波、ばねの波</p>
+                </div>
+            </div>
+            
+            <div class="concept-box important">
+                <h4>⚡ 縦波を横波で表す（横波表記）</h4>
+                <p>縦波は「密」「疎」で表されますが、グラフにしにくいため、<strong>変位を縦軸に取った横波のグラフ</strong>で表すことがあります。</p>
+                <p>・進行方向（+x方向）への変位 → グラフの上（+y方向）</p>
+                <p>・逆方向（-x方向）への変位 → グラフの下（-y方向）</p>
+                <p>詳しくはシミュレーションタブの「縦波の横波表記」で確認できます！</p>
+            </div>
+            
+            <div class="concept-box">
+                <h4>🔬 縦波と横波の発生条件</h4>
+                <p><strong>横波：</strong>媒質の結合が「引っ張られる」力で成り立つ場合に発生。固体中や表面張力のある液体表面で伝わる。</p>
+                <p><strong>縦波：</strong>媒質の結合が「押し引き」の力で成り立つ場合に発生。気体・液体・固体すべてで伝わる。</p>
+                <p>→ 音は空気（気体）中を伝わるので縦波！</p>
+            </div>
+        </div>
+        
+        <!-- ==================== 問題タブ ==================== -->
+        <div id="problem" class="tab-content">
+            <h2>確認問題</h2>
+            
+            <div class="problem-box">
+                <h4>問題1：波の基本概念</h4>
+                <p>水面に石を落とすと、波紋が広がっていく。このとき、水面に浮かべた木の葉はどのような動きをするか、理由とともに説明せよ。</p>
+            </div>
+            <details>
+                <summary>解答・解説を表示</summary>
+                <p><strong>【解答】</strong></p>
+                <p>木の葉は、波の進行方向には移動せず、その場で上下に振動する。</p>
+                <p><strong>【解説】</strong></p>
+                <p>波は「振動が伝わる現象」であり、媒質（水）自体が移動するわけではない。水の各点は自分の位置で上下に振動するだけで、波（エネルギー）が外側に伝わっていく。したがって、水面に浮かぶ木の葉も、水と一緒に上下に振動するだけで、波紋と一緒に外側へ流されることはない。</p>
+            </details>
+            
+            <div class="problem-box">
+                <h4>問題2：波の基本量の計算</h4>
+                <p>振動数 $f = 5.0$ Hz、波長 $\lambda = 0.40$ m の波について、以下を求めよ。</p>
+                <p>(1) この波の周期 $T$</p>
+                <p>(2) この波の速さ $v$</p>
+            </div>
+            <details>
+                <summary>解答・解説を表示</summary>
+                <p><strong>【解答】</strong></p>
+                <p>(1) $T = 0.20$ s</p>
+                <p>(2) $v = 2.0$ m/s</p>
+                <p><strong>【解説】</strong></p>
+                <p>(1) 周期と振動数の関係 $fT = 1$ より、</p>
+                <p>$$T = \frac{1}{f} = \frac{1}{5.0} = 0.20 \text{ s}$$</p>
+                <p>(2) 波の基本式 $v = f\lambda$ より、</p>
+                <p>$$v = 5.0 \times 0.40 = 2.0 \text{ m/s}$$</p>
+            </details>
+            
+            <div class="problem-box">
+                <h4>問題3：縦波と横波</h4>
+                <p>以下の(a)〜(d)の波を、横波と縦波に分類せよ。また、その判断理由を簡潔に述べよ。</p>
+                <p>(a) 光　(b) 音　(c) 地震のP波　(d) 地震のS波</p>
+            </div>
+            <details>
+                <summary>解答・解説を表示</summary>
+                <p><strong>【解答】</strong></p>
+                <p><strong>横波：</strong>(a) 光、(d) 地震のS波</p>
+                <p><strong>縦波：</strong>(b) 音、(c) 地震のP波</p>
+                <p><strong>【解説】</strong></p>
+                <p>・<strong>光：</strong>電場と磁場が進行方向に垂直に振動する電磁波なので横波。</p>
+                <p>・<strong>音：</strong>空気分子が進行方向と同じ向きに振動（疎密）するので縦波。</p>
+                <p>・<strong>P波（Primary wave）：</strong>岩石が進行方向に圧縮・膨張するので縦波。速度が速く最初に届く。</p>
+                <p>・<strong>S波（Secondary wave）：</strong>岩石が進行方向に垂直に振動するので横波。P波より遅れて届く。</p>
+            </details>
+        </div>
+        
+        <!-- ==================== シミュレーションタブ ==================== -->
+        <div id="simulation" class="tab-content">
+            <h2>実験シミュレーション</h2>
+            
+            <!-- サブタブ -->
+            <div class="sub-tabs">
+                <button class="sub-tab-btn active" onclick="openSubTab('simA')">正弦波の伝播</button>
+                <button class="sub-tab-btn" onclick="openSubTab('simB')">縦波の横波表記</button>
+            </div>
+            
+            <!-- シミュレーションA：正弦波の伝播 -->
+            <div id="simA" class="sub-tab-content active">
+                <p>波源の振動が媒質を伝わっていく様子を観察しましょう。任意の観測点における y-t グラフも確認できます。</p>
+                
+                <div id="sim-container">
+                    <canvas id="physicsCanvas"></canvas>
+                    <div class="canvas-label">y-x グラフ（ある瞬間の波形）</div>
+                </div>
+                
+                <div class="sim-controls">
+                    <div class="control-group">
+                        <label>振幅 $A$: <span class="value-display" id="ampDisplay">1.0 m</span></label>
+                        <input type="range" id="ampSlider" min="0.2" max="2.0" value="1.0" step="0.1">
+                    </div>
+                    
+                    <div class="control-group">
+                        <label>波長 $\lambda$: <span class="value-display" id="waveDisplay">4.0 m</span></label>
+                        <input type="range" id="waveSlider" min="2" max="10" value="4" step="0.5">
+                    </div>
+                    
+                    <div class="control-group">
+                        <label>周期 $T$: <span class="value-display" id="periodDisplay">2.0 s</span></label>
+                        <input type="range" id="periodSlider" min="0.5" max="4.0" value="2.0" step="0.1">
+                    </div>
+                    
+                    <div class="control-group">
+                        <label>観測点の位置 $x$: <span class="value-display" id="observeDisplay">5.0 m</span></label>
+                        <input type="range" id="observeSlider" min="0" max="15" value="5" step="0.5">
+                    </div>
+                    
+                    <div class="button-group">
+                        <button class="sim-button start" id="startBtnA">▶ スタート</button>
+                        <button class="sim-button stop" id="stopBtnA">⏸ ストップ</button>
+                        <button class="sim-button reset" id="resetBtnA">↺ リセット</button>
+                    </div>
+                </div>
+                
+                <div class="graph-container">
+                    <h3>y-t グラフ（観測点 $x$ における時間変化）</h3>
+                    <canvas id="graphCanvas"></canvas>
+                </div>
+                
+                <div class="info-box">
+                    <h4>📊 波の速さ</h4>
+                    <p>$v = \frac{\lambda}{T} = $ <span id="velocityDisplay" style="font-weight: bold; color: #667eea;">2.0</span> m/s</p>
+                </div>
+            </div>
+            
+            <!-- シミュレーションB：縦波の横波表記 -->
+            <div id="simB" class="sub-tab-content">
+                <p>縦波の「密」「疎」が、横波表記でどのように表されるかを確認しましょう。</p>
+                
+                <div id="sim-container-b">
+                    <canvas id="refCanvas" height="100"></canvas>
+                    <div class="canvas-label">① 基準状態（波が生じていない状態）</div>
+                    
+                    <canvas id="longCanvas" height="120"></canvas>
+                    <div class="canvas-label">② 縦波の動き（粒子の疎密）</div>
+                    
+                    <canvas id="transCanvas" height="200"></canvas>
+                    <div class="canvas-label">③ 横波表記への変換（変位グラフ）</div>
+                </div>
+                
+                <div class="sim-controls">
+                    <div class="control-group">
+                        <label>波長: <span class="value-display" id="waveDisplayB">4.0</span></label>
+                        <input type="range" id="waveSliderB" min="2" max="8" step="0.5" value="4">
+                    </div>
+                    
+                    <div class="control-group">
+                        <label>振幅: <span class="value-display" id="ampDisplayB">30</span></label>
+                        <input type="range" id="ampSliderB" min="10" max="50" step="5" value="30">
+                    </div>
+                    
+                    <div class="control-group">
+                        <label>速度: <span class="value-display" id="speedDisplayB">1.0x</span></label>
+                        <input type="range" id="speedSliderB" min="0.2" max="2" step="0.2" value="1">
+                    </div>
+                    
+                    <div class="button-group">
+                        <button class="sim-button start" id="startBtnB">▶ スタート</button>
+                        <button class="sim-button stop" id="stopBtnB">⏸ ストップ</button>
+                        <button class="sim-button reset" id="resetBtnB">↺ リセット</button>
+                    </div>
+                </div>
+                
+                <div class="info-box">
+                    <h4>📚 理解のポイント</h4>
+                    <p><strong>縦波の変位：</strong>各粒子が基準位置から「+x方向（右）」または「-x方向（左）」にずれた量。</p>
+                    <p><strong>横波表記への変換：</strong>+x方向の変位 → グラフの上（+y）、-x方向の変位 → グラフの下（-y）</p>
+                    <p><strong>「密」と「疎」：</strong>「密」は横波グラフで傾きが負の部分、「疎」は傾きが正の部分に対応。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+    // =====================================================
+    // タブ切り替え機能
+    // =====================================================
+    function openTab(tabName) {
+        var contents = document.getElementsByClassName("tab-content");
+        for (var i = 0; i < contents.length; i++) {
+            contents[i].style.display = "none";
+            contents[i].classList.remove("active");
+        }
+        var buttons = document.getElementsByClassName("tab-btn");
+        for (var i = 0; i < buttons.length; i++) {
+            buttons[i].classList.remove("active");
+        }
+        document.getElementById(tabName).style.display = "block";
+        document.getElementById(tabName).classList.add("active");
+        if (event) {
+            event.currentTarget.classList.add("active");
+        }
+        
+        // シミュレーションタブが開かれたらキャンバスをリサイズ
+        if (tabName === 'simulation') {
+            resizeAllCanvases();
+        }
+    }
+    
+    function openSubTab(tabName) {
+        var contents = document.getElementsByClassName("sub-tab-content");
+        for (var i = 0; i < contents.length; i++) {
+            contents[i].style.display = "none";
+            contents[i].classList.remove("active");
+        }
+        var buttons = document.getElementsByClassName("sub-tab-btn");
+        for (var i = 0; i < buttons.length; i++) {
+            buttons[i].classList.remove("active");
+        }
+        document.getElementById(tabName).style.display = "block";
+        document.getElementById(tabName).classList.add("active");
+        if (event) {
+            event.currentTarget.classList.add("active");
+        }
+        
+        resizeAllCanvases();
+    }
+    
+    // =====================================================
+    // 解説タブ：動的ツール（波源からの横波発生）
+    // =====================================================
+    const waveGenCanvas = document.getElementById('waveGenerationCanvas');
+    const waveGenCtx = waveGenCanvas.getContext('2d');
+    let waveGenTime = 0;
+    let waveGenAnimId = null;
+    
+    function resizeWaveGenCanvas() {
+        const parent = waveGenCanvas.parentElement;
+        const canvasWidth = parent.clientWidth - 30;
+        waveGenCanvas.width = canvasWidth;
+        waveGenCanvas.height = 200;
+        waveGenCanvas.style.width = canvasWidth + 'px';
+        waveGenCanvas.style.height = '200px';
+    }
+    
+    function drawWaveGeneration() {
+        const w = waveGenCanvas.width;
+        const h = waveGenCanvas.height;
+        const cx = h / 2;
+        
+        waveGenCtx.clearRect(0, 0, w, h);
+        
+        // 背景グリッド
+        waveGenCtx.strokeStyle = '#eee';
+        waveGenCtx.lineWidth = 1;
+        for (let y = 0; y <= h; y += 20) {
+            waveGenCtx.beginPath();
+            waveGenCtx.moveTo(0, y);
+            waveGenCtx.lineTo(w, y);
+            waveGenCtx.stroke();
+        }
+        
+        // 中心線
+        waveGenCtx.strokeStyle = '#ccc';
+        waveGenCtx.lineWidth = 2;
+        waveGenCtx.beginPath();
+        waveGenCtx.moveTo(30, cx);
+        waveGenCtx.lineTo(w - 20, cx);
+        waveGenCtx.stroke();
+        
+        // パラメータ
+        const amplitude = 40;
+        const wavelength = 120;
+        const omega = 2;
+        const k = 2 * Math.PI / wavelength;
+        const numPoints = 40;
+        const spacing = (w - 80) / numPoints;
+        
+        // 波源の位置
+        const sourceX = 50;
+        const sourceY = cx - amplitude * Math.sin(omega * waveGenTime);
+        
+        // 波源を描画
+        waveGenCtx.fillStyle = '#E91E63';
+        waveGenCtx.beginPath();
+        waveGenCtx.arc(sourceX, sourceY, 10, 0, Math.PI * 2);
+        waveGenCtx.fill();
+        
+        // 波源のラベル
+        waveGenCtx.fillStyle = '#E91E63';
+        waveGenCtx.font = 'bold 12px sans-serif';
+        waveGenCtx.fillText('波源', sourceX - 12, cx + 60);
+        
+        // 媒質点と波形を描画
+        waveGenCtx.strokeStyle = '#667eea';
+        waveGenCtx.lineWidth = 2;
+        waveGenCtx.beginPath();
+        
+        for (let i = 0; i <= numPoints; i++) {
+            const x = sourceX + i * spacing;
+            const phase = k * (x - sourceX) - omega * waveGenTime;
+            
+            // 波がまだ届いていない部分は描画しない
+            const waveSpeed = omega / k;
+            const waveFront = sourceX + waveSpeed * waveGenTime * 60;
+            
+            let y;
+            if (x <= waveFront) {
+                y = cx - amplitude * Math.sin(phase);
+            } else {
+                y = cx;
+            }
+            
+            if (i === 0) {
+                waveGenCtx.moveTo(x, y);
+            } else {
+                waveGenCtx.lineTo(x, y);
+            }
+            
+            // 媒質点を描画（5点ごと）
+            if (i > 0 && i % 3 === 0 && x < w - 30) {
+                waveGenCtx.fillStyle = '#2196F3';
+                waveGenCtx.beginPath();
+                waveGenCtx.arc(x, y, 5, 0, Math.PI * 2);
+                waveGenCtx.fill();
+                
+                // 垂直方向の動きを示す線
+                if (x <= waveFront) {
+                    waveGenCtx.strokeStyle = 'rgba(33, 150, 243, 0.3)';
+                    waveGenCtx.lineWidth = 1;
+                    waveGenCtx.setLineDash([3, 3]);
+                    waveGenCtx.beginPath();
+                    waveGenCtx.moveTo(x, cx - amplitude - 5);
+                    waveGenCtx.lineTo(x, cx + amplitude + 5);
+                    waveGenCtx.stroke();
+                    waveGenCtx.setLineDash([]);
+                }
+                
+                waveGenCtx.strokeStyle = '#667eea';
+                waveGenCtx.lineWidth = 2;
+            }
+        }
+        waveGenCtx.stroke();
+        
+        // 進行方向の矢印
+        waveGenCtx.fillStyle = '#333';
+        waveGenCtx.font = '14px sans-serif';
+        waveGenCtx.fillText('波の進行方向 →', w - 130, 25);
+        
+        waveGenTime += 0.03;
+        waveGenAnimId = requestAnimationFrame(drawWaveGeneration);
+    }
+    
+    // =====================================================
+    // 解説タブ：静的図解（波の構造）
+    // =====================================================
+    const waveStructCanvas = document.getElementById('waveStructureCanvas');
+    const waveStructCtx = waveStructCanvas.getContext('2d');
+    
+    function resizeWaveStructCanvas() {
+        const parent = waveStructCanvas.parentElement;
+        const canvasWidth = parent.clientWidth - 30;
+        waveStructCanvas.width = canvasWidth;
+        waveStructCanvas.height = 220;
+        waveStructCanvas.style.width = canvasWidth + 'px';
+        waveStructCanvas.style.height = '220px';
+    }
+    
+    function drawWaveStructure() {
+        const w = waveStructCanvas.width;
+        const h = waveStructCanvas.height;
+        const cx = h / 2 + 20;
+        
+        waveStructCtx.clearRect(0, 0, w, h);
+        
+        // パラメータ
+        const amplitude = 50;
+        const wavelength = w / 3;
+        
+        // 中心線（平衡位置）
+        waveStructCtx.strokeStyle = '#999';
+        waveStructCtx.lineWidth = 1;
+        waveStructCtx.setLineDash([5, 5]);
+        waveStructCtx.beginPath();
+        waveStructCtx.moveTo(30, cx);
+        waveStructCtx.lineTo(w - 30, cx);
+        waveStructCtx.stroke();
+        waveStructCtx.setLineDash([]);
+        
+        // 正弦波を描画
+        waveStructCtx.strokeStyle = '#667eea';
+        waveStructCtx.lineWidth = 3;
+        waveStructCtx.beginPath();
+        for (let x = 30; x <= w - 30; x++) {
+            const y = cx - amplitude * Math.sin(2 * Math.PI * (x - 30) / wavelength);
+            if (x === 30) {
+                waveStructCtx.moveTo(x, y);
+            } else {
+                waveStructCtx.lineTo(x, y);
+            }
+        }
+        waveStructCtx.stroke();
+        
+        // 振幅の矢印（山）
+        const peakX = 30 + wavelength / 4;
+        waveStructCtx.strokeStyle = '#E91E63';
+        waveStructCtx.lineWidth = 2;
+        waveStructCtx.beginPath();
+        waveStructCtx.moveTo(peakX, cx);
+        waveStructCtx.lineTo(peakX, cx - amplitude);
+        waveStructCtx.stroke();
+        // 矢印の頭
+        waveStructCtx.beginPath();
+        waveStructCtx.moveTo(peakX - 5, cx - amplitude + 10);
+        waveStructCtx.lineTo(peakX, cx - amplitude);
+        waveStructCtx.lineTo(peakX + 5, cx - amplitude + 10);
+        waveStructCtx.stroke();
+        waveStructCtx.fillStyle = '#E91E63';
+        waveStructCtx.font = 'bold 14px sans-serif';
+        waveStructCtx.fillText('振幅 A', peakX + 10, cx - amplitude / 2);
+        
+        // 波長の矢印
+        const wlStartX = 30 + wavelength / 4;
+        const wlEndX = wlStartX + wavelength;
+        const wlY = cx - amplitude - 25;
+        waveStructCtx.strokeStyle = '#4CAF50';
+        waveStructCtx.lineWidth = 2;
+        waveStructCtx.beginPath();
+        waveStructCtx.moveTo(wlStartX, wlY);
+        waveStructCtx.lineTo(wlEndX, wlY);
+        waveStructCtx.stroke();
+        // 両端の矢印
+        waveStructCtx.beginPath();
+        waveStructCtx.moveTo(wlStartX + 10, wlY - 5);
+        waveStructCtx.lineTo(wlStartX, wlY);
+        waveStructCtx.lineTo(wlStartX + 10, wlY + 5);
+        waveStructCtx.moveTo(wlEndX - 10, wlY - 5);
+        waveStructCtx.lineTo(wlEndX, wlY);
+        waveStructCtx.lineTo(wlEndX - 10, wlY + 5);
+        waveStructCtx.stroke();
+        waveStructCtx.fillStyle = '#4CAF50';
+        waveStructCtx.fillText('波長 λ', (wlStartX + wlEndX) / 2 - 25, wlY - 8);
+        
+        // 山と谷のラベル
+        waveStructCtx.fillStyle = '#667eea';
+        waveStructCtx.font = '13px sans-serif';
+        waveStructCtx.fillText('山', peakX - 8, cx - amplitude - 5);
+        const valleyX = 30 + 3 * wavelength / 4;
+        waveStructCtx.fillText('谷', valleyX - 8, cx + amplitude + 18);
+        
+        // 軸ラベル
+        waveStructCtx.fillStyle = '#333';
+        waveStructCtx.font = '12px sans-serif';
+        waveStructCtx.fillText('変位 y', 5, 25);
+        waveStructCtx.fillText('位置 x', w - 50, cx + 20);
+        waveStructCtx.fillText('0', 15, cx + 5);
+    }
+    
+    // =====================================================
+    // シミュレーションA：正弦波の伝播
+    // =====================================================
+    const physCanvas = document.getElementById('physicsCanvas');
+    const physCtx = physCanvas.getContext('2d');
+    const graphCanvas = document.getElementById('graphCanvas');
+    const graphCtx = graphCanvas.getContext('2d');
+    
+    let simARunning = false;
+    let simATime = 0;
+    let simAAnimId = null;
+    let ytHistory = [];
+    const maxHistory = 300;
+    
+    // パラメータ
+    let simA_amplitude = 1.0;
+    let simA_wavelength = 4.0;
+    let simA_period = 2.0;
+    let simA_observeX = 5.0;
+    
+    function resizeSimACanvases() {
+        const container = document.getElementById('sim-container');
+        if (container) {
+            const canvasWidth = container.clientWidth - 40;
+            physCanvas.width = canvasWidth;
+            physCanvas.height = 300;
+            physCanvas.style.width = canvasWidth + 'px';
+            physCanvas.style.height = '300px';
+        }
+        const graphContainer = graphCanvas.parentElement;
+        if (graphContainer) {
+            // グラフキャンバスの幅を親要素に合わせる（内部解像度と表示サイズを一致させる）
+            const canvasWidth = graphContainer.clientWidth - 30;
+            graphCanvas.width = canvasWidth;
+            graphCanvas.height = 200;
+            graphCanvas.style.width = canvasWidth + 'px';
+            graphCanvas.style.height = '200px';
+        }
+    }
+    
+    function updateSimAParams() {
+        simA_amplitude = parseFloat(document.getElementById('ampSlider').value);
+        simA_wavelength = parseFloat(document.getElementById('waveSlider').value);
+        simA_period = parseFloat(document.getElementById('periodSlider').value);
+        simA_observeX = parseFloat(document.getElementById('observeSlider').value);
+        
+        document.getElementById('ampDisplay').textContent = simA_amplitude.toFixed(1) + ' m';
+        document.getElementById('waveDisplay').textContent = simA_wavelength.toFixed(1) + ' m';
+        document.getElementById('periodDisplay').textContent = simA_period.toFixed(1) + ' s';
+        document.getElementById('observeDisplay').textContent = simA_observeX.toFixed(1) + ' m';
+        
+        const velocity = simA_wavelength / simA_period;
+        document.getElementById('velocityDisplay').textContent = velocity.toFixed(2);
+        
+        if (!simARunning) {
+            drawSimA();
+        }
+    }
+    
+    function drawSimA() {
+        const w = physCanvas.width;
+        const h = physCanvas.height;
+        const cx = h / 2;
+        const margin = 60;
+        const plotWidth = w - 2 * margin;
+        const plotHeight = h - 80;
+        
+        // 物理パラメータからピクセルへの変換
+        const xMax = 16; // 表示するx範囲 [m]
+        const yMax = 2.5; // 表示するy範囲 [m]
+        const xScale = plotWidth / xMax;
+        const yScale = plotHeight / (2 * yMax);
+        
+        const omega = 2 * Math.PI / simA_period;
+        const k = 2 * Math.PI / simA_wavelength;
+        
+        physCtx.clearRect(0, 0, w, h);
+        
+        // グリッド
+        physCtx.strokeStyle = '#eee';
+        physCtx.lineWidth = 1;
+        for (let i = 0; i <= xMax; i += 2) {
+            const px = margin + i * xScale;
+            physCtx.beginPath();
+            physCtx.moveTo(px, 30);
+            physCtx.lineTo(px, h - 30);
+            physCtx.stroke();
+        }
+        for (let i = -2; i <= 2; i++) {
+            const py = cx - i * yScale;
+            physCtx.beginPath();
+            physCtx.moveTo(margin, py);
+            physCtx.lineTo(w - margin + 20, py);
+            physCtx.stroke();
+        }
+        
+        // x軸
+        physCtx.strokeStyle = '#333';
+        physCtx.lineWidth = 2;
+        physCtx.beginPath();
+        physCtx.moveTo(margin, cx);
+        physCtx.lineTo(w - margin + 20, cx);
+        physCtx.stroke();
+        // 矢印
+        physCtx.beginPath();
+        physCtx.moveTo(w - margin + 10, cx - 5);
+        physCtx.lineTo(w - margin + 20, cx);
+        physCtx.lineTo(w - margin + 10, cx + 5);
+        physCtx.stroke();
+        
+        // y軸
+        physCtx.beginPath();
+        physCtx.moveTo(margin, h - 20);
+        physCtx.lineTo(margin, 20);
+        physCtx.stroke();
+        // 矢印
+        physCtx.beginPath();
+        physCtx.moveTo(margin - 5, 30);
+        physCtx.lineTo(margin, 20);
+        physCtx.lineTo(margin + 5, 30);
+        physCtx.stroke();
+        
+        // 軸ラベル
+        physCtx.fillStyle = '#333';
+        physCtx.font = '14px sans-serif';
+        physCtx.fillText('y [m]', margin - 25, 15);
+        physCtx.fillText('x [m]', w - margin + 5, cx + 20);
+        physCtx.fillText('0', margin - 15, cx + 5);
+        
+        // 目盛り
+        physCtx.font = '11px sans-serif';
+        for (let i = 2; i <= xMax; i += 2) {
+            const px = margin + i * xScale;
+            physCtx.fillText(i.toString(), px - 5, cx + 18);
+        }
+        for (let i = -2; i <= 2; i++) {
+            if (i !== 0) {
+                const py = cx - i * yScale;
+                physCtx.fillText(i.toString(), margin - 20, py + 4);
+            }
+        }
+        
+        // 波形描画
+        physCtx.strokeStyle = '#667eea';
+        physCtx.lineWidth = 3;
+        physCtx.beginPath();
+        
+        const v = simA_wavelength / simA_period;
+        const waveFront = v * simATime;
+        
+        for (let px = margin; px <= w - margin; px++) {
+            const x = (px - margin) / xScale;
+            let y;
+            if (x <= waveFront) {
+                y = simA_amplitude * Math.sin(k * x - omega * simATime);
+            } else {
+                y = 0;
+            }
+            const py = cx - y * yScale;
+            
+            if (px === margin) {
+                physCtx.moveTo(px, py);
+            } else {
+                physCtx.lineTo(px, py);
+            }
+        }
+        physCtx.stroke();
+        
+        // 媒質点を描画
+        for (let x = 0; x <= xMax; x += 0.5) {
+            const px = margin + x * xScale;
+            let y;
+            if (x <= waveFront) {
+                y = simA_amplitude * Math.sin(k * x - omega * simATime);
+            } else {
+                y = 0;
+            }
+            const py = cx - y * yScale;
+            
+            physCtx.fillStyle = '#2196F3';
+            physCtx.beginPath();
+            physCtx.arc(px, py, 4, 0, Math.PI * 2);
+            physCtx.fill();
+        }
+        
+        // 波源
+        const sourceY = simA_amplitude * Math.sin(-omega * simATime);
+        const sourcePy = cx - sourceY * yScale;
+        physCtx.fillStyle = '#E91E63';
+        physCtx.beginPath();
+        physCtx.arc(margin, sourcePy, 8, 0, Math.PI * 2);
+        physCtx.fill();
+        physCtx.fillStyle = '#E91E63';
+        physCtx.font = '12px sans-serif';
+        physCtx.fillText('波源', margin - 12, h - 10);
+        
+        // 観測点
+        const obsPx = margin + simA_observeX * xScale;
+        let obsY;
+        if (simA_observeX <= waveFront) {
+            obsY = simA_amplitude * Math.sin(k * simA_observeX - omega * simATime);
+        } else {
+            obsY = 0;
+        }
+        const obsPy = cx - obsY * yScale;
+        
+        // 観測点の縦線
+        physCtx.strokeStyle = 'rgba(255, 152, 0, 0.5)';
+        physCtx.lineWidth = 2;
+        physCtx.setLineDash([5, 5]);
+        physCtx.beginPath();
+        physCtx.moveTo(obsPx, 30);
+        physCtx.lineTo(obsPx, h - 30);
+        physCtx.stroke();
+        physCtx.setLineDash([]);
+        
+        // 観測点マーカー
+        physCtx.fillStyle = '#ff9800';
+        physCtx.beginPath();
+        physCtx.arc(obsPx, obsPy, 7, 0, Math.PI * 2);
+        physCtx.fill();
+        physCtx.strokeStyle = '#fff';
+        physCtx.lineWidth = 2;
+        physCtx.stroke();
+        
+        physCtx.fillStyle = '#ff9800';
+        physCtx.font = 'bold 12px sans-serif';
+        physCtx.fillText('観測点', obsPx - 18, 25);
+        
+        // 経過時間表示
+        physCtx.fillStyle = '#333';
+        physCtx.font = '14px sans-serif';
+        physCtx.fillText('t = ' + simATime.toFixed(2) + ' s', w - 100, 25);
+        
+        // y-t履歴に追加
+        if (simARunning) {
+            ytHistory.push({ t: simATime, y: obsY });
+            if (ytHistory.length > maxHistory) {
+                ytHistory.shift();
+            }
+        }
+        
+        // y-tグラフ描画
+        drawYTGraph();
+    }
+    
+    function drawYTGraph() {
+        const w = graphCanvas.width;
+        const h = graphCanvas.height;
+        const marginLeft = 50;
+        const marginRight = 30;
+        const plotWidth = w - marginLeft - marginRight;
+        const plotHeight = h - 60;
+        const cx = h / 2 + 10;
+        
+        const tWindow = 10; // 表示する時間幅（秒）
+        const yMax = 2.5;
+        const tScale = plotWidth / tWindow; // ピクセル/秒
+        const yScale = plotHeight / (2 * yMax);
+        
+        // 表示する時間範囲を決定（t=0から開始、tWindow秒を超えたらスクロール）
+        const latestT = ytHistory.length > 0 ? ytHistory[ytHistory.length - 1].t : 0;
+        const startT = Math.max(0, latestT - tWindow);
+        const endT = startT + tWindow;
+        
+        graphCtx.clearRect(0, 0, w, h);
+        
+        // グリッド（1秒ごと）
+        graphCtx.strokeStyle = '#eee';
+        graphCtx.lineWidth = 1;
+        for (let i = 0; i <= tWindow; i++) {
+            const px = marginLeft + i * tScale;
+            graphCtx.beginPath();
+            graphCtx.moveTo(px, 20);
+            graphCtx.lineTo(px, h - 20);
+            graphCtx.stroke();
+        }
+        for (let i = -2; i <= 2; i++) {
+            const py = cx - i * yScale;
+            graphCtx.beginPath();
+            graphCtx.moveTo(marginLeft, py);
+            graphCtx.lineTo(marginLeft + plotWidth, py);
+            graphCtx.stroke();
+        }
+        
+        // 軸
+        graphCtx.strokeStyle = '#333';
+        graphCtx.lineWidth = 2;
+        // t軸
+        graphCtx.beginPath();
+        graphCtx.moveTo(marginLeft, cx);
+        graphCtx.lineTo(marginLeft + plotWidth + 10, cx);
+        graphCtx.stroke();
+        // 矢印
+        graphCtx.beginPath();
+        graphCtx.moveTo(marginLeft + plotWidth + 5, cx - 4);
+        graphCtx.lineTo(marginLeft + plotWidth + 10, cx);
+        graphCtx.lineTo(marginLeft + plotWidth + 5, cx + 4);
+        graphCtx.stroke();
+        // y軸
+        graphCtx.beginPath();
+        graphCtx.moveTo(marginLeft, h - 15);
+        graphCtx.lineTo(marginLeft, 15);
+        graphCtx.stroke();
+        
+        // 軸ラベル
+        graphCtx.fillStyle = '#333';
+        graphCtx.font = '14px sans-serif';
+        graphCtx.fillText('y [m]', 10, 15);
+        graphCtx.fillText('t [s]', marginLeft + plotWidth + 12, cx + 5);
+        
+        // 目盛り（startTに基づいて表示）
+        graphCtx.font = '11px sans-serif';
+        const firstTick = Math.ceil(startT);
+        for (let tValue = firstTick; tValue <= Math.floor(endT); tValue++) {
+            const px = marginLeft + (tValue - startT) * tScale;
+            if (px >= marginLeft - 5 && px <= marginLeft + plotWidth + 5) {
+                graphCtx.fillText(tValue.toString(), px - 5, cx + 15);
+            }
+        }
+        for (let i = -2; i <= 2; i++) {
+            if (i !== 0) {
+                const py = cx - i * yScale;
+                graphCtx.fillText(i.toString(), marginLeft - 18, py + 4);
+            }
+        }
+        
+        // y-t曲線を描画
+        if (ytHistory.length > 1) {
+            graphCtx.strokeStyle = '#ff9800';
+            graphCtx.lineWidth = 2;
+            graphCtx.beginPath();
+            
+            let first = true;
+            for (let i = 0; i < ytHistory.length; i++) {
+                const point = ytHistory[i];
+                if (point.t >= startT && point.t <= endT) {
+                    const px = marginLeft + (point.t - startT) * tScale;
+                    const py = cx - point.y * yScale;
+                    
+                    // 描画範囲内のみ
+                    if (px >= marginLeft && px <= marginLeft + plotWidth) {
+                        if (first) {
+                            graphCtx.moveTo(px, py);
+                            first = false;
+                        } else {
+                            graphCtx.lineTo(px, py);
+                        }
+                    }
+                }
+            }
+            graphCtx.stroke();
+        }
+        
+        // 現在の観測点のy値を表示（リアルタイムマーカー）
+        if (ytHistory.length > 0) {
+            const lastPoint = ytHistory[ytHistory.length - 1];
+            if (lastPoint.t >= startT && lastPoint.t <= endT) {
+                const px = marginLeft + (lastPoint.t - startT) * tScale;
+                const py = cx - lastPoint.y * yScale;
+                if (px >= marginLeft && px <= marginLeft + plotWidth) {
+                    graphCtx.fillStyle = '#ff9800';
+                    graphCtx.beginPath();
+                    graphCtx.arc(px, py, 5, 0, Math.PI * 2);
+                    graphCtx.fill();
+                }
+            }
+        }
+        
+        // 観測点表示
+        graphCtx.fillStyle = '#ff9800';
+        graphCtx.font = '12px sans-serif';
+        graphCtx.fillText('x = ' + simA_observeX.toFixed(1) + ' m での変位', w - 150, 20);
+    }
+    
+    function animateSimA() {
+        if (!simARunning) return;
+        
+        simATime += 0.02;
+        drawSimA();
+        simAAnimId = requestAnimationFrame(animateSimA);
+    }
+    
+    // シミュレーションAのイベントリスナー
+    document.getElementById('startBtnA').addEventListener('click', function() {
+        simARunning = true;
+        animateSimA();
+    });
+    
+    document.getElementById('stopBtnA').addEventListener('click', function() {
+        simARunning = false;
+        if (simAAnimId) {
+            cancelAnimationFrame(simAAnimId);
+        }
+    });
+    
+    document.getElementById('resetBtnA').addEventListener('click', function() {
+        simARunning = false;
+        simATime = 0;
+        ytHistory = [];
+        if (simAAnimId) {
+            cancelAnimationFrame(simAAnimId);
+        }
+        drawSimA();
+    });
+    
+    document.getElementById('ampSlider').addEventListener('input', updateSimAParams);
+    document.getElementById('waveSlider').addEventListener('input', updateSimAParams);
+    document.getElementById('periodSlider').addEventListener('input', updateSimAParams);
+    document.getElementById('observeSlider').addEventListener('input', updateSimAParams);
+    
+    // =====================================================
+    // シミュレーションB：縦波の横波表記
+    // =====================================================
+    const refCanvas = document.getElementById('refCanvas');
+    const refCtx = refCanvas.getContext('2d');
+    const longCanvas = document.getElementById('longCanvas');
+    const longCtx = longCanvas.getContext('2d');
+    const transCanvas = document.getElementById('transCanvas');
+    const transCtx = transCanvas.getContext('2d');
+    
+    let simBRunning = false;
+    let simBTime = 0;
+    let simBAnimId = null;
+    
+    let simB_wavelength = 4;
+    let simB_amplitude = 30;
+    let simB_speed = 1;
+    
+    const numParticles = 50;
+    
+    function resizeSimBCanvases() {
+        const container = document.getElementById('sim-container-b');
+        if (container) {
+            const canvasWidth = container.clientWidth - 40;
+            refCanvas.width = canvasWidth;
+            refCanvas.height = 100;
+            refCanvas.style.width = canvasWidth + 'px';
+            refCanvas.style.height = '100px';
+            
+            longCanvas.width = canvasWidth;
+            longCanvas.height = 120;
+            longCanvas.style.width = canvasWidth + 'px';
+            longCanvas.style.height = '120px';
+            
+            transCanvas.width = canvasWidth;
+            transCanvas.height = 200;
+            transCanvas.style.width = canvasWidth + 'px';
+            transCanvas.style.height = '200px';
+        }
+    }
+    
+    function updateSimBParams() {
+        simB_wavelength = parseFloat(document.getElementById('waveSliderB').value);
+        simB_amplitude = parseFloat(document.getElementById('ampSliderB').value);
+        simB_speed = parseFloat(document.getElementById('speedSliderB').value);
+        
+        document.getElementById('waveDisplayB').textContent = simB_wavelength.toFixed(1);
+        document.getElementById('ampDisplayB').textContent = simB_amplitude;
+        document.getElementById('speedDisplayB').textContent = simB_speed.toFixed(1) + 'x';
+        
+        if (!simBRunning) {
+            drawSimB();
+        }
+    }
+    
+    function drawSimB() {
+        const canvasWidth = refCanvas.width;
+        const particleSpacing = (canvasWidth - 100) / numParticles;
+        
+        // ① 基準状態
+        refCtx.clearRect(0, 0, refCanvas.width, refCanvas.height);
+        refCtx.strokeStyle = '#ccc';
+        refCtx.lineWidth = 2;
+        refCtx.beginPath();
+        refCtx.moveTo(50, refCanvas.height / 2);
+        refCtx.lineTo(canvasWidth - 50, refCanvas.height / 2);
+        refCtx.stroke();
+        
+        for (let i = 0; i < numParticles; i++) {
+            const x = 50 + i * particleSpacing;
+            const y = refCanvas.height / 2;
+            
+            refCtx.fillStyle = '#2196F3';
+            refCtx.beginPath();
+            refCtx.arc(x, y, 4, 0, Math.PI * 2);
+            refCtx.fill();
+            
+            if (i % 5 === 0) {
+                refCtx.strokeStyle = '#ddd';
+                refCtx.lineWidth = 1;
+                refCtx.beginPath();
+                refCtx.moveTo(x, 15);
+                refCtx.lineTo(x, refCanvas.height - 15);
+                refCtx.stroke();
+                
+                refCtx.fillStyle = '#999';
+                refCtx.font = '10px sans-serif';
+                refCtx.fillText(i, x - 5, 12);
+            }
+        }
+        
+        // ② 縦波の動き
+        longCtx.clearRect(0, 0, longCanvas.width, longCanvas.height);
+        longCtx.strokeStyle = '#ccc';
+        longCtx.lineWidth = 2;
+        longCtx.beginPath();
+        longCtx.moveTo(50, longCanvas.height / 2);
+        longCtx.lineTo(canvasWidth - 50, longCanvas.height / 2);
+        longCtx.stroke();
+        
+        const densityRegions = [];
+        
+        for (let i = 0; i < numParticles; i++) {
+            const baseX = 50 + i * particleSpacing;
+            const phase = (i / numParticles) * Math.PI * 2 * simB_wavelength - simBTime;
+            const displacement = Math.sin(phase) * simB_amplitude;
+            const x = baseX + displacement;
+            const y = longCanvas.height / 2;
+            
+            const density = Math.abs(Math.cos(phase));
+            const size = 3 + density * 3;
+            const alpha = 0.4 + density * 0.6;
+            
+            longCtx.fillStyle = `rgba(76, 175, 80, ${alpha})`;
+            longCtx.beginPath();
+            longCtx.arc(x, y, size, 0, Math.PI * 2);
+            longCtx.fill();
+            
+            if (i % 5 === 0) {
+                longCtx.strokeStyle = '#ddd';
+                longCtx.lineWidth = 1;
+                longCtx.beginPath();
+                longCtx.moveTo(baseX, 15);
+                longCtx.lineTo(baseX, longCanvas.height - 15);
+                longCtx.stroke();
+            }
+            
+            densityRegions.push({ x: baseX, density: density, phase: phase });
+        }
+        
+        // 密・疎ラベル
+        longCtx.font = '12px sans-serif';
+        for (let i = 0; i < densityRegions.length; i++) {
+            const d = densityRegions[i];
+            if (d.density > 0.8) {
+                longCtx.fillStyle = '#4CAF50';
+                longCtx.fillText('密', d.x - 8, longCanvas.height - 8);
+            } else if (d.density < 0.2 && i > 0) {
+                longCtx.fillStyle = '#ff9800';
+                longCtx.fillText('疎', d.x - 8, longCanvas.height - 8);
+            }
+        }
+        
+        // ③ 横波表記
+        transCtx.clearRect(0, 0, transCanvas.width, transCanvas.height);
+        
+        // グリッド
+        transCtx.strokeStyle = '#eee';
+        transCtx.lineWidth = 1;
+        for (let i = 0; i <= 10; i++) {
+            const y = 25 + (transCanvas.height - 50) * (i / 10);
+            transCtx.beginPath();
+            transCtx.moveTo(50, y);
+            transCtx.lineTo(canvasWidth - 50, y);
+            transCtx.stroke();
+        }
+        
+        // 中心線
+        transCtx.strokeStyle = '#333';
+        transCtx.lineWidth = 2;
+        transCtx.beginPath();
+        transCtx.moveTo(50, transCanvas.height / 2);
+        transCtx.lineTo(canvasWidth - 50, transCanvas.height / 2);
+        transCtx.stroke();
+        
+        // 横波グラフ
+        transCtx.strokeStyle = '#E91E63';
+        transCtx.lineWidth = 3;
+        transCtx.beginPath();
+        
+        for (let i = 0; i < numParticles; i++) {
+            const x = 50 + i * particleSpacing;
+            const phase = (i / numParticles) * Math.PI * 2 * simB_wavelength - simBTime;
+            const displacement = Math.sin(phase) * simB_amplitude;
+            const y = transCanvas.height / 2 - displacement;
+            
+            if (i === 0) {
+                transCtx.moveTo(x, y);
+            } else {
+                transCtx.lineTo(x, y);
+            }
+        }
+        transCtx.stroke();
+        
+        // 変位を示す点と線
+        for (let i = 0; i < numParticles; i += 3) {
+            const x = 50 + i * particleSpacing;
+            const phase = (i / numParticles) * Math.PI * 2 * simB_wavelength - simBTime;
+            const displacement = Math.sin(phase) * simB_amplitude;
+            const y = transCanvas.height / 2 - displacement;
+            
+            transCtx.fillStyle = '#E91E63';
+            transCtx.beginPath();
+            transCtx.arc(x, y, 4, 0, Math.PI * 2);
+            transCtx.fill();
+            
+            transCtx.strokeStyle = 'rgba(233, 30, 99, 0.4)';
+            transCtx.lineWidth = 1;
+            transCtx.setLineDash([3, 3]);
+            transCtx.beginPath();
+            transCtx.moveTo(x, transCanvas.height / 2);
+            transCtx.lineTo(x, y);
+            transCtx.stroke();
+            transCtx.setLineDash([]);
+        }
+        
+        // 軸ラベル
+        transCtx.fillStyle = '#666';
+        transCtx.font = '12px sans-serif';
+        transCtx.fillText('変位', 10, transCanvas.height / 2 - 10);
+        transCtx.fillText('(横波表記)', 5, transCanvas.height / 2 + 15);
+        transCtx.fillText('0', 30, transCanvas.height / 2 + 5);
+        transCtx.fillText('+', 30, 35);
+        transCtx.fillText('-', 30, transCanvas.height - 25);
+    }
+    
+    function animateSimB() {
+        if (!simBRunning) return;
+        
+        simBTime += 0.05 * simB_speed;
+        drawSimB();
+        simBAnimId = requestAnimationFrame(animateSimB);
+    }
+    
+    // シミュレーションBのイベントリスナー
+    document.getElementById('startBtnB').addEventListener('click', function() {
+        simBRunning = true;
+        animateSimB();
+    });
+    
+    document.getElementById('stopBtnB').addEventListener('click', function() {
+        simBRunning = false;
+        if (simBAnimId) {
+            cancelAnimationFrame(simBAnimId);
+        }
+    });
+    
+    document.getElementById('resetBtnB').addEventListener('click', function() {
+        simBRunning = false;
+        simBTime = 0;
+        if (simBAnimId) {
+            cancelAnimationFrame(simBAnimId);
+        }
+        drawSimB();
+    });
+    
+    document.getElementById('waveSliderB').addEventListener('input', updateSimBParams);
+    document.getElementById('ampSliderB').addEventListener('input', updateSimBParams);
+    document.getElementById('speedSliderB').addEventListener('input', updateSimBParams);
+    
+    // =====================================================
+    // 初期化とリサイズ対応
+    // =====================================================
+    function resizeAllCanvases() {
+        resizeWaveGenCanvas();
+        resizeWaveStructCanvas();
+        resizeSimACanvases();
+        resizeSimBCanvases();
+        
+        drawWaveStructure();
+        drawSimA();
+        drawSimB();
+    }
+    
+    window.addEventListener('resize', resizeAllCanvases);
+    
+    // 初期描画
+    window.addEventListener('load', function() {
+        resizeAllCanvases();
+        drawWaveGeneration(); // 解説タブの動的ツールを開始
+        updateSimAParams();
+        updateSimBParams();
+    });
+    </script>
+</body>
+</html>
